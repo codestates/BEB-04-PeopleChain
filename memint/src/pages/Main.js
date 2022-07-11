@@ -62,11 +62,9 @@ function Main({navigation}) {
           }}
         />
       </Tab.Navigator>
-      <Button
-        title="wallet"
-        onPress={() => navigation.navigate('Wallet')}
-        style={styles.walletButton}
-      />
+      <View style={styles.walletButton}>
+        <Button title="wallet" onPress={() => navigation.navigate('Wallet')} />
+      </View>
     </>
   );
 }
@@ -74,13 +72,12 @@ function Main({navigation}) {
 const styles = StyleSheet.create({
   walletButton: {
     position: 'absolute',
-    width: 40,
-    height: 20,
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    justifyContent: 'center'
+    width: 80,
+    height: 40,
+    right: 20,
+    bottom: 100,
+    backgroundColor: 'black',
+    borderRadius: 5,
   },
 });
 
