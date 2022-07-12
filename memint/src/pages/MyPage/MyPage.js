@@ -9,7 +9,7 @@ function MyPage() {
       <Text>MyPage 입니다.</Text>
       <Button title="모달" onPress={() => setModalVisible(true)} />
       <SingleModal
-        text="미팅을 생성하시겠습니까????"
+        text="미팅을 생성하시겠습니까?!?!?"
         //body={<Text>정말로?</Text>}
         buttonText="아니요"
         modalVisible={modalVisible}

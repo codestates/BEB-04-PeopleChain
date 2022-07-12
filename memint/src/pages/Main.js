@@ -56,7 +56,7 @@ function Main({navigation}) {
         />
         <Tab.Screen
           name="mypage"
-          component={AlarmScreen}
+          component={MyPageScreen}
           options={{
             tabBarLabel: '마이페이지',
             tabBarIcon: ({color}) => (
