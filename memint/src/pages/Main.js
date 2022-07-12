@@ -1,6 +1,5 @@
 import React from 'react';
 import {Button, StyleSheet, View} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
 import AlarmPage from './AlarmPage/AlarmPage';
 import ChattingPage from './ChattingPage/ChattingPage';
 import MeetingPage from './MeetingPage/MeetingPage';

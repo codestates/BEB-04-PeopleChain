@@ -5,25 +5,22 @@ import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 BasicButton 사용법
 
 props
-size => "small", "medium", "large"
+text => 버튼 내용
+size => "small", "medium", "large", "wide"
 variant => "basic", "disable"
 onPress => 실행 함수
 
-태그 사이 => text 내용 
-
-  <BasicButton size="medium" variant="basic" onPress={click}>
-    안녕
-  </BasicButton>
+  <BasicButton text="버튼" size="medium" variant="basic" onPress={click} />
 */
 
-function BasicButton({variant, size, onPress, children}) {
+function BasicButton({text, variant, size, onPress}) {
   const sizeStyle = SIZE[size];
   const sizeTextStyle = TEXTSIZE[size];
   const variantStyle = VARIANT[variant];
   return (
     <TouchableOpacity activeOpacity={0.5} onPress={onPress}>
       <View style={[styles.button, sizeStyle, variantStyle]}>
-        <Text style={[styles.buttonText, sizeTextStyle]}>{children}</Text>
+        <Text style={[styles.buttonText, sizeTextStyle]}>{text}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -47,7 +44,7 @@ const styles = StyleSheet.create({
 
 const TEXTSIZE = {
   small: {
-    fontSize: 12,
+    fontSize: 13,
   },
   medium: {
     fontSize: 15,
@@ -55,12 +52,15 @@ const TEXTSIZE = {
   large: {
     fontSize: 17,
   },
+  wide: {
+    fontSize: 17,
+  },
 };
 
 const SIZE = StyleSheet.create({
   small: {
-    width: 60,
-    height: 30,
+    width: 70,
+    height: 35,
   },
   medium: {
     width: 100,
@@ -68,6 +68,10 @@ const SIZE = StyleSheet.create({
   },
   large: {
     width: 200,
+    height: 40,
+  },
+  wide: {
+    width: 300,
     height: 40,
   },
 });
