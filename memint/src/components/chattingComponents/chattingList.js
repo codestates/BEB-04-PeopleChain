@@ -15,19 +15,16 @@ function ChattingList({chattings, navigation}) {
       data={chattings}
       renderItem={({item}) => (
         <TouchableOpacity
-          onPress={() => navigation.navigate('ChattingRoom', {id: item.id})}>
+          onPress={() => navigation.navigate('ChattingRoom', {item})}>
           <View style={styles.container}>
             <Image
               style={styles.image}
               source={item.image}
               resizeMode="contain"
             />
-
             <View style={styles.chatInfo}>
               <View>
-                <Text style={{marginTop: 10, paddingBottom: 15}}>
-                  {item.title}
-                </Text>
+                <Text style={styles.titleText}>{item.title}</Text>
                 <Text>마지막 채팅 내용</Text>
               </View>
               <View style={{justifyContent: 'center'}}>
@@ -67,6 +64,12 @@ const styles = StyleSheet.create({
   separator: {
     backgroundColor: '#e0e0e0',
     height: 1,
+  },
+  titleText: {
+    marginTop: 10,
+    paddingBottom: 12,
+    fontSize: 15,
+    fontWeight: 'bold',
   },
 });
 

@@ -11,6 +11,28 @@ const dummyData = [
     title: '금요일날 같이 놀아요',
     hostId: '김개똥',
     joinersId: ['김철수', '김영희', '박찬솔'],
+    chat: [
+      {
+        createdAt: '2022-07-13',
+        body: '테스트 1번 채팅',
+        sender: '김개똥',
+      },
+      {
+        createdAt: '2022-07-13',
+        body: '테스트 2번 채팅',
+        sender: '김찰스',
+      },
+      {
+        createdAt: '2022-07-13',
+        body: '테스트 3번 채팅',
+        sender: '김삼묵',
+      },
+      {
+        createdAt: '2022-07-13',
+        body: '테스트 4번 채팅',
+        sender: '박한첧',
+      },
+    ],
   },
   {
     text: 'hostImage',

@@ -1,12 +1,26 @@
-import React from 'react';
-import {View, Text} from 'react-native';
+import React, {useEffect} from 'react';
+import {StyleSheet, View, Text, SafeAreaView} from 'react-native';
+import ChatText from '../../components/chattingComponents/chatText';
 
-function ChattingRoom({route}) {
+function ChattingRoom({navigation, route}) {
+  useEffect(() => {
+    navigation.setOptions({title: route.params.item.title});
+  });
   return (
-    <View>
-      <Text>ChattingRoom id {route.params.id} 페이지 입니다.</Text>
+    <View style={styles.container}>
+      <ChatText chat={route.params.item.chat} />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    height: '100%',
+    width: '100%',
+    backgroundColor: 'blue',
+    // justifyContent: 'flex-end',
+    // flexDirection: 'column-reverse',
+  },
+});
 
 export default ChattingRoom;
