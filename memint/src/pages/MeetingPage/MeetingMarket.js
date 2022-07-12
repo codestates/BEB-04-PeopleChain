@@ -1,6 +1,5 @@
 import React from 'react';
-import {Text, View, Button} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {Text, View, Button, SafeAreaView} from 'react-native';
 
 function MeetingMarket({navigation}) {
   return (

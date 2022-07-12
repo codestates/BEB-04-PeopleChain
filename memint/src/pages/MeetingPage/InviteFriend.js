@@ -2,13 +2,13 @@ import React from 'react';
 import {Text, SafeAreaView} from 'react-native';
 import BackButton from '../../components/BackButton';
 
-function MeetingCreate() {
+function InviteFriend() {
   return (
     <SafeAreaView>
       <BackButton />
-      <Text>생성</Text>
+      <Text>친구 초대</Text>
     </SafeAreaView>
   );
 }
 
-export default MeetingCreate;
+export default InviteFriend;

@@ -1,8 +1,14 @@
 import React from 'react';
-import {Text} from 'react-native';
+import {Text, SafeAreaView} from 'react-native';
+import BackButton from '../../components/BackButton';
 
 function MeetingDetail() {
-  return <Text>MeetingDetail</Text>;
+  return (
+    <SafeAreaView>
+      <BackButton />
+      <Text>MeetingDetail</Text>
+    </SafeAreaView>
+  );
 }
 
 export default MeetingDetail;

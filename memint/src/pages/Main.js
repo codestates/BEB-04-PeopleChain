@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import MeetingCreate from './MeetingPage/MeetingCreate';
 import MeetingDetail from './MeetingPage/MeetingDetail';
 import MeetingMarket from './MeetingPage/MeetingMarket';
+import InviteFriend from './MeetingPage/InviteFriend';
 import AlarmPage from './AlarmPage/AlarmPage';
 
 import MyPage from './MyPage/MyPage';
@@ -85,9 +86,26 @@ const MyPageScreen = () => {
 const MeetingScreen = () => {
   return (
     <Stack.Navigator initialRouteName="MeetingMarket">
-      <Stack.Screen name="MeetingMarket" component={MeetingMarket} />
-      <Stack.Screen name="MeetingDetail" component={MeetingDetail} />
-      <Stack.Screen name="MeetingCreate" component={MeetingCreate} />
+      <Stack.Screen
+        name="MeetingMarket"
+        component={MeetingMarket}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="MeetingDetail"
+        component={MeetingDetail}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="MeetingCreate"
+        component={MeetingCreate}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="InviteFriend"
+        component={InviteFriend}
+        options={{headerShown: false}}
+      />
     </Stack.Navigator>
   );
 };
