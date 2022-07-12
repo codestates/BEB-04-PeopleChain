@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Text, SafeAreaView, Button} from 'react-native';
-import SingleModal from '../../components/SingleModal';
+import SingleModal from '../../components/common/SingleModal';
 
 function MyPage() {
   const [modalVisible, setModalVisible] = useState(false);

@@ -7,8 +7,10 @@ import MeetingCreate from './MeetingPage/MeetingCreate';
 import MeetingDetail from './MeetingPage/MeetingDetail';
 import MeetingMarket from './MeetingPage/MeetingMarket';
 import AlarmPage from './AlarmPage/AlarmPage';
-import ChattingPage from './ChattingPage/ChattingPage';
+
 import MyPage from './MyPage/MyPage';
+import ChattingListPage from './ChattingPage/ChattingListPage';
+import ChattingRoom from './ChattingPage/ChattingRoom';
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -93,7 +95,8 @@ const MeetingScreen = () => {
 const ChattingScreen = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="ChattingPage" component={ChattingPage} />
+      <Stack.Screen name="채팅 목록" component={ChattingListPage} />
+      <Stack.Screen name="ChattingRoom" component={ChattingRoom} />
     </Stack.Navigator>
   );
 };

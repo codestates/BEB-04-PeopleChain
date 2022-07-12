@@ -1,6 +1,6 @@
 import React from 'react';
 import {SafeAreaView, Text} from 'react-native';
-import BackButton from '../../components/BackButton';
+import BackButton from '../../components/common/BackButton';
 
 function Wallet() {
   return (
