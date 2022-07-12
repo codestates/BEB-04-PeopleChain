@@ -25,32 +25,12 @@ function Main({navigation}) {
           tabBarActiveTintColor: '#009688',
         }}>
         <Tab.Screen
-          name="mypage"
-          component={MyPageScreen}
-          options={{
-            tabBarLabel: '마이페이지',
-            tabBarIcon: ({color}) => (
-              <Icon name="home" color={color} size={24} />
-            ),
-          }}
-        />
-        <Tab.Screen
           name="meeting"
           component={MeetingScreen}
           options={{
-            tabBarLabel: 'meeting',
+            tabBarLabel: '홈',
             tabBarIcon: ({color}) => (
-              <Icon name="search" color={color} size={24} />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="chatting"
-          component={ChattingScreen}
-          options={{
-            tabBarLabel: 'chatting',
-            tabBarIcon: ({color}) => (
-              <Icon name="message" color={color} size={24} />
+              <Icon name="home" color={color} size={24} />
             ),
           }}
         />
@@ -58,9 +38,29 @@ function Main({navigation}) {
           name="alarm"
           component={AlarmScreen}
           options={{
-            tabBarLabel: 'alarm',
+            tabBarLabel: '알림',
             tabBarIcon: ({color}) => (
               <Icon name="notifications" color={color} size={24} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="chatting"
+          component={ChattingScreen}
+          options={{
+            tabBarLabel: '채팅',
+            tabBarIcon: ({color}) => (
+              <Icon name="message" color={color} size={24} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="mypage"
+          component={AlarmScreen}
+          options={{
+            tabBarLabel: '마이페이지',
+            tabBarIcon: ({color}) => (
+              <Icon name="person" color={color} size={24} />
             ),
           }}
         />
