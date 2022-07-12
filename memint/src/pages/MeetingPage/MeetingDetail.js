@@ -2,11 +2,12 @@ import React from 'react';
 import {Text, SafeAreaView} from 'react-native';
 import BackButton from '../../components/BackButton';
 
-function MeetingDetail() {
+function MeetingDetail({route}) {
+  const {title, tags, host, location, people, age, date} = route.params;
   return (
     <SafeAreaView>
       <BackButton />
-      <Text>MeetingDetail</Text>
+      <Text>MeetingDetail+ {title}</Text>
     </SafeAreaView>
   );
 }
