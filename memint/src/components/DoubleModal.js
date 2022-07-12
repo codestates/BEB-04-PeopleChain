@@ -6,12 +6,14 @@ import BasicButton from './BasicButton';
 사용할 컴포넌트에서 state 사용이 필요함.
   const [modalVisible, setModalVisible] = useState(false);
 
-      <SingleModal
+      <DoubleModal
         text="미팅을 생성하시겠습니까?"
         //body={<Text>정말로?</Text>}
-        buttonText="네"
+        nButtonText="아니요"
+        pButtonText="네"
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
+        pFunction={() => {}}
       />
  */
 

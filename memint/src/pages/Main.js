@@ -1,13 +1,17 @@
 import React from 'react';
 import {Button, StyleSheet, View} from 'react-native';
-import AlarmPage from './AlarmPage/AlarmPage';
-import ChattingPage from './ChattingPage/ChattingPage';
-import MeetingPage from './MeetingPage/MeetingPage';
-import MyPage from './MyPage/MyPage';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import MeetingCreate from './MeetingPage/MeetingCreate';
+import MeetingDetail from './MeetingPage/MeetingDetail';
+import MeetingMarket from './MeetingPage/MeetingMarket';
+import AlarmPage from './AlarmPage/AlarmPage';
+import ChattingPage from './ChattingPage/ChattingPage';
+import MyPage from './MyPage/MyPage';
 
 const Tab = createMaterialBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
 function Main({navigation}) {
   return (
@@ -22,7 +26,7 @@ function Main({navigation}) {
         }}>
         <Tab.Screen
           name="mypage"
-          component={MyPage}
+          component={MyPageScreen}
           options={{
             tabBarLabel: '마이페이지',
             tabBarIcon: ({color}) => (
@@ -32,7 +36,7 @@ function Main({navigation}) {
         />
         <Tab.Screen
           name="meeting"
-          component={MeetingPage}
+          component={MeetingScreen}
           options={{
             tabBarLabel: 'meeting',
             tabBarIcon: ({color}) => (
@@ -42,7 +46,7 @@ function Main({navigation}) {
         />
         <Tab.Screen
           name="chatting"
-          component={ChattingPage}
+          component={ChattingScreen}
           options={{
             tabBarLabel: 'chatting',
             tabBarIcon: ({color}) => (
@@ -52,7 +56,7 @@ function Main({navigation}) {
         />
         <Tab.Screen
           name="alarm"
-          component={AlarmPage}
+          component={AlarmScreen}
           options={{
             tabBarLabel: 'alarm',
             tabBarIcon: ({color}) => (
@@ -67,6 +71,40 @@ function Main({navigation}) {
     </>
   );
 }
+
+const MyPageScreen = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="MyPage" component={MyPage} />
+    </Stack.Navigator>
+  );
+};
+
+const MeetingScreen = () => {
+  return (
+    <Stack.Navigator initialRouteName="MeetingMarket">
+      <Stack.Screen name="MeetingMarket" component={MeetingMarket} />
+      <Stack.Screen name="MeetingDetail" component={MeetingDetail} />
+      <Stack.Screen name="MeetingCreate" component={MeetingCreate} />
+    </Stack.Navigator>
+  );
+};
+
+const ChattingScreen = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="ChattingPage" component={ChattingPage} />
+    </Stack.Navigator>
+  );
+};
+
+const AlarmScreen = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="AlarmPage" component={AlarmPage} />
+    </Stack.Navigator>
+  );
+};
 
 const styles = StyleSheet.create({
   walletButton: {
