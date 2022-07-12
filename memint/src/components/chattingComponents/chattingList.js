@@ -1,5 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {Text, StyleSheet, View, TouchableOpacity, FlatList} from 'react-native';
+import {
+  Text,
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  FlatList,
+  Image,
+} from 'react-native';
 
 function ChattingList({chattings, navigation}) {
   return (
@@ -10,10 +17,22 @@ function ChattingList({chattings, navigation}) {
         <TouchableOpacity
           onPress={() => navigation.navigate('ChattingRoom', {id: item.id})}>
           <View style={styles.container}>
-            <Text>{item.text}</Text>
+            <Image
+              style={styles.image}
+              source={item.image}
+              resizeMode="contain"
+            />
+
             <View style={styles.chatInfo}>
-              <Text style={{marginTop: 10}}>채팅방 이름</Text>
-              <Text style={{marginBottom: 15}}>마지막 채팅 내용</Text>
+              <View>
+                <Text style={{marginTop: 10, paddingBottom: 15}}>
+                  {item.title}
+                </Text>
+                <Text>마지막 채팅 내용</Text>
+              </View>
+              <View style={{justifyContent: 'center'}}>
+                <Text>마지막 채팅 날짜</Text>
+              </View>
             </View>
           </View>
         </TouchableOpacity>
@@ -26,17 +45,24 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     height: 70,
-    paddingLeft: 8,
+    // paddingLeft: 8,
     alignItems: 'center',
-
+    flexWrap: 'wrap',
     // justifyContent: 'space-between',
   },
+  image: {
+    width: 70,
+    height: 70,
+    borderRadius: 36,
+  },
   chatInfo: {
+    flexDirection: 'row',
     height: '100%',
-    width: '100%',
-    backgroundColor: 'red',
+    width: '80%',
+    // backgroundColor: 'red',
     justifyContent: 'space-between',
     paddingLeft: 10,
+    flexWrap: 'wrap',
   },
   separator: {
     backgroundColor: '#e0e0e0',
