@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import BackButton from '../../components/BackButton';
 import BasicButton from '../../components/BasicButton';
 import DoubleModal from '../../components/DoubleModal';
+import {useToast} from '../../utils/hooks/useToast';
 
 function MeetingDetail({route}) {
   const {title, tags, host, location, people, age, date, description, members} =
@@ -11,7 +12,7 @@ function MeetingDetail({route}) {
   const [modalVisible_1, setModalVisible_1] = useState(false);
   const [modalVisible_2, setModalVisible_2] = useState(false);
   const [textMessage, setTextMessage] = useState('');
-  console.log(textMessage);
+  const {showToast} = useToast();
   return (
     <SafeAreaView>
       <BackButton />
@@ -33,7 +34,7 @@ function MeetingDetail({route}) {
         </View>
         <View style={styles.infoRow}>
           <Text style={styles.infoEl}>{location}</Text>
-          <View style={styles.bar}></View>
+          <View style={styles.bar} />
           <Text style={styles.infoEl}>{date}</Text>
         </View>
         <View>
@@ -110,9 +111,12 @@ function MeetingDetail({route}) {
         setModalVisible={setModalVisible_2}
         pFunction={() => {
           setModalVisible_2(!modalVisible_2);
+          setTextMessage('');
+          showToast(
+            'success',
+            '미팅 신청을 보냈습니다\n주선자의 수락을 기다려주세요!',
+          );
         }}
-        // 모달 창 닫을 때 input 내용 삭제 필요함. 신청 보내기 처리 필요함
-        //신청 보낸 후, reload, toast alert
       />
     </SafeAreaView>
   );

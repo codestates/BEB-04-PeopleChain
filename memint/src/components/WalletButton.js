@@ -2,6 +2,9 @@ import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 
+// import시 따로 넘겨줄 props는 없습니다.
+// <WalletButton />
+
 function WalletButton() {
   const navigation = useNavigation();
   return (

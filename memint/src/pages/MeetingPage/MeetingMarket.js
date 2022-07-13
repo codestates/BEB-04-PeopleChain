@@ -150,9 +150,10 @@ function MeetingMarket({navigation}) {
       </View>
 
       <ScrollView style={styles.meetingLists}>
-        {data.map(meeting => {
+        {data.map((meeting, idx) => {
           return (
             <MeetingElement
+              key={idx}
               title={meeting.title}
               tags={meeting.tags}
               host={meeting.host}
