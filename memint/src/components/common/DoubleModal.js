@@ -14,6 +14,7 @@ import BasicButton from './BasicButton';
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
         pFunction={() => {}}
+        nFunction={() => {setModalVisible(!modalVisible)}}
       />
  */
 
@@ -25,6 +26,7 @@ function DoubleModal({
   modalVisible,
   setModalVisible,
   pFunction,
+  nFunction,
 }) {
   return (
     <View style={styles.centeredView}>
@@ -34,12 +36,21 @@ function DoubleModal({
             <Text style={styles.modalText}>{text}</Text>
             {body}
             <View style={styles.buttonRow}>
-              <BasicButton
-                text={nButtonText}
-                size="small"
-                variant="disable"
-                onPress={() => setModalVisible(!modalVisible)}
-              />
+              {nFunction !== undefined ? (
+                <BasicButton
+                  text={nButtonText}
+                  size="small"
+                  variant="disable"
+                  onPress={nFunction}
+                />
+              ) : (
+                <BasicButton
+                  text={nButtonText}
+                  size="small"
+                  variant="disable"
+                  onPress={() => setModalVisible(!modalVisible)}
+                />
+              )}
               <BasicButton
                 text={pButtonText}
                 size="small"
