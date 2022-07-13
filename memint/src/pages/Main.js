@@ -111,7 +111,7 @@ const ChattingScreen = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen name="채팅 목록" component={ChattingListPage} />
-      <Stack.Screen name="ChattingRoom" component={ChattingRoom} />
+      {/* <Stack.Screen name="ChattingRoom" component={ChattingRoom} /> */}
     </Stack.Navigator>
   );
 };

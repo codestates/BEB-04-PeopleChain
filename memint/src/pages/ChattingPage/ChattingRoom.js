@@ -1,23 +1,21 @@
 import React, {useEffect} from 'react';
-import {StyleSheet, View, Text, SafeAreaView} from 'react-native';
+import {StyleSheet, ScrollView} from 'react-native';
 import ChatText from '../../components/chattingComponents/chatText';
+import {useNavigation} from '@react-navigation/native';
 
-function ChattingRoom({navigation, route}) {
+function ChattingRoom({route}) {
+  const navigation = useNavigation();
   useEffect(() => {
     navigation.setOptions({title: route.params.item.title});
   });
-  return (
-    <View style={styles.container}>
-      <ChatText chat={route.params.item.chat} />
-    </View>
-  );
+  return <ChatText chat={route.params.item.chat} />;
 }
 
 const styles = StyleSheet.create({
   container: {
-    height: '100%',
-    width: '100%',
-    backgroundColor: 'blue',
+    height: '90%',
+    justifyContent: 'flex-end',
+    backgroundColor: 'green',
     // justifyContent: 'flex-end',
     // flexDirection: 'column-reverse',
   },

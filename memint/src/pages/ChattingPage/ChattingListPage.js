@@ -2,6 +2,9 @@ import React, {useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native';
 import ChattingList from '../../components/chattingComponents/chattingList';
 import dummyData from './dummydata/jsonfile';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+
+const Stack = createNativeStackNavigator();
 
 function ChattingListPage({navigation}) {
   const [chattings, setChattings] = useState(dummyData);

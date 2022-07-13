@@ -13,28 +13,28 @@ function ChattingList({chattings, navigation}) {
     <FlatList
       ItemSeparatorComponent={() => <View style={styles.separator} />}
       data={chattings}
-      renderItem={({item}) => (
-        <TouchableOpacity
-          onPress={() => navigation.navigate('ChattingRoom', {item})}>
-          <View style={styles.container}>
-            <Image
-              style={styles.image}
-              source={item.image}
-              resizeMode="contain"
-            />
-            <View style={styles.chatInfo}>
-              <View>
-                <Text style={styles.titleText}>{item.title}</Text>
-                <Text>마지막 채팅 내용</Text>
-              </View>
-              <View style={{justifyContent: 'center'}}>
-                <Text>마지막 채팅 날짜</Text>
-              </View>
-            </View>
-          </View>
-        </TouchableOpacity>
-      )}
+      renderItem={({item}) => <MetaData item={item} navigation={navigation} />}
     />
+  );
+}
+
+function MetaData({item, navigation}) {
+  return (
+    <TouchableOpacity
+      onPress={() => navigation.navigate('ChattingRoom', {item})}>
+      <View style={styles.container}>
+        <Image style={styles.image} source={item.image} resizeMode="contain" />
+        <View style={styles.chatInfo}>
+          <View>
+            <Text style={styles.titleText}>{item.title}</Text>
+            <Text>마지막 채팅 내용</Text>
+          </View>
+          <View style={{justifyContent: 'center'}}>
+            <Text>마지막 채팅 날짜</Text>
+          </View>
+        </View>
+      </View>
+    </TouchableOpacity>
   );
 }
 

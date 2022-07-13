@@ -5,6 +5,8 @@ import Main from './pages/Main';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {ToastProvider} from './context/ToastContext';
 import Toast from './components/common/Toast';
+import ChattingRoom from './pages/ChattingPage/ChattingRoom';
+
 const Stack = createNativeStackNavigator();
 
 function App() {
@@ -22,6 +24,7 @@ function App() {
             component={WalletPage}
             options={{title: null, headerShown: false}}
           />
+          <Stack.Screen name="ChattingRoom" component={ChattingRoom} />
         </Stack.Navigator>
         <Toast />
       </ToastProvider>
