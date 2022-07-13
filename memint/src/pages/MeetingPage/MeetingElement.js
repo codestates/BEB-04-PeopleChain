@@ -2,7 +2,17 @@ import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {TouchableOpacity, View, Text, StyleSheet} from 'react-native';
 
-function MeetingElement({title, tags, host, location, people, age, date}) {
+function MeetingElement({
+  title,
+  tags,
+  host,
+  location,
+  people,
+  age,
+  date,
+  description,
+  members,
+}) {
   const navigation = useNavigation();
   return (
     <TouchableOpacity
@@ -16,6 +26,8 @@ function MeetingElement({title, tags, host, location, people, age, date}) {
           people,
           age,
           date,
+          description,
+          members,
         })
       }>
       <View>
@@ -39,7 +51,7 @@ function MeetingElement({title, tags, host, location, people, age, date}) {
           <View style={styles.bar}></View>
           <Text style={[styles.infoEl]}>{age}</Text>
           <View style={styles.bar}></View>
-          <Text style={[styles.infoEl]}>{date}</Text>
+          <Text style={[styles.infoEl]}>{date.slice(0, 10)}</Text>
         </View>
       </View>
     </TouchableOpacity>

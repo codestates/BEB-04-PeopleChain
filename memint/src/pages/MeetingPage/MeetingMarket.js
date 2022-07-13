@@ -18,37 +18,61 @@ function MeetingMarket({navigation}) {
       title: '금요일 밤 노실 분',
       host: 'username',
       tags: ['#부어라 마셔라', '#술게임 환영'],
+      description:
+        '술 한잔 하실 여성분들 분위기 잘 맞춰드려요 ㅎㅎ \n오늘 후회없게 재밌게 한잔해요',
       location: '강남',
       people: '2(남):0(여)',
+      members: [
+        {username: '대현동 불주먹', gender: '남', age: '30대 초반'},
+        {username: '아현동 돌려차기', gender: '남', age: '30대 초반'},
+      ],
       age: '30초',
-      date: '7월 8일 (금)',
+      date: '7월 8일 (금) 오후 6시',
     },
     {
       title: '금요일 밤 노실 분',
       host: 'username',
       tags: ['#부어라 마셔라', '#술게임 환영'],
+      description:
+        '술 한잔 하실 여성분들 분위기 잘 맞춰드려요 ㅎㅎ \n오늘 후회없게 재밌게 한잔해요',
       location: '강남',
       people: '2(남):0(여)',
+      members: [
+        {username: '대현동 불주먹', gender: '남', age: '30대 초반'},
+        {username: '아현동 돌려차기', gender: '남', age: '30대 초반'},
+      ],
       age: '30초',
-      date: '7월 8일 (금)',
+      date: '7월 8일 (금) 오후 6시',
     },
     {
       title: '금요일 밤 노실 분',
       host: 'username',
       tags: ['#부어라 마셔라', '#술게임 환영'],
+      description:
+        '술 한잔 하실 여성분들 분위기 잘 맞춰드려요 ㅎㅎ \n오늘 후회없게 재밌게 한잔해요',
       location: '강남',
       people: '2(남):0(여)',
+      members: [
+        {username: '대현동 불주먹', gender: '남', age: '30대 초반'},
+        {username: '아현동 돌려차기', gender: '남', age: '30대 초반'},
+      ],
       age: '30초',
-      date: '7월 8일 (금)',
+      date: '7월 8일 (금) 오후 6시',
     },
     {
       title: '금요일 밤 노실 분',
       host: 'username',
       tags: ['#부어라 마셔라', '#술게임 환영'],
+      description:
+        '술 한잔 하실 여성분들 분위기 잘 맞춰드려요 ㅎㅎ \n오늘 후회없게 재밌게 한잔해요',
       location: '강남',
       people: '2(남):0(여)',
+      members: [
+        {username: '대현동 불주먹', gender: '남', age: '30대 초반'},
+        {username: '아현동 돌려차기', gender: '남', age: '30대 초반'},
+      ],
       age: '30초',
-      date: '7월 8일 (금)',
+      date: '7월 8일 (금) 오후 6시',
     },
   ];
   const dropDownData = [
@@ -102,6 +126,8 @@ function MeetingMarket({navigation}) {
               people={meeting.people}
               age={meeting.age}
               date={meeting.date}
+              description={meeting.description}
+              members={meeting.members}
             />
           );
         })}
