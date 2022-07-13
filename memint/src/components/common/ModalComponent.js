@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import {Modal, Button, View, Text, Pressable, StyleSheet} from 'react-native';
 
+//모달 생성 시 참고할 컴포넌트입니다. 추후 삭제 예정.
+//SingleModal, DoubleModal을 최대한 활용해주세요.
 function ModalComponent(props) {
   const [modalVisible, setModalVisible] = useState(false);
 

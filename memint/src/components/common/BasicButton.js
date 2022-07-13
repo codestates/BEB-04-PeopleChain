@@ -2,14 +2,15 @@ import React from 'react';
 import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 
 /*
-BasicButton 사용법
+  BasicButton 사용법
 
-props
-text => 버튼 내용
-size => "small", "medium", "large", "wide"
-variant => "basic", "disable"
-onPress => 실행 함수
+  props
+  text => 버튼 내용
+  size => "small", "medium", "large", "wide"
+  variant => "basic", "disable"
+  onPress => 실행 함수
 
+  Ex)
   <BasicButton text="버튼" size="medium" variant="basic" onPress={click} />
 */
 

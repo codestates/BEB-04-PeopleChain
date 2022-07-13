@@ -3,7 +3,8 @@ import {View, Modal, Text, StyleSheet} from 'react-native';
 import BasicButton from './BasicButton';
 
 /*
-사용할 컴포넌트에서 state 사용이 필요함.
+  사용할 컴포넌트에서 state 사용이 필요함.
+  Ex)
   const [modalVisible, setModalVisible] = useState(false);
 
       <DoubleModal

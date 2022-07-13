@@ -3,6 +3,12 @@ import React from 'react';
 import {TouchableOpacity, Text, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
+/*
+  props 필요 없음
+  Ex)
+  <BackButton />
+*/
+
 function BackButton() {
   const navigation = useNavigation();
   return (

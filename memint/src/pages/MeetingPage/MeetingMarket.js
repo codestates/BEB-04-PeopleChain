@@ -2,11 +2,9 @@ import React, {useState} from 'react';
 import {
   Text,
   View,
-  Button,
   SafeAreaView,
   StyleSheet,
   TouchableOpacity,
-  FlatList,
   ScrollView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -14,12 +12,15 @@ import MeetingElement from './MeetingElement';
 import WalletButton from '../../components/WalletButton';
 import RNPickerSelect from 'react-native-picker-select';
 import DoubleModal from '../../components/DoubleModal';
+import DatePicker from '../../components/DatePicker';
 
 function MeetingMarket({navigation}) {
   const [locationCheck, setlocationCheck] = useState(false);
   const [regionSelect, setRegionSelect] = useState(0);
   const [sortSelect, setSortSelect] = useState(undefined);
+  const [filterPeopleSelect, setFilterPeopleSelect] = useState(undefined);
   const [filterModalVisible, setFilterModalVisible] = useState(false);
+  const [filterDate, setFilterDate] = useState(new Date());
   const data = [
     {
       title: '금요일 밤 노실 분',
@@ -136,6 +137,11 @@ function MeetingMarket({navigation}) {
     {label: '위치 가까운 순', value: 2},
     {label: '나이 젊은 순', value: 3},
   ];
+  const FilterPeopleDropDownData = [
+    {label: '1:1', value: 1},
+    {label: '2:2', value: 2},
+    {label: '3:3', value: 3},
+  ];
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity
@@ -171,18 +177,44 @@ function MeetingMarket({navigation}) {
           }}>
           <Icon name="filter-alt" size={15} />
           <Text> 조건 설정</Text>
-          {/* <DoubleModal text="필터 설정"
-        body={<View>
-          <View><Text>인원</Text></View>
-          <View><Text>날짜</Text></View>
-          <View><Text>태그</Text></View>
-        </View>}
-        nButtonText="닫기"
-        pButtonText="적용"
-        modalVisible={filterModalVisible}
-        setModalVisible={setFilterModalVisible}
-        pFunction={() => {}}
-        nFunction={() => {setModalVisible(!modalVisible)}}/> */}
+          <DoubleModal
+            body={
+              <View style={styles.filterContent}>
+                <View style={styles.filterElement}>
+                  <Text style={styles.filterText}>인원</Text>
+                  <RNPickerSelect
+                    placeholder={{label: '선택'}}
+                    onValueChange={value => {
+                      setFilterPeopleSelect(value);
+                    }}
+                    items={FilterPeopleDropDownData}
+                    value={filterPeopleSelect}
+                  />
+                </View>
+                <View style={styles.filterElement}>
+                  <Text style={styles.filterText}>날짜</Text>
+                  <DatePicker
+                    value={filterDate}
+                    onChange={(event, date) => {
+                      console.log(date);
+                      setFilterDate(date);
+                    }}
+                  />
+                </View>
+                <View style={styles.filterElement}>
+                  <Text style={styles.filterText}>태그</Text>
+                </View>
+              </View>
+            }
+            nButtonText="닫기"
+            pButtonText="적용"
+            modalVisible={filterModalVisible}
+            setModalVisible={setFilterModalVisible}
+            pFunction={() => {}}
+            nFunction={() => {
+              setFilterModalVisible(!filterModalVisible);
+            }}
+          />
         </TouchableOpacity>
         <TouchableOpacity style={styles.listfilter}>
           <RNPickerSelect
@@ -251,6 +283,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  filterContent: {
+    marginBottom: 30,
+    marginHorizontal: 10,
+  },
+  filterElement: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  filterText: {
+    fontWeight: 'bold',
+    marginHorizontal: 30,
   },
 });
 

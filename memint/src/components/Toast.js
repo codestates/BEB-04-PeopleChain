@@ -2,16 +2,16 @@ import React, {useCallback, useEffect, useRef} from 'react';
 import {StyleSheet, View, Text, Animated} from 'react-native';
 import {useToast} from '../utils/hooks/useToast';
 
-// const {showToast} = useToast();
-//
-// showToast(타입, 메시지); 와 같이 사용하시면 됩니다. 타입('success', 'error', 'basic')
-//
-// Ex)
-// showToast(
-//             'success',
-//             '미팅 신청을 보냈습니다\n주선자의 수락을 기다려주세요!',
-//           );
+/*
+  useToast import 후,
+  showToast(타입, 메시지); 와 같이 사용하시면 됩니다.
+  타입('success', 'error', 'basic')
 
+  Ex)
+  const {showToast} = useToast();
+
+  showToast('success', '미팅 신청을 보냈습니다\n주선자의 수락을 기다려주세요!');
+*/
 const fadeDuration = 500;
 
 function Toast() {
