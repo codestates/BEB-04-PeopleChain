@@ -7,6 +7,7 @@ import {ToastProvider} from './context/ToastContext';
 import Toast from './components/common/Toast';
 import ChattingRoom from './pages/ChattingPage/ChattingRoom';
 import {ChatContextProvider} from './components/chattingComponents/context/chatContext';
+import SignInScreen from './pages/SignInPage/SignInScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -15,7 +16,12 @@ function App() {
     <NavigationContainer>
       <ToastProvider>
         <ChatContextProvider>
-          <Stack.Navigator initialRouteName="Main">
+          <Stack.Navigator initialRouteName="SignIn">
+            <Stack.Screen
+              name="SignIn"
+              component={SignInScreen}
+              options={{headerShown: false}}
+            />
             <Stack.Screen
               name="Main"
               component={Main}
