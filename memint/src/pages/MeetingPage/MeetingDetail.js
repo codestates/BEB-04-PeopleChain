@@ -47,8 +47,8 @@ function MeetingDetail({route}) {
               </View>
             </View>
             <View style={styles.memberList}>
-              {members.map(member => (
-                <View style={styles.memberInfo}>
+              {members.map((member, idx) => (
+                <View key={idx} style={styles.memberInfo}>
                   <View style={styles.memberInfoProfile}>
                     <Icon name="help" size={50} color={'gray'} />
                   </View>

@@ -13,7 +13,7 @@ function DatePicker({value, onChange}) {
   return (
     <RNDateTimePicker
       style={styles.datePicker}
-      display="calender"
+      display="default"
       value={value}
       onChange={onChange}
       maximumDate={new Date(2022, 12, 31)}

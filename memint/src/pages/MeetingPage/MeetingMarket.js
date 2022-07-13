@@ -13,8 +13,10 @@ import WalletButton from '../../components/WalletButton';
 import RNPickerSelect from 'react-native-picker-select';
 import DoubleModal from '../../components/DoubleModal';
 import DatePicker from '../../components/DatePicker';
+import SingleModal from '../../components/SingleModal';
 
 function MeetingMarket({navigation}) {
+  const [confirmModalVisible, setConfirmModalVisible] = useState(false);
   const [locationCheck, setlocationCheck] = useState(false);
   const [regionSelect, setRegionSelect] = useState(0);
   const [sortSelect, setSortSelect] = useState(undefined);
@@ -114,22 +116,22 @@ function MeetingMarket({navigation}) {
     },
   ];
   const RegionDropDownData = [
-    {label: '서울 전체', value: 0},
-    {label: '강남구', value: 1},
-    {label: '강동구', value: 2},
-    {label: '강북구', value: 3},
-    {label: '강서구', value: 4},
-    {label: '관악구', value: 5},
-    {label: '광진구', value: 6},
-    {label: '구로구', value: 7},
-    {label: '금천구', value: 8},
-    {label: '노원구', value: 9},
-    {label: '도봉구', value: 10},
-    {label: '동대문구', value: 11},
-    {label: '동작구', value: 12},
-    {label: '마포구', value: 13},
-    {label: '서대문구', value: 14},
-    {label: '서초구', value: 15},
+    {label: '서울 전체', value: 1},
+    {label: '강남구', value: 2},
+    {label: '강동구', value: 3},
+    {label: '강북구', value: 4},
+    {label: '강서구', value: 5},
+    {label: '관악구', value: 6},
+    {label: '광진구', value: 7},
+    {label: '구로구', value: 8},
+    {label: '금천구', value: 9},
+    {label: '노원구', value: 10},
+    {label: '도봉구', value: 11},
+    {label: '동대문구', value: 12},
+    {label: '동작구', value: 13},
+    {label: '마포구', value: 14},
+    {label: '서대문구', value: 15},
+    {label: '서초구', value: 16},
   ];
   const SortDropDownData = [
     {label: '정렬', value: 0},
@@ -141,6 +143,7 @@ function MeetingMarket({navigation}) {
     {label: '1:1', value: 1},
     {label: '2:2', value: 2},
     {label: '3:3', value: 3},
+    {label: '4:4', value: 4},
   ];
   return (
     <SafeAreaView style={styles.container}>
@@ -165,10 +168,23 @@ function MeetingMarket({navigation}) {
       <View style={styles.areaEnd}>
         <TouchableOpacity
           style={styles.createButton}
-          onPress={() => navigation.navigate('MeetingCreate')}>
+          onPress={() => {
+            setConfirmModalVisible(true);
+          }}>
           <Icon name="add-box" size={35} />
         </TouchableOpacity>
       </View>
+      <SingleModal
+        text="미팅을 생성하시겠습니까?"
+        //body={<Text>정말로?</Text>}
+        buttonText="네"
+        modalVisible={confirmModalVisible}
+        setModalVisible={setConfirmModalVisible}
+        pFunction={() => {
+          setConfirmModalVisible(!confirmModalVisible);
+          navigation.navigate('MeetingCreate');
+        }}
+      />
       <View style={styles.listfilterArea}>
         <TouchableOpacity
           style={styles.listfilter}
