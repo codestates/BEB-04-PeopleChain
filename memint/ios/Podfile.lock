@@ -292,6 +292,7 @@ PODS:
     - React-jsi (= 0.69.1)
     - React-logger (= 0.69.1)
     - React-perflogger (= 0.69.1)
+<<<<<<< HEAD
   - RNGestureHandler (2.5.0):
     - React-Core
   - RNReanimated (2.9.1):
@@ -321,6 +322,10 @@ PODS:
     - React-RCTText
     - ReactCommon/turbomodule/core
     - Yoga
+=======
+  - RNCPicker (2.4.2):
+    - React-Core
+>>>>>>> 23f4264 (feat: add picker-select in MeetingMarket)
   - RNScreens (3.15.0):
     - React-Core
     - React-RCTImage
@@ -363,8 +368,12 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+<<<<<<< HEAD
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
+=======
+  - "RNCPicker (from `../node_modules/@react-native-picker/picker`)"
+>>>>>>> 23f4264 (feat: add picker-select in MeetingMarket)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -442,6 +451,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-gesture-handler"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
+  RNCPicker:
+    :path: "../node_modules/@react-native-picker/picker"
   RNScreens:
     :path: "../node_modules/react-native-screens"
   RNVectorIcons:
@@ -485,6 +496,7 @@ SPEC CHECKSUMS:
   ReactCommon: e30ec17dfb1d4c4f3419eac254350d6abca6d5a2
   RNGestureHandler: bad495418bcbd3ab47017a38d93d290ebd406f50
   RNReanimated: 2cf7451318bb9cc430abeec8d67693f9cf4e039c
+  RNCPicker: 0250e95ad170569a96f5b0555cdd5e65b9084dca
   RNScreens: 4a1af06327774490d97342c00aee0c2bafb497b7
   RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
   Yoga: 7ab6e3ee4ce47d7b789d1cb520163833e515f452

@@ -21,9 +21,9 @@ function MeetingDetail({route}) {
           <Text style={styles.title}>{title}</Text>
         </View>
         <View style={styles.tags}>
-          {tags.map(tag => {
+          {tags.map((tag, idx) => {
             return (
-              <View style={styles.tag}>
+              <View key={idx} style={styles.tag}>
                 <Text style={styles.tagText}>{tag}</Text>
               </View>
             );
