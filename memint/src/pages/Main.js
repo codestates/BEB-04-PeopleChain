@@ -68,9 +68,6 @@ function Main({navigation}) {
           }}
         />
       </Tab.Navigator>
-      <View style={styles.walletButton}>
-        <Button title="wallet" onPress={() => navigation.navigate('Wallet')} />
-      </View>
     </>
   );
 }
@@ -126,17 +123,5 @@ const AlarmScreen = () => {
     </Stack.Navigator>
   );
 };
-
-const styles = StyleSheet.create({
-  walletButton: {
-    position: 'absolute',
-    width: 80,
-    height: 40,
-    right: 20,
-    bottom: 100,
-    backgroundColor: 'black',
-    borderRadius: 5,
-  },
-});
 
 export default Main;

@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     margin: 5,
+    marginLeft: 8,
   },
   buttonText: {
     fontSize: 18,
