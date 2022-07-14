@@ -34,8 +34,8 @@ function MeetingElement({
         <Text style={styles.title}>{title}</Text>
       </View>
       <View style={styles.tags}>
-        {tags.map(tag => (
-          <View style={styles.tag}>
+        {tags.map((tag, idx) => (
+          <View key={idx} style={styles.tag}>
             <Text style={styles.tagText}>{tag}</Text>
           </View>
         ))}
@@ -46,11 +46,11 @@ function MeetingElement({
         </View>
         <View style={styles.infoList}>
           <Text style={[styles.infoEl]}>{location}</Text>
-          <View style={styles.bar}></View>
+          <View style={styles.bar} />
           <Text style={[styles.infoEl]}>{people}</Text>
-          <View style={styles.bar}></View>
+          <View style={styles.bar} />
           <Text style={[styles.infoEl]}>{age}</Text>
-          <View style={styles.bar}></View>
+          <View style={styles.bar} />
           <Text style={[styles.infoEl]}>{date.slice(0, 10)}</Text>
         </View>
       </View>

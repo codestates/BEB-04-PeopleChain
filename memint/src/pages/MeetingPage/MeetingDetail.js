@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {Text, SafeAreaView, View, StyleSheet, TextInput} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import BackButton from '../../components/BackButton';
-import BasicButton from '../../components/BasicButton';
-import DoubleModal from '../../components/DoubleModal';
+import BackButton from '../../components/common/BackButton';
+import BasicButton from '../../components/common/BasicButton';
+import DoubleModal from '../../components/common/DoubleModal';
 import {useToast} from '../../utils/hooks/useToast';
 
 function MeetingDetail({route}) {

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Text, SafeAreaView} from 'react-native';
-import BackButton from '../../components/BackButton';
+import BackButton from '../../components/common/BackButton';
 
 function InviteFriend() {
   return (

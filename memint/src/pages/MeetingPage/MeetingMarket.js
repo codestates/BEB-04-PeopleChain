@@ -8,12 +8,12 @@ import {
   ScrollView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import MeetingElement from './MeetingElement';
-import WalletButton from '../../components/WalletButton';
+import MeetingElement from '../../components/meetingComponent/MeetingElement';
+import WalletButton from '../../components/common/WalletButton';
 import RNPickerSelect from 'react-native-picker-select';
-import DoubleModal from '../../components/DoubleModal';
-import DatePicker from '../../components/DatePicker';
-import SingleModal from '../../components/SingleModal';
+import DoubleModal from '../../components/common/DoubleModal';
+import DatePicker from '../../components/common/DatePicker';
+import SingleModal from '../../components/common/SingleModal';
 
 function MeetingMarket({navigation}) {
   const [confirmModalVisible, setConfirmModalVisible] = useState(false);
@@ -212,7 +212,6 @@ function MeetingMarket({navigation}) {
                   <DatePicker
                     value={filterDate}
                     onChange={(event, date) => {
-                      console.log(date);
                       setFilterDate(date);
                     }}
                   />

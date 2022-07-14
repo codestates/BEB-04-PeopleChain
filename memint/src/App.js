@@ -4,7 +4,7 @@ import WalletPage from './pages/WalletPage/WalletPage';
 import Main from './pages/Main';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {ToastProvider} from './context/ToastContext';
-import Toast from './components/Toast';
+import Toast from './components/common/Toast';
 const Stack = createNativeStackNavigator();
 
 function App() {

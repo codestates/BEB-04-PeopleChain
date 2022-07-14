@@ -9,13 +9,13 @@ import {
   ScrollView,
 } from 'react-native';
 import {TextInput} from 'react-native-paper';
-import BackButton from '../../components/BackButton';
+import BackButton from '../../components/common/BackButton';
 import RNPickerSelect from 'react-native-picker-select';
 import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useToast} from '../../utils/hooks/useToast';
-import SingleModal from '../../components/SingleModal';
-import TagElement from './TagElement';
+import SingleModal from '../../components/common/SingleModal';
+import TagElement from '../../components/meetingComponent/TagElement';
 
 function MeetingCreate() {
   const [submittable, setSubmittable] = useState(false);

@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useRef} from 'react';
 import {StyleSheet, View, Text, Animated} from 'react-native';
-import {useToast} from '../utils/hooks/useToast';
+import {useToast} from '../../utils/hooks/useToast';
 
 /*
   useToast import 후,
