@@ -27,7 +27,6 @@ function MeetingCreate() {
     peopleNum: undefined,
     tags: [],
   });
-  console.log(meetingInfo)
   const [confirmModalVisible, setConfirmModalVisible] = useState(false);
   const navigation = useNavigation();
   const {showToast} = useToast();
