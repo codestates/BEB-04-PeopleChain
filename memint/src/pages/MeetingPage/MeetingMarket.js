@@ -205,6 +205,16 @@ function MeetingMarket({navigation}) {
                     }}
                     items={FilterPeopleDropDownData}
                     value={filterPeopleSelect}
+                    style={{
+                      inputIOS: {
+                        fontSize: 16,
+                        color: 'black',
+                      },
+                      placeholder: {
+                        fontSize: 16,
+                        color: 'gray',
+                      },
+                    }}
                   />
                 </View>
                 <View style={styles.filterElement}>
@@ -309,6 +319,7 @@ const styles = StyleSheet.create({
   },
   filterText: {
     fontWeight: 'bold',
+    fontSize: 16,
     marginHorizontal: 30,
   },
 });

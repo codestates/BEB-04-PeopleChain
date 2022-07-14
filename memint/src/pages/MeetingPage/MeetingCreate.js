@@ -1,5 +1,5 @@
 import RNDateTimePicker from '@react-native-community/datetimepicker';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {
   Text,
   SafeAreaView,
@@ -16,8 +16,9 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useToast} from '../../utils/hooks/useToast';
 import SingleModal from '../../components/common/SingleModal';
 import TagElement from '../../components/meetingComponent/TagElement';
+import DoubleModal from '../../components/common/DoubleModal';
 
-function MeetingCreate() {
+function MeetingCreate({route}) {
   const [submittable, setSubmittable] = useState(false);
   const [meetingInfo, setMeetingInfo] = useState({
     title: '',
@@ -25,9 +26,11 @@ function MeetingCreate() {
     date: new Date(),
     region: undefined,
     peopleNum: undefined,
+    invitedFriends: [],
     tags: [],
   });
   const [confirmModalVisible, setConfirmModalVisible] = useState(false);
+  const [inviteModalVisible, setInviteModalVisible] = useState(false);
   const navigation = useNavigation();
   const {showToast} = useToast();
   const RegionDropDownData = [
@@ -67,10 +70,32 @@ function MeetingCreate() {
 
   useEffect(() => {
     const {title, description, region, peopleNum} = meetingInfo;
-    if (title && description && region && peopleNum) setSubmittable(true);
-    else setSubmittable(false);
-  }, [meetingInfo]);
+    if (title && description && region && peopleNum) {
+      setSubmittable(true);
+    } else {
+      setSubmittable(false);
+    }
 
+    handleInvitedFriends();
+  }, [meetingInfo, route, handleInvitedFriends]);
+
+  const handleInvitedFriends = useCallback(() => {
+    if (route.params !== undefined) {
+      if (route.params.friends === undefined) {
+        return;
+      }
+      if (meetingInfo.invitedFriends.indexOf(route.params.friends) !== -1) {
+        showToast('error', '이미 추가된 친구입니다');
+        route.params.friends = undefined;
+        return;
+      }
+      setMeetingInfo({
+        ...meetingInfo,
+        invitedFriends: [...meetingInfo.invitedFriends, route.params.friends],
+      });
+      route.params.friends = undefined;
+    }
+  }, [meetingInfo, route, showToast]);
   const handleSubmit = () => {
     if (!submittable) {
       showToast('error', '필수 항목들을 작성해주세요');
@@ -159,7 +184,7 @@ function MeetingCreate() {
           </TouchableOpacity>
         </View>
         <View style={[styles.createElement, styles.flexRow]}>
-          <TouchableOpacity style={styles.selectButton}>
+          <TouchableOpacity style={[styles.selectButton, styles.rightMargin]}>
             <RNPickerSelect
               placeholder={{label: '인원'}}
               onValueChange={value => {
@@ -180,13 +205,35 @@ function MeetingCreate() {
             />
             <Icon name="arrow-drop-down" size={19} color={'gray'} />
           </TouchableOpacity>
+          <ScrollView style={styles.invitedFriends} horizontal={true}>
+            {meetingInfo.invitedFriends.map((el, idx) => (
+              <View key={idx} style={styles.invitedFriend}>
+                <Text>{el}</Text>
+              </View>
+            ))}
+          </ScrollView>
+
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('InviteFriend');
+              setInviteModalVisible(true);
             }}>
-            <Text style={styles.text}>친구 초대하기</Text>
+            <Text style={[styles.text, styles.leftMargin]}>친구 초대하기</Text>
           </TouchableOpacity>
         </View>
+        <DoubleModal
+          text="친구 초대 시 하트가 차감됩니다.    초대하시겠습니까?"
+          nButtonText="아니요"
+          pButtonText="네"
+          modalVisible={inviteModalVisible}
+          setModalVisible={setInviteModalVisible}
+          pFunction={() => {
+            setInviteModalVisible(!inviteModalVisible);
+            navigation.navigate('InviteFriend');
+          }}
+          nFunction={() => {
+            setInviteModalVisible(!inviteModalVisible);
+          }}
+        />
         <View style={styles.tagElement}>
           <Text style={[styles.text, styles.tagTitle]}>태그</Text>
           <View style={styles.tagsContainer}>
@@ -308,6 +355,20 @@ const styles = StyleSheet.create({
   },
   tagCategory: {
     marginVertical: 5,
+  },
+  invitedFriends: {
+    flexDirection: 'row',
+  },
+  invitedFriend: {
+    backgroundColor: 'gray',
+    padding: 8,
+    marginHorizontal: 8,
+  },
+  leftMargin: {
+    marginLeft: 5,
+  },
+  rightMargin: {
+    marginRight: 5,
   },
 });
 
