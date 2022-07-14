@@ -12,9 +12,9 @@ const dummyData = [
     hostId: '김개똥',
     confirmed: false,
     joinersId: [
-      {name: '김철수', confirmed: false},
-      {name: '김영희', confirmed: false},
-      {name: '박찬솔', confirmed: false},
+      {name: '김철수', confirmed: true},
+      {name: '김영희', confirmed: true},
+      {name: '박찬솔', confirmed: true},
     ],
     chat: [
       {
