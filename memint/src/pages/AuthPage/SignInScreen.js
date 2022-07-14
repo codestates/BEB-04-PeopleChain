@@ -10,19 +10,18 @@ import {
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import BasicButton from '../../components/common/BasicButton';
-import BorderedInput from '../../components/SignInComponents/BorderedInput';
-import OauthButton from '../../components/SignInComponents/OauthButton';
-import SignForm from '../../components/SignInComponents/SignForm';
-import SignButtons from '../../components/SignInComponents/SignButtons';
+import BorderedInput from '../../components/AuthComponents/BorderedInput';
+import OauthButton from '../../components/AuthComponents/OauthButton';
+import SignForm from '../../components/AuthComponents/SignForm';
+import SignButtons from '../../components/AuthComponents/SignButtons';
 
-const SignInScreen = () => {
+const SignInScreen = ({navigation}) => {
   const [form, setForm] = useState({
     email: '',
     password: '',
     confirmPassword: '',
   });
   // const {isSignup} = route.params || {};
-  const passwordRef = useRef();
 
   const createChangeTextHandler = name => value => {
     setForm({...form, [name]: value});
@@ -30,6 +29,7 @@ const SignInScreen = () => {
 
   const onSubmit = () => {
     Keyboard.dismiss();
+    navigation.navigate('VerifyMobile');
     console.log(form);
   };
 
