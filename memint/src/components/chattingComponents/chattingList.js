@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import {
   Text,
   StyleSheet,
@@ -7,12 +7,14 @@ import {
   FlatList,
   Image,
 } from 'react-native';
+import ChatContext from './context/chatContext';
 
-function ChattingList({chattings, navigation}) {
+function ChattingList({navigation}) {
+  const {chatLog} = useContext(ChatContext);
   return (
     <FlatList
       ItemSeparatorComponent={() => <View style={styles.separator} />}
-      data={chattings}
+      data={chatLog}
       renderItem={({item}) => <MetaData item={item} navigation={navigation} />}
     />
   );
@@ -27,10 +29,10 @@ function MetaData({item, navigation}) {
         <View style={styles.chatInfo}>
           <View>
             <Text style={styles.titleText}>{item.title}</Text>
-            <Text>마지막 채팅 내용</Text>
+            <Text>{item.chat[item.chat.length - 1].body}</Text>
           </View>
           <View style={{justifyContent: 'center'}}>
-            <Text>마지막 채팅 날짜</Text>
+            <Text>{item.chat[item.chat.length - 1].createdAt}</Text>
           </View>
         </View>
       </View>

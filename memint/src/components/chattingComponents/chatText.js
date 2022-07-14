@@ -1,40 +1,36 @@
-import React, {useEffect, useState} from 'react';
-import {
-  Text,
-  StyleSheet,
-  View,
-  ScrollView,
-  SafeAreaView,
-  FlatList,
-} from 'react-native';
+import React, {useState} from 'react';
+import {Text, StyleSheet, View, FlatList, TouchableOpacity} from 'react-native';
+import AddChat from './addChat';
 
-function ChatText({chat}) {
-  // const chats = chat.map(item => {
-  //   return <NotMyChat item={item} />;
-  // });
+function ChatText({chat, setModalVisible, roomInfo}) {
+  const user = '김영희';
+  const [chats, setChats] = useState(chat);
   return (
-    <View>
+    <View style={roomInfo ? {flex: 1, opacity: 0.8} : {flex: 1}}>
       <FlatList
         contentContainerStyle={{flexGrow: 1, justifyContent: 'flex-end'}}
         style={styles.container}
-        data={chat}
+        data={chats}
         renderItem={({item}) =>
-          item.sender === '김삼묵' ? (
+          item.sender === user ? (
             <MyChat item={item} />
           ) : (
-            <NotMyChat item={item} />
+            <NotMyChat item={item} setModalVisible={setModalVisible} />
           )
         }
       />
-      {/* {chats} */}
+      <AddChat chats={chats} setChats={setChats} />
     </View>
   );
 }
 
-function NotMyChat({item}) {
+function NotMyChat({item, setModalVisible}) {
   return (
     <View style={styles.messageWrapper}>
-      <View style={styles.image} />
+      {/* 클릭할 시 유저 정보를 열겠냐고 물어보는 모달 창 띄우는 값 true로 설정 */}
+      <TouchableOpacity activeOpacity={1}>
+        <View style={styles.image} />
+      </TouchableOpacity>
       <View style={styles.textWrapper}>
         <Text style={styles.senderName}>{item.sender}</Text>
         <View style={styles.messageBody}>
@@ -72,7 +68,6 @@ function MyChat({item}) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'blue',
-    height: '85%',
   },
   messageWrapper: {
     flexDirection: 'row',

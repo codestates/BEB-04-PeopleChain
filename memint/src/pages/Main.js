@@ -11,7 +11,6 @@ import AlarmPage from './AlarmPage/AlarmPage';
 
 import MyPage from './MyPage/MyPage';
 import ChattingListPage from './ChattingPage/ChattingListPage';
-import ChattingRoom from './ChattingPage/ChattingRoom';
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
