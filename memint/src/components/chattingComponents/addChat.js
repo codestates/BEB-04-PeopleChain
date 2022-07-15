@@ -5,7 +5,7 @@ import ChatContext from './context/chatContext';
 
 // props로 채팅방의 아이디를 받아온다.
 function AddChat({chats, setChats}) {
-  const user = '김성현';
+  const user = '김영희';
   // useContext로 전체 chatLog와 변경할 수 있는 state를 받아온다.
   // const {chatLog, setChatLog} = useContext(ChatContext);
 

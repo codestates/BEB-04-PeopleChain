@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Image} from 'react-native';
 import BasicButton from '../common/BasicButton';
+const crown = require('../../pages/ChattingPage/dummydata/images/crown.png');
 
 function RoomInfo({
   chatInfo,
@@ -49,17 +50,14 @@ function RoomInfo({
               ? 'disable'
               : 'basic'
           }
-          onPress={() =>
-            // 모달 창 띄워서 정말 confirm할건지 확인하는 작업 추가해야함
+          onPress={() => {
             {
-              {
-                user === host ? setIsHost(true) : setIsHost(false);
-                setModalVisible(true);
-              }
-              // setIsRoomConfirmed(false);
-              // setConfirmed(true);
+              user === host ? setIsHost(true) : setIsHost(false);
+              setModalVisible(true);
             }
-          }
+            // setIsRoomConfirmed(false);
+            // setConfirmed(true);
+          }}
         />
         <Text style={styles.hilightText}>미팅 참여자</Text>
         <Host person={chatInfo.hostId} confirmed={confirmed} />
@@ -74,6 +72,13 @@ function Host({person}) {
     <View style={styles.person}>
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
         <View style={styles.personImage} />
+        <View style={{position: 'absolute', height: 95}}>
+          <Image
+            source={crown}
+            style={{width: 40, height: 40}}
+            resizeMode="contain"
+          />
+        </View>
         <Text style={styles.personName}>{person}</Text>
       </View>
     </View>
@@ -132,6 +137,7 @@ const styles = StyleSheet.create({
     width: 60,
     borderRadius: 30,
     backgroundColor: 'lightgray',
+    marginLeft: 10,
   },
   personName: {
     fontSize: 17,

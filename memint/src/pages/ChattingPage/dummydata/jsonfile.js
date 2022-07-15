@@ -13,7 +13,7 @@ const dummyData = [
     confirmed: false,
     joinersId: [
       {name: '김철수', confirmed: true},
-      {name: '김영희', confirmed: true},
+      {name: '김영희', confirmed: false},
       {name: '박찬솔', confirmed: true},
     ],
     chat: [

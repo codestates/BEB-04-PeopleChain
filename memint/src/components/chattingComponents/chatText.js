@@ -1,10 +1,14 @@
 import React, {useState} from 'react';
 import {Text, StyleSheet, View, FlatList, TouchableOpacity} from 'react-native';
 import AddChat from './addChat';
+import UserInfoModal from '../common/UserInfoModal';
 
-function ChatText({chat, setModalVisible, roomInfo}) {
+function ChatText({chat, roomInfo}) {
   const user = '김영희';
   const [chats, setChats] = useState(chat);
+  const [userInfoModalVisible, setUserInfoModalVisible] = useState(false);
+  const [userInfo, setUserInfo] = useState('');
+
   return (
     <View style={roomInfo ? {flex: 1, opacity: 0.8} : {flex: 1}}>
       <FlatList
@@ -15,20 +19,37 @@ function ChatText({chat, setModalVisible, roomInfo}) {
           item.sender === user ? (
             <MyChat item={item} />
           ) : (
-            <NotMyChat item={item} setModalVisible={setModalVisible} />
+            <NotMyChat
+              item={item}
+              setUserInfoModalVisible={setUserInfoModalVisible}
+              setUserInfo={setUserInfo}
+            />
           )
         }
+      />
+      <UserInfoModal
+        userInfo={userInfo}
+        nButtonText="아니오"
+        pButtonText="네"
+        userInfoModalVisible={userInfoModalVisible}
+        setUserInfoModalVisible={setUserInfoModalVisible}
+        pFunction={() => {}}
       />
       <AddChat chats={chats} setChats={setChats} />
     </View>
   );
 }
 
-function NotMyChat({item, setModalVisible}) {
+function NotMyChat({item, setUserInfoModalVisible, setUserInfo}) {
   return (
     <View style={styles.messageWrapper}>
       {/* 클릭할 시 유저 정보를 열겠냐고 물어보는 모달 창 띄우는 값 true로 설정 */}
-      <TouchableOpacity activeOpacity={1}>
+      <TouchableOpacity
+        activeOpacity={1}
+        onPress={() => {
+          setUserInfoModalVisible(true);
+          setUserInfo(item.sender);
+        }}>
         <View style={styles.image} />
       </TouchableOpacity>
       <View style={styles.textWrapper}>
@@ -50,9 +71,9 @@ function MyChat({item}) {
   return (
     <View style={styles.MymessageWrapper}>
       <View style={styles.image} />
-      <View style={styles.textWrapper}>
+      <View style={[styles.textWrapper, {alignItems: 'flex-end'}]}>
         <Text style={styles.senderName}>{item.sender}</Text>
-        <View style={styles.messageBody}>
+        <View style={[styles.messageBody, {backgroundColor: 'lightyellow'}]}>
           <Text style={{padding: 3}}>{item.body}</Text>
         </View>
       </View>
@@ -67,26 +88,23 @@ function MyChat({item}) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'blue',
+    backgroundColor: 'lightblue',
   },
   messageWrapper: {
     flexDirection: 'row',
-    backgroundColor: 'pink',
     width: '60%',
-    // height: 'auto',
-    borderColor: 'black',
-    borderWidth: 1,
+    marginBottom: 10,
   },
   image: {
-    margin: 10,
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: 'green',
+    backgroundColor: 'gray',
+    marginRight: 7,
+    marginLeft: 7,
   },
   textWrapper: {
     justifyContent: 'center',
-    backgroundColor: 'red',
   },
   senderName: {
     marginTop: 10,
@@ -97,22 +115,20 @@ const styles = StyleSheet.create({
   messageBody: {
     backgroundColor: 'white',
     borderRadius: 5,
-    margin: 4,
+    padding: 3,
     width: 'auto',
     height: 'auto',
   },
   date: {
-    backgroundColor: 'purple',
     justifyContent: 'flex-end',
+    marginRight: 7,
+    marginLeft: 7,
   },
   MymessageWrapper: {
     flexDirection: 'row-reverse',
-    backgroundColor: 'pink',
     width: '60%',
     marginLeft: 'auto',
-    // height: 'auto',
-    borderColor: 'black',
-    borderWidth: 1,
+    marginBottom: 10,
   },
 });
 
