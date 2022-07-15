@@ -37,7 +37,6 @@ function BasicButton({
   onPress,
 }) {
   const [marginTop, marginRight, marginBottom, marginLeft] = margin;
-  console.log(marginTop, marginBottom);
   return (
     <TouchableOpacity onPress={onPress}>
       <View
