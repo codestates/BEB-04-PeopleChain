@@ -2,36 +2,75 @@ import React from 'react';
 import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 
 /*
+
   BasicButton 사용법
 
   props
   text => 버튼 내용
-  size => "small", "medium", "large", "wide"
-  variant => "basic", "disable"
+  width =>
+  height =>
+  backgroundcolor =>
+  margin => [top, right, bottom, left]
+  //지정안하면 basic으로
   onPress => 실행 함수
 
   Ex)
-  <BasicButton text="버튼" size="medium" variant="basic" onPress={click} />
+    <BasicButton
+    text="버튼"
+    width={100}
+    height={40}
+    textSize={14}
+    backgroundColor="blue"
+    margin={[10, 3, 3, 3]}
+    onPress={onPress}
+  />
+
 */
 
-function BasicButton({text, variant, size, onPress}) {
-  const sizeStyle = SIZE[size];
-  const sizeTextStyle = TEXTSIZE[size];
-  const variantStyle = VARIANT[variant];
+function BasicButton({
+  text,
+  backgroundColor,
+  width,
+  height,
+  textSize,
+  margin,
+  onPress,
+}) {
+  const [marginTop, marginRight, marginBottom, marginLeft] = margin;
+  console.log(marginTop, marginBottom);
   return (
-    <TouchableOpacity activeOpacity={0.5} onPress={onPress}>
-      <View style={[styles.button, sizeStyle, variantStyle]}>
-        <Text style={[styles.buttonText, sizeTextStyle]}>{text}</Text>
+    <TouchableOpacity onPress={onPress}>
+      <View
+        style={[
+          styles.button,
+          {
+            width: width,
+            height: height,
+            backgroundColor: backgroundColor,
+            marginTop: marginTop,
+            marginRight: marginRight,
+            marginBottom: marginBottom,
+            marginLeft: marginLeft,
+          },
+        ]}>
+        <Text style={[styles.buttonText, {fontSize: textSize}]}>{text}</Text>
       </View>
     </TouchableOpacity>
   );
 }
 
+BasicButton.defaultProps = {
+  width: 100,
+  height: 40,
+  backgroundColor: '#007aff',
+  text: '버튼',
+  textSize: 14,
+  margin: [5, 5, 5, 5],
+  onPress: () => {},
+};
+
 const styles = StyleSheet.create({
   button: {
-    width: 100,
-    height: 40,
-    backgroundColor: '#007aff',
     justifyContent: 'center',
     borderRadius: 5,
     margin: 5,
@@ -42,53 +81,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-
-const TEXTSIZE = {
-  xSmall: {
-    fontSize: 11,
-  },
-  small: {
-    fontSize: 13,
-  },
-  medium: {
-    fontSize: 15,
-  },
-  large: {
-    fontSize: 17,
-  },
-  wide: {
-    fontSize: 17,
-  },
-};
-
-const SIZE = StyleSheet.create({
-  xSmall: {
-    width: 50,
-    height: 25,
-  },
-  small: {
-    width: 70,
-    height: 35,
-  },
-  medium: {
-    width: 100,
-    height: 40,
-  },
-  large: {
-    width: 200,
-    height: 40,
-  },
-  wide: {
-    width: 300,
-    height: 40,
-  },
-});
-
-const VARIANT = {
-  basic: styles.basic,
-  disable: {
-    backgroundColor: '#d5d5d6',
-  },
-};
 
 export default BasicButton;

@@ -40,21 +40,24 @@ function DoubleModal({
               {nFunction !== undefined ? (
                 <BasicButton
                   text={nButtonText}
-                  size="small"
-                  variant="disable"
+                  width={80}
+                  height={40}
+                  backgroundColor="gray"
                   onPress={nFunction}
                 />
               ) : (
                 <BasicButton
                   text={nButtonText}
-                  size="small"
-                  variant="disable"
+                  width={80}
+                  height={40}
+                  backgroundColor="gray"
                   onPress={() => setModalVisible(!modalVisible)}
                 />
               )}
               <BasicButton
                 text={pButtonText}
-                size="small"
+                width={80}
+                height={40}
                 onPress={pFunction}
               />
             </View>
@@ -64,6 +67,15 @@ function DoubleModal({
     </View>
   );
 }
+
+DoubleModal.defaultProps = {
+  text: '모달?',
+  //body={<Text>정말로?</Text>}
+  nButtonText: '아니요',
+  pButtonText: '네',
+  pFunction: () => {},
+  nFunction: () => {},
+};
 const styles = StyleSheet.create({
   centeredView: {
     flex: 1,

@@ -8,7 +8,7 @@ import {
   ScrollView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import MeetingElement from '../../components/meetingComponent/MeetingElement';
+import MeetingElement from '../../components/meetingComponents/MeetingElement';
 import WalletButton from '../../components/common/WalletButton';
 import RNPickerSelect from 'react-native-picker-select';
 import DoubleModal from '../../components/common/DoubleModal';

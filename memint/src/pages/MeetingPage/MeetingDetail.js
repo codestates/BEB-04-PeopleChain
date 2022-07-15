@@ -72,7 +72,9 @@ function MeetingDetail({route}) {
         </View>
         <View style={styles.buttonRow}>
           <BasicButton
-            size="wide"
+            width={300}
+            height={50}
+            textSize={17}
             text="미팅 신청 보내기"
             onPress={() => {
               setModalVisible_1(true);

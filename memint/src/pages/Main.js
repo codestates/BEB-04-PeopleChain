@@ -11,11 +11,13 @@ import AlarmPage from './AlarmPage/AlarmPage';
 
 import MyPage from './MyPage/MyPage';
 import ChattingListPage from './ChattingPage/ChattingListPage';
+import ChattingRoom from './ChattingPage/ChattingRoom';
+import AlarmDetail from './AlarmPage/AlarmDetail';
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-function Main({navigation}) {
+function Main() {
   return (
     <>
       <Tab.Navigator
@@ -118,7 +120,16 @@ const ChattingScreen = () => {
 const AlarmScreen = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="AlarmPage" component={AlarmPage} />
+      <Stack.Screen
+        name="AlarmPage"
+        component={AlarmPage}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="AlarmDetail"
+        component={AlarmDetail}
+        options={{headerShown: false}}
+      />
     </Stack.Navigator>
   );
 };

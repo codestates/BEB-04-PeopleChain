@@ -34,7 +34,12 @@ function SingleModal({
           <View style={styles.modalView}>
             <Text style={styles.modalText}>{text}</Text>
             {body}
-            <BasicButton text={buttonText} size="medium" onPress={pFunction} />
+            <BasicButton
+              text={buttonText}
+              width={100}
+              height={40}
+              onPress={pFunction}
+            />
           </View>
         </View>
       </Modal>
