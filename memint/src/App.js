@@ -31,8 +31,8 @@ function App() {
               component={ChattingRoom}
               options={{headerShown: false}}
             />
-            <Toast />
           </Stack.Navigator>
+          <Toast />
         </ChatContextProvider>
       </ToastProvider>
     </NavigationContainer>

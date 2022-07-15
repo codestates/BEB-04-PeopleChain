@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Modal, StyleSheet, Text} from 'react-native';
-import BasicButton from './BasicButton';
+import BasicButton from '../BasicButton';
 
 /*
 사용할 컴포넌트에서 state 사용이 필요함.
