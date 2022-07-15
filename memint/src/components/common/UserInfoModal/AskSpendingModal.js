@@ -16,8 +16,6 @@ import BasicButton from '../BasicButton';
  */
 
 function AskSpendingModal({
-  text,
-  body,
   pButtonText,
   nButtonText,
   askSpendingModalVisible,
