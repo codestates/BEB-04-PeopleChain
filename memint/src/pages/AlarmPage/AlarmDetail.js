@@ -1,3 +1,4 @@
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {Text, View, SafeAreaView, StyleSheet, Image} from 'react-native';
 import BackButton from '../../components/common/BackButton';
@@ -5,12 +6,15 @@ import BasicButton from '../../components/common/BasicButton';
 import {useToast} from '../../utils/hooks/useToast';
 
 function AlarmDetail() {
+  const navigation = useNavigation();
   const {showToast} = useToast();
   const handleAccept = () => {
     showToast('basic', '신청이 수락되었습니다');
+    navigation.pop();
   };
   const handleDeny = () => {
     showToast('basic', '신청이 거절되었습니다');
+    navigation.pop();
   };
   return (
     <SafeAreaView style={styles.screen}>
@@ -24,23 +28,25 @@ function AlarmDetail() {
           <View style={styles.userInfo}>
             <View style={styles.userInfoElement}>
               <Text style={styles.key}>닉네임</Text>
-              <Text style={styles.value}>username</Text>
+              <Text style={styles.value}>Joiner1</Text>
             </View>
             <View style={styles.userInfoElement}>
               <Text style={styles.key}>나이</Text>
-              <Text style={styles.value}>age</Text>
+              <Text style={styles.value}>30 초</Text>
             </View>
             <View style={styles.userInfoElement}>
               <Text style={styles.key}>성별</Text>
-              <Text style={styles.value}>username</Text>
+              <Text style={styles.value}>female</Text>
             </View>
           </View>
         </View>
         <Text style={styles.key}>메시지</Text>
-        <Text style={styles.message}>message</Text>
+        <Text style={styles.message}>친구랑 가고 싶어요!</Text>
         <View>
           <Text style={styles.key}>미팅 정보</Text>
-          <Text style={styles.meetingTitle}>title</Text>
+          <Text style={styles.meetingTitle}>
+            금요일 밤 재미있게 노실 분들 구해요!
+          </Text>
           <View style={styles.meetingInfo}>
             <Text style={styles.meetingElement}>지역</Text>
             <View style={styles.bar} />
@@ -141,10 +147,12 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 25,
     fontSize: 18,
+    fontWeight: 'bold',
   },
   meetingTitle: {
     marginTop: 10,
     fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 
