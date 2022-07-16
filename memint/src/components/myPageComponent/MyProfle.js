@@ -96,22 +96,7 @@ const styles = StyleSheet.create({
     left: 95,
     position: 'relative',
   },
-  myMeMin: {
-    width: 60,
-    height: 60,
-    borderRadius: 100,
-    top: 0,
-    left: 40,
-    marginVertical: '3%',
-    position: 'relative',
-  },
-  nft: {
-    width: 50,
-    height: 50,
-    borderRadius: 100,
-    marginHorizontal: '1%',
-    marginBottom: '3%',
-  },
+
   userInfos: {
     marginVertical: '10%',
     flex: 0.6,

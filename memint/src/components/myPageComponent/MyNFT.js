@@ -10,11 +10,14 @@ import {
 import BasicButton from '../../components/common/BasicButton';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import SingleModal from '../../components/common/SingleModal';
+import SpendingModal from '../common/UserInfoModal/SpendingModal';
+import {useToast} from '../../utils/hooks/useToast';
 
 function MyNFT({User}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [showNFT, setShowNFT] = useState(false);
-
+  const [spendingModalVisible, setSpendingModalVisible] = useState(false);
+  const {showToast} = useToast();
   return (
     <>
       <View style={{flexDirection: 'row'}}>
@@ -39,7 +42,22 @@ function MyNFT({User}) {
             buttonText="민팅하기"
             modalVisible={modalVisible}
             setModalVisible={setModalVisible}
-            pFunction={setModalVisible}
+            pFunction={() => {
+              setModalVisible(false);
+              setSpendingModalVisible(true);
+            }}
+          />
+
+          <SpendingModal
+            body={<Text>정말로?</Text>}
+            nButtonText="아니요"
+            pButtonText="네"
+            spendingModalVisible={spendingModalVisible}
+            setSpendingModalVisible={setSpendingModalVisible}
+            pFunction={() => {
+              setSpendingModalVisible(false);
+              showToast('success', '민팅이 되었습니다');
+            }}
           />
         </View>
       </View>
@@ -47,8 +65,9 @@ function MyNFT({User}) {
         <Text style={styles.attribute}>나의 NFT</Text>
         <Icon
           name="arrow-drop-down"
-          size={30}
+          size={40}
           onPress={() => setShowNFT(!showNFT)}
+          style={[styles.dropDown, showNFT ? styles.rotate180 : '']}
         />
       </View>
 
@@ -63,10 +82,6 @@ function MyNFT({User}) {
   );
 }
 const styles = StyleSheet.create({
-  edit: {
-    top: 20,
-    left: -10,
-  },
   container: {
     flexDirection: 'row',
   },
@@ -75,22 +90,7 @@ const styles = StyleSheet.create({
     marginHorizontal: '5%',
     marginVertical: '0%',
   },
-  nftImage: {
-    width: 120,
-    height: 120,
-    borderRadius: 100,
-    top: 35,
-    left: 15,
-    position: 'relative',
-  },
-  profileImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 100,
-    top: 0,
-    left: 95,
-    position: 'relative',
-  },
+
   myMeMin: {
     width: 60,
     height: 60,
@@ -107,16 +107,7 @@ const styles = StyleSheet.create({
     marginHorizontal: '1%',
     marginBottom: '3%',
   },
-  userInfos: {
-    marginVertical: '10%',
-    flex: 0.6,
-  },
-  userInfo: {
-    fontSize: 17,
-    fontWeight: '500',
-    marginHorizontal: '5%',
-    marginVertical: '5%',
-  },
+
   attribute: {
     fontSize: 20,
     fontWeight: '500',
@@ -129,26 +120,11 @@ const styles = StyleSheet.create({
     left: 60,
     paddingBottom: 0,
   },
-
-  tag: {
-    paddingHorizontal: '2%',
-    paddingVertical: 6,
-    borderRadius: 5,
-    backgroundColor: 'white',
-    alignSelf: 'flex-start',
-    marginHorizontal: '1%',
-    marginVertical: '2%',
-    marginBottom: 6,
+  dropDown: {
+    marginRight: 25,
   },
-  tagContainer: {
-    flexDirection: 'row',
-    marginHorizontal: '10%',
-    flexWrap: 'wrap',
-  },
-  tagFont: {
-    textAlign: 'center',
-    fontWeight: '400',
-    fontSize: 13,
+  rotate180: {
+    transform: [{rotate: '180deg'}],
   },
 });
 

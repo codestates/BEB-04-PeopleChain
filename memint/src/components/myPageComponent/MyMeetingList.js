@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Text, StyleSheet, View, TouchableOpacity, FlatList} from 'react-native';
-
+import {useToast} from '../../utils/hooks/useToast';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import DoubleModal from '../../components/common/DoubleModal';
 
@@ -18,6 +18,7 @@ function MyMeetingList({List}) {
 function MyMeetings({item}) {
   const [deleteModal, setDeleteModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
+  const {showToast} = useToast();
   return (
     <>
       <View style={styles.meetingCard}>
@@ -61,8 +62,9 @@ function MyMeetings({item}) {
             pButtonText="아니오"
             modalVisible={deleteModal}
             setModalVisible={setDeleteModal}
-            pFunction={() => {
-              setDeleteModal;
+            nFunction={() => {
+              setDeleteModal(false);
+              showToast('success', '삭제되었습니다.');
             }}
           />
           <DoubleModal
