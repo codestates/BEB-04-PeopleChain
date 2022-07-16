@@ -1091,6 +1091,11 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
+"@react-native-community/checkbox@^0.5.12":
+  "integrity" "sha512-Dd3eiAW7AkpRgndwKGdgQ6nNgEmZlVD8+KAOBqwjuZQ/M67BThXJ9Ni+ydpPjNm4e28KXmIILfkvhcDt0ZoFTQ=="
+  "resolved" "https://registry.npmjs.org/@react-native-community/checkbox/-/checkbox-0.5.12.tgz"
+  "version" "0.5.12"
+
 "@react-native-community/cli-clean@^8.0.0":
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/@react-native-community/cli-clean/-/cli-clean-8.0.0.tgz#c8fc6e8d6a84c90ca0839d48080a87ad455613db"
@@ -5784,8 +5789,12 @@ react-native@^0.69.1:
     "prop-types" "^15.7.2"
     "yargs" "^16.1.1"
 
+<<<<<<< HEAD
 >>>>>>> bd54e77 (feat: implement signupUI)
 "react-native@*", "react-native@>=0.42.0", "react-native@>=0.65.0", "react-native@0.69.1":
+=======
+"react-native@*", "react-native@>= 0.62", "react-native@>=0.42.0", "react-native@>=0.65.0", "react-native@0.69.1":
+>>>>>>> f5388bd (feat:implemented Find ID/PW UI)
   "integrity" "sha512-585NmzSuYUfday8YsfqgreFAZbXRI/kxKsiuaShwGHgkwdtmE5qA7WfGItgxZBOZD6g/Hm1YBUqSwIm07tPa6A=="
   "resolved" "https://registry.npmjs.org/react-native/-/react-native-0.69.1.tgz"
   "version" "0.69.1"
