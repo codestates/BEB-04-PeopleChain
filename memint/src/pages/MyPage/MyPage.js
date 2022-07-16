@@ -1,8 +1,10 @@
 import React, {useState} from 'react';
-import {SafeAreaView, ScrollView} from 'react-native';
+import {SafeAreaView, ScrollView, View, StyleSheet} from 'react-native';
+import BasicButton from '../../components/common/BasicButton';
+import MyMeetingList from '../../components/myPageComponent/MyMeetingList';
+import ParticipatedMeetingList from '../../components/myPageComponent/ParticipatedMeetingList';
 
 import Profile from './Profile';
-import MyMeeting from './MyMeeting';
 
 function MyPage() {
   const dummyUser = {
@@ -64,14 +66,44 @@ function MyPage() {
     ],
   };
 
+  const [meetingRoom, setMeetingRoom] = useState(0);
+  const room = [{name: '내가 만든 방'}, {name: '참여 중인 방'}];
+  const selecteMenuHandler = index => {
+    setMeetingRoom(index);
+  };
   return (
     <SafeAreaView>
       <ScrollView>
         <Profile User={dummyUser} />
-        <MyMeeting User={dummyUser} />
+        {/* 탭 선택 버튼 */}
+        <View style={styles.meetingButton}>
+          {room.map((ele, index) => {
+            return (
+              <BasicButton
+                text={ele.name}
+                size="medium"
+                variant={meetingRoom === index ? 'basic' : 'disable'}
+                onPress={() => selecteMenuHandler(index)}
+              />
+            );
+          })}
+        </View>
+        {meetingRoom === 0 ? (
+          <MyMeetingList List={dummyUser.myMeeting} />
+        ) : (
+          <ParticipatedMeetingList List={dummyUser.participatedMeeting} />
+        )}
       </ScrollView>
     </SafeAreaView>
   );
 }
 
+const styles = StyleSheet.create({
+  meetingButton: {
+    marginVertical: '5%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
 export default MyPage;

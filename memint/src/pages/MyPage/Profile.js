@@ -17,6 +17,9 @@ function Profile({User}) {
 
   return (
     <SafeAreaView>
+      <View style={{alignItems: 'flex-end'}}>
+        <Icon name="edit" size={30} style={styles.edit} />
+      </View>
       <View style={styles.container}>
         <View style={styles.images}>
           <Image
@@ -108,21 +111,24 @@ function Profile({User}) {
   );
 }
 const styles = StyleSheet.create({
+  edit: {
+    top: 20,
+    left: -10,
+  },
   container: {
     flexDirection: 'row',
-    padding: 2,
   },
   images: {
     flex: 0.4,
     marginHorizontal: '5%',
-    marginVertical: '2%',
+    marginVertical: '0%',
   },
   nftImage: {
-    width: 100,
-    height: 100,
+    width: 120,
+    height: 120,
     borderRadius: 100,
     top: 35,
-    left: 25,
+    left: 15,
     position: 'relative',
   },
   profileImage: {
