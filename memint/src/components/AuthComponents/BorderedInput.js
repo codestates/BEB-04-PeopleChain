@@ -27,7 +27,7 @@ const SIZE = StyleSheet.create({
     height: 40,
   },
   wide: {
-    width: 300,
+    width: 320,
     height: 40,
   },
 });

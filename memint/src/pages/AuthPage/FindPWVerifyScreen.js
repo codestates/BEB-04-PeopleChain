@@ -13,13 +13,14 @@ import BasicButton from '../../components/common/BasicButton';
 import BorderedInput from '../../components/AuthComponents/BorderedInput';
 import BackButton from '../../components/common/BackButton';
 
-const VerifyMobileScreen = ({navigation}) => {
+const FindPWVerifyScreen = ({navigation}) => {
   const [form, setForm] = useState({
     mobileNumber: '',
     verficationCode: '',
+    email: '',
   });
   // const {isSignup} = route.params || {};
-  const passwordRef = useRef();
+  const verificationCodeRef = useRef();
 
   const createChangeTextHandler = name => value => {
     setForm({...form, [name]: value});
@@ -30,7 +31,7 @@ const VerifyMobileScreen = ({navigation}) => {
     console.log(form);
   };
   const goToNextPage = () => {
-    navigation.navigate('SignUpUserInfo');
+    navigation.navigate('SetNewPW');
   };
 
   return (
@@ -41,21 +42,24 @@ const VerifyMobileScreen = ({navigation}) => {
         <BackButton />
         <View style={styles.fullscreenSub}>
           <Text style={styles.text}>MeMint</Text>
-          <Text style={styles.contentText}>전화번호를 인증해주세요</Text>
-          <Text style={styles.contentTextSub}>
-            안전한 미팅주선을 위해 사용됩니다
+          <Text style={styles.contentText}>
+            회원가입 시 사용하신 전화번호를 입력해주세요.
           </Text>
+          {/* <Text style={styles.contentTextSub}>
+            안전한 미팅주선을 위해 사용됩니다
+          </Text> */}
           <View style={styles.form}>
             <BorderedInput
               size="large"
               placeholder="핸드폰 번호를 입력해주세요"
               hasMarginBottom
-              value={form.email}
+              value={form.mobileNumber}
               onChangeText={createChangeTextHandler('mobileNumber')}
               autoCapitalize="none"
               autoCorrect={false}
+              keyboardType="numeric"
               returnKeyType={'done'}
-              onSubmitEditing={() => passwordRef.current.focus()}
+              onSubmitEditing={() => verificationCodeRef.current.focus()}
             />
             <BasicButton
               style={styles.button}
@@ -70,11 +74,10 @@ const VerifyMobileScreen = ({navigation}) => {
             <BorderedInput
               size="large"
               placeholder="인증번호를 입력해주세요"
-              value={form.password}
+              value={form.verificationCode}
               onChangeText={createChangeTextHandler('verficationCode')}
               secureTextEntry
-              ref={passwordRef}
-              keyboardType="numeric"
+              ref={verificationCodeRef}
               returnKeyType={'done'}
               onSubmitEditing={() => {
                 onSubmit();
@@ -86,6 +89,23 @@ const VerifyMobileScreen = ({navigation}) => {
               text="인증"
               hasMarginBottom
               onPress={onSubmit}
+            />
+          </View>
+          <Text style={styles.contentTextVerify}>이메일을 입력해주세요</Text>
+          <View style={styles.secondForm} hasMarginBottom>
+            <BorderedInput
+              size="wide"
+              placeholder="이메일을 입력해주세요"
+              value={form.email}
+              autoCapitalize="none"
+              autoCorrect={false}
+              autoCompleteType="email"
+              keyboardType="email-address"
+              onChangeText={createChangeTextHandler('email')}
+              returnKeyType={'done'}
+              onSubmitEditing={() => {
+                onSubmit();
+              }}
             />
           </View>
           <BasicButton
@@ -119,7 +139,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   contentText: {
-    fontSize: 24,
+    fontSize: 18,
     marginTop: 64,
     // fontWeight: 'bold',
   },
@@ -134,7 +154,7 @@ const styles = StyleSheet.create({
     // fontWeight: 'bold',
   },
   form: {
-    marginTop: 32,
+    marginTop: 20,
     width: '100%',
     paddingHorizontal: 32,
     flexDirection: 'row',
@@ -153,4 +173,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default VerifyMobileScreen;
+export default FindPWVerifyScreen;

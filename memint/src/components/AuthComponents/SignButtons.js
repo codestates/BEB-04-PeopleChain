@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import BasicButton from '../common/BasicButton';
 
-const SignButtons = ({isSignup, onSubmit}) => {
+const SignButtons = ({isSignup, onSubmitSignIn, onSubmitSignUp}) => {
   return (
     <View style={styles.buttons}>
       <BasicButton
@@ -10,14 +10,14 @@ const SignButtons = ({isSignup, onSubmit}) => {
         size="medium"
         text="로그인"
         hasMarginBottom
-        onPress={onSubmit}
+        onPress={onSubmitSignIn}
       />
       <BasicButton
         style={styles.button}
         size="medium"
         variant="disable"
         text="회원가입"
-        onPress={onSubmit}
+        onPress={onSubmitSignUp}
       />
     </View>
   );

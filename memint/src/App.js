@@ -9,6 +9,13 @@ import VerifyMobileScreen from './pages/AuthPage/VerifyMobileScreen';
 import SignUpUserInfoScreen from './pages/AuthPage/SignUpUserInfoScreen';
 import SignUpUserDetailScreen from './pages/AuthPage/SignUpUserDetailScreen';
 // import SplashScreen from 'react-native-splash-screen';
+import SignUpAgreementScreen from './pages/AuthPage/SignUpAgreement';
+import SignUpAlarmScreen from './pages/AuthPage/SignUpAlarmScreen';
+import FindIdVerifyMobileScreen from './pages/AuthPage/FindIdVerifyMobileScreen';
+import FindIdShowIdScreen from './pages/AuthPage/FindIdShowIdScreen';
+import FindPWVerifyScreen from './pages/AuthPage/FindPWVerifyScreen';
+import SetNewPWScreen from './pages/AuthPage/SetNewPWScreen';
+
 const Stack = createNativeStackNavigator();
 
 function App() {
@@ -50,6 +57,36 @@ function App() {
         <Stack.Screen
           name="SignUpUserDetail"
           component={SignUpUserDetailScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="SignUpAgreement"
+          component={SignUpAgreementScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="SignUpAlarm"
+          component={SignUpAlarmScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="FindIdVerifyMobile"
+          component={FindIdVerifyMobileScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="FindIdShowId"
+          component={FindIdShowIdScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="FindPWVerify"
+          component={FindPWVerifyScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="SetNewPW"
+          component={SetNewPWScreen}
           options={{headerShown: false}}
         />
         <Stack.Screen

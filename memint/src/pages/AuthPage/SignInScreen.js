@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Text,
   View,
+  TouchableOpacity,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import BasicButton from '../../components/common/BasicButton';
@@ -27,10 +28,21 @@ const SignInScreen = ({navigation}) => {
     setForm({...form, [name]: value});
   };
 
-  const onSubmit = () => {
+  const goToSignUp = () => {
     Keyboard.dismiss();
     navigation.navigate('VerifyMobile');
     console.log(form);
+  };
+  const goToMain = () => {
+    Keyboard.dismiss();
+    navigation.navigate('Main');
+    console.log(form);
+  };
+  const goToFindId = () => {
+    navigation.navigate('FindIdVerifyMobile');
+  };
+  const goToFindPW = () => {
+    navigation.navigate('FindPWVerify');
   };
 
   return (
@@ -42,15 +54,21 @@ const SignInScreen = ({navigation}) => {
         <View style={styles.form}>
           <SignForm
             // isSignup={isSignup}
-            onSubmit={onSubmit}
+            onSubmit={goToMain}
             form={form}
             createChangeTextHandler={createChangeTextHandler}
           />
 
-          <SignButtons onSubmit={onSubmit} />
+          <SignButtons onSubmitSignIn={goToMain} onSubmitSignUp={goToSignUp} />
           <View style={styles.textContainer}>
             <Text style={styles.textAsk}>이미 회원이신가요?</Text>
-            <Text style={styles.textFind}>아이디 / 비밀번호 찾기</Text>
+            {/* <Text style={styles.textFind}>아이디 / 비밀번호 찾기</Text> */}
+            <TouchableOpacity style={styles.textFind} onPress={goToFindId}>
+              <Text> 아이디 찾기</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.textFind} onPress={goToFindPW}>
+              <Text> 비밀번호 찾기</Text>
+            </TouchableOpacity>
           </View>
           <View style={styles.oauthbutton}>
             <OauthButton
