@@ -11,36 +11,12 @@ import BasicButton from '../../components/common/BasicButton';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import SingleModal from '../../components/common/SingleModal';
 
-function Profile({User}) {
+function MyNFT({User}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [showNFT, setShowNFT] = useState(false);
 
   return (
-    <SafeAreaView>
-      <View style={{alignItems: 'flex-end'}}>
-        <Icon name="edit" size={30} style={styles.edit} />
-      </View>
-      <View style={styles.container}>
-        <View style={styles.images}>
-          <Image
-            style={styles.nftImage}
-            source={{
-              uri: User.nftImage,
-            }}
-          />
-          <Image
-            style={styles.profileImage}
-            source={{
-              uri: User.profileImage,
-            }}
-          />
-        </View>
-        <View style={styles.userInfos}>
-          <Text style={styles.userInfo}>닉네임: {User.nickName}</Text>
-          <Text style={styles.userInfo}>생년월일: {User.birth}</Text>
-          <Text style={styles.userInfo}>성별: {User.gender}</Text>
-        </View>
-      </View>
+    <>
       <View style={{flexDirection: 'row'}}>
         <Text style={styles.attribute}>나의 미민이</Text>
       </View>
@@ -83,31 +59,7 @@ function Profile({User}) {
           ))}
         </View>
       ) : null}
-      <Text style={styles.attribute}>주량</Text>
-      <View style={styles.tagContainer}>
-        {User.alcoholQuantity.map(el => (
-          <View style={styles.tag}>
-            <Text style={styles.tagFont}># {el}</Text>
-          </View>
-        ))}
-      </View>
-      <Text style={styles.attribute}>선호 주류</Text>
-      <View style={styles.tagContainer}>
-        {User.alcoholType.map(el => (
-          <View style={styles.tag}>
-            <Text style={styles.tagFont}># {el}</Text>
-          </View>
-        ))}
-      </View>
-      <Text style={styles.attribute}>스타일</Text>
-      <View style={styles.tagContainer}>
-        {User.alcoholStyle.map(el => (
-          <View style={styles.tag}>
-            <Text style={styles.tagFont}># {el}</Text>
-          </View>
-        ))}
-      </View>
-    </SafeAreaView>
+    </>
   );
 }
 const styles = StyleSheet.create({
@@ -200,4 +152,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Profile;
+export default MyNFT;

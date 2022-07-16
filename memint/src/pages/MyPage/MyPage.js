@@ -3,8 +3,7 @@ import {SafeAreaView, ScrollView, View, StyleSheet} from 'react-native';
 import BasicButton from '../../components/common/BasicButton';
 import MyMeetingList from '../../components/myPageComponent/MyMeetingList';
 import ParticipatedMeetingList from '../../components/myPageComponent/ParticipatedMeetingList';
-
-import Profile from './Profile';
+import MyProfile from '../../components/myPageComponent/MyProfle';
 
 function MyPage() {
   const dummyUser = {
@@ -74,7 +73,8 @@ function MyPage() {
   return (
     <SafeAreaView>
       <ScrollView>
-        <Profile User={dummyUser} />
+        {/* 유저 프로필 */}
+        <MyProfile User={dummyUser} />
         {/* 탭 선택 버튼 */}
         <View style={styles.meetingButton}>
           {room.map((ele, index) => {
@@ -88,6 +88,7 @@ function MyPage() {
             );
           })}
         </View>
+        {/* 탭 선택에 따른 미팅 리스트 */}
         {meetingRoom === 0 ? (
           <MyMeetingList List={dummyUser.myMeeting} />
         ) : (
