@@ -29,7 +29,10 @@ const SignUpAlarmScreen = ({navigation}) => {
         </View>
         <BasicButton
           style={styles.button}
-          size="wide"
+          width={300}
+          height={40}
+          textSize={17}
+          margin={[5, 5, 5, 5]}
           text="필수알림 동의하기"
           hasMarginBottom
           onPress={goToNextPage}

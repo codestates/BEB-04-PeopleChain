@@ -197,7 +197,10 @@ const SignUpUserInfoScreen = ({navigation}) => {
           </Text>
           <BasicButton
             style={styles.button}
-            size="wide"
+            width={300}
+            height={40}
+            textSize={17}
+            margin={[5, 5, 5, 5]}
             text="다음 단계"
             hasMarginBottom
             onPress={goToNextPage}

@@ -62,7 +62,10 @@ const FindIdVerifyMobileScreen = ({navigation}) => {
             />
             <BasicButton
               style={styles.button}
-              size="small"
+              width={70}
+              height={35}
+              textSize={13}
+              margin={[5, 5, 5, 5]}
               text="인증번호받기"
               hasMarginBottom
               onPress={onSubmit}
@@ -84,7 +87,10 @@ const FindIdVerifyMobileScreen = ({navigation}) => {
             />
             <BasicButton
               style={styles.button}
-              size="small"
+              width={70}
+              height={35}
+              textSize={13}
+              margin={[5, 5, 5, 5]}
               text="인증"
               hasMarginBottom
               onPress={onSubmit}
@@ -92,7 +98,10 @@ const FindIdVerifyMobileScreen = ({navigation}) => {
           </View>
           <BasicButton
             style={styles.button}
-            size="wide"
+            width={300}
+            height={40}
+            textSize={17}
+            margin={[5, 5, 5, 5]}
             text="다음 단계"
             hasMarginBottom
             onPress={goToNextPage}

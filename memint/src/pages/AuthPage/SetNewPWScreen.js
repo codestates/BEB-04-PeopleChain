@@ -75,7 +75,10 @@ const SetNewPWScreen = ({navigation}) => {
           </View>
           <BasicButton
             style={styles.button}
-            size="wide"
+            width={300}
+            height={40}
+            textSize={17}
+            margin={[5, 5, 5, 5]}
             text="비밀번호 재설정하기"
             hasMarginBottom
             onPress={goToNextPage}

@@ -32,7 +32,10 @@ const FindIdShowIdScreen = ({navigation}) => {
           </Text>
           <BasicButton
             style={styles.button}
-            size="wide"
+            width={300}
+            height={40}
+            textSize={17}
+            margin={[5, 5, 5, 5]}
             text="로그인 하러 가기"
             hasMarginBottom
             onPress={goToSignInPage}
@@ -40,7 +43,10 @@ const FindIdShowIdScreen = ({navigation}) => {
 
           <BasicButton
             style={styles.button}
-            size="wide"
+            width={300}
+            height={40}
+            textSize={17}
+            margin={[5, 5, 5, 5]}
             text="비밀번호 변경하러 가기"
             hasMarginBottom
             onPress={goToFindPWPage}
