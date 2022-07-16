@@ -44,6 +44,9 @@ const styles = StyleSheet.create({
 });
 
 const TEXTSIZE = {
+  xSmall: {
+    fontSize: 11,
+  },
   small: {
     fontSize: 13,
   },
@@ -59,6 +62,10 @@ const TEXTSIZE = {
 };
 
 const SIZE = StyleSheet.create({
+  xSmall: {
+    width: 50,
+    height: 25,
+  },
   small: {
     width: 70,
     height: 35,
