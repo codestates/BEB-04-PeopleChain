@@ -58,8 +58,23 @@ function ParticipatedMeetings({item}) {
             <Icon name={'horizontal-rule'} size={20} style={styles.divider} />
             <Text style={styles.details}>{item.date}</Text>
             <Icon name={'horizontal-rule'} size={20} style={styles.divider} />
-            <Text style={styles.details}>
-              {item.peopleNum}:{item.peopleNum}
+            <Text
+              style={[
+                styles.details,
+                item.peopleNum === item.hostSide.gathered.length
+                  ? styles.title
+                  : '',
+              ]}>
+              {item.peopleNum}({item.hostSide.sex}):
+            </Text>
+            <Text
+              style={[
+                styles.details,
+                item.peopleNum === item.joinerSide.gathered.length
+                  ? styles.title
+                  : '',
+              ]}>
+              {item.joinerSide.gathered.length}({item.joinerSide.sex})
             </Text>
           </View>
         </View>

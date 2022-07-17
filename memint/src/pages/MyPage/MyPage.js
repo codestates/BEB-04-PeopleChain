@@ -53,6 +53,14 @@ function MyPage() {
         type: ['부어라 마셔라', '술게임 환영'],
         location: '강남',
         peopleNum: 2,
+        hostSide: {
+          sex: '남',
+          gathered: ['김개똥', '이개똥'],
+        },
+        joinerSide: {
+          sex: '여',
+          gathered: ['박와와'],
+        },
       },
       {
         name: '오빠 차 뽑았다 널 데리러 가',
@@ -60,6 +68,14 @@ function MyPage() {
         type: ['부어라 마셔라', '술게임 환영'],
         location: '송파',
         peopleNum: 2,
+        hostSide: {
+          sex: '여',
+          gathered: ['김개똥', '이개똥'],
+        },
+        joinerSide: {
+          sex: '남',
+          gathered: [],
+        },
       },
     ],
     participatedMeeting: [
@@ -72,6 +88,14 @@ function MyPage() {
         peopleNum: 2,
         hostImage: 'https://randomuser.me/api/portraits/men/23.jpg',
         status: 'pending',
+        hostSide: {
+          sex: '남',
+          gathered: ['김아무개', '이아묵'],
+        },
+        joinerSide: {
+          sex: '남',
+          gathered: ['최고야', '할로'],
+        },
       },
       {
         name: '별이 빛나는 아름다운 밤이야이야',
@@ -82,6 +106,14 @@ function MyPage() {
         peopleNum: 2,
         hostImage: 'https://randomuser.me/api/portraits/men/84.jpg',
         status: 'accepted',
+        hostSide: {
+          sex: '여',
+          gathered: ['이아무개', '안녕'],
+        },
+        joinerSide: {
+          sex: '여',
+          gathered: ['배고파'],
+        },
       },
     ],
   };

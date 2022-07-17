@@ -48,13 +48,13 @@ function MyMeetings({item}) {
               onPress={() => setEditModal(true)}>
               <Text style={styles.buttonText}>미팅 정보 수정</Text>
             </TouchableOpacity>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={{
                 ...styles.deleteButton,
               }}
               onPress={() => setDeleteModal(true)}>
               <Text style={styles.buttonText}>미팅룸 삭제</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
           <DoubleModal
             text="미팅룸 삭제 후 복구가 불가합니다. 삭제하시겠습니까?"
@@ -69,8 +69,8 @@ function MyMeetings({item}) {
           />
           <DoubleModal
             text="미팅 정보를 수정하시겠어요?"
-            nButtonText="네"
-            pButtonText="아니오"
+            nButtonText="아니오"
+            pButtonText="네"
             modalVisible={editModal}
             setModalVisible={setEditModal}
             pFunction={() => {
@@ -82,8 +82,23 @@ function MyMeetings({item}) {
             <Icon name={'horizontal-rule'} size={20} style={styles.divider} />
             <Text style={styles.details}>{item.date}</Text>
             <Icon name={'horizontal-rule'} size={20} style={styles.divider} />
-            <Text style={styles.details}>
-              {item.peopleNum}:{item.peopleNum}
+            <Text
+              style={[
+                styles.details,
+                item.peopleNum === item.hostSide.gathered.length
+                  ? styles.title
+                  : '',
+              ]}>
+              {item.peopleNum}({item.hostSide.sex}):
+            </Text>
+            <Text
+              style={[
+                styles.details,
+                item.peopleNum === item.joinerSide.gathered.length
+                  ? styles.title
+                  : '',
+              ]}>
+              {item.joinerSide.gathered.length}({item.joinerSide.sex})
             </Text>
           </View>
         </View>

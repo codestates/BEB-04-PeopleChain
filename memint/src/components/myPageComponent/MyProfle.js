@@ -1,15 +1,6 @@
 import React, {useState} from 'react';
-import {
-  Text,
-  SafeAreaView,
-  Button,
-  StyleSheet,
-  View,
-  Image,
-} from 'react-native';
-import BasicButton from '../common/BasicButton';
+import {Text, StyleSheet, View, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import SingleModal from '../common/SingleModal';
 import MyNFT from './MyNFT';
 
 function MyProfile({User}) {
@@ -31,6 +22,10 @@ function MyProfile({User}) {
             source={{
               uri: User.profileImage,
             }}
+          />
+          <Image
+            source={require('../../Images/nftBadge.png')}
+            style={styles.badge}
           />
         </View>
         <View style={styles.userInfos}>
@@ -139,6 +134,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: '400',
     fontSize: 13,
+  },
+  badge: {
+    width: 35,
+    height: 35,
+    marginRight: -20,
+    top: 28,
+    left: 15,
+    position: 'absolute',
   },
 });
 

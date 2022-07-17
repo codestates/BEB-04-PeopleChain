@@ -51,37 +51,45 @@ function MyMeMin({myMeMin}) {
             uri: myMeMin.uri,
           }}
         />
+        {myMeMin.valid ? (
+          <View style={{marginLeft: 40}}>
+            <Image
+              source={require('../../Images/nftBadge.png')}
+              style={{...styles.badge, left: 0, top: -75}}
+            />
+          </View>
+        ) : (
+          <View style={styles.mintButton}>
+            <BasicButton
+              text="민팅하기"
+              size="xSmall"
+              variant="basic"
+              onPress={() => setModalVisible(true)}
+            />
+            <SingleModal
+              text="프로필을 NFT로 민팅하시겠습니까?"
+              buttonText="민팅하기"
+              modalVisible={modalVisible}
+              setModalVisible={setModalVisible}
+              pFunction={() => {
+                setModalVisible(false);
+                setSpendingModalVisible(true);
+              }}
+            />
 
-        <View style={styles.mintButton}>
-          <BasicButton
-            text="민팅하기"
-            size="xSmall"
-            variant="basic"
-            onPress={() => setModalVisible(true)}
-          />
-          <SingleModal
-            text="프로필을 NFT로 민팅하시겠습니까?"
-            buttonText="민팅하기"
-            modalVisible={modalVisible}
-            setModalVisible={setModalVisible}
-            pFunction={() => {
-              setModalVisible(false);
-              setSpendingModalVisible(true);
-            }}
-          />
-
-          <SpendingModal
-            body={<Text>정말로?</Text>}
-            nButtonText="아니요"
-            pButtonText="네"
-            spendingModalVisible={spendingModalVisible}
-            setSpendingModalVisible={setSpendingModalVisible}
-            pFunction={() => {
-              setSpendingModalVisible(false);
-              showToast('success', '민팅이 되었습니다');
-            }}
-          />
-        </View>
+            <SpendingModal
+              body={<Text>정말로?</Text>}
+              nButtonText="아니요"
+              pButtonText="네"
+              spendingModalVisible={spendingModalVisible}
+              setSpendingModalVisible={setSpendingModalVisible}
+              pFunction={() => {
+                setSpendingModalVisible(false);
+                showToast('success', '민팅이 되었습니다');
+              }}
+            />
+          </View>
+        )}
       </View>
     </>
   );
@@ -133,6 +141,10 @@ const styles = StyleSheet.create({
     top: 0,
     left: -60,
     position: 'relative',
+  },
+  badge2: {
+    width: 20,
+    height: 20,
   },
   nft: {
     width: 50,
