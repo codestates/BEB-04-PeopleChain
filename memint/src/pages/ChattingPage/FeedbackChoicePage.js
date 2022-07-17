@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {View, Modal, Text, StyleSheet, Image} from 'react-native';
+import {
+  View,
+  Modal,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import BasicButton from '../../components/common/BasicButton';
 import {useNavigation} from '@react-navigation/native';
 import ConfirmModal from '../../components/chattingComponents/feedback/ConfirmModal';
@@ -25,7 +32,7 @@ function FeedbackChoicePage({setChoiceModalVisible, setFeedbackModalVisible}) {
         />
         <Human
           name="서상훈"
-          variant="basic"
+          color="#007aff"
           text="선택"
           setChoiceModalVisible={setChoiceModalVisible}
           setFeedbackModalVisible={setFeedbackModalVisible}
@@ -38,7 +45,6 @@ function FeedbackChoicePage({setChoiceModalVisible, setFeedbackModalVisible}) {
         <BasicButton
           text="후기 보내기"
           size="large"
-          variant="basic"
           onPress={() => {
             setConfirmModalVisible(true);
           }}
@@ -52,10 +58,10 @@ function FeedbackChoicePage({setChoiceModalVisible, setFeedbackModalVisible}) {
   );
 }
 
-function Human({name, variant, text}) {
+function Human({name, color, text}) {
   const navigation = useNavigation();
   const [style, setStyle] = useState(text);
-  const [state, setState] = useState(variant);
+  const [state, setState] = useState(color);
   return (
     <View
       style={{
@@ -69,17 +75,21 @@ function Human({name, variant, text}) {
         <Image source={person} style={{width: 40, height: 40}} />
         <Text>{name}</Text>
       </View>
-      <BasicButton
-        text={'선택'}
-        variant={variant ? state : 'disable'}
-        text={text ? style : '완료'}
-        size="medium"
+      <TouchableOpacity
         onPress={() => {
           navigation.navigate('FeedbackSendPage');
           setStyle('완료');
-          setState('disable');
-        }}
-      />
+          setState('gray');
+        }}>
+        <View
+          style={
+            color ? [styles.button, {backgroundColor: state}] : styles.button
+          }>
+          <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>
+            {text ? style : '완료'}
+          </Text>
+        </View>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -115,6 +125,14 @@ const styles = StyleSheet.create({
   backgroudDim: {
     flex: 1,
     backgroundColor: 'lightgray',
+  },
+  button: {
+    height: 40,
+    width: 100,
+    backgroundColor: 'gray',
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 
