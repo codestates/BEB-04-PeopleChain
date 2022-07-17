@@ -12,6 +12,10 @@ import ChatText from '../../components/chattingComponents/chatText';
 import RoomHeader from '../../components/chattingComponents/roomHeader';
 import RoomInfo from '../../components/chattingComponents/roomInfo';
 import MyDoubleModal from '../../components/chattingComponents/myDoubleModal';
+import ChattingRoomTopTab from '../../components/chattingComponents/ChattingRoomTopTab';
+import SpendingModal from '../../components/common/UserInfoModal/SpendingModal';
+import MySingleModal from '../../components/chattingComponents/MySingleModal';
+import {useToast} from '../../utils/hooks/useToast';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -27,6 +31,12 @@ function ChattingRoom({route}) {
   const [isHost, setIsHost] = useState(false);
   const [confirmation, setConfirmation] = useState(false);
   const [roomConfirmation, setRoomConfirmation] = useState(false);
+  const [proposeModalVisible, setProposeModalVisible] = useState(false);
+  const [isConfirmed, setIsConfirmed] = useState(false);
+  const [meetingEnd, setMeetingEnd] = useState(false);
+  const [spendingModalVisible, setSpendingModalVisible] = useState(false);
+  const [mySingleModalVisible, setMySingleModalVisible] = useState(false);
+  const {showToast} = useToast();
 
   useEffect(() => {
     Animated.spring(animation, {
@@ -52,9 +62,15 @@ function ChattingRoom({route}) {
           setRoomInfoExist={setRoomInfoExist}
         />
       </SafeAreaView>
-
-      <View style={{flex: 1, flexDirection: 'row'}}>
+      <View style={{flex: 1}}>
+        <ChattingRoomTopTab
+          isConfirmed={isConfirmed}
+          meetingEnd={meetingEnd}
+          setProposeModalVisible={setProposeModalVisible}
+          setModalVisible={setModalVisible}
+        />
         <ChatText chat={route.params.item.chat} roomInfo={roomInfo} />
+
         {roomInfoExist ? (
           <Animated.View
             style={[styles.roomInfo, {transform: [{translateX: animation}]}]}>
@@ -64,39 +80,56 @@ function ChattingRoom({route}) {
               setIsHost={setIsHost}
               confirmation={confirmation}
               roomConfirmation={roomConfirmation}
-            />
-            <MyDoubleModal
-              body={
-                <>
-                  <Text style={{marginTop: 7}}>
-                    {isHost
-                      ? '미팅 개최를 확정하시겠습니까?'
-                      : '미팅 참가를 확정하시겠습니까?'}
-                  </Text>
-                  <View style={{alignItems: 'flex-start'}}>
-                    <Text style={{marginTop: 7}}>
-                      🗓 날짜: 2022년 7월 8일 (월)
-                    </Text>
-                    <Text style={{marginTop: 7}}>
-                      ⏰ 시간 : 2022년 7월 15일 (토)
-                    </Text>
-                    <Text style={{marginTop: 7}}>🏖 장소 : 강남역</Text>
-                  </View>
-                </>
-              }
-              nButtonText="아니요"
-              pButtonText="네"
-              modalVisible={modalVisible}
-              setModalVisible={setModalVisible}
-              pFunction={() => {
-                {
-                  isHost ? setRoomConfirmation(false) : setConfirmation(true);
-                  setModalVisible(false);
-                }
-              }}
+              setProposeModalVisible={setProposeModalVisible}
+              setMeetingEnd={setMeetingEnd}
             />
           </Animated.View>
         ) : null}
+
+        <MyDoubleModal
+          body={
+            <>
+              <Text style={{marginTop: 7}}>
+                {isHost
+                  ? '미팅 개최를 확정하시겠습니까?'
+                  : '미팅 참가를 확정하시겠습니까?'}
+              </Text>
+              <View style={{alignItems: 'flex-start'}}>
+                <Text style={{marginTop: 7}}>🗓 날짜: 2022년 7월 8일 (월)</Text>
+                <Text style={{marginTop: 7}}>
+                  ⏰ 시간 : 2022년 7월 15일 (토)
+                </Text>
+                <Text style={{marginTop: 7}}>🏖 장소 : 강남역</Text>
+              </View>
+            </>
+          }
+          nButtonText="아니요"
+          pButtonText="네"
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          setIsConfirmed={setIsConfirmed}
+          setSpendingModalVisible={setSpendingModalVisible}
+        />
+        <SpendingModal
+          spendingModalVisible={spendingModalVisible}
+          setSpendingModalVisible={setSpendingModalVisible}
+          setMySingleModalVisible={setMySingleModalVisible}
+          pFunction={() => {
+            setSpendingModalVisible(false);
+            setMySingleModalVisible(true);
+          }}
+        />
+        <MySingleModal
+          text="LCN이 차감되었습니다!"
+          buttonText="확인"
+          modalVisible={mySingleModalVisible}
+          setModalVisible={setMySingleModalVisible}
+          pFunction={() => {
+            setMySingleModalVisible(false);
+            showToast('basic', '확정되었습니다!');
+            setIsConfirmed(true);
+          }}
+        />
       </View>
     </KeyboardAvoidingView>
   );
@@ -119,6 +152,28 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 18,
     color: '#007aff',
+  },
+  tabView: {
+    container: {
+      height: 90,
+      borderTopWidth: 0.3,
+      padding: 15,
+      flexDirection: 'row',
+    },
+    status: {
+      height: 20,
+      width: 40,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: 'blue',
+    },
+    button: {
+      width: 70,
+      height: 40,
+      backgroundColor: 'blue',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
   },
 });
 

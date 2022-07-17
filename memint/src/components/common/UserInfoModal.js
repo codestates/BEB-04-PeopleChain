@@ -3,6 +3,7 @@ import {View, Modal, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import BasicButton from './BasicButton';
 import SpendingModal from './UserInfoModal/SpendingModal';
 import AskSpendingModal from './UserInfoModal/AskSpendingModal';
+import MySingleModal from '../chattingComponents/MySingleModal';
 
 /*
 사용할 컴포넌트에서 state 사용이 필요함.
@@ -26,6 +27,7 @@ function UserInfoModal({
   const [spendingModalVisible, setSpendingModalVisible] = useState(false);
   const [askSpendingModalVisible, setAskSpendingModalVisible] = useState(false);
   const [isValid, setIsValid] = useState(false);
+  const [mySingleModalVisible, setMySingleModalVisible] = useState(false);
 
   return (
     <View style={styles.centeredView}>

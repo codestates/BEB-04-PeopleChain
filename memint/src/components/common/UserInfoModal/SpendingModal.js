@@ -7,20 +7,13 @@ import BasicButton from '../BasicButton';
   const [spendModalVisible, setSpendModalVisible] = useState(false);
 
       <SpendingModal
-        body={<Text>정말로?</Text>}
-        nButtonText="아니요"
-        pButtonText="네"
         spendingModalVisible={spendingModalVisible}
         setSpendingModalVisible={setSpendingModalVisible}
-        pFunction={() => {}}
+        pFunction={}
       />
  */
 
 function SpendingModal({
-  text,
-  body,
-  pButtonText,
-  nButtonText,
   spendingModalVisible,
   setSpendingModalVisible,
   pFunction,
@@ -39,30 +32,26 @@ function SpendingModal({
                 width: '100%',
               }}>
               <View style={styles.calcText}>
-                <Text style={{fontWeight: 'bold'}}>현재 보유 LNC</Text>
+                <Text style={{fontWeight: 'bold'}}>현재 보유 LCN</Text>
                 <Text style={{fontWeight: 'bold'}}>10개</Text>
               </View>
               <View style={styles.calcText}>
-                <Text style={{fontWeight: 'bold'}}>필요 LNC</Text>
+                <Text style={{fontWeight: 'bold'}}>필요 LCN</Text>
                 <Text style={{fontWeight: 'bold'}}>1개</Text>
               </View>
               <View style={styles.calcText}>
-                <Text style={{fontWeight: 'bold'}}>차감 후 LNC</Text>
+                <Text style={{fontWeight: 'bold'}}>차감 후 LCN</Text>
                 <Text style={{fontWeight: 'bold'}}>9개</Text>
               </View>
             </View>
             <View style={styles.buttonRow}>
               <BasicButton
-                text={nButtonText}
+                text="아니오"
                 size="small"
                 variant="disable"
-                onPress={() => setSpendingModalVisible(!spendingModalVisible)}
+                onPress={() => setSpendingModalVisible(false)}
               />
-              <BasicButton
-                text={pButtonText}
-                size="small"
-                onPress={pFunction}
-              />
+              <BasicButton text="네" size="small" onPress={pFunction} />
             </View>
           </View>
         </View>

@@ -50,9 +50,10 @@ const styles = StyleSheet.create({
     // justifyContent: 'space-between',
   },
   image: {
-    width: 70,
-    height: 70,
-    borderRadius: 36,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    marginLeft: 7,
   },
   chatInfo: {
     flexDirection: 'row',

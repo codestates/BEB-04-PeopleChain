@@ -5,17 +5,18 @@ const crown = require('../../pages/ChattingPage/dummydata/images/crown.png');
 
 function RoomInfo({
   chatInfo,
-  setModalVisible,
   setIsHost,
   confirmation,
-  roomConfirmation,
+  setProposeModalVisible,
+  meetingEnd,
+  setMeetingEnd,
 }) {
   const [confirmed, setConfirmed] = useState(false);
   const [isRoomConfirmed, setIsRoomConfirmed] = useState(false);
 
   const host = chatInfo.hostId;
   const persons = chatInfo.joinersId.map((person, idx) => {
-    return <Joiner person={person} confirmed={confirmed} ket={idx} />;
+    return <Joiner person={person} confirmed={confirmed} key={idx} />;
   });
   const roomConfirmed = () => {
     for (let i = 0; i < chatInfo.joinersId.length; i++) {
@@ -35,34 +36,18 @@ function RoomInfo({
   return (
     <View style={styles.container}>
       <View style={styles.wrapper}>
-        <Text style={styles.hilightText}>
-          {host === user ? '미팅 확정하기' : '미팅 참가 확정하기'}
-        </Text>
-        <BasicButton
-          text="Click!"
-          size="large"
-          variant={
-            user === host
-              ? isRoomConfirmed
-                ? 'basic'
-                : 'disable'
-              : confirmed
-              ? 'disable'
-              : 'basic'
-          }
-          onPress={() => {
-            {
-              user === host ? setIsHost(true) : setIsHost(false);
-              setModalVisible(true);
-            }
-            // setIsRoomConfirmed(false);
-            // setConfirmed(true);
-          }}
-        />
         <Text style={styles.hilightText}>미팅 참여자</Text>
         <Host person={chatInfo.hostId} confirmed={confirmed} />
         {persons}
       </View>
+      <BasicButton
+        text="미팅종료"
+        size="large"
+        variant={meetingEnd ? 'disable' : 'basic'}
+        onPress={() => {
+          setMeetingEnd(true);
+        }}
+      />
     </View>
   );
 }

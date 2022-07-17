@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {Text, StyleSheet, View, FlatList, TouchableOpacity} from 'react-native';
+import {
+  Text,
+  StyleSheet,
+  View,
+  FlatList,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
 import AddChat from './addChat';
 import UserInfoModal from '../common/UserInfoModal';
 
@@ -8,6 +15,14 @@ function ChatText({chat, roomInfo}) {
   const [chats, setChats] = useState(chat);
   const [userInfoModalVisible, setUserInfoModalVisible] = useState(false);
   const [userInfo, setUserInfo] = useState('');
+
+  const example = chats.map(item => {
+    return item.sender === user ? (
+      <MyChat item={item} />
+    ) : (
+      <NotMyChat item={item} />
+    );
+  });
 
   return (
     <View style={roomInfo ? {flex: 1, opacity: 0.8} : {flex: 1}}>
@@ -27,13 +42,21 @@ function ChatText({chat, roomInfo}) {
           )
         }
       />
+      {/* <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+          justifyContent: 'flex-end',
+          position: 'absolute',
+          flexWrap: 'wrap',
+        }}>
+        {example}
+      </ScrollView> */}
       <UserInfoModal
         userInfo={userInfo}
         nButtonText="아니오"
         pButtonText="네"
         userInfoModalVisible={userInfoModalVisible}
         setUserInfoModalVisible={setUserInfoModalVisible}
-        pFunction={() => {}}
       />
       <AddChat chats={chats} setChats={setChats} />
     </View>

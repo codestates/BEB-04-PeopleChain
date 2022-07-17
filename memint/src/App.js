@@ -7,6 +7,7 @@ import {ToastProvider} from './context/ToastContext';
 import Toast from './components/common/Toast';
 import ChattingRoom from './pages/ChattingPage/ChattingRoom';
 import {ChatContextProvider} from './components/chattingComponents/context/chatContext';
+<<<<<<< HEAD
 import SignInScreen from './pages/AuthPage/SignInScreen';
 import SignUpScreen from './pages/AuthPage/SignUpScreen';
 import VerifyMobileScreen from './pages/AuthPage/VerifyMobileScreen';
@@ -19,6 +20,10 @@ import FindIdVerifyMobileScreen from './pages/AuthPage/FindIdVerifyMobileScreen'
 import FindIdShowIdScreen from './pages/AuthPage/FindIdShowIdScreen';
 import FindPWVerifyScreen from './pages/AuthPage/FindPWVerifyScreen';
 import SetNewPWScreen from './pages/AuthPage/SetNewPWScreen';
+=======
+import FeedbackChoicePage from './pages/ChattingPage/FeedbackChoicePage';
+import FeedbackSendPage from './pages/ChattingPage/FeedbackSendPage';
+>>>>>>> 2134cdc (feat: 단계별 미팅 확정 및 사후 피드백 로직 추가)
 
 const Stack = createNativeStackNavigator();
 

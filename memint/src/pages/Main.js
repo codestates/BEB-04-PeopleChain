@@ -8,6 +8,8 @@ import MeetingDetail from './MeetingPage/MeetingDetail';
 import MeetingMarket from './MeetingPage/MeetingMarket';
 import InviteFriend from './MeetingPage/InviteFriend';
 import AlarmPage from './AlarmPage/AlarmPage';
+import FeedbackChoicePage from './ChattingPage/FeedbackChoicePage';
+import FeedbackSendPage from './ChattingPage/FeedbackSendPage';
 
 import MyPage from './MyPage/MyPage';
 import ChattingListPage from './ChattingPage/ChattingListPage';
@@ -112,7 +114,13 @@ const ChattingScreen = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen name="채팅 목록" component={ChattingListPage} />
-      {/* <Stack.Screen name="ChattingRoom" component={ChattingRoom} /> */}
+
+      <Stack.Screen
+        name="FeedbackChoicePage"
+        component={FeedbackChoicePage}
+        // options={{animation: 'none'}}
+      />
+      <Stack.Screen name="FeedbackSendPage" component={FeedbackSendPage} />
     </Stack.Navigator>
   );
 };
