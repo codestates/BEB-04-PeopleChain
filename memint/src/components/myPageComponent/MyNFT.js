@@ -1,12 +1,5 @@
 import React, {useState} from 'react';
-import {
-  Text,
-  SafeAreaView,
-  Button,
-  StyleSheet,
-  View,
-  Image,
-} from 'react-native';
+import {Text, StyleSheet, View, Image, FlatList} from 'react-native';
 import BasicButton from '../../components/common/BasicButton';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import SingleModal from '../../components/common/SingleModal';
@@ -14,22 +7,51 @@ import SpendingModal from '../common/UserInfoModal/SpendingModal';
 import {useToast} from '../../utils/hooks/useToast';
 
 function MyNFT({User}) {
-  const [modalVisible, setModalVisible] = useState(false);
   const [showNFT, setShowNFT] = useState(false);
-  const [spendingModalVisible, setSpendingModalVisible] = useState(false);
-  const {showToast} = useToast();
+
   return (
     <>
       <View style={{flexDirection: 'row'}}>
         <Text style={styles.attribute}>나의 미민이</Text>
       </View>
+      <MyMeMin myMeMin={User.myNfts[User.myNfts.length - 1]} />
+      <View style={{...styles.container, justifyContent: 'space-between'}}>
+        <Text style={styles.attribute}>나의 NFT</Text>
+        <Icon
+          name="arrow-drop-down"
+          size={40}
+          onPress={() => setShowNFT(!showNFT)}
+          style={[styles.dropDown, showNFT ? styles.rotate180 : '']}
+        />
+      </View>
+
+      {showNFT ? (
+        <View style={{marginLeft: 40}}>
+          <FlatList
+            data={User.myNfts}
+            renderItem={({item}) => <MyNFTs item={item} />}
+            numColumns="5"
+          />
+        </View>
+      ) : null}
+    </>
+  );
+}
+
+function MyMeMin({myMeMin}) {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [spendingModalVisible, setSpendingModalVisible] = useState(false);
+  const {showToast} = useToast();
+  return (
+    <>
       <View style={{height: 90}}>
         <Image
           style={styles.myMeMin}
           source={{
-            uri: User.myMeMin,
+            uri: myMeMin.uri,
           }}
         />
+
         <View style={styles.mintButton}>
           <BasicButton
             text="민팅하기"
@@ -61,23 +83,27 @@ function MyNFT({User}) {
           />
         </View>
       </View>
-      <View style={{...styles.container, justifyContent: 'space-between'}}>
-        <Text style={styles.attribute}>나의 NFT</Text>
-        <Icon
-          name="arrow-drop-down"
-          size={40}
-          onPress={() => setShowNFT(!showNFT)}
-          style={[styles.dropDown, showNFT ? styles.rotate180 : '']}
-        />
-      </View>
+    </>
+  );
+}
 
-      {showNFT ? (
-        <View style={{...styles.container, marginLeft: 35}}>
-          {User.myNFTs.map(ele => (
-            <Image style={styles.nft} source={{uri: ele}} />
-          ))}
-        </View>
-      ) : null}
+function MyNFTs({item}) {
+  return (
+    <>
+      {item.valid ? (
+        <>
+          <Image
+            style={[styles.nft, item.profile ? styles.currentProfileNft : '']}
+            source={{uri: item.uri}}
+          />
+          <Image
+            source={require('../../Images/nftBadge.png')}
+            style={styles.badge}
+          />
+        </>
+      ) : (
+        ''
+      )}
     </>
   );
 }
@@ -100,6 +126,14 @@ const styles = StyleSheet.create({
     marginVertical: '3%',
     position: 'relative',
   },
+  badge: {
+    width: 20,
+    height: 20,
+    marginRight: -20,
+    top: 0,
+    left: -60,
+    position: 'relative',
+  },
   nft: {
     width: 50,
     height: 50,
@@ -107,7 +141,10 @@ const styles = StyleSheet.create({
     marginHorizontal: '1%',
     marginBottom: '3%',
   },
-
+  currentProfileNft: {
+    borderColor: '#007aff',
+    borderWidth: 3,
+  },
   attribute: {
     fontSize: 20,
     fontWeight: '500',
