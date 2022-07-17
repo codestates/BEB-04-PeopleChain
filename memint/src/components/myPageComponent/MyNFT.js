@@ -62,8 +62,11 @@ function MyMeMin({myMeMin}) {
           <View style={styles.mintButton}>
             <BasicButton
               text="민팅하기"
-              size="xSmall"
-              variant="basic"
+              width={50}
+              height={20}
+              textSize={10}
+              backgroundColor="#007aff"
+              margin={[10, 3, 3, 3]}
               onPress={() => setModalVisible(true)}
             />
             <SingleModal

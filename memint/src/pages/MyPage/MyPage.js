@@ -134,8 +134,13 @@ function MyPage() {
             return (
               <BasicButton
                 text={ele.name}
-                size="medium"
-                variant={meetingRoom === index ? 'basic' : 'disable'}
+                width={100}
+                height={40}
+                textSize={14}
+                backgroundColor={
+                  meetingRoom === index ? '#007aff' : 'lightgray'
+                }
+                margin={[10, 3, 3, 3]}
                 onPress={() => selecteMenuHandler(index)}
               />
             );
