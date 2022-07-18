@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import WalletPage from './pages/WalletPage/WalletPage';
+import WalletPage from './pages/WalletPage/WalletOffchainMain';
 import Main from './pages/Main';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {ToastProvider} from './context/ToastContext';
