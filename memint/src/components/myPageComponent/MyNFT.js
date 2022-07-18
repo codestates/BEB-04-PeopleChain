@@ -99,6 +99,9 @@ function MyMeMin({myMeMin}) {
 }
 
 function MyNFTs({item}) {
+  const [changeProfileModalVisible, setChangeProfileModalVisible] =
+    useState(false);
+  const {showToast} = useToast();
   return (
     <>
       {item.valid ? (
@@ -106,7 +109,9 @@ function MyNFTs({item}) {
           <Image
             style={[styles.nft, item.profile ? styles.currentProfileNft : '']}
             source={{uri: item.uri}}
+            onPress={() => setChangeProfileModalVisible(true)}
           />
+
           <Image
             source={require('../../Images/nftBadge.png')}
             style={styles.badge}
@@ -115,6 +120,16 @@ function MyNFTs({item}) {
       ) : (
         ''
       )}
+      {/* <SingleModal
+        text="프로필로 설정하시겠습니까?"
+        buttonText="네"
+        modalVisible={changeProfileModalVisible}
+        setModalVisible={setChangeProfileModalVisible}
+        pFunction={() => {
+          setChangeProfileModalVisible(false);
+          showToast('success', '프로필 변경이 완료되었습니다.');
+        }}
+      /> */}
     </>
   );
 }
@@ -144,10 +159,6 @@ const styles = StyleSheet.create({
     top: 0,
     left: -60,
     position: 'relative',
-  },
-  badge2: {
-    width: 20,
-    height: 20,
   },
   nft: {
     width: 50,

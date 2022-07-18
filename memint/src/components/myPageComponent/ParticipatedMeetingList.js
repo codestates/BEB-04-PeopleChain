@@ -10,6 +10,7 @@ import {
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import DoubleModal from '../../components/common/DoubleModal';
+import {useToast} from '../../utils/hooks/useToast';
 
 function ParticipatedMeetingList({List}) {
   return (
@@ -24,6 +25,7 @@ function ParticipatedMeetingList({List}) {
 
 function ParticipatedMeetings({item}) {
   const [cancelModal, setCancelModal] = useState(false);
+  const {showToast} = useToast();
   return (
     <>
       <View style={styles.meetingCard}>
@@ -113,8 +115,9 @@ function ParticipatedMeetings({item}) {
           pButtonText="아니오"
           modalVisible={cancelModal}
           setModalVisible={setCancelModal}
-          pFunction={() => {
-            setCancelModal;
+          nFunction={() => {
+            setCancelModal(false);
+            showToast('success', '취소되었습니다');
           }}
         />
       </View>
