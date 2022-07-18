@@ -21,7 +21,6 @@ TotalAccountButton.defaultProps = {
   height: 40,
   borderColor: '#bdbddd',
   amount: 0,
-  onPress: () => {},
 };
 
 const styles = StyleSheet.create({

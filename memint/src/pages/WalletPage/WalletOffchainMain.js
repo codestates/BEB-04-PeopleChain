@@ -1,15 +1,10 @@
 import React, {useState} from 'react';
 import {SafeAreaView, Text, View, StyleSheet, ScrollView} from 'react-native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import BackButton from '../../components/common/BackButton';
 import BasicButton from '../../components/common/BasicButton';
 import WalletCustomButton from '../../components/walletComponents/WalletCustomButton';
 import TotalAccountButton from '../../components/walletComponents/TotalAccountButton';
 import HistoryButton from '../../components/walletComponents/HistoryButton';
-
-const Tab = createMaterialBottomTabNavigator();
-const Stack = createNativeStackNavigator();
 
 function WalletOffchainMain({navigation}) {
   const [walletSelected, setWalletSelected] = useState(false);
@@ -89,6 +84,7 @@ function WalletOffchainMain({navigation}) {
   const handleWalletSelect = () => {
     setWalletSelected(true);
     setSpendingSelected(false);
+    navigation.navigate('WalletOnchainMain');
   };
 
   const handleSpendingSelect = () => {
@@ -97,7 +93,7 @@ function WalletOffchainMain({navigation}) {
   };
 
   const goToOffchainRecieve = () => {
-    navigation.navigate('FindPWVerify');
+    navigation.navigate('WalletOffchainRecieve');
   };
 
   return (
@@ -129,7 +125,7 @@ function WalletOffchainMain({navigation}) {
           />
         </View>
         <Text style={styles.accountText}>Token Account</Text>
-        <TotalAccountButton amount={10} />
+        <TotalAccountButton amount={10} onPress={goToOffchainRecieve} />
         <Text style={styles.historyText}>History</Text>
         <ScrollView>
           {dummyHistory.map(el => {

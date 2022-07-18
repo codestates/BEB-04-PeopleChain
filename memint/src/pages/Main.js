@@ -13,10 +13,14 @@ import FeedbackSendPage from './ChattingPage/FeedbackSendPage';
 
 import EditMeetingInfo from './MyPage/EditMeetingInfo';
 import EditMyInfo from './MyPage/EditMyInfo';
+import WalletMain from './WalletPage/WalletMain';
 import MyPage from './MyPage/MyPage';
 import ChattingListPage from './ChattingPage/ChattingListPage';
 import ChattingRoom from './ChattingPage/ChattingRoom';
 import AlarmDetail from './AlarmPage/AlarmDetail';
+import WalletOffchainMain from './WalletPage/WalletOffchainMain';
+import WalletOffchainRecieve from './WalletPage/WalletOffchainRecieve';
+import WalletOnchainMain from './WalletPage/WalletOnchainMain';
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();

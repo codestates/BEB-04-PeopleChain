@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import WalletPage from './pages/WalletPage/WalletOffchainMain';
+// import WalletPage from './pages/WalletPage/WalletOffchainMain';
+import WalletMain from './pages/WalletPage/WalletMain';
 import Main from './pages/Main';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {ToastProvider} from './context/ToastContext';
@@ -8,7 +9,6 @@ import Toast from './components/common/Toast';
 import ChattingRoom from './pages/ChattingPage/ChattingRoom';
 import {ChatContextProvider} from './components/chattingComponents/context/chatContext';
 import SignInScreen from './pages/AuthPage/SignInScreen';
-import SignUpScreen from './pages/AuthPage/SignUpScreen';
 import VerifyMobileScreen from './pages/AuthPage/VerifyMobileScreen';
 import SignUpUserInfoScreen from './pages/AuthPage/SignUpUserInfoScreen';
 import SignUpUserDetailScreen from './pages/AuthPage/SignUpUserDetailScreen';
@@ -19,6 +19,7 @@ import FindIdVerifyMobileScreen from './pages/AuthPage/FindIdVerifyMobileScreen'
 import FindIdShowIdScreen from './pages/AuthPage/FindIdShowIdScreen';
 import FindPWVerifyScreen from './pages/AuthPage/FindPWVerifyScreen';
 import SetNewPWScreen from './pages/AuthPage/SetNewPWScreen';
+import WalletOffchainScreen from './pages/WalletPage/WalletOffchainScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -43,11 +44,6 @@ function App() {
             <Stack.Screen
               name="SignIn"
               component={SignInScreen}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="SignUp"
-              component={SignUpScreen}
               options={{headerShown: false}}
             />
             <Stack.Screen
@@ -100,9 +96,10 @@ function App() {
               component={Main}
               options={{headerShown: false}}
             />
+
             <Stack.Screen
               name="Wallet"
-              component={WalletPage}
+              component={WalletOffchainScreen}
               options={{title: null, headerShown: false}}
             />
             <Stack.Screen

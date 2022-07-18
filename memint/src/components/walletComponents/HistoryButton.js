@@ -3,21 +3,19 @@ import {View, StyleSheet, Text, TouchableOpacity, Image} from 'react-native';
 
 function HistoryButton({onPress, time, balanceChange, balance, content}) {
   return (
-    <TouchableOpacity onPress={onPress}>
-      <View style={[styles.button]}>
-        <View style={styles.contentWrapper}>
-          <Text style={styles.timeText}>{time}</Text>
-          <Text style={styles.contentText}>{content}</Text>
-        </View>
-        <View style={styles.balanceWrapper}>
-          <View style={styles.balanceChange}>
-            <Text style={styles.balanceChangeText}>{balanceChange} </Text>
-            <Text style={styles.lcnText}> LCN</Text>
-          </View>
-          <Text style={styles.balanceText}>잔액 {balance} LCN</Text>
-        </View>
+    <View style={[styles.button]}>
+      <View style={styles.contentWrapper}>
+        <Text style={styles.timeText}>{time}</Text>
+        <Text style={styles.contentText}>{content}</Text>
       </View>
-    </TouchableOpacity>
+      <View style={styles.balanceWrapper}>
+        <View style={styles.balanceChange}>
+          <Text style={styles.balanceChangeText}>{balanceChange} </Text>
+          <Text style={styles.lcnText}> LCN</Text>
+        </View>
+        <Text style={styles.balanceText}>잔액 {balance} LCN</Text>
+      </View>
+    </View>
   );
 }
 

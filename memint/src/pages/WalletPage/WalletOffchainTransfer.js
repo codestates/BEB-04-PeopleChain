@@ -9,20 +9,20 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import DoubleModal from '../../components/common/DoubleModal';
 import {useToast} from '../../utils/hooks/useToast';
 
-const WalletOffchainRecieve = ({navigation}) => {
+const WalletOffchainTransfer = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [recieveSelected, setRecieveSelected] = useState(true);
-  const [transferSelected, setTransferSelected] = useState(false);
+  const [recieveSelected, setRecieveSelected] = useState(false);
+  const [transferSelected, setTransferSelected] = useState(true);
   const {showToast} = useToast();
   const handleRecieveSelect = () => {
     setRecieveSelected(true);
     setTransferSelected(false);
+    navigation.navigate('WalletOffchainRecieve');
   };
 
   const handleTransferSelect = () => {
     setRecieveSelected(false);
     setTransferSelected(true);
-    navigation.navigate('WalletOffchainTransfer');
   };
 
   return (
@@ -63,19 +63,24 @@ const WalletOffchainRecieve = ({navigation}) => {
             selected={transferSelected}
           />
         </View>
+        <SmallLcnButton
+          text={'To'}
+          width={330}
+          height={60}
+          margin={[30, 0, 10, 0]}
+          backgroundColor={'lightblue'}
+        />
+        <Icon name="arrow-upward" size={70} />
         <LargeLcnButton
           balance={12}
           width={330}
           height={120}
-          margin={[30, 0, 10, 0]}
-          backgroundColor={'lightblue'}
+          margin={[10, 0, 0, 0]}
         />
-        <Icon name="arrow-downward" size={70} />
-        <SmallLcnButton width={330} height={60} margin={[10, 0, 0, 0]} />
         <BasicButton
           margin={[30, 0, 0, 0]}
           width={330}
-          text={'가져오기'}
+          text={'내보내기'}
           textSize={18}
           onPress={() => {
             setModalVisible(true);
@@ -83,7 +88,7 @@ const WalletOffchainRecieve = ({navigation}) => {
         />
       </View>
       <DoubleModal
-        text="LCN을 내부 지갑으로 가져오겠습니까?"
+        text="LCN을 외부 지갑으로 내보내시겠습니까?"
         //body={<Text>정말로?</Text>}
         nButtonText="아니요"
         pButtonText="네"
@@ -94,7 +99,7 @@ const WalletOffchainRecieve = ({navigation}) => {
         }}
         pFunction={() => {
           setModalVisible(false);
-          showToast('success', 'LCN을 가져왔습니다!');
+          showToast('success', 'LCN을 내보냈습니다!');
         }}
       />
     </SafeAreaView>
@@ -153,4 +158,4 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 });
-export default WalletOffchainRecieve;
+export default WalletOffchainTransfer;
