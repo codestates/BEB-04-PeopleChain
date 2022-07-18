@@ -11,6 +11,8 @@ import AlarmPage from './AlarmPage/AlarmPage';
 import FeedbackChoicePage from './ChattingPage/FeedbackChoicePage';
 import FeedbackSendPage from './ChattingPage/FeedbackSendPage';
 
+import EditMeetingInfo from './MyPage/EditMeetingInfo';
+import EditMyInfo from './MyPage/EditMyInfo';
 import MyPage from './MyPage/MyPage';
 import ChattingListPage from './ChattingPage/ChattingListPage';
 import ChattingRoom from './ChattingPage/ChattingRoom';
@@ -77,8 +79,22 @@ function Main() {
 
 const MyPageScreen = () => {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="MyPage" component={MyPage} />
+    <Stack.Navigator initialRouteName="MyPage">
+      <Stack.Screen
+        name="MyPage"
+        component={MyPage}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="EditMeetingInfo"
+        component={EditMeetingInfo}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="EditMyInfo"
+        component={EditMyInfo}
+        options={{headerShown: false}}
+      />
     </Stack.Navigator>
   );
 };

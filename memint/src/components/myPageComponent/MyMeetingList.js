@@ -4,18 +4,20 @@ import {useToast} from '../../utils/hooks/useToast';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import DoubleModal from '../../components/common/DoubleModal';
 
-function MyMeetingList({List}) {
+function MyMeetingList({List, navigation}) {
   return (
     <>
       <FlatList
         data={List}
-        renderItem={({item}) => <MyMeetings item={item} />}
+        renderItem={({item}) => (
+          <MyMeetings item={item} navigation={navigation} />
+        )}
       />
     </>
   );
 }
 
-function MyMeetings({item}) {
+function MyMeetings({item, navigation}) {
   const [deleteModal, setDeleteModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const {showToast} = useToast();
@@ -74,7 +76,8 @@ function MyMeetings({item}) {
             modalVisible={editModal}
             setModalVisible={setEditModal}
             pFunction={() => {
-              setDeleteModal;
+              setEditModal(false);
+              navigation.navigate('EditMeetingInfo', {item});
             }}
           />
           <View style={styles.container}>

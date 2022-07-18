@@ -3,11 +3,16 @@ import {Text, StyleSheet, View, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import MyNFT from './MyNFT';
 
-function MyProfile({User}) {
+function MyProfile({User, navigation}) {
   return (
     <>
       <View style={{alignItems: 'flex-end'}}>
-        <Icon name="edit" size={30} style={styles.edit} />
+        <Icon
+          name="edit"
+          size={30}
+          style={styles.edit}
+          onPress={() => navigation.navigate('EditMyInfo')}
+        />
       </View>
       <View style={styles.container}>
         <View style={styles.images}>

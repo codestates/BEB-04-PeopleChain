@@ -5,7 +5,7 @@ import MyMeetingList from '../../components/myPageComponent/MyMeetingList';
 import ParticipatedMeetingList from '../../components/myPageComponent/ParticipatedMeetingList';
 import MyProfile from '../../components/myPageComponent/MyProfle';
 
-function MyPage() {
+function MyPage({navigation}) {
   const dummyUser = {
     nickName: '김개똥',
     birth: '1997.07.09',
@@ -49,6 +49,7 @@ function MyPage() {
     myMeeting: [
       {
         name: '금요일 밤 재미있게 노실 분들 구해요! (훈남 2명)',
+        description: '분위기 잘 맞춰드릴게요 :) 재미있게 놀아봐요~ ',
         date: '7월 8일 (금)',
         type: ['부어라 마셔라', '술게임 환영'],
         location: '강남',
@@ -64,6 +65,7 @@ function MyPage() {
       },
       {
         name: '오빠 차 뽑았다 널 데리러 가',
+        description: '분위기 잘 맞춰드릴게요 :) 재미있게 놀아봐요~ ',
         date: '7월 8일 (금)',
         type: ['부어라 마셔라', '술게임 환영'],
         location: '송파',
@@ -127,7 +129,7 @@ function MyPage() {
     <SafeAreaView>
       <ScrollView>
         {/* 유저 프로필 */}
-        <MyProfile User={dummyUser} />
+        <MyProfile User={dummyUser} navigation={navigation} />
         {/* 탭 선택 버튼 */}
         <View style={styles.meetingButton}>
           {room.map((ele, index) => {
@@ -149,7 +151,7 @@ function MyPage() {
         {/* 탭 선택에 따른 미팅 리스트 */}
 
         {meetingRoom === 0 ? (
-          <MyMeetingList List={dummyUser.myMeeting} />
+          <MyMeetingList List={dummyUser.myMeeting} navigation={navigation} />
         ) : (
           <ParticipatedMeetingList List={dummyUser.participatedMeeting} />
         )}
