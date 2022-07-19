@@ -12,7 +12,7 @@ import SignInScreen from './pages/AuthPage/SignInScreen';
 import VerifyMobileScreen from './pages/AuthPage/VerifyMobileScreen';
 import SignUpUserInfoScreen from './pages/AuthPage/SignUpUserInfoScreen';
 import SignUpUserDetailScreen from './pages/AuthPage/SignUpUserDetailScreen';
-// import SplashScreen from 'react-native-splash-screen';
+import SplashScreen from 'react-native-splash-screen';
 import SignUpAgreementScreen from './pages/AuthPage/SignUpAgreement';
 import SignUpAlarmScreen from './pages/AuthPage/SignUpAlarmScreen';
 import FindIdVerifyMobileScreen from './pages/AuthPage/FindIdVerifyMobileScreen';
@@ -24,17 +24,17 @@ import WalletOffchainScreen from './pages/WalletPage/WalletOffchainScreen';
 const Stack = createNativeStackNavigator();
 
 function App() {
-  // useEffect(() => {
-  //   try {
-  //     console.log('rendering splash');
-  //     setTimeout(() => {
-  //       SplashScreen.hide();
-  //     }, 2000);
-  //   } catch (e) {
-  //     console.wanr('Error occured');
-  //     console.warn(e);
-  //   }
-  // });
+  useEffect(() => {
+    try {
+      console.log('rendering splash');
+      setTimeout(() => {
+        SplashScreen.hide();
+      }, 2000);
+    } catch (e) {
+      console.wanr('Error occured');
+      console.warn(e);
+    }
+  });
 
   return (
     <NavigationContainer>
