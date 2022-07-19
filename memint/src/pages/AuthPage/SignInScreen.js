@@ -15,6 +15,7 @@ import BorderedInput from '../../components/AuthComponents/BorderedInput';
 import OauthButton from '../../components/AuthComponents/OauthButton';
 import SignForm from '../../components/AuthComponents/SignForm';
 import SignButtons from '../../components/AuthComponents/SignButtons';
+import {signUp} from '../../lib/auth';
 
 const SignInScreen = ({navigation}) => {
   const [form, setForm] = useState({
@@ -33,10 +34,21 @@ const SignInScreen = ({navigation}) => {
     navigation.navigate('VerifyMobile');
     console.log(form);
   };
-  const goToMain = () => {
+  // const goToMain = () => {
+  //   Keyboard.dismiss();
+  //   navigation.navigate('Main');
+  //   console.log(form);
+  // };
+  const goToMain = async () => {
     Keyboard.dismiss();
+    try {
+      const user = await signUp(form);
+      console.log(user);
+    } catch (error) {
+      console.log(error);
+    }
+
     navigation.navigate('Main');
-    console.log(form);
   };
   const goToFindId = () => {
     navigation.navigate('FindIdVerifyMobile');

@@ -7,6 +7,7 @@ import {
   View,
   StyleSheet,
   ScrollView,
+  Button,
 } from 'react-native';
 import {TextInput} from 'react-native-paper';
 import BackButton from '../../components/common/BackButton';
@@ -30,6 +31,7 @@ function EditMeetingInfo({route}) {
     tags: ['부어라 마셔라', '연애2', '소주1'],
   });
   const [confirmModalVisible, setConfirmModalVisible] = useState(false);
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [inviteModalVisible, setInviteModalVisible] = useState(false);
   const navigation = useNavigation();
   const {showToast} = useToast();
@@ -282,6 +284,20 @@ function EditMeetingInfo({route}) {
           </View>
         </View>
       </View>
+      <View style={styles.deleteButton}>
+        <Button onPress={alert} title="미팅 삭제하기" color="#DA6262" />
+      </View>
+      {/* <DoubleModal
+        text="미팅룸 삭제 후 복구가 불가합니다. 삭제하시겠습니까?"
+        nButtonText="네"
+        pButtonText="아니오"
+        modalVisible={deleteModalVisible}
+        setModalVisible={setDeleteModalVisible}
+        nFunction={() => {
+          setDeleteModalVisible(false);
+          showToast('success', '삭제되었습니다.');
+        }} */}
+      {/* /> */}
     </SafeAreaView>
   );
 }
@@ -372,6 +388,11 @@ const styles = StyleSheet.create({
   },
   rightMargin: {
     marginRight: 5,
+  },
+  deleteButton: {
+    marginTop: 15,
+    marginLeft: 10,
+    alignItems: 'flex-start',
   },
 });
 

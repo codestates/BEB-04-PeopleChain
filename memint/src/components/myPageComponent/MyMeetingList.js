@@ -58,17 +58,7 @@ function MyMeetings({item, navigation}) {
               <Text style={styles.buttonText}>미팅룸 삭제</Text>
             </TouchableOpacity> */}
           </View>
-          <DoubleModal
-            text="미팅룸 삭제 후 복구가 불가합니다. 삭제하시겠습니까?"
-            nButtonText="네"
-            pButtonText="아니오"
-            modalVisible={deleteModal}
-            setModalVisible={setDeleteModal}
-            nFunction={() => {
-              setDeleteModal(false);
-              showToast('success', '삭제되었습니다.');
-            }}
-          />
+
           <DoubleModal
             text="미팅 정보를 수정하시겠어요?"
             nButtonText="아니오"
