@@ -7,11 +7,13 @@ import {
   StyleSheet,
   Text,
   View,
+  Image,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import BasicButton from '../../components/common/BasicButton';
 import BorderedInput from '../../components/AuthComponents/BorderedInput';
 import BackButton from '../../components/common/BackButton';
+import memintLogo from '../../assets/icons/memint.png';
 
 const VerifyMobileScreen = ({navigation}) => {
   const [form, setForm] = useState({
@@ -40,7 +42,7 @@ const VerifyMobileScreen = ({navigation}) => {
       <SafeAreaView style={styles.fullscreen}>
         <BackButton />
         <View style={styles.fullscreenSub}>
-          <Text style={styles.text}>MeMint</Text>
+          <Image source={memintLogo} style={styles.logo} />
           <Text style={styles.contentText}>전화번호를 인증해주세요</Text>
           <Text style={styles.contentTextSub}>
             안전한 미팅주선을 위해 사용됩니다
@@ -121,7 +123,12 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center',
+    // justifyContent: 'center',
+  },
+  logo: {
+    width: 160,
+    height: 160,
+    marginTop: 70,
   },
   text: {
     fontSize: 32,
@@ -129,7 +136,7 @@ const styles = StyleSheet.create({
   },
   contentText: {
     fontSize: 24,
-    marginTop: 64,
+    marginTop: 32,
     // fontWeight: 'bold',
   },
   contentTextSub: {

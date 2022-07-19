@@ -8,6 +8,7 @@ import {
   Text,
   View,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import BasicButton from '../../components/common/BasicButton';
@@ -16,6 +17,7 @@ import OauthButton from '../../components/AuthComponents/OauthButton';
 import SignForm from '../../components/AuthComponents/SignForm';
 import SignButtons from '../../components/AuthComponents/SignButtons';
 import {signUp} from '../../lib/auth';
+import memintLogo from '../../assets/icons/memint.png';
 
 const SignInScreen = ({navigation}) => {
   const [form, setForm] = useState({
@@ -62,7 +64,7 @@ const SignInScreen = ({navigation}) => {
       style={styles.KeyboardAvoidingView}
       behavior={Platform.select({ios: 'padding'})}>
       <SafeAreaView style={styles.fullscreen}>
-        <Text style={styles.text}>MeMint</Text>
+        <Image source={memintLogo} style={styles.logo} />
         <View style={styles.form}>
           <SignForm
             // isSignup={isSignup}
@@ -87,13 +89,16 @@ const SignInScreen = ({navigation}) => {
               style={styles.oauthbutton}
               size="wide"
               text="Google 계정으로 로그인"
+              vendor="google"
+              backgroundColor="#6699ff"
               hasMarginBottom
             />
             <OauthButton
               style={styles.oauthbutton}
               size="wide"
-              variant="disable"
               text="Apple 계정으로 로그인"
+              backgroundColor="#666666"
+              vendor="apple"
             />
           </View>
         </View>
@@ -110,6 +115,11 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  logo: {
+    width: 160,
+    height: 160,
+    marginTop: 70,
   },
   text: {
     fontSize: 32,
@@ -132,7 +142,7 @@ const styles = StyleSheet.create({
     color: 'grey',
   },
   form: {
-    marginTop: 64,
+    marginTop: 30,
     width: '100%',
     paddingHorizontal: 16,
   },
@@ -140,7 +150,7 @@ const styles = StyleSheet.create({
   oauthbutton: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 64,
+    marginTop: 40,
     // paddingHorizontal: 16,
   },
 });

@@ -7,24 +7,25 @@ const SignButtons = ({isSignup, onSubmitSignIn, onSubmitSignUp}) => {
     <View style={styles.buttons}>
       <BasicButton
         style={styles.button}
-        width={100}
-        height={40}
+        width={150}
+        height={50}
         textSize={15}
         margin={[5, 5, 5, 5]}
         text="로그인"
         hasMarginBottom
         onPress={onSubmitSignIn}
+        backgroundColor="#FF9999"
       />
       <BasicButton
         style={styles.button}
         size="medium"
         variant="disable"
         text="회원가입"
-        width={100}
-        height={40}
+        width={150}
+        height={50}
         textSize={15}
         margin={[5, 5, 5, 5]}
-        backgroundColor="#d5d5d6"
+        backgroundColor="#6633ff"
         onPress={onSubmitSignUp}
       />
     </View>

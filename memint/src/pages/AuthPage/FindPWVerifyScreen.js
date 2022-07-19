@@ -7,11 +7,13 @@ import {
   StyleSheet,
   Text,
   View,
+  Image,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import BasicButton from '../../components/common/BasicButton';
 import BorderedInput from '../../components/AuthComponents/BorderedInput';
 import BackButton from '../../components/common/BackButton';
+import memintLogo from '../../assets/icons/memint.png';
 
 const FindPWVerifyScreen = ({navigation}) => {
   const [form, setForm] = useState({
@@ -41,7 +43,7 @@ const FindPWVerifyScreen = ({navigation}) => {
       <SafeAreaView style={styles.fullscreen}>
         <BackButton />
         <View style={styles.fullscreenSub}>
-          <Text style={styles.text}>MeMint</Text>
+          <Image source={memintLogo} style={styles.logo} />
           <Text style={styles.contentText}>
             회원가입 시 사용하신 전화번호를 입력해주세요.
           </Text>
@@ -119,7 +121,7 @@ const FindPWVerifyScreen = ({navigation}) => {
             width={300}
             height={40}
             textSize={17}
-            margin={[5, 5, 5, 5]}
+            margin={[0, 5, 5, 5]}
             text="다음 단계"
             hasMarginBottom
             onPress={goToNextPage}
@@ -141,7 +143,12 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center',
+    // justifyContent: 'center',
+  },
+  logo: {
+    width: 160,
+    height: 160,
+    marginTop: 70,
   },
   text: {
     fontSize: 32,
@@ -171,7 +178,7 @@ const styles = StyleSheet.create({
   },
   secondForm: {
     marginTop: 10,
-    marginBottom: 50,
+    marginBottom: 40,
     width: '100%',
     paddingHorizontal: 32,
     flexDirection: 'row',

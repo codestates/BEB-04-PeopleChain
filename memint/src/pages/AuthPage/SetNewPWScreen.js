@@ -7,11 +7,13 @@ import {
   StyleSheet,
   Text,
   View,
+  Image,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import BasicButton from '../../components/common/BasicButton';
 import BorderedInput from '../../components/AuthComponents/BorderedInput';
 import BackButton from '../../components/common/BackButton';
+import memintLogo from '../../assets/icons/memint.png';
 
 const SetNewPWScreen = ({navigation}) => {
   const [form, setForm] = useState({
@@ -40,7 +42,7 @@ const SetNewPWScreen = ({navigation}) => {
       <SafeAreaView style={styles.fullscreen}>
         <BackButton />
         <View style={styles.fullscreenSub}>
-          <Text style={styles.text}>MeMint</Text>
+          <Image source={memintLogo} style={styles.logo} />
           <Text style={styles.contentText}>
             새로운 비밀번호를 입력해주세요.
           </Text>
@@ -100,7 +102,12 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center',
+    // justifyContent: 'center',
+  },
+  logo: {
+    width: 160,
+    height: 160,
+    marginTop: 70,
   },
   text: {
     fontSize: 32,

@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "people.png",
+      "filename" : "memint_with_text.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "people-1.png",
+      "filename" : "memint_with_text-1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "people-2.png",
+      "filename" : "memint_with_text-2.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
