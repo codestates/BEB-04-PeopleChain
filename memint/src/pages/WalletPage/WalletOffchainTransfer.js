@@ -17,7 +17,6 @@ const WalletOffchainTransfer = ({navigation}) => {
   const handleRecieveSelect = () => {
     setRecieveSelected(true);
     setTransferSelected(false);
-    navigation.navigate('WalletOffchainRecieve');
   };
 
   const handleTransferSelect = () => {
@@ -26,43 +25,8 @@ const WalletOffchainTransfer = ({navigation}) => {
   };
 
   return (
-    <SafeAreaView>
-      <BackButton />
-      <View style={styles.accountWrapper}>
-        <Image
-          source={require('../../assets/icons/lovechain.png')}
-          style={styles.icon}
-        />
-        <View style={styles.accountTextWrapper}>
-          <Text style={styles.balanceText}>12</Text>
-          <Text style={styles.lcnText}> LCN</Text>
-        </View>
-      </View>
-      <View style={styles.buttonContainer}>
-        <View style={styles.buttonWrapper}>
-          <WalletCustomButton
-            style={styles.buttonWrapper}
-            width={140}
-            height={50}
-            textSize={17}
-            margin={[5, 0, 5, 5]}
-            text="가져오기"
-            hasMarginBottom
-            onPress={handleRecieveSelect}
-            selected={recieveSelected}
-          />
-          <WalletCustomButton
-            style={styles.buttonWrapper}
-            width={140}
-            height={50}
-            textSize={17}
-            margin={[5, 5, 5, 0]}
-            text="내보내기"
-            hasMarginBottom
-            onPress={handleTransferSelect}
-            selected={transferSelected}
-          />
-        </View>
+    <View style={styles.container}>
+      <View style={styles.contentContainer}>
         <SmallLcnButton
           text={'To'}
           width={330}
@@ -102,14 +66,14 @@ const WalletOffchainTransfer = ({navigation}) => {
           showToast('success', 'LCN을 내보냈습니다!');
         }}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    marginTop: 60,
+    // flex: 1,
+    marginTop: 30,
   },
   accountWrapper: {
     backgroundColor: 'white',
@@ -119,7 +83,7 @@ const styles = StyleSheet.create({
   },
   accountTextWrapper: {flexDirection: 'row', alignItems: 'flex-end'},
   contentContainer: {
-    flex: 1,
+    // flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },

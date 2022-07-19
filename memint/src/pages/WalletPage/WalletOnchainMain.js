@@ -7,8 +7,7 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import WalletCustomButton from '../../components/walletComponents/WalletCustomButton';
-import BackButton from '../../components/common/BackButton';
+
 import WalletAccountElement from '../../components/walletComponents/WalletAccountElement';
 import SingleModal from '../../components/common/SingleModal';
 import WalletCustomModal from '../../components/walletComponents/WalletCustomModal';
@@ -17,53 +16,15 @@ import {useToast} from '../../utils/hooks/useToast';
 const WalletOnchainMain = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [transferModalVisible, setTransferModalVisible] = useState(false);
-  const [walletSelected, setWalletSelected] = useState(true);
-  const [spendingSelected, setSpendingSelected] = useState(false);
   const {showToast} = useToast();
-
-  const handleWalletSelect = () => {
-    setWalletSelected(true);
-    setSpendingSelected(false);
-  };
-
-  const handleSpendingSelect = () => {
-    setWalletSelected(false);
-    setSpendingSelected(true);
-    navigation.navigate('WalletOffchainMain');
-  };
 
   const goToOnchainTrade = () => {
     navigation.navigate('WalletOnchainTrade');
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <BackButton />
+    <View>
       <View style={styles.contentContainer}>
-        <View style={styles.buttonWrapper}>
-          <WalletCustomButton
-            style={styles.buttonWrapper}
-            width={140}
-            height={50}
-            textSize={17}
-            margin={[5, 0, 5, 5]}
-            text="Spending"
-            hasMarginBottom
-            onPress={handleSpendingSelect}
-            selected={spendingSelected}
-          />
-          <WalletCustomButton
-            style={styles.buttonWrapper}
-            width={140}
-            height={50}
-            textSize={17}
-            margin={[5, 5, 5, 0]}
-            text="Wallet"
-            hasMarginBottom
-            onPress={handleWalletSelect}
-            selected={walletSelected}
-          />
-        </View>
         <Text style={styles.balanceText}>0 KLAY</Text>
         <View style={styles.address}>
           <Text style={styles.addressText}>0xFYgBQhnkgHNDDlasKSDNBMZGxRE</Text>
@@ -142,7 +103,7 @@ const WalletOnchainMain = ({navigation}) => {
           navigation.navigate('WalletLcnTransfer');
         }}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -163,7 +124,12 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
     justifyContent: 'space-between',
   },
-  iconWrapper: {paddingHorizontal: 30, marginTop: 30, marginBottom: 30},
+  iconWrapper: {
+    alignItems: 'center',
+    paddingHorizontal: 30,
+    marginTop: 30,
+    marginBottom: 30,
+  },
   buttonWrapper: {
     flexDirection: 'row',
     justifyContent: 'center',

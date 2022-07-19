@@ -11,58 +11,11 @@ import {useToast} from '../../utils/hooks/useToast';
 
 const WalletOffchainRecieve = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [recieveSelected, setRecieveSelected] = useState(true);
-  const [transferSelected, setTransferSelected] = useState(false);
   const {showToast} = useToast();
-  const handleRecieveSelect = () => {
-    setRecieveSelected(true);
-    setTransferSelected(false);
-  };
-
-  const handleTransferSelect = () => {
-    setRecieveSelected(false);
-    setTransferSelected(true);
-    navigation.navigate('WalletOffchainTransfer');
-  };
 
   return (
-    <SafeAreaView>
-      <BackButton />
-      <View style={styles.accountWrapper}>
-        <Image
-          source={require('../../assets/icons/lovechain.png')}
-          style={styles.icon}
-        />
-        <View style={styles.accountTextWrapper}>
-          <Text style={styles.balanceText}>12</Text>
-          <Text style={styles.lcnText}> LCN</Text>
-        </View>
-      </View>
-      <View style={styles.buttonContainer}>
-        <View style={styles.buttonWrapper}>
-          <WalletCustomButton
-            style={styles.buttonWrapper}
-            width={140}
-            height={50}
-            textSize={17}
-            margin={[5, 0, 5, 5]}
-            text="가져오기"
-            hasMarginBottom
-            onPress={handleRecieveSelect}
-            selected={recieveSelected}
-          />
-          <WalletCustomButton
-            style={styles.buttonWrapper}
-            width={140}
-            height={50}
-            textSize={17}
-            margin={[5, 5, 5, 0]}
-            text="내보내기"
-            hasMarginBottom
-            onPress={handleTransferSelect}
-            selected={transferSelected}
-          />
-        </View>
+    <View style={styles.container}>
+      <View style={styles.contentContainer}>
         <LargeLcnButton
           balance={12}
           width={330}
@@ -97,14 +50,17 @@ const WalletOffchainRecieve = ({navigation}) => {
           showToast('success', 'LCN을 가져왔습니다!');
         }}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    marginTop: 60,
+    // flex: 1,
+    marginTop: 30,
+    // flex: 1,
+    // justifyContent: 'center',
+    // alignItems: 'center',
   },
   accountWrapper: {
     backgroundColor: 'white',
@@ -114,7 +70,7 @@ const styles = StyleSheet.create({
   },
   accountTextWrapper: {flexDirection: 'row', alignItems: 'flex-end'},
   contentContainer: {
-    flex: 1,
+    // flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
