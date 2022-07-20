@@ -67,7 +67,6 @@ function MeetingCreate({route}) {
     topic: ['연애', '연애1', '연애2', '연애2'],
     alcoholType: ['소주', '소주1', '소주2', '소주3'],
   };
-
   useEffect(() => {
     const {title, description, region, peopleNum} = meetingInfo;
     if (title && description && region && peopleNum) {
@@ -80,21 +79,19 @@ function MeetingCreate({route}) {
   }, [meetingInfo, route, handleInvitedFriends]);
 
   const handleInvitedFriends = useCallback(() => {
-    if (route.params !== undefined) {
-      if (route.params.friends === undefined) {
-        return;
-      }
-      if (meetingInfo.invitedFriends.indexOf(route.params.friends) !== -1) {
-        showToast('error', '이미 추가된 친구입니다');
-        route.params.friends = undefined;
-        return;
-      }
-      setMeetingInfo({
-        ...meetingInfo,
-        invitedFriends: [...meetingInfo.invitedFriends, route.params.friends],
-      });
-      route.params.friends = undefined;
+    if (route.params?.friends === undefined) {
+      return;
     }
+    if (meetingInfo.invitedFriends.indexOf(route.params.friends) !== -1) {
+      showToast('error', '이미 추가된 친구입니다');
+      route.params.friends = undefined;
+      return;
+    }
+    setMeetingInfo({
+      ...meetingInfo,
+      invitedFriends: [...meetingInfo.invitedFriends, route.params.friends],
+    });
+    route.params.friends = undefined;
   }, [meetingInfo, route, showToast]);
   const handleSubmit = () => {
     if (!submittable) {
