@@ -15,7 +15,7 @@ import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useToast} from '../../utils/hooks/useToast';
 import SingleModal from '../../components/common/SingleModal';
-import TagElement from '../../components/meetingComponent/TagElement';
+import TagElement from '../../components/meetingComponents/TagElement';
 import DoubleModal from '../../components/common/DoubleModal';
 
 function MeetingCreate({route}) {
