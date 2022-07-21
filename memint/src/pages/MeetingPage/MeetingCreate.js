@@ -103,6 +103,7 @@ function MeetingCreate({route}) {
       setConfirmModalVisible(true);
     }
   };
+
   //생성 요청
   const handleCreateMeeting = () => {
     const data = {
@@ -115,6 +116,8 @@ function MeetingCreate({route}) {
       showToast('success', '미팅이 생성되었습니다');
       //새로 만들어진 미팅 세부 페이지로 이동
     } catch (e) {
+      setConfirmModalVisible(false);
+      showToast('error', '미팅 생성에 실패했습니다');
       console.log(e);
     }
   };
