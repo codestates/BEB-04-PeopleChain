@@ -1,7 +1,7 @@
 import React, {useRef} from 'react';
 import BorderedInput from './BorderedInput';
 
-const SignForm = ({isSignup, onSubmit, form, createChangeTextHandler}) => {
+const SignForm = ({onSubmit, form, createChangeTextHandler}) => {
   const passwordRef = useRef();
 
   return (

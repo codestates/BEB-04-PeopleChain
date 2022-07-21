@@ -1,6 +1,7 @@
 import React, {useRef, useState} from 'react';
 
 import {
+  Alert,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -11,47 +12,53 @@ import {
   Image,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import BasicButton from '../../components/common/BasicButton';
-import BorderedInput from '../../components/AuthComponents/BorderedInput';
 import OauthButton from '../../components/AuthComponents/OauthButton';
 import SignForm from '../../components/AuthComponents/SignForm';
 import SignButtons from '../../components/AuthComponents/SignButtons';
-import {signUp} from '../../lib/auth';
 import memintLogo from '../../assets/icons/memint.png';
+import useUser from '../../utils/hooks/UseUser';
+import useAuthActions from '../../utils/hooks/UseAuthActions';
+import {signIn} from '../../lib/Auth';
+const SignInScreen = ({navigation, route}) => {
+  const userInfo = useUser();
+  const {authorize} = useAuthActions();
 
-const SignInScreen = ({navigation}) => {
   const [form, setForm] = useState({
     email: '',
     password: '',
     confirmPassword: '',
   });
-  // const {isSignup} = route.params || {};
-
   const createChangeTextHandler = name => value => {
     setForm({...form, [name]: value});
   };
-
+  const [loading, setLoading] = useState();
   const goToSignUp = () => {
     Keyboard.dismiss();
     navigation.navigate('VerifyMobile');
     console.log(form);
   };
-  // const goToMain = () => {
-  //   Keyboard.dismiss();
-  //   navigation.navigate('Main');
-  //   console.log(form);
-  // };
-  const goToMain = async () => {
-    Keyboard.dismiss();
-    try {
-      const user = await signUp(form);
-      console.log(user);
-    } catch (error) {
-      console.log(error);
-    }
 
-    navigation.navigate('Main');
+  const onSubmitSignIn = async () => {
+    Keyboard.dismiss();
+    const {email, password} = form;
+    const info = {email, password};
+    setLoading(true);
+    try {
+      const {user} = await signIn(info);
+      authorize({
+        id: user.uid,
+        username: user.email,
+        displayName: user.displayName,
+      }),
+        navigation.navigate('Main');
+    } catch (e) {
+      Alert.alert('실패');
+      console.log(e);
+    } finally {
+      setLoading(false);
+    }
   };
+
   const goToFindId = () => {
     navigation.navigate('FindIdVerifyMobile');
   };
@@ -67,13 +74,16 @@ const SignInScreen = ({navigation}) => {
         <Image source={memintLogo} style={styles.logo} />
         <View style={styles.form}>
           <SignForm
-            // isSignup={isSignup}
-            onSubmit={goToMain}
+            onSubmit={onSubmitSignIn}
             form={form}
             createChangeTextHandler={createChangeTextHandler}
           />
 
-          <SignButtons onSubmitSignIn={goToMain} onSubmitSignUp={goToSignUp} />
+          {/* <SignButtons onSubmitSignIn={goToMain} onSubmitSignUp={goToSignUp} /> */}
+          <SignButtons
+            onSubmitSignIn={onSubmitSignIn}
+            onSubmitSignUp={goToSignUp}
+          />
           <View style={styles.textContainer}>
             <Text style={styles.textAsk}>이미 회원이신가요?</Text>
             {/* <Text style={styles.textFind}>아이디 / 비밀번호 찾기</Text> */}

@@ -1,7 +1,10 @@
 import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-// import WalletPage from './pages/WalletPage/WalletOffchainMain';
-import WalletMain from './pages/WalletPage/WalletMain';
+import {Provider} from 'react-redux';
+// import {createStore} from 'redux';
+// import {configureStore} from 'redux';
+import {legacy_createStore as createStore} from 'redux';
+import rootReducer from './slices/Index';
 import Main from './pages/Main';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {ToastProvider} from './context/ToastContext';
@@ -22,6 +25,7 @@ import SetNewPWScreen from './pages/AuthPage/SetNewPWScreen';
 import WalletOffchainScreen from './pages/WalletPage/WalletOffchainScreen';
 
 const Stack = createNativeStackNavigator();
+const store = createStore(rootReducer);
 
 function App() {
   useEffect(() => {
@@ -38,79 +42,81 @@ function App() {
 
   return (
     <NavigationContainer>
-      <ToastProvider>
-        <ChatContextProvider>
-          <Stack.Navigator initialRouteName="SignIn">
-            <Stack.Screen
-              name="SignIn"
-              component={SignInScreen}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="VerifyMobile"
-              component={VerifyMobileScreen}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="SignUpUserInfo"
-              component={SignUpUserInfoScreen}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="SignUpUserDetail"
-              component={SignUpUserDetailScreen}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="SignUpAgreement"
-              component={SignUpAgreementScreen}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="SignUpAlarm"
-              component={SignUpAlarmScreen}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="FindIdVerifyMobile"
-              component={FindIdVerifyMobileScreen}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="FindIdShowId"
-              component={FindIdShowIdScreen}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="FindPWVerify"
-              component={FindPWVerifyScreen}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="SetNewPW"
-              component={SetNewPWScreen}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="Main"
-              component={Main}
-              options={{headerShown: false}}
-            />
+      <Provider store={store}>
+        <ToastProvider>
+          <ChatContextProvider>
+            <Stack.Navigator initialRouteName="SignIn">
+              <Stack.Screen
+                name="SignIn"
+                component={SignInScreen}
+                options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="VerifyMobile"
+                component={VerifyMobileScreen}
+                options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="SignUpUserInfo"
+                component={SignUpUserInfoScreen}
+                options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="SignUpUserDetail"
+                component={SignUpUserDetailScreen}
+                options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="SignUpAgreement"
+                component={SignUpAgreementScreen}
+                options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="SignUpAlarm"
+                component={SignUpAlarmScreen}
+                options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="FindIdVerifyMobile"
+                component={FindIdVerifyMobileScreen}
+                options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="FindIdShowId"
+                component={FindIdShowIdScreen}
+                options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="FindPWVerify"
+                component={FindPWVerifyScreen}
+                options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="SetNewPW"
+                component={SetNewPWScreen}
+                options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="Main"
+                component={Main}
+                options={{headerShown: false}}
+              />
 
-            <Stack.Screen
-              name="Wallet"
-              component={WalletOffchainScreen}
-              options={{title: null, headerShown: false}}
-            />
-            <Stack.Screen
-              name="ChattingRoom"
-              component={ChattingRoom}
-              options={{headerShown: false}}
-            />
-          </Stack.Navigator>
-          <Toast />
-        </ChatContextProvider>
-      </ToastProvider>
+              <Stack.Screen
+                name="Wallet"
+                component={WalletOffchainScreen}
+                options={{title: null, headerShown: false}}
+              />
+              <Stack.Screen
+                name="ChattingRoom"
+                component={ChattingRoom}
+                options={{headerShown: false}}
+              />
+            </Stack.Navigator>
+            <Toast />
+          </ChatContextProvider>
+        </ToastProvider>
+      </Provider>
     </NavigationContainer>
   );
 }

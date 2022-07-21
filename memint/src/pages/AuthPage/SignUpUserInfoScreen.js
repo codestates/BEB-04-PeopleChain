@@ -1,6 +1,7 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef, useState, useRoute} from 'react';
 
 import {
+  Alert,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -14,9 +15,10 @@ import BasicButton from '../../components/common/BasicButton';
 import BorderedInput from '../../components/AuthComponents/BorderedInput';
 import BackButton from '../../components/common/BackButton';
 import CameraButton from '../../components/AuthComponents/CameraButton';
-
-const SignUpUserInfoScreen = ({navigation}) => {
+import {signUp} from '../../lib/Auth';
+const SignUpUserInfoScreen = ({navigation: {navigate}}) => {
   const [form, setForm] = useState({
+    email: '',
     nickname: '',
     password: '',
     confirmPassword: '',
@@ -25,12 +27,31 @@ const SignUpUserInfoScreen = ({navigation}) => {
     bitdyDay: '',
     gender: '',
   });
-  // const {isSignup} = route.params || {};
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
+  const nicknameRef = useRef();
 
   const createChangeTextHandler = name => value => {
     setForm({...form, [name]: value});
+  };
+
+  const onSubmitSignUp = async () => {
+    Keyboard.dismiss();
+    const {email, password, confirmPassword} = form;
+    const info = {email, password};
+    if (password !== confirmPassword) {
+      Alert.alert('실패', '비밀번호가 일치하지 않습니다.');
+    } else {
+      try {
+        const {user} = await signUp(info);
+        console.log(user);
+        navigate('SignUpUserDetail');
+      } catch (e) {
+        Alert.alert('실패');
+        console.log(e);
+      } finally {
+      }
+    }
   };
 
   const onSubmit = () => {
@@ -38,7 +59,7 @@ const SignUpUserInfoScreen = ({navigation}) => {
     console.log(form);
   };
   const goToNextPage = () => {
-    navigation.navigate('SignUpUserDetail');
+    navigate('SignUpUserDetail');
   };
 
   return (
@@ -50,6 +71,21 @@ const SignUpUserInfoScreen = ({navigation}) => {
         <View style={styles.fullscreenSub}>
           <CameraButton />
           <View style={styles.form}>
+            <Text style={styles.infoText}>이메일</Text>
+            <BorderedInput
+              size="large"
+              placeholder="이메일"
+              value={form.email}
+              onChangeText={createChangeTextHandler('email')}
+              autoCapitalize="none"
+              autoCorrect={false}
+              autoCompleteType="email"
+              keyboardType="email-address"
+              returnKeyType={'next'}
+              onSubmitEditing={() => nicknameRef.current.focus()}
+            />
+          </View>
+          <View style={styles.form}>
             <Text style={styles.infoText}>닉네임</Text>
             <BorderedInput
               size="large"
@@ -59,6 +95,7 @@ const SignUpUserInfoScreen = ({navigation}) => {
               autoCapitalize="none"
               autoCorrect={false}
               returnKeyType={'next'}
+              ref={nicknameRef}
               onSubmitEditing={() => passwordRef.current.focus()}
             />
           </View>
@@ -203,7 +240,7 @@ const SignUpUserInfoScreen = ({navigation}) => {
             margin={[5, 5, 5, 5]}
             text="다음 단계"
             hasMarginBottom
-            onPress={goToNextPage}
+            onPress={onSubmitSignUp}
           />
         </View>
       </SafeAreaView>

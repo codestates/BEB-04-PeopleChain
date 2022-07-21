@@ -13,14 +13,14 @@ import BasicButton from '../../components/common/BasicButton';
 import SelectDropdown from 'react-native-select-dropdown';
 import TagElement from '../../components/AuthComponents/TagElement';
 
-const SignUpUserDetailScreen = ({navigation}) => {
+const SignUpUserDetailScreen = ({navigation: {navigate}, route}) => {
   const [drinkInfo, setDrinkInfo] = useState({
     drink: [],
     drinkStyle: [],
   });
 
   const goToNextPage = () => {
-    navigation.navigate('SignUpAgreement');
+    navigate('SignUpAgreement');
   };
 
   const tagData = {
@@ -95,7 +95,7 @@ const SignUpUserDetailScreen = ({navigation}) => {
             margin={[5, 5, 5, 5]}
             text="다음 단계"
             hasMarginBottom
-            onPress={goToNextPage}
+            onPress={() => navigate('SignUpAgreement', route.params)}
           />
         </View>
       </SafeAreaView>

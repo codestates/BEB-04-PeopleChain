@@ -1,5 +1,5 @@
-import React, {useRef, useState} from 'react';
-
+import React, {useRef, useState, useEffect} from 'react';
+import auth from '@react-native-firebase/auth';
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -34,7 +34,6 @@ const VerifyMobileScreen = ({navigation}) => {
   const goToNextPage = () => {
     navigation.navigate('SignUpUserInfo');
   };
-
   return (
     <KeyboardAvoidingView
       style={styles.KeyboardAvoidingView}

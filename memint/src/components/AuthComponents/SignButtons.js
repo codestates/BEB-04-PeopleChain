@@ -1,8 +1,14 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import BasicButton from '../common/BasicButton';
-
-const SignButtons = ({isSignup, onSubmitSignIn, onSubmitSignUp}) => {
+const SignButtons = ({onSubmitSignIn, onSubmitSignUp, loading}) => {
+  if (loading) {
+    return (
+      <View style={styles.spinnerWrapper}>
+        <ActivityIndicator size={32} color="#6200ee" />
+      </View>
+    );
+  }
   return (
     <View style={styles.buttons}>
       <BasicButton
@@ -14,6 +20,7 @@ const SignButtons = ({isSignup, onSubmitSignIn, onSubmitSignUp}) => {
         text="로그인"
         hasMarginBottom
         onPress={onSubmitSignIn}
+        // onPress={onPressLogin}
         backgroundColor="#FF9999"
       />
       <BasicButton
@@ -40,6 +47,12 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
+  },
+  spinnerWrapper: {
+    marginTop: 64,
+    height: 104,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

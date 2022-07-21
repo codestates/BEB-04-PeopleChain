@@ -1,12 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Alert, StyleSheet, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import BackButton from '../../components/common/BackButton';
 import BasicButton from '../../components/common/BasicButton';
 import CheckElement from '../../components/AuthComponents/CheckElement';
 import CheckBox from '@react-native-community/checkbox';
+import {signUp} from '../../lib/Auth';
 
-const SignUpAgreementScreen = ({navigation}) => {
+const SignUpAgreementScreen = ({navigation: {navigate}, route}) => {
   const [checkInfo, setCheckInfo] = useState({
     service: '',
     privacy: '',
@@ -14,6 +15,23 @@ const SignUpAgreementScreen = ({navigation}) => {
     event: '',
     all: '',
   });
+  const [loading, setLoading] = useState();
+
+  const onSubmitSignUp = async () => {
+    // const {email, password} = route.params;
+    // const info = {email, password};
+    // setLoading(true);
+    try {
+      // const {user} = await signUp(info);
+      // console.log(user);
+    } catch (e) {
+      Alert.alert('실패');
+      console.log(e);
+    } finally {
+      setLoading(false);
+      navigate('SignUpAlarm');
+    }
+  };
 
   const [allCheck, setAllCheck] = useState(false);
   const [serviceCheck, setServiceCheck] = useState(false);
@@ -83,7 +101,7 @@ const SignUpAgreementScreen = ({navigation}) => {
   }, [ageCheck, serviceCheck, useCheck, marketingCheck]);
 
   const goToNextPage = () => {
-    navigation.navigate('SignUpAlarm');
+    navigate('SignUpAlarm');
   };
 
   return (
@@ -127,7 +145,7 @@ const SignUpAgreementScreen = ({navigation}) => {
           margin={[5, 5, 5, 5]}
           text="회원가입 완료"
           hasMarginBottom
-          onPress={goToNextPage}
+          onPress={onSubmitSignUp}
         />
       </View>
     </SafeAreaView>
