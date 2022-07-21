@@ -17,39 +17,40 @@ import {useToast} from '../../utils/hooks/useToast';
 import SingleModal from '../../components/common/SingleModal';
 import TagElement from '../../components/meetingComponents/TagElement';
 import DoubleModal from '../../components/common/DoubleModal';
+import {createMeeting, getMeetings} from '../../lib/meeting';
 
 function MeetingCreate({route}) {
   const [submittable, setSubmittable] = useState(false);
   const [meetingInfo, setMeetingInfo] = useState({
     title: '',
     description: '',
-    date: new Date(),
+    meetDate: new Date(),
     region: undefined,
     peopleNum: undefined,
-    invitedFriends: [],
-    tags: [],
+    friends: [],
+    meetingTags: [],
   });
   const [confirmModalVisible, setConfirmModalVisible] = useState(false);
   const [inviteModalVisible, setInviteModalVisible] = useState(false);
   const navigation = useNavigation();
   const {showToast} = useToast();
   const RegionDropDownData = [
-    {label: '서울 전체', value: 1},
-    {label: '강남구', value: 2},
-    {label: '강동구', value: 3},
-    {label: '강북구', value: 4},
-    {label: '강서구', value: 5},
-    {label: '관악구', value: 6},
-    {label: '광진구', value: 7},
-    {label: '구로구', value: 8},
-    {label: '금천구', value: 9},
-    {label: '노원구', value: 10},
-    {label: '도봉구', value: 11},
-    {label: '동대문구', value: 12},
-    {label: '동작구', value: 13},
-    {label: '마포구', value: 14},
-    {label: '서대문구', value: 15},
-    {label: '서초구', value: 16},
+    {label: '서울 전체', value: '서울 전체'},
+    {label: '강남구', value: '강남구'},
+    {label: '강동구', value: '강동구'},
+    {label: '강북구', value: '강북구'},
+    {label: '강서구', value: '강서구'},
+    {label: '관악구', value: '관악구'},
+    {label: '광진구', value: '광진구'},
+    {label: '구로구', value: '구로구'},
+    {label: '금천구', value: '금천구'},
+    {label: '노원구', value: '노원구'},
+    {label: '도봉구', value: '도봉구'},
+    {label: '동대문구', value: '동대문구'},
+    {label: '동작구', value: '동작구'},
+    {label: '마포구', value: '마포구'},
+    {label: '서대문구', value: '서대문구'},
+    {label: '서초구', value: '서초구'},
   ];
   const PeopleDropDownData = [
     {label: '1:1', value: 1},
@@ -82,17 +83,18 @@ function MeetingCreate({route}) {
     if (route.params?.friends === undefined) {
       return;
     }
-    if (meetingInfo.invitedFriends.indexOf(route.params.friends) !== -1) {
+    if (meetingInfo.friends.indexOf(route.params.friends) !== -1) {
       showToast('error', '이미 추가된 친구입니다');
       route.params.friends = undefined;
       return;
     }
     setMeetingInfo({
       ...meetingInfo,
-      invitedFriends: [...meetingInfo.invitedFriends, route.params.friends],
+      friends: [...meetingInfo.friends, route.params.friends],
     });
     route.params.friends = undefined;
   }, [meetingInfo, route, showToast]);
+
   const handleSubmit = () => {
     if (!submittable) {
       showToast('error', '필수 항목들을 작성해주세요');
@@ -101,6 +103,22 @@ function MeetingCreate({route}) {
       setConfirmModalVisible(true);
     }
   };
+  //생성 요청
+  const handleCreateMeeting = () => {
+    const data = {
+      ...meetingInfo,
+      hostId: 'hostId',
+    };
+    try {
+      createMeeting(data);
+      setConfirmModalVisible(false);
+      showToast('success', '미팅이 생성되었습니다');
+      //새로 만들어진 미팅 세부 페이지로 이동
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <SafeAreaView>
       <View style={styles.headerBar}>
@@ -119,11 +137,7 @@ function MeetingCreate({route}) {
         buttonText="네"
         modalVisible={confirmModalVisible}
         setModalVisible={setConfirmModalVisible}
-        pFunction={() => {
-          setConfirmModalVisible(false);
-          showToast('success', '미팅이 생성되었습니다');
-          //새로 만들어진 미팅 세부 페이지로 이동
-        }}
+        pFunction={handleCreateMeeting}
       />
       <View style={styles.createContainer}>
         <View>
@@ -148,12 +162,12 @@ function MeetingCreate({route}) {
         <View style={[styles.createElement, styles.flexRow]}>
           <Text style={styles.text}>날짜</Text>
           <RNDateTimePicker
-            value={meetingInfo.date}
+            value={meetingInfo.meetDate}
             mode="datetime"
             locale="ko"
             style={styles.datepicker}
             onChange={(event, date) =>
-              setMeetingInfo({...meetingInfo, date: date})
+              setMeetingInfo({...meetingInfo, meetDate: date})
             }
           />
         </View>
@@ -203,7 +217,7 @@ function MeetingCreate({route}) {
             <Icon name="arrow-drop-down" size={19} color={'gray'} />
           </TouchableOpacity>
           <ScrollView style={styles.invitedFriends} horizontal={true}>
-            {meetingInfo.invitedFriends.map((el, idx) => (
+            {meetingInfo.friends.map((el, idx) => (
               <View key={idx} style={styles.invitedFriend}>
                 <Text>{el}</Text>
               </View>

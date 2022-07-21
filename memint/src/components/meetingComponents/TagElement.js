@@ -8,11 +8,14 @@ function TagElement({tag, meetingInfo, setMeetingInfo}) {
       setColored(false);
       setMeetingInfo({
         ...meetingInfo,
-        tags: meetingInfo.tags.filter(el => el !== tag),
+        tags: meetingInfo.meetingTags.filter(el => el !== tag),
       });
     } else {
       setColored(true);
-      setMeetingInfo({...meetingInfo, tags: meetingInfo.tags.concat(tag)});
+      setMeetingInfo({
+        ...meetingInfo,
+        meetingTags: meetingInfo.meetingTags.concat(tag),
+      });
     }
   };
   return (
