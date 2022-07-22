@@ -2,10 +2,19 @@ import React, {useContext, useReducer, useState} from 'react';
 import {View, StyleSheet, TextInput, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ChatContext from './context/chatContext';
+import firestore from '@react-native-firebase/firestore';
 
 // props로 채팅방의 아이디를 받아온다.
-function AddChat({chats, setChats}) {
+function AddChat({chats, setChats, chatId}) {
   const user = '김영희';
+  const sendChat = async obj => {
+    const chattingCollection = firestore()
+      .collection('Meeting')
+      .doc(chatId)
+      .collection('Messages');
+    const confirm = await chattingCollection.add(obj);
+    return confirm;
+  };
   // useContext로 전체 chatLog와 변경할 수 있는 state를 받아온다.
   // const {chatLog, setChatLog} = useContext(ChatContext);
 
@@ -28,14 +37,14 @@ function AddChat({chats, setChats}) {
         <Icon
           name="send"
           size={30}
-          color="blue"
+          color="green"
           onPress={() => {
-            const tempchats = [...chats].concat({
-              createdAt: '2022-07-14',
-              body: text,
+            const obj = {
+              createdAt: firestore.FieldValue.serverTimestamp(),
               sender: user,
-            });
-            setChats(tempchats);
+              text,
+            };
+            sendChat(obj);
             setText('');
           }}
         />

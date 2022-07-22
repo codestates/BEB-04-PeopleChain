@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useRef, useEffect, useMemo} from 'react';
 import {
   StyleSheet,
   View,
@@ -16,6 +16,7 @@ import ChattingRoomTopTab from '../../components/chattingComponents/ChattingRoom
 import SpendingModal from '../../components/common/UserInfoModal/SpendingModal';
 import MySingleModal from '../../components/chattingComponents/MySingleModal';
 import {useToast} from '../../utils/hooks/useToast';
+import firestore from '@react-native-firebase/firestore';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -36,7 +37,17 @@ function ChattingRoom({route}) {
   const [meetingEnd, setMeetingEnd] = useState(false);
   const [spendingModalVisible, setSpendingModalVisible] = useState(false);
   const [mySingleModalVisible, setMySingleModalVisible] = useState(false);
+  const [chats, setChats] = useState('');
   const {showToast} = useToast();
+
+  const chatRef = useMemo(
+    () =>
+      firestore()
+        .collection('Meeting')
+        .doc(route.params.id)
+        .collection('Messages'),
+    [route.params.id],
+  );
 
   useEffect(() => {
     Animated.spring(animation, {
@@ -45,7 +56,25 @@ function ChattingRoom({route}) {
       speed: 13,
       bounciness: 0,
     }).start();
-  }, [roomInfo, animation]);
+    // const chatId = route.params.id;
+    const getContent = async () => {
+      chatRef.orderBy('createdAt').onSnapshot(result => {
+        // 아래 부분을 if문없이 넘겨주면, createdAt을 서버 시간으로 설정하였는데 서버에 올라가기 전에 로컬에 미리 정보를 가져오므로 createdAt이 null이어서 에러가 생기게 된다.
+        if (result.docs.length === 0) {
+          return;
+        } else if (
+          result.docChanges()[result.docChanges().length - 1].doc._data
+            .createdAt
+          // 아래에서 기본 chat을 살리려고 [...chats, result.docs[result.docs.length-1]]을 setChats로 보내주려 했는데 계속해서 에러가 난다.
+          // 그런데 다시 생각해보니 어차피 윗줄의 코드도 원본을 건드리지 않고 새로운 배열을 만들어서 가져오는 것이기 때문에 같은 개념이다 싶어서 안하기로 했다.
+        ) {
+          setChats(result.docs);
+        }
+      });
+    };
+
+    getContent();
+  }, [roomInfo, animation, route.params.id, chatRef]);
 
   return (
     <KeyboardAvoidingView
@@ -56,7 +85,7 @@ function ChattingRoom({route}) {
     >
       <SafeAreaView>
         <RoomHeader
-          title={route.params.item.title}
+          title={route.params.data.title}
           roomInfo={roomInfo}
           setRoomInfo={setRoomInfo}
           setRoomInfoExist={setRoomInfoExist}
@@ -69,7 +98,12 @@ function ChattingRoom({route}) {
           setProposeModalVisible={setProposeModalVisible}
           setModalVisible={setModalVisible}
         />
-        <ChatText chat={route.params.item.chat} roomInfo={roomInfo} />
+        <ChatText
+          data={route.params.data}
+          chattings={chats}
+          roomINfo={roomInfo}
+          chatId={route.params.id}
+        />
 
         {roomInfoExist ? (
           <Animated.View

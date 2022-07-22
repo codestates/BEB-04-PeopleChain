@@ -11,6 +11,10 @@ import ChatContext from './context/chatContext';
 
 function ChattingList({navigation}) {
   const {chatLog} = useContext(ChatContext);
+  useEffect(() => {
+    // console.log(chatLog);
+  }, []);
+  // console.log(chatLog);
   return (
     <FlatList
       ItemSeparatorComponent={() => <View style={styles.separator} />}
@@ -21,18 +25,25 @@ function ChattingList({navigation}) {
 }
 
 function MetaData({item, navigation}) {
+  // console.log(item._data);
+  // useEffect(() => {
+  //   console.log({data: item.data(), id: item.id});
+  // }, []);
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('ChattingRoom', {item})}>
+      onPress={() =>
+        navigation.navigate('ChattingRoom', {data: item.data(), id: item.id})
+      }>
       <View style={styles.container}>
-        <Image style={styles.image} source={item.image} resizeMode="contain" />
+        <View style={styles.image} />
+        {/* source={item.image} resizeMode="contain" /> */}
         <View style={styles.chatInfo}>
           <View>
-            <Text style={styles.titleText}>{item.title}</Text>
-            <Text>{item.chat[item.chat.length - 1].body}</Text>
+            <Text style={styles.titleText}>{item._data.title}</Text>
+            {/* <Text>{item.chat[item.chat.length - 1].body}</Text> */}
           </View>
           <View style={{justifyContent: 'center'}}>
-            <Text>{item.chat[item.chat.length - 1].createdAt}</Text>
+            {/* <Text>{item.chat[item.chat.length - 1].createdAt}</Text> */}
           </View>
         </View>
       </View>

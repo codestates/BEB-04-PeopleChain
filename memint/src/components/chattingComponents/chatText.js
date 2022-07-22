@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Text,
   StyleSheet,
@@ -10,26 +10,27 @@ import {
 import AddChat from './addChat';
 import UserInfoModal from '../common/UserInfoModal';
 
-function ChatText({chat, roomInfo}) {
-  const user = '김영희';
-  const [chats, setChats] = useState(chat);
+function ChatText({data, chattings, roomInfo, chatId}) {
+  // const [chats, setChats] = useState(chattings);
   const [userInfoModalVisible, setUserInfoModalVisible] = useState(false);
   const [userInfo, setUserInfo] = useState('');
+  const [chats, setChats] = useState('');
+  const user = '김영희';
 
-  const example = chats.map(item => {
-    return item.sender === user ? (
-      <MyChat item={item} />
-    ) : (
-      <NotMyChat item={item} />
-    );
-  });
+  // const example = chats.map(item => {
+  //   return item.sender === user ? (
+  //     <MyChat item={item} />
+  //   ) : (
+  //     <NotMyChat item={item} />
+  //   );
+  // });
 
   return (
     <View style={roomInfo ? {flex: 1, opacity: 0.8} : {flex: 1}}>
       <FlatList
         contentContainerStyle={{flexGrow: 1, justifyContent: 'flex-end'}}
         style={styles.container}
-        data={chats}
+        data={chattings}
         renderItem={({item}) =>
           item.sender === user ? (
             <MyChat item={item} />
@@ -58,12 +59,16 @@ function ChatText({chat, roomInfo}) {
         userInfoModalVisible={userInfoModalVisible}
         setUserInfoModalVisible={setUserInfoModalVisible}
       />
-      <AddChat chats={chats} setChats={setChats} />
+      <AddChat chats={chats} setChats={setChats} chatId={chatId} />
     </View>
   );
 }
 
 function NotMyChat({item, setUserInfoModalVisible, setUserInfo}) {
+  useEffect(() => {
+    // console.log(item);
+  }, []);
+
   return (
     <View style={styles.messageWrapper}>
       {/* 클릭할 시 유저 정보를 열겠냐고 물어보는 모달 창 띄우는 값 true로 설정 */}
@@ -76,14 +81,21 @@ function NotMyChat({item, setUserInfoModalVisible, setUserInfo}) {
         <View style={styles.image} />
       </TouchableOpacity>
       <View style={styles.textWrapper}>
-        <Text style={styles.senderName}>{item.sender}</Text>
+        <Text style={styles.senderName}>{item.data().sender}</Text>
         <View style={styles.messageBody}>
-          <Text style={{padding: 3}}>{item.body}</Text>
+          <Text style={{padding: 3}}>{item.data().text}</Text>
         </View>
       </View>
       <View style={styles.date}>
         <Text style={{marginBottom: 7, fontSize: 10, color: 'gray'}}>
-          {item.createdAt}
+          {item
+            .data()
+            .createdAt.toDate()
+            .toLocaleString()
+            .slice(
+              6,
+              item.data().createdAt.toDate().toLocaleString().length - 3,
+            )}
         </Text>
       </View>
     </View>
