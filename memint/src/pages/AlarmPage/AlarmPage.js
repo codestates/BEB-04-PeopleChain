@@ -1,24 +1,25 @@
-import {useIsFocused} from '@react-navigation/native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {Text, View, SafeAreaView, StyleSheet} from 'react-native';
 import AlarmElement from '../../components/alarmComponents/AlarmElement';
 import DoubleModal from '../../components/common/DoubleModal';
 import {getAlarmsById} from '../../lib/Alarm';
 import {getMeeting} from '../../lib/Meeting';
 import {handleDate} from '../../utils/common/Functions';
+import useUser from '../../utils/hooks/UseUser';
 
 function AlarmPage({navigation}) {
-  const isFocused = useIsFocused();
-  const loginUser = '8MspyF7xz7VHDThguMAv'; //test host 계정
+  const userInfo = useUser();
+  const loginUser = userInfo.id;
+  // const loginUser = '8MspyF7xz7VHDThguMAv'; //test host 계정
   // const loginUser = 'dbmtzzMFmqzshYNSOVo5' //joiner 계정
   const [chattingConfirmModal, setChattingConfirmModal] = useState(false);
   const [alarms, setAlarms] = useState([]);
 
   useEffect(() => {
     getAlarmPage();
-  }, [isFocused]);
+  }, [getAlarmPage]);
 
-  const getAlarmPage = async () => {
+  const getAlarmPage = useCallback(async () => {
     const res = await getAlarmsById(loginUser);
     const data = res.docs.map(el => {
       return {
@@ -41,7 +42,7 @@ function AlarmPage({navigation}) {
       }),
     );
     setAlarms(dataWithMeetingInfo);
-  };
+  }, [loginUser]);
 
   return (
     <SafeAreaView>

@@ -7,9 +7,11 @@ import DetailMembers from '../../components/meetingComponents/DetailMembers';
 import {createMeetingProposal} from '../../lib/Alarm';
 import {updateWaitingIn} from '../../lib/Meeting';
 import {useToast} from '../../utils/hooks/useToast';
+import useUser from '../../utils/hooks/UseUser';
 
 function MeetingDetail({route}) {
-  const loginUser = 'dbmtzzMFmqzshYNSOVo5';
+  const userInfo = useUser();
+  const loginUser = userInfo.id;
   const {
     id,
     title,

@@ -19,9 +19,11 @@ import TagElement from '../../components/meetingComponents/TagElement';
 import DoubleModal from '../../components/common/DoubleModal';
 import {createMeeting} from '../../lib/Meeting';
 import {getMeetingTags} from '../../lib/MeetingTag';
+import useUser from '../../utils/hooks/UseUser';
 
 function MeetingCreate({route}) {
-  const loginUser = '8MspyF7xz7VHDThguMAv';
+  const userInfo = useUser();
+  const loginUser = userInfo.id;
   const [submittable, setSubmittable] = useState(false);
   const [meetingInfo, setMeetingInfo] = useState({
     title: '',

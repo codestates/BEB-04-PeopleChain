@@ -6,9 +6,12 @@ import BasicButton from '../../components/common/BasicButton';
 import {createMeetingAccept, updateMeetingProposal} from '../../lib/Alarm';
 import {updateMembersIn, updateWaitingOut} from '../../lib/Meeting';
 import {useToast} from '../../utils/hooks/useToast';
+import useUser from '../../utils/hooks/UseUser';
 
 function AlarmDetail({route}) {
-  const loginUser = '8MspyF7xz7VHDThguMAv'; //test host 계정
+  const userInfo = useUser();
+  const loginUser = userInfo.id;
+  // const loginUser = '8MspyF7xz7VHDThguMAv'; //test host 계정
   // const loginUser = 'dbmtzzMFmqzshYNSOVo5' //joiner 계정
   const {id, message, meetingId, meetingInfo, sender, complete} = route.params;
   const navigation = useNavigation();
