@@ -17,14 +17,6 @@ function ChatText({data, chattings, roomInfo, chatId}) {
   const [chats, setChats] = useState('');
   const user = '김영희';
 
-  // const example = chats.map(item => {
-  //   return item.sender === user ? (
-  //     <MyChat item={item} />
-  //   ) : (
-  //     <NotMyChat item={item} />
-  //   );
-  // });
-
   return (
     <View style={roomInfo ? {flex: 1, opacity: 0.8} : {flex: 1}}>
       <FlatList

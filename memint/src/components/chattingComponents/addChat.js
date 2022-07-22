@@ -5,7 +5,7 @@ import ChatContext from './context/chatContext';
 import firestore from '@react-native-firebase/firestore';
 
 // props로 채팅방의 아이디를 받아온다.
-function AddChat({chats, setChats, chatId}) {
+function AddChat({chatId}) {
   const user = '김영희';
   const sendChat = async obj => {
     const chattingCollection = firestore()
@@ -15,13 +15,6 @@ function AddChat({chats, setChats, chatId}) {
     const confirm = await chattingCollection.add(obj);
     return confirm;
   };
-  // useContext로 전체 chatLog와 변경할 수 있는 state를 받아온다.
-  // const {chatLog, setChatLog} = useContext(ChatContext);
-
-  // 받아온 chatLog에서 id로 filter하여 현재 위치해있는 방의 정보만 가져와서 state로 저장한다.
-  // const [thisChat, setThisChat] = useState(
-  //   chatLog.filter(el => el.id === chatId),
-  // );
 
   // TextInput에 담긴 값을 text라는 state로 저장한다.
   const [text, setText] = useState('');
