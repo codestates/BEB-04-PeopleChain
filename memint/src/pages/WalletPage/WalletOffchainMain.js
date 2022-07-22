@@ -15,7 +15,7 @@ function WalletOffchainMain({navigation}) {
   const [walletSelected, setWalletSelected] = useState(false);
   const [spendingSelected, setSpendingSelected] = useState(true);
   const userInfo = useUser();
-  const {authorize, logout} = useAuthActions();
+  const {logout} = useAuthActions();
 
   const handleWalletSelect = () => {
     setWalletSelected(true);
@@ -40,22 +40,6 @@ function WalletOffchainMain({navigation}) {
       navigation.navigate('SignIn');
     }
   }, [navigation, logout]);
-
-  useEffect(() => {
-    subscribeAuth(currentUser => {
-      if (currentUser) {
-        authorize({
-          id: currentUser.uid,
-          username: currentUser.email,
-          displayName: currentUser.displayName,
-        });
-      } else {
-        logout();
-      }
-    });
-  }, [authorize, logout]);
-  console.log('@@@WalletOffchainMain Page Re-rendering@@@@');
-  console.log(userInfo);
 
   return (
     <SafeAreaView style={styles.container}>

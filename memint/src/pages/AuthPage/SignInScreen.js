@@ -45,6 +45,7 @@ const SignInScreen = ({navigation, route}) => {
     setLoading(true);
     try {
       const {user} = await signIn(info);
+      console.log(user);
       authorize({
         id: user.uid,
         username: user.email,
