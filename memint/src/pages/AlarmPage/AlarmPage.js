@@ -1,49 +1,72 @@
-import React, {useState} from 'react';
+import {useIsFocused} from '@react-navigation/native';
+import React, {useEffect, useState} from 'react';
 import {Text, View, SafeAreaView, StyleSheet} from 'react-native';
 import AlarmElement from '../../components/alarmComponents/AlarmElement';
 import DoubleModal from '../../components/common/DoubleModal';
+import {getAlarmsById} from '../../lib/Alarm';
+import {getMeeting} from '../../lib/Meeting';
+import {handleDate} from '../../utils/common/Functions';
+
 function AlarmPage({navigation}) {
+  const isFocused = useIsFocused();
+  const loginUser = '8MspyF7xz7VHDThguMAv'; //test host 계정
+  // const loginUser = 'dbmtzzMFmqzshYNSOVo5' //joiner 계정
   const [chattingConfirmModal, setChattingConfirmModal] = useState(false);
-  const alarmData = [
-    {
-      message: 'Username님이 신청을 수락했습니다',
-      type: 'accept',
-      meetingData: {
-        title: '금요일 밤 재미있게 노실 분들 구해요',
-        region: '강남',
-        people: '2:2',
-        age: '30초',
-        date: '7월 8일 (금)',
-      },
-      created_at: '3분 전',
-    },
-    {
-      message: '아현동 불주먹 님의 신청이 도착했습니다',
-      type: 'proposal',
-      meetingData: {
-        title: '금요일 밤 재미있게 노실 분들 구해요',
-        region: '강남',
-        people: '2:2',
-        age: '30초',
-        date: '7월 8일 (금)',
-      },
-      created_at: '3분 전',
-    },
-  ];
+  const [alarms, setAlarms] = useState([]);
+
+  useEffect(() => {
+    getAlarmPage();
+  }, [isFocused]);
+
+  const getAlarmPage = async () => {
+    const res = await getAlarmsById(loginUser);
+    const data = res.docs.map(el => {
+      return {
+        ...el.data(),
+        id: el.id,
+        createdAt: handleDate(el.data().createdAt),
+      };
+    });
+
+    const dataWithMeetingInfo = await Promise.all(
+      data.map(async el => {
+        const meet = await getMeeting(el.meetingId);
+        return {
+          ...el,
+          meetingInfo: {
+            ...meet.data(),
+            meetDate: handleDate(meet.data().meetDate),
+          },
+        };
+      }),
+    );
+    setAlarms(dataWithMeetingInfo);
+  };
+
   return (
     <SafeAreaView>
       <Text style={styles.title}>알림</Text>
       <View>
-        {alarmData.map((alarm, idx) => (
+        {alarms.map((alarm, idx) => (
           <AlarmElement
             key={idx}
             message={alarm.message}
-            meetingData={alarm.meetingData}
-            created_at={alarm.created_at}
+            meetingId={alarm.meetingId}
+            createdAt={alarm.createdAt}
+            meetingInfo={alarm.meetingInfo}
             type={alarm.type}
+            sender={alarm.sender}
             onPress={
               alarm.type === 'proposal'
-                ? () => navigation.navigate('AlarmDetail')
+                ? () =>
+                    navigation.navigate('AlarmDetail', {
+                      id: alarm.id,
+                      message: alarm.message,
+                      meetingId: alarm.meetingId,
+                      meetingInfo: alarm.meetingInfo,
+                      sender: alarm.sender,
+                      complete: alarm.complete,
+                    })
                 : () => setChattingConfirmModal(true)
             }
           />

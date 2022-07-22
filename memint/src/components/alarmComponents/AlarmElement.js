@@ -2,24 +2,28 @@ import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-function AlarmElement({message, meetingData, created_at, onPress}) {
+function AlarmElement({meetingInfo, createdAt, onPress, type, sender}) {
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       <Icon name="notifications" size={30} style={styles.icon} />
       <View style={styles.content}>
         <View style={styles.messageHead}>
-          <Text style={styles.message}>{message}</Text>
-          <Text>{created_at}</Text>
+          <Text style={styles.message}>
+            {type === 'proposal'
+              ? `${sender}님의 신청이 도착했습니다!`
+              : `${sender}님이 신청을 수락했습니다!`}
+          </Text>
+          <Text>{createdAt}</Text>
         </View>
-        <Text>{meetingData.title}</Text>
+        <Text>{meetingInfo.title}</Text>
         <View style={styles.meetingInfo}>
-          <Text style={styles.meetingElement}>{meetingData.region}</Text>
+          <Text style={styles.meetingElement}>{meetingInfo.region}</Text>
           <View style={styles.bar} />
-          <Text style={styles.meetingElement}>{meetingData.people}</Text>
+          <Text style={styles.meetingElement}>{meetingInfo.peopleNum}</Text>
           <View style={styles.bar} />
-          <Text style={styles.meetingElement}>{meetingData.age}</Text>
+          <Text style={styles.meetingElement}>{'30대'}</Text>
           <View style={styles.bar} />
-          <Text style={styles.meetingElement}>{meetingData.date}</Text>
+          <Text style={styles.meetingElement}>{meetingInfo.meetDate}</Text>
         </View>
       </View>
     </TouchableOpacity>

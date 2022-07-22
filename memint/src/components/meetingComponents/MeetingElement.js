@@ -3,15 +3,16 @@ import React from 'react';
 import {TouchableOpacity, View, Text, StyleSheet} from 'react-native';
 
 function MeetingElement({
+  id,
   title,
-  tags,
-  host,
-  location,
-  people,
-  age,
-  date,
+  meetingTags,
+  hostId,
+  region,
+  peopleNum,
+  meetDate,
   description,
   members,
+  waiting,
 }) {
   const navigation = useNavigation();
   return (
@@ -19,22 +20,23 @@ function MeetingElement({
       style={styles.container}
       onPress={() =>
         navigation.navigate('MeetingDetail', {
+          id,
           title,
-          tags,
-          host,
-          location,
-          people,
-          age,
-          date,
+          meetingTags,
+          hostId,
+          region,
+          peopleNum,
+          meetDate,
           description,
           members,
+          waiting,
         })
       }>
       <View>
         <Text style={styles.title}>{title}</Text>
       </View>
-      <View style={styles.tags}>
-        {tags.map((tag, idx) => (
+      <View style={styles.meetingTags}>
+        {meetingTags?.map((tag, idx) => (
           <View key={idx} style={styles.tag}>
             <Text style={styles.tagText}>{tag}</Text>
           </View>
@@ -42,16 +44,19 @@ function MeetingElement({
       </View>
       <View style={styles.infoRow}>
         <View style={styles.userInfo}>
-          <Text style={styles.username}>{host}</Text>
+          <Text style={styles.username}>{hostId}</Text>
         </View>
         <View style={styles.infoList}>
-          <Text style={[styles.infoEl]}>{location}</Text>
+          <Text style={[styles.infoEl]}>{region}</Text>
           <View style={styles.bar} />
-          <Text style={[styles.infoEl]}>{people}</Text>
+          <Text style={[styles.infoEl]}>{peopleNum + ':' + peopleNum}</Text>
           <View style={styles.bar} />
-          <Text style={[styles.infoEl]}>{age}</Text>
+          <Text style={[styles.infoEl]}>{}</Text>
           <View style={styles.bar} />
-          <Text style={[styles.infoEl]}>{date.slice(0, 10)}</Text>
+          <Text style={[styles.infoEl]}>{`${meetDate.slice(
+            5,
+            7,
+          )}월 ${meetDate.slice(9, 11)}일 ${meetDate.slice(13, -6)}시`}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -69,7 +74,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
-  tags: {
+  meetingTags: {
     marginVertical: 7,
     flexDirection: 'row',
   },

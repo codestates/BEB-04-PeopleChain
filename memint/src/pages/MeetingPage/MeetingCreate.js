@@ -17,9 +17,11 @@ import {useToast} from '../../utils/hooks/useToast';
 import SingleModal from '../../components/common/SingleModal';
 import TagElement from '../../components/meetingComponents/TagElement';
 import DoubleModal from '../../components/common/DoubleModal';
-import {createMeeting, getMeetings} from '../../lib/meeting';
+import {createMeeting} from '../../lib/Meeting';
+import {getMeetingTags} from '../../lib/MeetingTag';
 
 function MeetingCreate({route}) {
+  const loginUser = '8MspyF7xz7VHDThguMAv';
   const [submittable, setSubmittable] = useState(false);
   const [meetingInfo, setMeetingInfo] = useState({
     title: '',
@@ -32,6 +34,7 @@ function MeetingCreate({route}) {
   });
   const [confirmModalVisible, setConfirmModalVisible] = useState(false);
   const [inviteModalVisible, setInviteModalVisible] = useState(false);
+  const [tagData, setTagData] = useState({mood: [], topic: [], alcohol: []});
   const navigation = useNavigation();
   const {showToast} = useToast();
   const RegionDropDownData = [
@@ -58,16 +61,7 @@ function MeetingCreate({route}) {
     {label: '3:3', value: 3},
     {label: '4:4', value: 4},
   ];
-  const tagData = {
-    mood: [
-      '부어라 마셔라',
-      '부어라 마셔라1',
-      '부어라 마셔라2',
-      '부어라 마셔라3',
-    ],
-    topic: ['연애', '연애1', '연애2', '연애2'],
-    alcoholType: ['소주', '소주1', '소주2', '소주3'],
-  };
+
   useEffect(() => {
     const {title, description, region, peopleNum} = meetingInfo;
     if (title && description && region && peopleNum) {
@@ -75,7 +69,7 @@ function MeetingCreate({route}) {
     } else {
       setSubmittable(false);
     }
-
+    getTags();
     handleInvitedFriends();
   }, [meetingInfo, route, handleInvitedFriends]);
 
@@ -95,6 +89,24 @@ function MeetingCreate({route}) {
     route.params.friends = undefined;
   }, [meetingInfo, route, showToast]);
 
+  const getTags = async () => {
+    try {
+      const res = await getMeetingTags();
+      const data = res.docs.reduce(
+        (acc, cur) => {
+          return {
+            ...acc,
+            [cur.data().type]: acc[cur.data().type].concat(cur.data().content),
+          };
+        },
+        {mood: [], topic: [], alcohol: []},
+      );
+      setTagData(data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const handleSubmit = () => {
     if (!submittable) {
       showToast('error', '필수 항목들을 작성해주세요');
@@ -105,15 +117,17 @@ function MeetingCreate({route}) {
   };
 
   //생성 요청
-  const handleCreateMeeting = () => {
+  const handleCreateMeeting = async () => {
     const data = {
       ...meetingInfo,
-      hostId: 'hostId',
+      hostId: loginUser,
     };
     try {
       createMeeting(data);
+      //User에 room 추가하기
       setConfirmModalVisible(false);
       showToast('success', '미팅이 생성되었습니다');
+      navigation.navigate('MeetingMarket');
       //새로 만들어진 미팅 세부 페이지로 이동
     } catch (e) {
       setConfirmModalVisible(false);
@@ -280,7 +294,7 @@ function MeetingCreate({route}) {
             <View style={styles.tagCategory}>
               <Text style={styles.tagCategoryTitle}>술</Text>
               <ScrollView style={styles.tags} horizontal={true}>
-                {tagData.alcoholType.map((tag, idx) => (
+                {tagData.alcohol.map((tag, idx) => (
                   <TagElement
                     key={idx}
                     tag={tag}

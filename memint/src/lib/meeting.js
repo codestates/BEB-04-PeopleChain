@@ -1,7 +1,6 @@
 import firestore from '@react-native-firebase/firestore';
 
 const meetingCollection = firestore().collection('Meeting');
-
 //모든 모집중인 미팅 조회
 export const getMeetings = async () => {
   return await meetingCollection.where('status', '==', 'open').get();
@@ -46,14 +45,14 @@ export const updateWaitingOut = (meetingId, userId) => {
 //미팅 멤버 추가 (신청 수락)
 export const updateMembersIn = (meetingId, userId) => {
   return meetingCollection.doc(meetingId).update({
-    member: firestore.FieldValue.arrayUnion({[userId]: 'accepted'}),
+    members: firestore.FieldValue.arrayUnion({[userId]: 'accepted'}),
   });
 };
 
 //미팅 멤버 삭제
-export const updateMemberOut = (meetingId, userId) => {
+export const updateMembersOut = (meetingId, userId) => {
   return meetingCollection.doc(meetingId).update({
-    member: firestore.FieldValue.arrayRemove(userId), //or <userId,status>
+    members: firestore.FieldValue.arrayRemove(userId), //or <userId,status>
   });
 };
 

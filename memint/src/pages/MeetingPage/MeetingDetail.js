@@ -1,18 +1,83 @@
 import React, {useState} from 'react';
 import {Text, SafeAreaView, View, StyleSheet, TextInput} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import BackButton from '../../components/common/BackButton';
 import BasicButton from '../../components/common/BasicButton';
 import DoubleModal from '../../components/common/DoubleModal';
+import DetailMembers from '../../components/meetingComponents/DetailMembers';
+import {createMeetingProposal} from '../../lib/Alarm';
+import {updateWaitingIn} from '../../lib/Meeting';
 import {useToast} from '../../utils/hooks/useToast';
 
 function MeetingDetail({route}) {
-  const {title, tags, host, location, people, age, date, description, members} =
-    route.params;
+  const loginUser = 'dbmtzzMFmqzshYNSOVo5';
+  const {
+    id,
+    title,
+    meetingTags,
+    hostId,
+    region,
+    peopleNum,
+    meetDate,
+    description,
+    members,
+    waiting,
+  } = route.params;
   const [modalVisible_1, setModalVisible_1] = useState(false);
   const [modalVisible_2, setModalVisible_2] = useState(false);
   const [textMessage, setTextMessage] = useState('');
   const {showToast} = useToast();
+  //멤버에 loginUser가 있는지 확인
+  const renderByUser = () => {
+    if (
+      members.reduce((acc, cur) => {
+        if (cur[loginUser] === 'accepted') {
+          return true || acc;
+        } else {
+          return acc;
+        }
+      }, false)
+    ) {
+      return <Text>멤버입니다.</Text>;
+    } else if (waiting && waiting.indexOf(loginUser) !== -1) {
+      return <Text>미팅 수락 대기</Text>;
+    } else {
+      return (
+        <BasicButton
+          width={300}
+          height={50}
+          textSize={17}
+          text="미팅 신청 보내기"
+          onPress={() => {
+            setModalVisible_1(true);
+          }}
+        />
+      );
+    }
+  };
+  const handleCreateProposal = () => {
+    try {
+      const data = {
+        sender: loginUser, //로그인된 유저
+        receiver: hostId,
+        meetingId: id,
+        message: textMessage,
+      };
+      createMeetingProposal(data);
+      //meeting waiting 추가
+      updateWaitingIn(id, loginUser); //로그인된 유저
+      setModalVisible_2(!modalVisible_2);
+      setTextMessage('');
+      showToast(
+        'success',
+        '미팅 신청을 보냈습니다\n주선자의 수락을 기다려주세요!',
+      );
+    } catch (e) {
+      setModalVisible_2(!modalVisible_2);
+      setTextMessage('');
+      showToast('error', '미팅 신청에 실패했습니다.\n 다시 시도해주세요');
+      console.log(e);
+    }
+  };
   return (
     <SafeAreaView>
       <BackButton />
@@ -20,8 +85,8 @@ function MeetingDetail({route}) {
         <View style={styles.titleRow}>
           <Text style={styles.title}>{title}</Text>
         </View>
-        <View style={styles.tags}>
-          {tags.map((tag, idx) => {
+        <View style={styles.meetingTags}>
+          {meetingTags.map((tag, idx) => {
             return (
               <View key={idx} style={styles.tag}>
                 <Text style={styles.tagText}>{tag}</Text>
@@ -33,62 +98,26 @@ function MeetingDetail({route}) {
           <Text>{description}</Text>
         </View>
         <View style={styles.infoRow}>
-          <Text style={styles.infoEl}>{location}</Text>
+          <Text style={styles.infoEl}>{region}</Text>
           <View style={styles.bar} />
-          <Text style={styles.infoEl}>{date}</Text>
+          <Text style={styles.infoEl}>{`${meetDate.slice(
+            5,
+            7,
+          )}월 ${meetDate.slice(9, 11)}일 ${meetDate.slice(13, -6)}시`}</Text>
         </View>
         <View>
-          <View style={styles.memberBox}>
-            <View style={styles.memberBoxInfo}>
-              <Text style={styles.boldFont}>현재 모인 멤버</Text>
-              <View style={styles.memberBoxInfoPeoPle}>
-                <Text style={styles.boldFont}>{people}</Text>
-                <Text style={styles.grayFont}>{people}</Text>
-              </View>
-            </View>
-            <View style={styles.memberList}>
-              {members.map((member, idx) => (
-                <View key={idx} style={styles.memberInfo}>
-                  <View style={styles.memberInfoProfile}>
-                    <Icon name="help" size={50} color={'gray'} />
-                  </View>
-                  <View style={styles.memberInfoContent}>
-                    <Text style={styles.memberInfoContentEl}>
-                      {member.username}
-                    </Text>
-                    <View style={styles.memberGenderAge}>
-                      <Text style={styles.memberInfoContentEl}>
-                        {member.gender}
-                      </Text>
-                      <Text style={styles.memberInfoContentEl}>
-                        {member.age}
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-              ))}
-            </View>
-          </View>
+          <DetailMembers peopleNum={peopleNum} members={members} />
         </View>
-        <View style={styles.buttonRow}>
-          <BasicButton
-            width={300}
-            height={50}
-            textSize={17}
-            text="미팅 신청 보내기"
-            onPress={() => {
-              setModalVisible_1(true);
-            }}
-          />
-        </View>
+        <View style={styles.buttonRow}>{renderByUser()}</View>
       </View>
+
       <DoubleModal
         text="미팅을 신청하시겠습니까?"
-        //body={<Text>정말로?</Text>}
         nButtonText="아니요"
         pButtonText="신청하기"
         modalVisible={modalVisible_1}
         setModalVisible={setModalVisible_1}
+        nFunction={() => setModalVisible_1(!modalVisible_1)}
         pFunction={() => {
           setModalVisible_1(false);
           setModalVisible_2(true);
@@ -111,14 +140,8 @@ function MeetingDetail({route}) {
         pButtonText="신청 보내기"
         modalVisible={modalVisible_2}
         setModalVisible={setModalVisible_2}
-        pFunction={() => {
-          setModalVisible_2(!modalVisible_2);
-          setTextMessage('');
-          showToast(
-            'success',
-            '미팅 신청을 보냈습니다\n주선자의 수락을 기다려주세요!',
-          );
-        }}
+        nFunction={() => setModalVisible_2(!modalVisible_2)}
+        pFunction={handleCreateProposal}
       />
     </SafeAreaView>
   );
@@ -135,7 +158,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: 'bold',
   },
-  tags: {
+  meetingTags: {
     marginVertical: 10,
     flexDirection: 'row',
   },
@@ -162,41 +185,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'gray',
     width: 2,
     height: 20,
-  },
-  memberBox: {
-    backgroundColor: 'white',
-    padding: 20,
-    marginVertical: 10,
-  },
-  memberBoxInfo: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 10,
-  },
-  memberList: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-  memberBoxInfoPeoPle: {
-    flexDirection: 'row',
-  },
-  memberInfo: {
-    flexDirection: 'row',
-    marginVertical: 10,
-    marginHorizontal: 5,
-    alignItems: 'center',
-  },
-  memberGenderAge: {
-    flexDirection: 'row',
-  },
-  memberInfoContentEl: {
-    margin: 5,
-  },
-  boldFont: {
-    fontWeight: 'bold',
-  },
-  grayFont: {
-    color: 'gray',
   },
   buttonRow: {
     flexDirection: 'row',

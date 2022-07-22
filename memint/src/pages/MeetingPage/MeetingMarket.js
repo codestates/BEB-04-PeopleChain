@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Text,
   View,
@@ -10,111 +10,42 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import MeetingElement from '../../components/meetingComponents/MeetingElement';
 import WalletButton from '../../components/common/WalletButton';
-import RNPickerSelect from 'react-native-picker-select';
-import DoubleModal from '../../components/common/DoubleModal';
-import DatePicker from '../../components/common/DatePicker';
 import SingleModal from '../../components/common/SingleModal';
+import {getMeetings} from '../../lib/Meeting';
+import {useIsFocused} from '@react-navigation/native';
+import {handleDate} from '../../utils/common/Functions';
+import RNPickerSelect from 'react-native-picker-select';
+import FilterModal from '../../components/meetingComponents/FilterModal';
 
 function MeetingMarket({navigation}) {
+  const [meetings, setMeetings] = useState([]);
   const [confirmModalVisible, setConfirmModalVisible] = useState(false);
-  const [locationCheck, setlocationCheck] = useState(false);
   const [regionSelect, setRegionSelect] = useState(0);
   const [sortSelect, setSortSelect] = useState(undefined);
   const [filterPeopleSelect, setFilterPeopleSelect] = useState(undefined);
   const [filterModalVisible, setFilterModalVisible] = useState(false);
   const [filterDate, setFilterDate] = useState(new Date());
-  const data = [
-    {
-      title: '금요일 밤 노실 분',
-      host: 'username',
-      tags: ['#부어라 마셔라', '#술게임 환영'],
-      description:
-        '술 한잔 하실 여성분들 분위기 잘 맞춰드려요 ㅎㅎ \n오늘 후회없게 재밌게 한잔해요',
-      location: '강남',
-      people: '2(남):0(여)',
-      members: [
-        {username: '대현동 불주먹', gender: '남', age: '30대 초반'},
-        {username: '아현동 돌려차기', gender: '남', age: '30대 초반'},
-      ],
-      age: '30초',
-      date: '7월 8일 (금) 오후 6시',
-    },
-    {
-      title: '금요일 밤 노실 분',
-      host: 'username',
-      tags: ['#부어라 마셔라', '#술게임 환영'],
-      description:
-        '술 한잔 하실 여성분들 분위기 잘 맞춰드려요 ㅎㅎ \n오늘 후회없게 재밌게 한잔해요',
-      location: '강남',
-      people: '2(남):0(여)',
-      members: [
-        {username: '대현동 불주먹', gender: '남', age: '30대 초반'},
-        {username: '아현동 돌려차기', gender: '남', age: '30대 초반'},
-      ],
-      age: '30초',
-      date: '7월 8일 (금) 오후 6시',
-    },
-    {
-      title: '금요일 밤 노실 분',
-      host: 'username',
-      tags: ['#부어라 마셔라', '#술게임 환영'],
-      description:
-        '술 한잔 하실 여성분들 분위기 잘 맞춰드려요 ㅎㅎ \n오늘 후회없게 재밌게 한잔해요',
-      location: '강남',
-      people: '2(남):0(여)',
-      members: [
-        {username: '대현동 불주먹', gender: '남', age: '30대 초반'},
-        {username: '아현동 돌려차기', gender: '남', age: '30대 초반'},
-      ],
-      age: '30초',
-      date: '7월 8일 (금) 오후 6시',
-    },
-    {
-      title: '금요일 밤 노실 분',
-      host: 'username',
-      tags: ['#부어라 마셔라', '#술게임 환영'],
-      description:
-        '술 한잔 하실 여성분들 분위기 잘 맞춰드려요 ㅎㅎ \n오늘 후회없게 재밌게 한잔해요',
-      location: '강남',
-      people: '2(남):0(여)',
-      members: [
-        {username: '대현동 불주먹', gender: '남', age: '30대 초반'},
-        {username: '아현동 돌려차기', gender: '남', age: '30대 초반'},
-      ],
-      age: '30초',
-      date: '7월 8일 (금) 오후 6시',
-    },
-    {
-      title: '금요일 밤 노실 분',
-      host: 'username',
-      tags: ['#부어라 마셔라', '#술게임 환영'],
-      description:
-        '술 한잔 하실 여성분들 분위기 잘 맞춰드려요 ㅎㅎ \n오늘 후회없게 재밌게 한잔해요',
-      location: '강남',
-      people: '2(남):0(여)',
-      members: [
-        {username: '대현동 불주먹', gender: '남', age: '30대 초반'},
-        {username: '아현동 돌려차기', gender: '남', age: '30대 초반'},
-      ],
-      age: '30초',
-      date: '7월 8일 (금) 오후 6시',
-    },
-    {
-      title: '금요일 밤 노실 분',
-      host: 'username',
-      tags: ['#부어라 마셔라', '#술게임 환영'],
-      description:
-        '술 한잔 하실 여성분들 분위기 잘 맞춰드려요 ㅎㅎ \n오늘 후회없게 재밌게 한잔해요',
-      location: '강남',
-      people: '2(남):0(여)',
-      members: [
-        {username: '대현동 불주먹', gender: '남', age: '30대 초반'},
-        {username: '아현동 돌려차기', gender: '남', age: '30대 초반'},
-      ],
-      age: '30초',
-      date: '7월 8일 (금) 오후 6시',
-    },
-  ];
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    getMeetingMarket();
+  }, [isFocused]);
+
+  const getMeetingMarket = async () => {
+    const res = await getMeetings();
+    const data = res.docs.map(el => {
+      return {
+        ...el.data(),
+        id: el.id,
+        meetDate: handleDate(el.data().meetDate),
+      };
+    });
+    //hostNickname, hostAge 데이터 추가,
+    //members 데이터 추가
+    setMeetings(data);
+  };
+
   const RegionDropDownData = [
     {label: '서울 전체', value: 1},
     {label: '강남구', value: 2},
@@ -145,13 +76,10 @@ function MeetingMarket({navigation}) {
     {label: '3:3', value: 3},
     {label: '4:4', value: 4},
   ];
+
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableOpacity
-        style={styles.areaEnd}
-        onPress={() => {
-          setlocationCheck(!locationCheck);
-        }}>
+      <TouchableOpacity style={styles.areaEnd}>
         <RNPickerSelect
           placeholder={{}}
           onValueChange={value => {
@@ -193,52 +121,14 @@ function MeetingMarket({navigation}) {
           }}>
           <Icon name="filter-alt" size={15} />
           <Text> 조건 설정</Text>
-          <DoubleModal
-            body={
-              <View style={styles.filterContent}>
-                <View style={styles.filterElement}>
-                  <Text style={styles.filterText}>인원</Text>
-                  <RNPickerSelect
-                    placeholder={{label: '선택'}}
-                    onValueChange={value => {
-                      setFilterPeopleSelect(value);
-                    }}
-                    items={FilterPeopleDropDownData}
-                    value={filterPeopleSelect}
-                    style={{
-                      inputIOS: {
-                        fontSize: 16,
-                        color: 'black',
-                      },
-                      placeholder: {
-                        fontSize: 16,
-                        color: 'gray',
-                      },
-                    }}
-                  />
-                </View>
-                <View style={styles.filterElement}>
-                  <Text style={styles.filterText}>날짜</Text>
-                  <DatePicker
-                    value={filterDate}
-                    onChange={(event, date) => {
-                      setFilterDate(date);
-                    }}
-                  />
-                </View>
-                <View style={styles.filterElement}>
-                  <Text style={styles.filterText}>태그</Text>
-                </View>
-              </View>
-            }
-            nButtonText="닫기"
-            pButtonText="적용"
-            modalVisible={filterModalVisible}
-            setModalVisible={setFilterModalVisible}
-            pFunction={() => {}}
-            nFunction={() => {
-              setFilterModalVisible(!filterModalVisible);
-            }}
+          <FilterModal
+            setFilterPeopleSelect={setFilterPeopleSelect}
+            FilterPeopleDropDownData={FilterPeopleDropDownData}
+            filterPeopleSelect={filterPeopleSelect}
+            filterDate={filterDate}
+            setFilterDate={setFilterDate}
+            filterModalVisible={filterModalVisible}
+            setFilterModalVisible={setFilterModalVisible}
           />
         </TouchableOpacity>
         <TouchableOpacity style={styles.listfilter}>
@@ -255,19 +145,20 @@ function MeetingMarket({navigation}) {
       </View>
 
       <ScrollView style={styles.meetingLists}>
-        {data.map((meeting, idx) => {
+        {meetings.map((meeting, idx) => {
           return (
             <MeetingElement
               key={idx}
+              id={meeting.id}
               title={meeting.title}
-              tags={meeting.tags}
-              host={meeting.host}
-              location={meeting.location}
-              people={meeting.people}
-              age={meeting.age}
-              date={meeting.date}
+              meetingTags={meeting.meetingTags}
+              hostId={meeting.hostId}
+              region={meeting.region}
+              peopleNum={meeting.peopleNum}
+              meetDate={meeting.meetDate}
               description={meeting.description}
               members={meeting.members}
+              waiting={meeting.waiting}
             />
           );
         })}
@@ -308,19 +199,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  filterContent: {
-    marginBottom: 30,
-    marginHorizontal: 10,
-  },
-  filterElement: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  filterText: {
-    fontWeight: 'bold',
-    fontSize: 16,
-    marginHorizontal: 30,
   },
 });
 
