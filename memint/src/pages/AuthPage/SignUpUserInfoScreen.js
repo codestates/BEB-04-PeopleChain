@@ -1,5 +1,5 @@
-import React, {useRef, useState, useRoute} from 'react';
-
+import React, {useState} from 'react';
+import {useRoute} from '@react-navigation/native';
 import {
   Alert,
   Keyboard,
@@ -16,23 +16,48 @@ import BorderedInput from '../../components/AuthComponents/BorderedInput';
 import BackButton from '../../components/common/BackButton';
 import CameraButton from '../../components/AuthComponents/CameraButton';
 import {signUp} from '../../lib/Auth';
-const SignUpUserInfoScreen = ({navigation: {navigate}}) => {
+import {createUser, getUser} from '../../lib/Users';
+
+const SignUpUserInfoScreen = ({navigation, route}) => {
+  // const {params} = useRoute();
+  const {uid} = route.params || {};
+  // console.log(route.params);
+  // console.log(route.params);
   const [form, setForm] = useState({
-    email: '',
-    nickname: '',
-    password: '',
-    confirmPassword: '',
+    nickName: '',
     birthYear: '',
     birthMonth: '',
-    bitdyDay: '',
+    birthDay: '',
     gender: '',
   });
-  const passwordRef = useRef();
-  const confirmPasswordRef = useRef();
-  const nicknameRef = useRef();
 
+  const onSubmitTest = async () => {
+    try {
+      const profile = await getUser(uid);
+      console.log(profile);
+    } catch (e) {
+      console.log(e);
+    }
+  };
   const createChangeTextHandler = name => value => {
     setForm({...form, [name]: value});
+  };
+  const onSubmit = () => {
+    try {
+      Keyboard.dismiss();
+      console.log('uid is ' + uid);
+      console.log(form);
+      createUser({
+        userId: uid,
+        nickName: form.nickName,
+        gender: form.gender,
+        birth: `${form.birthYear}년 ${form.birthMonth}월 ${form.birthDay}일`,
+        picture: null,
+      });
+      navigation.push('SignUpUserDetail', {uid: uid});
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const onSubmitSignUp = async () => {
@@ -45,21 +70,13 @@ const SignUpUserInfoScreen = ({navigation: {navigate}}) => {
       try {
         const {user} = await signUp(info);
         console.log(user);
-        navigate('SignUpUserDetail');
+        navigation.navigate('SignUpUserDetail');
       } catch (e) {
         Alert.alert('실패');
         console.log(e);
       } finally {
       }
     }
-  };
-
-  const onSubmit = () => {
-    Keyboard.dismiss();
-    console.log(form);
-  };
-  const goToNextPage = () => {
-    navigate('SignUpUserDetail');
   };
 
   return (
@@ -71,62 +88,15 @@ const SignUpUserInfoScreen = ({navigation: {navigate}}) => {
         <View style={styles.fullscreenSub}>
           <CameraButton />
           <View style={styles.form}>
-            <Text style={styles.infoText}>이메일</Text>
-            <BorderedInput
-              size="large"
-              placeholder="이메일"
-              value={form.email}
-              onChangeText={createChangeTextHandler('email')}
-              autoCapitalize="none"
-              autoCorrect={false}
-              autoCompleteType="email"
-              keyboardType="email-address"
-              returnKeyType={'next'}
-              onSubmitEditing={() => nicknameRef.current.focus()}
-            />
-          </View>
-          <View style={styles.form}>
             <Text style={styles.infoText}>닉네임</Text>
             <BorderedInput
               size="large"
               placeholder="닉네임"
-              value={form.nickname}
-              onChangeText={createChangeTextHandler('nickname')}
+              value={form.nickName}
+              onChangeText={createChangeTextHandler('nickName')}
               autoCapitalize="none"
               autoCorrect={false}
               returnKeyType={'next'}
-              ref={nicknameRef}
-              onSubmitEditing={() => passwordRef.current.focus()}
-            />
-          </View>
-          <View style={styles.form}>
-            <Text style={styles.infoText}>비밀번호</Text>
-            <BorderedInput
-              size="large"
-              placeholder="비밀번호"
-              value={form.password}
-              onChangeText={createChangeTextHandler('password')}
-              autoCapitalize="none"
-              autoCorrect={false}
-              returnKeyType={'next'}
-              secureTextEntry
-              ref={passwordRef}
-              onSubmitEditing={() => confirmPasswordRef.current.focus()}
-            />
-          </View>
-
-          <View style={styles.form}>
-            <Text style={styles.infoText}>비밀번호 확인 </Text>
-            <BorderedInput
-              size="large"
-              placeholder="비밀번호 확인"
-              value={form.confirmPassword}
-              onChangeText={createChangeTextHandler('confirmPassword')}
-              autoCapitalize="none"
-              autoCorrect={false}
-              returnKeyType={'done'}
-              secureTextEntry
-              ref={confirmPasswordRef}
             />
           </View>
           <View style={styles.form}>
@@ -148,6 +118,7 @@ const SignUpUserInfoScreen = ({navigation: {navigate}}) => {
               ]}
               onSelect={(selectedItem, index) => {
                 console.log(selectedItem, index);
+                setForm({...form, birthYear: selectedItem});
               }}
               defaultButtonText=" "
               buttonStyle={styles.dropdown}
@@ -170,6 +141,7 @@ const SignUpUserInfoScreen = ({navigation: {navigate}}) => {
               ]}
               onSelect={(selectedItem, index) => {
                 console.log(selectedItem, index);
+                setForm({...form, birthMonth: selectedItem});
               }}
               defaultButtonText=" "
               buttonStyle={styles.dropdownSmall}
@@ -211,6 +183,7 @@ const SignUpUserInfoScreen = ({navigation: {navigate}}) => {
               ]}
               onSelect={(selectedItem, index) => {
                 console.log(selectedItem, index);
+                setForm({...form, birthDay: selectedItem});
               }}
               defaultButtonText=" "
               buttonStyle={styles.dropdownSmall}
@@ -223,6 +196,7 @@ const SignUpUserInfoScreen = ({navigation: {navigate}}) => {
               data={['남자', '여자']}
               onSelect={(selectedItem, index) => {
                 console.log(selectedItem, index);
+                setForm({...form, gender: selectedItem});
               }}
               defaultButtonText=" "
               buttonStyle={styles.dropdown}
@@ -240,7 +214,7 @@ const SignUpUserInfoScreen = ({navigation: {navigate}}) => {
             margin={[5, 5, 5, 5]}
             text="다음 단계"
             hasMarginBottom
-            onPress={onSubmitSignUp}
+            onPress={onSubmit}
           />
         </View>
       </SafeAreaView>
@@ -282,7 +256,7 @@ const styles = StyleSheet.create({
     // fontWeight: 'bold',
   },
   form: {
-    marginTop: 16,
+    marginTop: 32,
     marginBottom: 16,
     width: '100%',
     paddingHorizontal: 32,

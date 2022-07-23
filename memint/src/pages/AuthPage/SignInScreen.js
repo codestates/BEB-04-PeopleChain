@@ -19,9 +19,11 @@ import memintLogo from '../../assets/icons/memint.png';
 import useUser from '../../utils/hooks/UseUser';
 import useAuthActions from '../../utils/hooks/UseAuthActions';
 import {signIn} from '../../lib/Auth';
+import {getUser} from '../../lib/Users';
+
 const SignInScreen = ({navigation, route}) => {
   const userInfo = useUser();
-  const {authorize} = useAuthActions();
+  const {saveInfo} = useAuthActions();
 
   const [form, setForm] = useState({
     email: '',
@@ -34,7 +36,7 @@ const SignInScreen = ({navigation, route}) => {
   const [loading, setLoading] = useState();
   const goToSignUp = () => {
     Keyboard.dismiss();
-    navigation.navigate('VerifyMobile');
+    navigation.navigate('SignUp');
     console.log(form);
   };
 
@@ -45,11 +47,15 @@ const SignInScreen = ({navigation, route}) => {
     setLoading(true);
     try {
       const {user} = await signIn(info);
-      console.log(user);
-      authorize({
+      const userDetail = await getUser(user.uid);
+      console.log('userDetail is');
+      console.log(userDetail);
+      saveInfo({
         id: user.uid,
-        username: user.email,
-        displayName: user.displayName,
+        email: user.email,
+        nickName: userDetail.nickName,
+        gender: userDetail.gender,
+        birth: userDetail.birth,
       }),
         navigation.navigate('Main');
     } catch (e) {

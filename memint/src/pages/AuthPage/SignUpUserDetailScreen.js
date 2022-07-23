@@ -12,19 +12,37 @@ import BackButton from '../../components/common/BackButton';
 import BasicButton from '../../components/common/BasicButton';
 import SelectDropdown from 'react-native-select-dropdown';
 import TagElement from '../../components/AuthComponents/TagElement';
+import {createProperty} from '../../lib/Users';
 
 const SignUpUserDetailScreen = ({navigation: {navigate}, route}) => {
+  const {uid} = route.params || {};
   const [drinkInfo, setDrinkInfo] = useState({
-    drink: [],
+    drinkCapa: '',
     drinkStyle: [],
+    alcoholType: [],
   });
+  console.log(drinkInfo);
 
   const goToNextPage = () => {
-    navigate('SignUpAgreement');
+    createProperty({
+      userId: uid,
+      drinkCapa: drinkInfo.drinkCapa,
+      drinkStyle: drinkInfo.drinkStyle,
+      alcoholType: drinkInfo.alcoholType,
+    });
+    navigate('SignUpAgreement', route.params);
   };
 
   const tagData = {
-    drink: ['소주', '맥주', '보드카', '칵테일', '고량주', '막걸리', '와인'],
+    alcoholType: [
+      '소주',
+      '맥주',
+      '보드카',
+      '칵테일',
+      '고량주',
+      '막걸리',
+      '와인',
+    ],
     drinkStyle: [
       '진지한 분위기를 좋아해요. 함께 이야기 나눠요!',
       '신나는 분위기를 좋아해요. 친해져요!',
@@ -53,6 +71,7 @@ const SignUpUserDetailScreen = ({navigation: {navigate}, route}) => {
               ]}
               onSelect={(selectedItem, index) => {
                 console.log(selectedItem, index);
+                setDrinkInfo({...drinkInfo, drinkCapa: selectedItem});
               }}
               defaultButtonText=" "
               buttonStyle={styles.dropdown}
@@ -65,12 +84,13 @@ const SignUpUserDetailScreen = ({navigation: {navigate}, route}) => {
             선호하는 주류를 선택해주세요.(중복가능)
           </Text>
           <View style={styles.tagsContainer}>
-            {tagData.drink.map((tag, idx) => (
+            {tagData.alcoholType.map((tag, idx) => (
               <TagElement
                 key={idx}
                 tag={tag}
                 drinkInfo={drinkInfo}
                 setDrinkInfo={setDrinkInfo}
+                type="alcoholType"
               />
             ))}
           </View>
@@ -84,6 +104,7 @@ const SignUpUserDetailScreen = ({navigation: {navigate}, route}) => {
                 tag={tag}
                 drinkInfo={drinkInfo}
                 setDrinkInfo={setDrinkInfo}
+                type="drinkStyle"
               />
             ))}
           </View>
@@ -95,7 +116,7 @@ const SignUpUserDetailScreen = ({navigation: {navigate}, route}) => {
             margin={[5, 5, 5, 5]}
             text="다음 단계"
             hasMarginBottom
-            onPress={() => navigate('SignUpAgreement', route.params)}
+            onPress={goToNextPage}
           />
         </View>
       </SafeAreaView>

@@ -1,4 +1,6 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
+import {Text} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {NavigationContainer} from '@react-navigation/native';
 import {Provider} from 'react-redux';
 // import {createStore} from 'redux';
@@ -12,6 +14,7 @@ import Toast from './components/common/Toast';
 import ChattingRoom from './pages/ChattingPage/ChattingRoom';
 import {ChatContextProvider} from './components/chattingComponents/context/chatContext';
 import SignInScreen from './pages/AuthPage/SignInScreen';
+import SignUpScreen from './pages/AuthPage/SignUpScreen';
 import VerifyMobileScreen from './pages/AuthPage/VerifyMobileScreen';
 import SignUpUserInfoScreen from './pages/AuthPage/SignUpUserInfoScreen';
 import SignUpUserDetailScreen from './pages/AuthPage/SignUpUserDetailScreen';
@@ -23,32 +26,19 @@ import FindIdShowIdScreen from './pages/AuthPage/FindIdShowIdScreen';
 import FindPWVerifyScreen from './pages/AuthPage/FindPWVerifyScreen';
 import SetNewPWScreen from './pages/AuthPage/SetNewPWScreen';
 import WalletOffchainScreen from './pages/WalletPage/WalletOffchainScreen';
-import useUser from './hooks/UseUser';
+import useUser from './utils/hooks/UseUser';
 import useAuthActions from './utils/hooks/UseAuthActions';
 import {subscribeAuth} from './lib/Auth';
+
 const Stack = createNativeStackNavigator();
 const store = createStore(rootReducer);
 
 function App() {
   const userInfo = useUser();
   const {authorize, logout} = useAuthActions();
-  useEffect(() => {
-    subscribeAuth(currentUser => {
-      if (currentUser) {
-        authorize({
-          id: currentUser.uid,
-          username: currentUser.email,
-          displayName: currentUser.displayName,
-        });
-      } else {
-        logout();
-      }
-    });
-  }, [authorize, logout]);
-  console.log('@@UseEffect Re-rendering@@@@');
-  console.log('currentUser is');
-  console.log(userInfo);
+  const [initialRouteName, setInitialRouteName] = useState('SignIn');
 
+  const [initializing, setInitializing] = useState(true);
   useEffect(() => {
     try {
       console.log('rendering splash');
@@ -61,14 +51,51 @@ function App() {
     }
   }, []);
 
+  ////////
+  useEffect(() => {
+    const unsubscribe = subscribeAuth(user => {
+      if (user) {
+        authorize({
+          id: user.uid,
+          email: user.email,
+        });
+        setInitialRouteName('Main');
+      } else {
+        logout();
+        setInitialRouteName('SignIn');
+      }
+      if (initializing) {
+        setInitializing(false);
+      }
+    });
+    return unsubscribe;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  if (initializing) {
+    return null;
+  }
+  console.log('@@UseEffect Re-rendering@@@@');
+  console.log('currentUser is');
+  console.log(userInfo);
+  // if (!user) {
+  //   console.log('Login Necessary');
+  // } else {
+  //   console.log('welcome' + user.email);
+  // }
   return (
     <NavigationContainer>
       <ToastProvider>
         <ChatContextProvider>
-          <Stack.Navigator initialRouteName="SignIn">
+          <Stack.Navigator initialRouteName={initialRouteName}>
             <Stack.Screen
               name="SignIn"
               component={SignInScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="SignUp"
+              component={SignUpScreen}
               options={{headerShown: false}}
             />
             <Stack.Screen
