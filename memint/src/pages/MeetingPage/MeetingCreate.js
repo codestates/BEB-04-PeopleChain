@@ -19,7 +19,7 @@ import TagElement from '../../components/meetingComponents/TagElement';
 import DoubleModal from '../../components/common/DoubleModal';
 import {createMeeting} from '../../lib/Meeting';
 import {getMeetingTags} from '../../lib/MeetingTag';
-import useUser from '../../utils/hooks/UseUser';
+import useUser from '../../utils/hooks/UseAuth';
 
 function MeetingCreate({route}) {
   const userInfo = useUser();

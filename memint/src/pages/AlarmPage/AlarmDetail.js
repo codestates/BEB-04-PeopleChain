@@ -6,7 +6,7 @@ import BasicButton from '../../components/common/BasicButton';
 import {createMeetingAccept, updateMeetingProposal} from '../../lib/Alarm';
 import {updateMembersIn, updateWaitingOut} from '../../lib/Meeting';
 import {useToast} from '../../utils/hooks/useToast';
-import useUser from '../../utils/hooks/UseUser';
+import useUser from '../../utils/hooks/UseAuth';
 
 function AlarmDetail({route}) {
   const userInfo = useUser();

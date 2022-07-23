@@ -5,7 +5,7 @@ import DoubleModal from '../../components/common/DoubleModal';
 import {getAlarmsById} from '../../lib/Alarm';
 import {getMeeting} from '../../lib/Meeting';
 import {handleDate} from '../../utils/common/Functions';
-import useUser from '../../utils/hooks/UseUser';
+import useUser from '../../utils/hooks/UseAuth';
 
 function AlarmPage({navigation}) {
   const userInfo = useUser();

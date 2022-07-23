@@ -26,7 +26,7 @@ import FindIdShowIdScreen from './pages/AuthPage/FindIdShowIdScreen';
 import FindPWVerifyScreen from './pages/AuthPage/FindPWVerifyScreen';
 import SetNewPWScreen from './pages/AuthPage/SetNewPWScreen';
 import WalletOffchainScreen from './pages/WalletPage/WalletOffchainScreen';
-import useUser from './utils/hooks/UseUser';
+import useAuth from './utils/hooks/UseAuth';
 import useAuthActions from './utils/hooks/UseAuthActions';
 import {subscribeAuth} from './lib/Auth';
 
@@ -34,7 +34,7 @@ const Stack = createNativeStackNavigator();
 const store = createStore(rootReducer);
 
 function App() {
-  const userInfo = useUser();
+  const userInfo = useAuth();
   const {authorize, logout} = useAuthActions();
   const [initialRouteName, setInitialRouteName] = useState('SignIn');
 

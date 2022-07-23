@@ -1,8 +1,8 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
-  user: null, //관리할 state 초기값 설정
-  userInfo: null,
+  auth: null, //관리할 state 초기값 설정
+  user: null,
 };
 
 const authSlice = createSlice({
@@ -12,16 +12,14 @@ const authSlice = createSlice({
     // state 변화할 action 이름 선언
     authorize(state, action) {
       // action의 인자값은 무조건 action.payload로 받음
-      console.log('state.user is ');
-      console.log(action.payload);
-      state.user = action.payload;
+      state.auth = action.payload;
     },
     saveInfo(state, action) {
-      state.userInfo = action.payload;
+      state.user = action.payload;
     },
     // action 인자값 없는 경우
     logout(state) {
-      state.user = null;
+      state.auth = null;
     },
   },
 });

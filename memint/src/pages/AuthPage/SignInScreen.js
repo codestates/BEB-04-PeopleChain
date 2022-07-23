@@ -16,13 +16,14 @@ import OauthButton from '../../components/AuthComponents/OauthButton';
 import SignForm from '../../components/AuthComponents/SignForm';
 import SignButtons from '../../components/AuthComponents/SignButtons';
 import memintLogo from '../../assets/icons/memint.png';
-import useUser from '../../utils/hooks/UseUser';
+import useAuth from '../../utils/hooks/UseAuth';
 import useAuthActions from '../../utils/hooks/UseAuthActions';
 import {signIn} from '../../lib/Auth';
 import {getUser} from '../../lib/Users';
-
+import useUser from '../../utils/hooks/UseUser';
 const SignInScreen = ({navigation, route}) => {
   const userInfo = useUser();
+
   const {saveInfo} = useAuthActions();
 
   const [form, setForm] = useState({
