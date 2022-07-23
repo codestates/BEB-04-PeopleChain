@@ -62,7 +62,7 @@ function MyMeMin({myMeMin}) {
         {myMeMin.valid ? (
           <View style={{marginLeft: 40}}>
             <Image
-              source={require('../../Images/nftBadge.png')}
+              source={require('../../assets/icons/nftBadge.png')}
               style={{...styles.badge, left: 0, top: -75}}
             />
           </View>
@@ -121,7 +121,7 @@ function MyNFTs({item}) {
           />
 
           <Image
-            source={require('../../Images/nftBadge.png')}
+            source={require('../../assets/icons/nftBadge.png')}
             style={styles.badge}
           />
         </>

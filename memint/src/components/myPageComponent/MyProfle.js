@@ -37,7 +37,7 @@ function MyProfile({User, navigation}) {
             }}
           />
           <Image
-            source={require('../../Images/nftBadge.png')}
+            source={require('../../assets/icons/nftBadge.png')}
             style={styles.badge}
           />
         </View>
