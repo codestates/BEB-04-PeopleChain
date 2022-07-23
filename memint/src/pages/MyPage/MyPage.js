@@ -1,13 +1,17 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {SafeAreaView, ScrollView, View, StyleSheet} from 'react-native';
 import BasicButton from '../../components/common/BasicButton';
 import MyMeetingList from '../../components/myPageComponent/MyMeetingList';
 import ParticipatedMeetingList from '../../components/myPageComponent/ParticipatedMeetingList';
 import MyProfile from '../../components/myPageComponent/MyProfle';
+import {getUser} from '../../lib/Users';
+import useUser from '../../hooks/UseUser';
 
 function MyPage({navigation}) {
+  const userInfo = useUser();
+
   const dummyUser = {
-    nickName: '김개똥',
+    nickname: '김개똥',
     birth: '1997.07.09',
     gender: '여성',
     alcoholQuantity: ['소주 반 병'],
@@ -48,6 +52,7 @@ function MyPage({navigation}) {
     ],
     myMeeting: [
       {
+        id: 1,
         name: '금요일 밤 재미있게 노실 분들 구해요! (훈남 2명)',
         description: '분위기 잘 맞춰드릴게요 :) 재미있게 놀아봐요~ ',
         date: '7월 8일 (금)',
@@ -64,6 +69,7 @@ function MyPage({navigation}) {
         },
       },
       {
+        id: 2,
         name: '오빠 차 뽑았다 널 데리러 가',
         description: '분위기 잘 맞춰드릴게요 :) 재미있게 놀아봐요~ ',
         date: '7월 8일 (금)',
@@ -82,6 +88,7 @@ function MyPage({navigation}) {
     ],
     participatedMeeting: [
       {
+        id: 1,
         name: '수요일 밤 재미있게 노실 분들 구해요! (훈남 2명)',
         hostName: '김아무개',
         date: '7월 8일 (금)',
@@ -100,6 +107,7 @@ function MyPage({navigation}) {
         },
       },
       {
+        id: 2,
         name: '별이 빛나는 아름다운 밤이야이야',
         hostName: '이아무개',
         date: '7월 15일 (금)',

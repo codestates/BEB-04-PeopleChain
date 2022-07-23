@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useCallback} from 'react';
 
 import {
   Button,
@@ -17,6 +17,8 @@ import CameraButton from '../../components/AuthComponents/CameraButton';
 import SingleModal from '../../components/common/SingleModal';
 import {useNavigation} from '@react-navigation/native';
 import {useToast} from '../../utils/hooks/useToast';
+import {signOut} from '../../lib/Auth';
+import useAuthActions from '../../utils/hooks/UseAuthActions';
 
 const EditMyInfo = ({route}) => {
   const [drinkInfo, setDrinkInfo] = useState({
@@ -39,6 +41,18 @@ const EditMyInfo = ({route}) => {
   const handleSubmit = () => {
     setConfirmModalVisible(true);
   };
+  const {logout} = useAuthActions();
+  const handleSignOut = useCallback(async () => {
+    try {
+      logout();
+      await signOut();
+    } catch (e) {
+      console.log(e);
+    } finally {
+      navigation.navigate('SignIn');
+    }
+  }, [navigation, logout]);
+
   return (
     <KeyboardAvoidingView
       style={styles.KeyboardAvoidingView}
@@ -112,7 +126,7 @@ const EditMyInfo = ({route}) => {
           />
         </View>
         <View style={styles.signoutButton}>
-          <Button onPress={alert} title="로그아웃 하기" color="red" />
+          <Button title="로그아웃 하기" color="red" onPress={handleSignOut} />
         </View>
       </SafeAreaView>
     </KeyboardAvoidingView>

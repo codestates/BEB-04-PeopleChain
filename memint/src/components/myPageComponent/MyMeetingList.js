@@ -4,19 +4,27 @@ import {useToast} from '../../utils/hooks/useToast';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import DoubleModal from '../../components/common/DoubleModal';
 
+// function MyMeetingList({List, navigation}) {
+//   return (
+//     <>
+//       <FlatList
+//         data={List}
+//         renderItem={({item}) => (
+//           <MyMeetings item={item} navigation={navigation} />
+//         )}
+//       />
+//     </>
+//   );
+// }
 function MyMeetingList({List, navigation}) {
   return (
     <>
-      <FlatList
-        data={List}
-        renderItem={({item}) => (
-          <MyMeetings item={item} navigation={navigation} />
-        )}
-      />
+      {List.map(ele => (
+        <MyMeetings item={ele} navigation={navigation} key={List.id} />
+      ))}
     </>
   );
 }
-
 function MyMeetings({item, navigation}) {
   const [deleteModal, setDeleteModal] = useState(false);
   const [editModal, setEditModal] = useState(false);

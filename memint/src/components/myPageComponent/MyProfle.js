@@ -3,14 +3,15 @@ import {Text, StyleSheet, View, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import MyNFT from './MyNFT';
 import {filterProfile} from '../../lib/NFT';
+import {getUser} from '../../lib/Users';
+import useUser from '../../hooks/UseUser';
 
 function MyProfile({User, navigation}) {
   const [profileImgUrl, setProfileImgUrl] = useState(null);
 
-  useEffect(() => {
-    const userUID = 'sAAtzjDpYqMWDWa88lI3';
-    filterProfile(userUID).then(setProfileImgUrl);
-  }, []);
+  // useEffect(() => {
+  //   filterProfile(User.id).then(setProfileImgUrl);
+  // }, [User.id]);
 
   return (
     <>
@@ -27,7 +28,7 @@ function MyProfile({User, navigation}) {
           <Image
             style={styles.nftImage}
             source={{
-              uri: profileImgUrl,
+              uri: User.nftImage,
             }}
           />
           <Image
@@ -42,7 +43,7 @@ function MyProfile({User, navigation}) {
           />
         </View>
         <View style={styles.userInfos}>
-          <Text style={styles.userInfo}>닉네임: {User.nickName}</Text>
+          <Text style={styles.userInfo}>닉네임: {User.nickname}</Text>
           <Text style={styles.userInfo}>생년월일: {User.birth}</Text>
           <Text style={styles.userInfo}>성별: {User.gender}</Text>
         </View>

@@ -12,13 +12,22 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import DoubleModal from '../../components/common/DoubleModal';
 import {useToast} from '../../utils/hooks/useToast';
 
+// function ParticipatedMeetingList({List}) {
+//   return (
+//     <>
+//       <FlatList
+//         data={List}
+//         renderItem={({item}) => <ParticipatedMeetings item={item} />}
+//       />
+//     </>
+//   );
+// }
 function ParticipatedMeetingList({List}) {
   return (
     <>
-      <FlatList
-        data={List}
-        renderItem={({item}) => <ParticipatedMeetings item={item} />}
-      />
+      {List.map(ele => (
+        <ParticipatedMeetings item={ele} key={List.id} />
+      ))}
     </>
   );
 }
