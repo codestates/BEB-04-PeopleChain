@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 
 import {
-  Keyboard,
+  Button,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
@@ -11,7 +11,6 @@ import {
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import BackButton from '../../components/common/BackButton';
-import BasicButton from '../../components/common/BasicButton';
 import SelectDropdown from 'react-native-select-dropdown';
 import TagElement from '../../components/AuthComponents/TagElement';
 import CameraButton from '../../components/AuthComponents/CameraButton';
@@ -56,7 +55,9 @@ const EditMyInfo = ({route}) => {
         </View>
 
         <View style={styles.fullscreenSub}>
-          <CameraButton />
+          <View style={styles.cameraButton}>
+            <CameraButton />
+          </View>
           <View style={styles.form}>
             <Text style={styles.text}>나의 주량</Text>
             <SelectDropdown
@@ -109,6 +110,9 @@ const EditMyInfo = ({route}) => {
               navigation.pop();
             }}
           />
+        </View>
+        <View style={styles.signoutButton}>
+          <Button onPress={alert} title="로그아웃 하기" color="red" />
         </View>
       </SafeAreaView>
     </KeyboardAvoidingView>
@@ -189,16 +193,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 14,
   },
-  secondForm: {
-    marginTop: 10,
-    width: '100%',
-    paddingHorizontal: 32,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  button: {
-    margin: 50,
-  },
   dropdown: {
     fontSize: 10,
     width: 130,
@@ -207,6 +201,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderRadius: 4,
     height: 30,
+  },
+  signoutButton: {
+    marginTop: 80,
+    marginLeft: 10,
+    alignItems: 'flex-start',
+  },
+  cameraButton: {
+    marginTop: 50,
   },
 });
 

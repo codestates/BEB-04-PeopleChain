@@ -1,10 +1,11 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Text, StyleSheet, View, Image, FlatList} from 'react-native';
 import BasicButton from '../../components/common/BasicButton';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import SingleModal from '../../components/common/SingleModal';
 import SpendingModal from '../common/UserInfoModal/SpendingModal';
 import {useToast} from '../../utils/hooks/useToast';
+import {filterMemin} from '../../lib/NFT';
 
 function MyNFT({User}) {
   const [showNFT, setShowNFT] = useState(false);
@@ -42,13 +43,20 @@ function MyMeMin({myMeMin}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [spendingModalVisible, setSpendingModalVisible] = useState(false);
   const {showToast} = useToast();
+  const [meminImgUrl, setMeminImgUrl] = useState(null);
+  useEffect(() => {
+    const userUID = 'sAAtzjDpYqMWDWa88lI3';
+
+    filterMemin(userUID).then(setMeminImgUrl);
+  }, []);
+
   return (
     <>
       <View style={{height: 90}}>
         <Image
           style={styles.myMeMin}
           source={{
-            uri: myMeMin.uri,
+            uri: meminImgUrl,
           }}
         />
         {myMeMin.valid ? (

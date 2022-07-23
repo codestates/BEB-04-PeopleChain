@@ -1,9 +1,17 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Text, StyleSheet, View, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import MyNFT from './MyNFT';
+import {filterProfile} from '../../lib/NFT';
 
 function MyProfile({User, navigation}) {
+  const [profileImgUrl, setProfileImgUrl] = useState(null);
+
+  useEffect(() => {
+    const userUID = 'sAAtzjDpYqMWDWa88lI3';
+    filterProfile(userUID).then(setProfileImgUrl);
+  }, []);
+
   return (
     <>
       <View style={{alignItems: 'flex-end'}}>
@@ -19,7 +27,7 @@ function MyProfile({User, navigation}) {
           <Image
             style={styles.nftImage}
             source={{
-              uri: User.nftImage,
+              uri: profileImgUrl,
             }}
           />
           <Image
