@@ -28,7 +28,7 @@ export const handleDateInFormat = obj => {
     case 6:
       str = '토';
   }
-  return `${date.slice(5, 7)}월 ${date.slice(9, 11)}일 (${str}) ${date.slice(
+  return `${date.slice(5, 7)}월 ${date.slice(9, 11)}일(${str}) ${date.slice(
     13,
     -6,
   )}시`;

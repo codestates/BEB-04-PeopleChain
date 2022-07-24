@@ -66,21 +66,27 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     marginBottom: 5,
-    paddingVertical: 20,
+    paddingVertical: 18,
     paddingHorizontal: 30,
+    height: 120,
   },
   title: {
     fontSize: 18,
     fontWeight: 'bold',
+    height: 25,
   },
   meetingTags: {
-    marginVertical: 7,
+    marginVertical: 5,
     flexDirection: 'row',
+    height: 35,
   },
   tag: {
     backgroundColor: 'gray',
     marginHorizontal: 3,
+    marginVertical: 3,
     padding: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   infoRow: {
     flexDirection: 'row',

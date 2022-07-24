@@ -15,24 +15,28 @@ function AlarmElement({meetingInfo, createdAt, onPress, type, senderInfo}) {
           </Text>
           <Text>{createdAt}</Text>
         </View>
-        {meetingInfo ? (
-          <>
-            <Text>{meetingInfo.title}</Text>
-            <View style={styles.meetingInfo}>
-              <Text style={styles.meetingElement}>{meetingInfo.region}</Text>
-              <View style={styles.bar} />
-              <Text style={styles.meetingElement}>
-                {meetingInfo.peopleNum + ':' + meetingInfo.peopleNum}
-              </Text>
-              <View style={styles.bar} />
-              <Text style={styles.meetingElement}>{'30대'}</Text>
-              <View style={styles.bar} />
-              <Text style={styles.meetingElement}>{meetingInfo?.meetDate}</Text>
-            </View>
-          </>
-        ) : (
-          <Text>삭제된 미팅입니다</Text>
-        )}
+        <View style={styles.meetingArea}>
+          {meetingInfo ? (
+            <>
+              <Text>{meetingInfo.title}</Text>
+              <View style={styles.meetingInfo}>
+                <Text style={styles.meetingElement}>{meetingInfo.region}</Text>
+                <View style={styles.bar} />
+                <Text style={styles.meetingElement}>
+                  {meetingInfo.peopleNum + ':' + meetingInfo.peopleNum}
+                </Text>
+                <View style={styles.bar} />
+                <Text style={styles.meetingElement}>{'30대'}</Text>
+                <View style={styles.bar} />
+                <Text style={styles.meetingElement}>
+                  {meetingInfo?.meetDate}
+                </Text>
+              </View>
+            </>
+          ) : (
+            <Text>삭제된 미팅입니다</Text>
+          )}
+        </View>
       </View>
     </TouchableOpacity>
   );
@@ -46,6 +50,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingVertical: 15,
+    height: 100,
   },
   icon: {
     marginRight: 10,
@@ -56,10 +61,14 @@ const styles = StyleSheet.create({
   messageHead: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    height: 35,
   },
   message: {
     fontSize: 16,
-    marginBottom: 15,
+  },
+  meetingArea: {
+    height: 40,
   },
   meetingInfo: {
     flexDirection: 'row',
