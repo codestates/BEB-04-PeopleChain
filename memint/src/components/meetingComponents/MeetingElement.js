@@ -13,6 +13,7 @@ function MeetingElement({
   description,
   members,
   waiting,
+  hostInfo,
 }) {
   const navigation = useNavigation();
   return (
@@ -30,6 +31,7 @@ function MeetingElement({
           description,
           members,
           waiting,
+          hostInfo,
         })
       }>
       <View>
@@ -44,19 +46,16 @@ function MeetingElement({
       </View>
       <View style={styles.infoRow}>
         <View style={styles.userInfo}>
-          <Text style={styles.username}>{hostId}</Text>
+          <Text style={styles.username}>{hostInfo.nickname}</Text>
         </View>
         <View style={styles.infoList}>
           <Text style={[styles.infoEl]}>{region}</Text>
           <View style={styles.bar} />
           <Text style={[styles.infoEl]}>{peopleNum + ':' + peopleNum}</Text>
           <View style={styles.bar} />
-          <Text style={[styles.infoEl]}>{}</Text>
+          <Text style={[styles.infoEl]}>{hostInfo.birth}</Text>
           <View style={styles.bar} />
-          <Text style={[styles.infoEl]}>{`${meetDate.slice(
-            5,
-            7,
-          )}월 ${meetDate.slice(9, 11)}일 ${meetDate.slice(13, -6)}시`}</Text>
+          <Text style={[styles.infoEl]}>{meetDate}</Text>
         </View>
       </View>
     </TouchableOpacity>

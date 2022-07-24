@@ -34,6 +34,7 @@ function MeetingCreate({route}) {
     friends: [],
     meetingTags: [],
   });
+  const [friendsNames, setFriendsName] = useState([]);
   const [confirmModalVisible, setConfirmModalVisible] = useState(false);
   const [inviteModalVisible, setInviteModalVisible] = useState(false);
   const [tagData, setTagData] = useState({mood: [], topic: [], alcohol: []});
@@ -76,20 +77,23 @@ function MeetingCreate({route}) {
   }, [meetingInfo, route, handleInvitedFriends]);
 
   const handleInvitedFriends = useCallback(() => {
-    if (route.params?.friends === undefined) {
+    if (route.params?.friendId === undefined) {
       return;
     }
-    if (meetingInfo.friends.indexOf(route.params.friends) !== -1) {
+    if (meetingInfo.friends.indexOf(route.params.friendId) !== -1) {
       showToast('error', '이미 추가된 친구입니다');
-      route.params.friends = undefined;
+      route.params.friendId = undefined;
+      route.params.friendNickname = undefined;
       return;
     }
     setMeetingInfo({
       ...meetingInfo,
-      friends: [...meetingInfo.friends, route.params.friends],
+      friends: [...meetingInfo.friends, route.params.friendId],
     });
-    route.params.friends = undefined;
-  }, [meetingInfo, route, showToast]);
+    setFriendsName([...friendsNames, route.params.friendNickname]);
+    route.params.friendId = undefined;
+    route.params.friendNickname = undefined;
+  }, [meetingInfo, route, showToast, friendsNames]);
 
   const getTags = async () => {
     try {
@@ -125,8 +129,13 @@ function MeetingCreate({route}) {
       hostId: loginUser,
     };
     try {
-      createMeeting(data);
-      //User에 room 추가하기
+      const res = await createMeeting(data); //Meeting 추가
+      // updateUserMeetingIn(
+      //   //User에 room 추가
+      //   loginUser,
+      //   'createdroomId',
+      //   res._documentPath._parts[1],
+      // );
       setConfirmModalVisible(false);
       showToast('success', '미팅이 생성되었습니다');
       navigation.navigate('MeetingMarket');
@@ -236,7 +245,7 @@ function MeetingCreate({route}) {
             <Icon name="arrow-drop-down" size={19} color={'gray'} />
           </TouchableOpacity>
           <ScrollView style={styles.invitedFriends} horizontal={true}>
-            {meetingInfo.friends.map((el, idx) => (
+            {friendsNames.map((el, idx) => (
               <View key={idx} style={styles.invitedFriend}>
                 <Text>{el}</Text>
               </View>

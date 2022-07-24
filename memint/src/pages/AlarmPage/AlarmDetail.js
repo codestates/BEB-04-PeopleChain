@@ -1,10 +1,22 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {Text, View, SafeAreaView, StyleSheet, Image} from 'react-native';
+import {
+  Text,
+  View,
+  SafeAreaView,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import BackButton from '../../components/common/BackButton';
 import BasicButton from '../../components/common/BasicButton';
 import {createMeetingAccept, updateMeetingProposal} from '../../lib/Alarm';
-import {updateMembersIn, updateWaitingOut} from '../../lib/Meeting';
+import {
+  updateMeeting,
+  updateMembersIn,
+  updateWaitingOut,
+} from '../../lib/Meeting';
+// import {updateUserMeetingIn} from '../../lib/Users';
 import {useToast} from '../../utils/hooks/useToast';
 import useUser from '../../utils/hooks/UseAuth';
 
@@ -13,7 +25,8 @@ function AlarmDetail({route}) {
   const loginUser = userInfo.id;
   // const loginUser = '8MspyF7xz7VHDThguMAv'; //test host 계정
   // const loginUser = 'dbmtzzMFmqzshYNSOVo5' //joiner 계정
-  const {id, message, meetingId, meetingInfo, sender, complete} = route.params;
+  const {id, message, meetingId, meetingInfo, sender, complete, senderInfo} =
+    route.params;
   const navigation = useNavigation();
   const {showToast} = useToast();
 
@@ -29,15 +42,20 @@ function AlarmDetail({route}) {
     updateWaitingOut(meetingId, sender); //신청 메시지의 sender
     updateMembersIn(meetingId, sender); //신청 메시지의 sender
     updateMeetingProposal(id); //신청 알림 완료로 update
-    //User에 room 추가하기
+    // updateUserMeetingIn(sender, 'joinedroomId', meetingId); //User에 room 추가하기
+    if (meetingInfo.peopleNum * 2 - 1 === meetingInfo.members.length) {
+      //미팅의 상태도 손수 수정해줍니다.(임시로)
+      updateMeeting(meetingId, {status: 'full'});
+    }
     showToast('basic', '신청이 수락되었습니다');
     navigation.navigate('AlarmPage');
   };
+
   // const handleDeny = () => {
   //   showToast('basic', '신청이 거절되었습니다');
   //   navigation.pop();
   // };
-  //sender 정보 조회
+
   return (
     <SafeAreaView style={styles.screen}>
       <BackButton />
@@ -50,15 +68,15 @@ function AlarmDetail({route}) {
           <View style={styles.userInfo}>
             <View style={styles.userInfoElement}>
               <Text style={styles.key}>닉네임</Text>
-              <Text style={styles.value}>Joiner1</Text>
+              <Text style={styles.value}>{senderInfo?.nickname}</Text>
             </View>
             <View style={styles.userInfoElement}>
               <Text style={styles.key}>나이</Text>
-              <Text style={styles.value}>30 초</Text>
+              <Text style={styles.value}>{senderInfo?.birth}</Text>
             </View>
             <View style={styles.userInfoElement}>
               <Text style={styles.key}>성별</Text>
-              <Text style={styles.value}>female</Text>
+              <Text style={styles.value}>{senderInfo?.gender}</Text>
             </View>
           </View>
         </View>
@@ -66,19 +84,36 @@ function AlarmDetail({route}) {
         <Text style={styles.message}>{message}</Text>
         <View>
           <Text style={styles.key}>미팅 정보</Text>
-          <Text style={styles.meetingTitle}>{meetingInfo.title}</Text>
-          <View style={styles.meetingInfo}>
-            <Text style={styles.meetingElement}>{meetingInfo.region}</Text>
-            <View style={styles.bar} />
-            <Text style={styles.meetingElement}>{meetingInfo.meetDate}</Text>
-            <View style={styles.bar} />
-            <Text style={styles.meetingElement}>
-              {meetingInfo.peopleNum + ':' + meetingInfo.peopleNum}
-            </Text>
-          </View>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('MeetingDetail', {
+                id,
+                title: meetingInfo.title,
+                meetingTags: meetingInfo.meetingTags,
+                hostId: meetingInfo.hostId,
+                region: meetingInfo.region,
+                peopleNum: meetingInfo.peopleNum,
+                meetDate: meetingInfo.meetDate,
+                description: meetingInfo.description,
+                members: meetingInfo.members,
+                waiting: meetingInfo.waiting,
+                hostInfo: meetingInfo.hostInfo,
+              })
+            }>
+            <Text style={styles.meetingTitle}>{meetingInfo.title}</Text>
+            <View style={styles.meetingInfo}>
+              <Text style={styles.meetingElement}>{meetingInfo.region}</Text>
+              <View style={styles.bar} />
+              <Text style={styles.meetingElement}>{meetingInfo.meetDate}</Text>
+              <View style={styles.bar} />
+              <Text style={styles.meetingElement}>
+                {meetingInfo.peopleNum + ':' + meetingInfo.peopleNum}
+              </Text>
+            </View>
+          </TouchableOpacity>
         </View>
         {complete ? (
-          <Text>신청을 수락했습니다</Text>
+          <Text style={styles.acceptText}>신청을 수락했습니다</Text>
         ) : (
           <>
             <Text style={styles.acceptText}>신청을 수락하시겠습니까?</Text>

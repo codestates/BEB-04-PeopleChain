@@ -11,14 +11,19 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import BackButton from '../../components/common/BackButton';
+// import {getUserByNickname} from '../../lib/Users';
+import useUser from '../../utils/hooks/UseUser';
 
 function InviteFriend() {
+  const userInfo = useUser();
+  const loginUser = userInfo.id;
   const [searchNickName, setSearchNickName] = useState('');
   const [searchResult, setSearchResult] = useState([]);
   const navigation = useNavigation();
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     //return 시 검색 결과를 받아옴
-    setSearchResult(['아현동 돌려차기', '아현동 불주먹', '토마토스위스기러기']);
+    // const data = await getUserByNickname(searchNickName, loginUser);
+    // setSearchResult(data);
   };
 
   return (
@@ -45,13 +50,16 @@ function InviteFriend() {
               key={idx}
               style={styles.userElement}
               onPress={() => {
-                navigation.navigate('MeetingCreate', {friends: el});
+                navigation.navigate('MeetingCreate', {
+                  friendId: el.id,
+                  friendNickname: el.nickName,
+                });
               }}>
               <Image
                 source={require('../ChattingPage/dummydata/images/26.png')}
                 style={styles.userImage}
               />
-              <Text style={styles.username}>{el}</Text>
+              <Text style={styles.username}>{el.nickName}</Text>
             </TouchableOpacity>
           ))}
         </View>

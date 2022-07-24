@@ -13,9 +13,10 @@ import WalletButton from '../../components/common/WalletButton';
 import SingleModal from '../../components/common/SingleModal';
 import {getMeetings} from '../../lib/Meeting';
 import {useIsFocused} from '@react-navigation/native';
-import {handleDate} from '../../utils/common/Functions';
+import {handleDateInFormat} from '../../utils/common/Functions';
 import RNPickerSelect from 'react-native-picker-select';
 import FilterModal from '../../components/meetingComponents/FilterModal';
+import {getUser} from '../../lib/Users';
 
 function MeetingMarket({navigation}) {
   const [meetings, setMeetings] = useState([]);
@@ -33,17 +34,30 @@ function MeetingMarket({navigation}) {
   }, [isFocused]);
 
   const getMeetingMarket = async () => {
-    const res = await getMeetings();
-    const data = res.docs.map(el => {
-      return {
-        ...el.data(),
-        id: el.id,
-        meetDate: handleDate(el.data().meetDate),
-      };
-    });
-    //hostNickname, hostAge 데이터 추가,
-    //members 데이터 추가
-    setMeetings(data);
+    try {
+      const res = await getMeetings();
+      const data = res.docs.map(el => {
+        return {
+          ...el.data(),
+          id: el.id,
+          meetDate: handleDateInFormat(el.data().meetDate),
+        };
+      });
+      // hostNickname, hostAge 데이터 추가,
+      // members 데이터 추가
+      const dataWithHostInfo = await Promise.all(
+        data.map(async el => {
+          const hostInfo = await getUser(el.hostId);
+          return {
+            ...el,
+            hostInfo: {...hostInfo},
+          };
+        }),
+      );
+      setMeetings(dataWithHostInfo);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const RegionDropDownData = [
@@ -159,6 +173,7 @@ function MeetingMarket({navigation}) {
               description={meeting.description}
               members={meeting.members}
               waiting={meeting.waiting}
+              hostInfo={meeting.hostInfo}
             />
           );
         })}

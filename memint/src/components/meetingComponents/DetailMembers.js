@@ -2,13 +2,13 @@ import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-function DetailMembers({members, peopleNum}) {
+function DetailMembers({membersInfo, peopleNum}) {
   const currentPeopleNum = () => {
     //2 ->2:2 현재 1:0
-    if (members.length > peopleNum) {
-      return peopleNum + ':' + (members.length - peopleNum);
+    if (membersInfo.length > peopleNum) {
+      return peopleNum + ':' + (membersInfo.length - peopleNum);
     } else {
-      return peopleNum + ':' + 0;
+      return membersInfo.length + ':' + 0;
     }
   };
   return (
@@ -21,16 +21,16 @@ function DetailMembers({members, peopleNum}) {
         </View>
       </View>
       <View style={styles.memberList}>
-        {members.map((member, idx) => (
+        {membersInfo.map((member, idx) => (
           <View key={idx} style={styles.memberInfo}>
             <View style={styles.memberInfoProfile}>
               <Icon name="help" size={50} color={'gray'} />
             </View>
             <View>
-              <Text style={styles.memberInfoContentEl}>{member.username}</Text>
+              <Text style={styles.memberInfoContentEl}>{member.nickname}</Text>
               <View style={styles.memberGenderAge}>
                 <Text style={styles.memberInfoContentEl}>{member.gender}</Text>
-                <Text style={styles.memberInfoContentEl}>{}</Text>
+                <Text style={styles.memberInfoContentEl}>{member.birth}</Text>
               </View>
             </View>
           </View>

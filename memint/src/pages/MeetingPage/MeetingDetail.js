@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import React, {useEffect, useState, useCallback} from 'react';
 import {Text, SafeAreaView, View, StyleSheet, TextInput} from 'react-native';
 import BackButton from '../../components/common/BackButton';
 import BasicButton from '../../components/common/BasicButton';
@@ -6,6 +7,7 @@ import DoubleModal from '../../components/common/DoubleModal';
 import DetailMembers from '../../components/meetingComponents/DetailMembers';
 import {createMeetingProposal} from '../../lib/Alarm';
 import {updateWaitingIn} from '../../lib/Meeting';
+import {getUser} from '../../lib/Users';
 import {useToast} from '../../utils/hooks/useToast';
 import useUser from '../../utils/hooks/UseAuth';
 
@@ -27,8 +29,10 @@ function MeetingDetail({route}) {
   const [modalVisible_1, setModalVisible_1] = useState(false);
   const [modalVisible_2, setModalVisible_2] = useState(false);
   const [textMessage, setTextMessage] = useState('');
+  const [membersInfo, setMembersInfo] = useState([]);
   const {showToast} = useToast();
-  //멤버에 loginUser가 있는지 확인
+  const navigation = useNavigation();
+
   const renderByUser = () => {
     if (
       members.reduce((acc, cur) => {
@@ -39,9 +43,26 @@ function MeetingDetail({route}) {
         }
       }, false)
     ) {
-      return <Text>멤버입니다.</Text>;
+      return (
+        <BasicButton
+          width={300}
+          height={50}
+          textSize={17}
+          text="채팅창으로 이동"
+          onPress={() => {}}
+        />
+      );
     } else if (waiting && waiting.indexOf(loginUser) !== -1) {
-      return <Text>미팅 수락 대기</Text>;
+      return (
+        <BasicButton
+          width={300}
+          height={50}
+          textSize={17}
+          backgroundColor={'gray'}
+          text="신청 수락 대기 중"
+          onPress={() => {}}
+        />
+      );
     } else {
       return (
         <BasicButton
@@ -56,6 +77,7 @@ function MeetingDetail({route}) {
       );
     }
   };
+
   const handleCreateProposal = () => {
     try {
       const data = {
@@ -73,6 +95,7 @@ function MeetingDetail({route}) {
         'success',
         '미팅 신청을 보냈습니다\n주선자의 수락을 기다려주세요!',
       );
+      navigation.navigate('MeetingMarket');
     } catch (e) {
       setModalVisible_2(!modalVisible_2);
       setTextMessage('');
@@ -80,6 +103,25 @@ function MeetingDetail({route}) {
       console.log(e);
     }
   };
+
+  const getMembersInfo = useCallback(async () => {
+    try {
+      const data = await Promise.all(
+        members.map(async member => {
+          const memberId = Object.keys(member)[0];
+          const info = await getUser(memberId);
+          return {id: memberId, ...info};
+        }),
+      );
+      setMembersInfo(data);
+    } catch (e) {
+      console.log(e);
+    }
+  }, [members]);
+
+  useEffect(() => {
+    getMembersInfo();
+  }, [getMembersInfo]);
   return (
     <SafeAreaView>
       <BackButton />
@@ -102,13 +144,10 @@ function MeetingDetail({route}) {
         <View style={styles.infoRow}>
           <Text style={styles.infoEl}>{region}</Text>
           <View style={styles.bar} />
-          <Text style={styles.infoEl}>{`${meetDate.slice(
-            5,
-            7,
-          )}월 ${meetDate.slice(9, 11)}일 ${meetDate.slice(13, -6)}시`}</Text>
+          <Text style={styles.infoEl}>{meetDate}</Text>
         </View>
         <View>
-          <DetailMembers peopleNum={peopleNum} members={members} />
+          <DetailMembers peopleNum={peopleNum} membersInfo={membersInfo} />
         </View>
         <View style={styles.buttonRow}>{renderByUser()}</View>
       </View>
