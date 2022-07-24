@@ -37,10 +37,6 @@ export async function filterMemin(userId) {
 }
 
 // 모든 NFT 렌더링
-export async function allMyNfts(userId) {
-  let query = NFTCollection.where('userId', '==', userId);
-
-  const doc = await query.get();
-  const memin = doc.docs.map(doc => doc.data().nftImg);
-  return memin.toString();
+export async function getNFTs(userId) {
+  return await NFTCollection.where('userId', '==', userId).get();
 }

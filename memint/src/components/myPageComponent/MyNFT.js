@@ -42,8 +42,8 @@ function MyNFT({User}) {
             renderItem={({item}) => <MyNFTs item={item} />}
             numColumns="5"
           /> */}
-          {User.myNfts.map(ele => (
-            <MyNFTs item={ele} />
+          {User.myNfts.map((ele, key) => (
+            <MyNFTs item={ele} key={ele.id} />
           ))}
         </View>
       ) : null}

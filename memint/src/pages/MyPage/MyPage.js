@@ -4,12 +4,46 @@ import BasicButton from '../../components/common/BasicButton';
 import MyMeetingList from '../../components/myPageComponent/MyMeetingList';
 import ParticipatedMeetingList from '../../components/myPageComponent/ParticipatedMeetingList';
 import MyProfile from '../../components/myPageComponent/MyProfle';
+import useUser from '../../utils/hooks/UseUser';
+import {getNFTs} from '../../lib/NFT';
+import useNft from '../../utils/hooks/UseNft';
 
 function MyPage({navigation}) {
+  const user = useUser();
+  const nft = useNft();
+  console.log(nft);
+
+  // const getMeetingMarket = async () => {
+  //   const res = await getMeetings();
+  //   const data = res.docs.map(el => {
+  //     return {
+  //       ...el.data(),
+  //       id: el.id,
+  //       meetDate: handleDate(el.data().meetDate),
+  //     };
+  //   });
+  //   //hostNickname, hostAge 데이터 추가,
+  //   //members 데이터 추가
+  //   setMeetings(data);
+  // };
+  const onSubmitSignIn = async () => {
+    try {
+      console.log('userDetail');
+      console.log(user);
+      const res = await getNFTs(user.id);
+      const nfts = res.docs.map(el => {
+        return {...el.data()};
+      });
+      console.log(nfts);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const dummyUser = {
-    nickname: '김개똥',
-    birth: '1997.07.09',
-    gender: '여성',
+    nickname: user.nickName,
+    birth: user.birth,
+    gender: user.gender,
     alcoholQuantity: ['소주 반 병'],
     alcoholType: ['맥주', '와인', '술이라면 다 좋음'],
     alcoholStyle: [
@@ -132,6 +166,15 @@ function MyPage({navigation}) {
   return (
     <SafeAreaView>
       <ScrollView>
+        <BasicButton
+          text="test"
+          width={100}
+          height={40}
+          textSize={14}
+          backgroundColor={'#007aff'}
+          margin={[10, 3, 3, 3]}
+          onPress={onSubmitSignIn}
+        />
         {/* 유저 프로필 */}
         <MyProfile User={dummyUser} navigation={navigation} />
         {/* 탭 선택 버튼 */}
@@ -148,6 +191,7 @@ function MyPage({navigation}) {
                 }
                 margin={[10, 3, 3, 3]}
                 onPress={() => selecteMenuHandler(index)}
+                key={index}
               />
             );
           })}

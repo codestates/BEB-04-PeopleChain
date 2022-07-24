@@ -21,6 +21,8 @@ import useAuthActions from '../../utils/hooks/UseAuthActions';
 import {signIn} from '../../lib/Auth';
 import {getUser} from '../../lib/Users';
 import useUser from '../../utils/hooks/UseUser';
+import {getNFTs} from '../../lib/NFT';
+
 const SignInScreen = ({navigation, route}) => {
   const userInfo = useUser();
 
@@ -49,14 +51,21 @@ const SignInScreen = ({navigation, route}) => {
     try {
       const {user} = await signIn(info);
       const userDetail = await getUser(user.uid);
+
       console.log('userDetail is');
       console.log(userDetail);
+      // const res = await getNFTs(user.id);
+      // const nfts = res.docs.map(el => {
+      //   return {...el.data()};
+      // });
+
       saveInfo({
         id: user.uid,
         email: user.email,
         nickName: userDetail.nickName,
         gender: userDetail.gender,
         birth: userDetail.birth,
+        nftIds: userDetail.nftIds,
       }),
         navigation.navigate('Main');
     } catch (e) {

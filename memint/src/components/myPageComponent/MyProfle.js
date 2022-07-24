@@ -48,24 +48,24 @@ function MyProfile({User, navigation}) {
       <MyNFT User={User} />
       <Text style={styles.attribute}>주량</Text>
       <View style={styles.tagContainer}>
-        {User.alcoholQuantity.map(el => (
-          <View style={styles.tag}>
+        {User.alcoholQuantity.map((el, index) => (
+          <View style={styles.tag} key={index}>
             <Text style={styles.tagFont}># {el}</Text>
           </View>
         ))}
       </View>
       <Text style={styles.attribute}>선호 주류</Text>
       <View style={styles.tagContainer}>
-        {User.alcoholType.map(el => (
-          <View style={styles.tag}>
+        {User.alcoholType.map((el, index) => (
+          <View style={styles.tag} key={index}>
             <Text style={styles.tagFont}># {el}</Text>
           </View>
         ))}
       </View>
       <Text style={styles.attribute}>스타일</Text>
       <View style={styles.tagContainer}>
-        {User.alcoholStyle.map(el => (
-          <View style={styles.tag}>
+        {User.alcoholStyle.map((el, index) => (
+          <View style={styles.tag} key={index}>
             <Text style={styles.tagFont}># {el}</Text>
           </View>
         ))}

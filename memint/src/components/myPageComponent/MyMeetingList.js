@@ -19,8 +19,8 @@ import DoubleModal from '../../components/common/DoubleModal';
 function MyMeetingList({List, navigation}) {
   return (
     <>
-      {List.map(ele => (
-        <MyMeetings item={ele} navigation={navigation} key={List.id} />
+      {List.map((ele, index) => (
+        <MyMeetings item={ele} navigation={navigation} key={ele.id} />
       ))}
     </>
   );
@@ -34,13 +34,11 @@ function MyMeetings({item, navigation}) {
       <View style={styles.meetingCard}>
         <Text style={styles.title}>{item.name}</Text>
         <View style={styles.container}>
-          {item.type.map(type => {
+          {item.type.map((type, index) => {
             return (
-              <>
-                <View style={styles.tag}>
-                  <Text style={styles.tagFont}># {type}</Text>
-                </View>
-              </>
+              <View style={styles.tag} key={index}>
+                <Text style={styles.tagFont}># {type}</Text>
+              </View>
             );
           })}
         </View>
