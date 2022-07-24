@@ -20,31 +20,34 @@ import {getUser} from '../../lib/Users';
 
 function MeetingMarket({navigation}) {
   const [meetings, setMeetings] = useState([]);
+  const [regionMeetings, setRegionMeetings] = useState([]);
+  const [filteredMeetings, setFilteredMeetings] = useState([]);
   const [confirmModalVisible, setConfirmModalVisible] = useState(false);
   const [regionSelect, setRegionSelect] = useState(0);
   const [sortSelect, setSortSelect] = useState(undefined);
-  const [filterPeopleSelect, setFilterPeopleSelect] = useState(undefined);
   const [filterModalVisible, setFilterModalVisible] = useState(false);
-  const [filterDate, setFilterDate] = useState(new Date());
+  const [filter, setFilter] = useState({
+    peopleNum: undefined,
+    meetDate: new Date(),
+  });
 
   const isFocused = useIsFocused();
 
   useEffect(() => {
     getMeetingMarket();
-  }, [isFocused]);
+  }, [isFocused, getMeetingMarket]);
 
-  const getMeetingMarket = async () => {
+  const getMeetingMarket = useCallback(async () => {
     try {
       const res = await getMeetings();
       const data = res.docs.map(el => {
         return {
           ...el.data(),
           id: el.id,
-          meetDate: handleDateInFormat(el.data().meetDate),
+          // meetDate: handleDate(el.data().meetDate),
         };
       });
-      // hostNickname, hostAge 데이터 추가,
-      // members 데이터 추가
+
       const dataWithHostInfo = await Promise.all(
         data.map(async el => {
           const hostInfo = await getUser(el.hostId);
@@ -55,28 +58,67 @@ function MeetingMarket({navigation}) {
         }),
       );
       setMeetings(dataWithHostInfo);
+      setRegionMeetings(meetings);
+      setFilteredMeetings(regionMeetings);
     } catch (e) {
       console.log(e);
     }
+  }, [meetings, regionMeetings]);
+
+  const handleFilter = () => {
+    if (filter.peopleNum && filter.meetDate) {
+      setFilteredMeetings(
+        regionMeetings.filter(meeting => {
+          return (
+            meeting.peopleNum === filter.peopleNum &&
+            meeting.meetDate.toDate() >= filter.meetDate
+          );
+        }),
+      );
+    } else if (filter.peopleNum) {
+      setFilteredMeetings(
+        regionMeetings.filter(meeting => {
+          return meeting.peopleNum === filter.peopleNum;
+        }),
+      );
+    } else if (filter.meetDate) {
+      setFilteredMeetings(
+        regionMeetings.filter(meeting => {
+          return meeting.meetDate.toDate() >= filter.meetDate;
+        }),
+      );
+    } else {
+      getMeetingMarket();
+    }
+  };
+
+  const handleRegion = value => {
+    setFilter({peopleNum: undefined, meetDate: new Date()});
+    setRegionMeetings(
+      meetings.filter(meeting => {
+        return meeting.region === value;
+      }),
+    );
+    setFilteredMeetings(regionMeetings);
   };
 
   const RegionDropDownData = [
-    {label: '서울 전체', value: 1},
-    {label: '강남구', value: 2},
-    {label: '강동구', value: 3},
-    {label: '강북구', value: 4},
-    {label: '강서구', value: 5},
-    {label: '관악구', value: 6},
-    {label: '광진구', value: 7},
-    {label: '구로구', value: 8},
-    {label: '금천구', value: 9},
-    {label: '노원구', value: 10},
-    {label: '도봉구', value: 11},
-    {label: '동대문구', value: 12},
-    {label: '동작구', value: 13},
-    {label: '마포구', value: 14},
-    {label: '서대문구', value: 15},
-    {label: '서초구', value: 16},
+    {label: '서울 전체', value: '서울 전체'},
+    {label: '강남구', value: '강남구'},
+    {label: '강동구', value: '강동구'},
+    {label: '강북구', value: '강북구'},
+    {label: '강서구', value: '강서구'},
+    {label: '관악구', value: '관악구'},
+    {label: '광진구', value: '광진구'},
+    {label: '구로구', value: '구로구'},
+    {label: '금천구', value: '금천구'},
+    {label: '노원구', value: '노원구'},
+    {label: '도봉구', value: '도봉구'},
+    {label: '동대문구', value: '동대문구'},
+    {label: '동작구', value: '동작구'},
+    {label: '마포구', value: '마포구'},
+    {label: '서대문구', value: '서대문구'},
+    {label: '서초구', value: '서초구'},
   ];
   const SortDropDownData = [
     {label: '정렬', value: 0},
@@ -98,6 +140,7 @@ function MeetingMarket({navigation}) {
           placeholder={{}}
           onValueChange={value => {
             setRegionSelect(value);
+            handleRegion(value);
           }}
           items={RegionDropDownData}
           value={regionSelect}
@@ -117,17 +160,7 @@ function MeetingMarket({navigation}) {
           <Icon name="add-box" size={35} />
         </TouchableOpacity>
       </View>
-      <SingleModal
-        text="미팅을 생성하시겠습니까?"
-        //body={<Text>정말로?</Text>}
-        buttonText="네"
-        modalVisible={confirmModalVisible}
-        setModalVisible={setConfirmModalVisible}
-        pFunction={() => {
-          setConfirmModalVisible(!confirmModalVisible);
-          navigation.navigate('MeetingCreate');
-        }}
-      />
+
       <View style={styles.listfilterArea}>
         <TouchableOpacity
           style={styles.listfilter}
@@ -137,13 +170,12 @@ function MeetingMarket({navigation}) {
           <Icon name="filter-alt" size={15} />
           <Text> 조건 설정</Text>
           <FilterModal
-            setFilterPeopleSelect={setFilterPeopleSelect}
+            setFilter={setFilter}
             FilterPeopleDropDownData={FilterPeopleDropDownData}
-            filterPeopleSelect={filterPeopleSelect}
-            filterDate={filterDate}
-            setFilterDate={setFilterDate}
+            filter={filter}
             filterModalVisible={filterModalVisible}
             setFilterModalVisible={setFilterModalVisible}
+            handleFilter={handleFilter}
           />
         </TouchableOpacity>
         <TouchableOpacity style={styles.listfilter}>
@@ -160,7 +192,7 @@ function MeetingMarket({navigation}) {
       </View>
 
       <ScrollView style={styles.meetingLists}>
-        {meetings.map((meeting, idx) => {
+        {filteredMeetings.map((meeting, idx) => {
           return (
             <MeetingElement
               key={idx}
@@ -170,7 +202,7 @@ function MeetingMarket({navigation}) {
               hostId={meeting.hostId}
               region={meeting.region}
               peopleNum={meeting.peopleNum}
-              meetDate={meeting.meetDate}
+              meetDate={handleDateInFormat(meeting.meetDate)}
               description={meeting.description}
               members={meeting.members}
               waiting={meeting.waiting}
@@ -180,6 +212,17 @@ function MeetingMarket({navigation}) {
         })}
       </ScrollView>
       <WalletButton />
+      <SingleModal
+        text="미팅을 생성하시겠습니까?"
+        //body={<Text>정말로?</Text>}
+        buttonText="네"
+        modalVisible={confirmModalVisible}
+        setModalVisible={setConfirmModalVisible}
+        pFunction={() => {
+          setConfirmModalVisible(!confirmModalVisible);
+          navigation.navigate('MeetingCreate');
+        }}
+      />
     </SafeAreaView>
   );
 }
@@ -193,7 +236,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     paddingRight: 10,
-    alignContent: 'flex-start',
   },
   createButton: {},
   titleArea: {

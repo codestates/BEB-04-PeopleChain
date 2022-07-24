@@ -52,7 +52,7 @@ export const updateMembersIn = (meetingId, userId) => {
 //미팅 멤버 삭제
 export const updateMembersOut = (meetingId, userId) => {
   return meetingCollection.doc(meetingId).update({
-    members: firestore.FieldValue.arrayRemove(userId), //or {userId:status} Test필요
+    members: firestore.FieldValue.arrayRemove({[userId]: 'accepted'}), //accept가 아니라면 삭제하지 못하도록 해야함
   });
 };
 

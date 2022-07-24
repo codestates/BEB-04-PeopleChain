@@ -5,13 +5,12 @@ import DatePicker from '../common/DatePicker';
 import RNPickerSelect from 'react-native-picker-select';
 
 function FilterModal({
-  setFilterPeopleSelect,
-  filterPeopleSelect,
+  setFilter,
   FilterPeopleDropDownData,
-  filterDate,
-  setFilterDate,
+  filter,
   filterModalVisible,
   setFilterModalVisible,
+  handleFilter,
 }) {
   return (
     <DoubleModal
@@ -21,12 +20,12 @@ function FilterModal({
           <View style={styles.filterElement}>
             <Text style={styles.filterText}>인원</Text>
             <RNPickerSelect
-              placeholder={{label: '선택'}}
+              placeholder={{label: '전체'}}
               onValueChange={value => {
-                setFilterPeopleSelect(value);
+                setFilter({...filter, peopleNum: value});
               }}
               items={FilterPeopleDropDownData}
-              value={filterPeopleSelect}
+              value={filter.peopleNum}
               style={{
                 inputIOS: {
                   fontSize: 16,
@@ -42,9 +41,9 @@ function FilterModal({
           <View style={styles.filterElement}>
             <Text style={styles.filterText}>날짜</Text>
             <DatePicker
-              value={filterDate}
+              value={filter.meetDate}
               onChange={(event, date) => {
-                setFilterDate(date);
+                setFilter({...filter, meetDate: date});
               }}
             />
           </View>
@@ -57,7 +56,10 @@ function FilterModal({
       pButtonText="적용"
       modalVisible={filterModalVisible}
       setModalVisible={setFilterModalVisible}
-      pFunction={() => {}}
+      pFunction={() => {
+        handleFilter();
+        setFilterModalVisible(!filterModalVisible);
+      }}
       nFunction={() => {
         setFilterModalVisible(!filterModalVisible);
       }}
