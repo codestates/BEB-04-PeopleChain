@@ -71,7 +71,7 @@ function ChattingRoom({route}) {
           return {...acc, [memberNickName[idx]]: cur};
         }, 0);
       })
-      .then(console.log);
+      .then(result => setUserNickName(result));
   });
   return (
     <KeyboardAvoidingView
@@ -95,7 +95,11 @@ function ChattingRoom({route}) {
           setProposeModalVisible={setProposeModalVisible}
           setModalVisible={setModalVisible}
         />
-        <ChatText data={route.params.data} roomINfo={roomInfo} />
+        <ChatText
+          data={route.params.data}
+          roomINfo={roomInfo}
+          userNickName={userNickName}
+        />
 
         {roomInfoExist ? (
           <Animated.View

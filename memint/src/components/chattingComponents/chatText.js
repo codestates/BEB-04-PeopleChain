@@ -11,7 +11,7 @@ import AddChat from './addChat';
 import UserInfoModal from '../common/UserInfoModal';
 import firestore from '@react-native-firebase/firestore';
 
-function ChatText({data, roomInfo}) {
+function ChatText({data, roomInfo, userNickName}) {
   // const [chats, setChats] = useState(chattings);
   const [userInfoModalVisible, setUserInfoModalVisible] = useState(false);
   const [userInfo, setUserInfo] = useState('');
@@ -50,10 +50,11 @@ function ChatText({data, roomInfo}) {
         style={styles.container}
         data={chattings}
         renderItem={({item}) =>
-          item.sender === user ? (
-            <MyChat item={item} />
+          item.data().sender === user ? (
+            <MyChat item={item} userNickName={userNickName} />
           ) : (
             <NotMyChat
+              userNickName={userNickName}
               item={item}
               setUserInfoModalVisible={setUserInfoModalVisible}
               setUserInfo={setUserInfo}
@@ -73,11 +74,7 @@ function ChatText({data, roomInfo}) {
   );
 }
 
-function NotMyChat({item, setUserInfoModalVisible, setUserInfo}) {
-  useEffect(() => {
-    // console.log(item);
-  }, []);
-
+function NotMyChat({item, setUserInfoModalVisible, setUserInfo, userNickName}) {
   return (
     <View style={styles.messageWrapper}>
       {/* 클릭할 시 유저 정보를 열겠냐고 물어보는 모달 창 띄우는 값 true로 설정 */}
@@ -90,7 +87,9 @@ function NotMyChat({item, setUserInfoModalVisible, setUserInfo}) {
         <View style={styles.image} />
       </TouchableOpacity>
       <View style={styles.textWrapper}>
-        <Text style={styles.senderName}>{item.data().sender}</Text>
+        <Text style={styles.senderName}>
+          {userNickName[item.data().sender]}
+        </Text>
         <View style={styles.messageBody}>
           <Text style={{padding: 3}}>{item.data().text}</Text>
         </View>
@@ -111,19 +110,28 @@ function NotMyChat({item, setUserInfoModalVisible, setUserInfo}) {
   );
 }
 
-function MyChat({item}) {
+function MyChat({item, userNickName}) {
   return (
     <View style={styles.MymessageWrapper}>
       <View style={styles.image} />
       <View style={[styles.textWrapper, {alignItems: 'flex-end'}]}>
-        <Text style={styles.senderName}>{item.sender}</Text>
+        <Text style={styles.senderName}>
+          {userNickName[item.data().sender]}
+        </Text>
         <View style={[styles.messageBody, {backgroundColor: 'lightyellow'}]}>
-          <Text style={{padding: 3}}>{item.body}</Text>
+          <Text style={{padding: 3}}>{item.data().text}</Text>
         </View>
       </View>
       <View style={styles.date}>
         <Text style={{marginBottom: 7, fontSize: 10, color: 'gray'}}>
-          {item.createdAt}
+          {item
+            .data()
+            .createdAt.toDate()
+            .toLocaleString()
+            .slice(
+              6,
+              item.data().createdAt.toDate().toLocaleString().length - 3,
+            )}
         </Text>
       </View>
     </View>
