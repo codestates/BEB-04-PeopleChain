@@ -12,13 +12,13 @@ function MyPage({navigation}) {
   const user = useUser();
   const {addLog} = useOffchainActions();
 
-  const onSubmitSignIn = async () => {
-    const res = await getOffchainTokenLog(user.id);
-    const logs = res.docs.map(el => {
-      return {...el.data()};
-    });
-    addLog(logs);
-  };
+  // const onSubmitSignIn = async () => {
+  //   const res = await getOffchainTokenLog(user.id);
+  //   const logs = res.docs.map(el => {
+  //     return {...el.data()};
+  //   });
+  //   addLog(logs);
+  // };
 
   const dummyUser = {
     nickname: user.nickName,
@@ -146,7 +146,7 @@ function MyPage({navigation}) {
   return (
     <SafeAreaView>
       <ScrollView>
-        <BasicButton
+        {/* <BasicButton
           text="test"
           width={100}
           height={40}
@@ -154,7 +154,7 @@ function MyPage({navigation}) {
           backgroundColor={'#007aff'}
           margin={[10, 3, 3, 3]}
           onPress={onSubmitSignIn}
-        />
+        /> */}
         {/* 유저 프로필 */}
         <MyProfile User={dummyUser} navigation={navigation} />
         {/* 탭 선택 버튼 */}
