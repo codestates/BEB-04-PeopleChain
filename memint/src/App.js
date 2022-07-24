@@ -29,14 +29,30 @@ import WalletOffchainScreen from './pages/WalletPage/WalletOffchainScreen';
 import useAuth from './utils/hooks/UseAuth';
 import useAuthActions from './utils/hooks/UseAuthActions';
 import {subscribeAuth} from './lib/Auth';
+import {getUser} from './lib/Users';
 
 const Stack = createNativeStackNavigator();
 const store = createStore(rootReducer);
 
 function App() {
   const userInfo = useAuth();
-  const {authorize, logout} = useAuthActions();
+  const {authorize, logout, saveInfo} = useAuthActions();
   const [initialRouteName, setInitialRouteName] = useState('SignIn');
+
+  const saveUserInfo = async user => {
+    try {
+      const userDetail = await getUser(user.uid);
+      saveInfo({
+        id: user.uid,
+        email: user.email,
+        nickName: userDetail.nickName,
+        gender: userDetail.gender,
+        birth: userDetail.birth,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const [initializing, setInitializing] = useState(true);
   useEffect(() => {
@@ -51,7 +67,6 @@ function App() {
     }
   }, []);
 
-  ////////
   useEffect(() => {
     const unsubscribe = subscribeAuth(user => {
       if (user) {
@@ -59,6 +74,7 @@ function App() {
           id: user.uid,
           email: user.email,
         });
+        saveUserInfo(user);
         setInitialRouteName('Main');
       } else {
         logout();

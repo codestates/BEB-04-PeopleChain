@@ -8,13 +8,11 @@ import HistoryButton from '../../components/walletComponents/HistoryButton';
 import WalletOffchainHistory from './WalletOffchainHistory';
 import WalletOnchainMain from './WalletOnchainMain';
 import {subscribeAuth, signOut} from '../../lib/Auth';
-import useUser from '../../utils/hooks/UseAuth';
 import useAuthActions from '../../utils/hooks/UseAuthActions';
-
+import useUser from '../../utils/hooks/UseUser';
 function WalletOffchainMain({navigation}) {
   const [walletSelected, setWalletSelected] = useState(false);
   const [spendingSelected, setSpendingSelected] = useState(true);
-  const userInfo = useUser();
   const {logout} = useAuthActions();
 
   const handleWalletSelect = () => {

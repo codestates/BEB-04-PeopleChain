@@ -6,7 +6,6 @@ import WalletOffchainMain from './WalletOffchainMain';
 import WalletOnchainMain from './WalletOnchainMain';
 import {Icon} from 'react-native-vector-icons/MaterialIcons';
 import WalletOffchainRecieve from './WalletOffchainRecieve';
-
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
