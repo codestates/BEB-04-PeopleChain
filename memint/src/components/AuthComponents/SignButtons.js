@@ -1,14 +1,7 @@
 import React from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import BasicButton from '../common/BasicButton';
-const SignButtons = ({onSubmitSignIn, onSubmitSignUp, loading}) => {
-  if (loading) {
-    return (
-      <View style={styles.spinnerWrapper}>
-        <ActivityIndicator size={32} color="#6200ee" />
-      </View>
-    );
-  }
+const SignButtons = ({onSubmitSignIn, onSubmitSignUp}) => {
   return (
     <View style={styles.buttons}>
       <BasicButton

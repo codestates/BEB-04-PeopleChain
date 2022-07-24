@@ -10,6 +10,7 @@ import {
   View,
   TouchableOpacity,
   Image,
+  ActivityIndicator,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import OauthButton from '../../components/AuthComponents/OauthButton';
@@ -82,7 +83,15 @@ const SignInScreen = ({navigation, route}) => {
   const goToFindPW = () => {
     navigation.navigate('FindPWVerify');
   };
-
+  if (loading) {
+    return (
+      <SafeAreaView style={styles.fullscreen}>
+        <View style={styles.spinnerWrapper}>
+          <ActivityIndicator size={32} color="#6200ee" />
+        </View>
+      </SafeAreaView>
+    );
+  }
   return (
     <KeyboardAvoidingView
       style={styles.KeyboardAvoidingView}
@@ -179,6 +188,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 40,
     // paddingHorizontal: 16,
+  },
+  spinnerWrapper: {
+    marginTop: 64,
+    height: 104,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

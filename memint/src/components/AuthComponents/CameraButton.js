@@ -5,13 +5,15 @@ import {
   StyleSheet,
   Platform,
   ActionSheetIOS,
+  Image,
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
-
-// import UploadModeModal from './UploadModeModal';
-
+import storage from '@react-native-firebase/storage';
+// const reference = storage().ref('/directory/filename.png');
+// await reference.putFile(uri);
+// const url = await reference.getDownloadURL();
 const imagePickerOption = {
   mediaType: 'photo',
   maxWidth: 768,
@@ -19,7 +21,7 @@ const imagePickerOption = {
   inculdeBase64: Platform.OS === 'android',
 };
 
-const CameraButton = () => {
+const CameraButton = ({response, setResponse, uid}) => {
   const insets = useSafeAreaInsets();
 
   const onPickImage = res => {
@@ -27,6 +29,7 @@ const CameraButton = () => {
       return;
     }
     console.log(res);
+    setResponse(res);
   };
   const onLaunchCamera = () => {
     launchCamera(imagePickerOption, onPickImage);
@@ -58,7 +61,14 @@ const CameraButton = () => {
     <>
       <View style={[styles.wrapper]}>
         <Pressable style={styles.circle} onPress={onPress}>
-          <Icon name="person-add" color="black" size={48} />
+          {response ? (
+            <Image
+              style={styles.circle}
+              source={{uri: response?.assets[0]?.uri}}
+            />
+          ) : (
+            <Icon name="person-add" color="black" size={48} />
+          )}
         </Pressable>
       </View>
     </>

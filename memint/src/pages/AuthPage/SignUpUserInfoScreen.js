@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Text,
   View,
+  ActivityIndicator,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import SelectDropdown from 'react-native-select-dropdown';
@@ -17,12 +18,16 @@ import BackButton from '../../components/common/BackButton';
 import CameraButton from '../../components/AuthComponents/CameraButton';
 import {signUp} from '../../lib/Auth';
 import {createUser, getUser} from '../../lib/Users';
+import storage from '@react-native-firebase/storage';
+
+// const reference = storage().ref('/directory/filename.png');
+// await reference.putFile(uri);
+// const url = await reference.getDownloadURL();
 
 const SignUpUserInfoScreen = ({navigation, route}) => {
-  // const {params} = useRoute();
   const {uid} = route.params || {};
-  // console.log(route.params);
-  // console.log(route.params);
+  const [loading, setLoading] = useState(false);
+  const [response, setResponse] = useState(null);
   const [form, setForm] = useState({
     nickName: '',
     birthYear: '',
@@ -31,32 +36,43 @@ const SignUpUserInfoScreen = ({navigation, route}) => {
     gender: '',
   });
 
-  const onSubmitTest = async () => {
-    try {
-      const profile = await getUser(uid);
-      console.log(profile);
-    } catch (e) {
-      console.log(e);
-    }
-  };
   const createChangeTextHandler = name => value => {
     setForm({...form, [name]: value});
   };
-  const onSubmit = () => {
+  const onSubmit = async () => {
     try {
       Keyboard.dismiss();
       console.log('uid is ' + uid);
       console.log(form);
+      setLoading(true);
+      let photoURL = null;
+      if (response) {
+        const asset = response.assets[0];
+        const extension = asset.fileName.split('.').pop(); //확장자 추출
+        const reference = storage().ref(`/profile/${uid}.${extension}`);
+
+        if (Platform.OS === 'android') {
+          await reference.putString(asset.base64, 'base64', {
+            contentType: asset.type,
+          });
+        } else {
+          await reference.putFile(asset.uri);
+        }
+
+        photoURL = response ? await reference.getDownloadURL() : null;
+      }
       createUser({
         userId: uid,
         nickName: form.nickName,
         gender: form.gender,
         birth: `${form.birthYear}년 ${form.birthMonth}월 ${form.birthDay}일`,
-        picture: null,
+        picture: photoURL,
       });
       navigation.push('SignUpUserDetail', {uid: uid});
     } catch (e) {
       console.log(e);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -64,12 +80,30 @@ const SignUpUserInfoScreen = ({navigation, route}) => {
     Keyboard.dismiss();
     const {email, password, confirmPassword} = form;
     const info = {email, password};
+    setLoading(true);
+
     if (password !== confirmPassword) {
       Alert.alert('실패', '비밀번호가 일치하지 않습니다.');
     } else {
       try {
         const {user} = await signUp(info);
         console.log(user);
+        let photoURL = null;
+        if (response) {
+          const asset = response.assets[0];
+          const extension = asset.fileName.split('.').pop(); //확장자 추출
+          const reference = storage().ref(`/profile/${uid}.${extension}`);
+
+          if (Platform.OS === 'android') {
+            await reference.putString(asset.base64, 'base64', {
+              contentType: asset.type,
+            });
+          } else {
+            await reference.putFile(asset.uri);
+          }
+
+          photoURL = response ? await reference.getDownloadURL() : null;
+        }
         navigation.navigate('SignUpUserDetail');
       } catch (e) {
         Alert.alert('실패');
@@ -78,7 +112,15 @@ const SignUpUserInfoScreen = ({navigation, route}) => {
       }
     }
   };
-
+  if (loading) {
+    return (
+      <SafeAreaView style={styles.fullscreenSub}>
+        <View style={styles.spinnerWrapper}>
+          <ActivityIndicator size={32} color="#6200ee" />
+        </View>
+      </SafeAreaView>
+    );
+  }
   return (
     <KeyboardAvoidingView
       style={styles.KeyboardAvoidingView}
@@ -86,7 +128,11 @@ const SignUpUserInfoScreen = ({navigation, route}) => {
       <SafeAreaView style={styles.fullscreen}>
         <BackButton />
         <View style={styles.fullscreenSub}>
-          <CameraButton />
+          <CameraButton
+            response={response}
+            setResponse={setResponse}
+            uid={uid}
+          />
           <View style={styles.form}>
             <Text style={styles.infoText}>닉네임</Text>
             <BorderedInput
@@ -292,6 +338,12 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     height: 30,
     backgroundColor: 'white',
+  },
+  spinnerWrapper: {
+    marginTop: 64,
+    height: 104,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
