@@ -2,12 +2,14 @@ import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useToast} from '../../utils/hooks/useToast';
+const user = '연습용계정1';
 
 function ChattingRoomTopTab({
   isConfirmed,
   meetingEnd,
   setProposeModalVisible,
   setModalVisible,
+  isFixed,
 }) {
   const navigation = useNavigation();
   const {showToast} = useToast();

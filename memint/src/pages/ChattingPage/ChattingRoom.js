@@ -27,6 +27,8 @@ function ChattingRoom({route}) {
   // 이를 없애기 위해 우측 상단 햄버거를 클릭하면 그 때 true 값을 주어 컴포넌트 자체가 생성되도록 만들었다.
   // 그런데 이렇게 하면 햄버거를 누를 때마다 setRoomInfoExist에 true 값을 주게 되어 리소스 낭비가 생긴다.
   // 이를 효율적으로 방지할 수 있는 방법은 없을까?
+
+  // roomInfo라는 사이드바 컴포넌트 존재여부
   const [roomInfoExist, setRoomInfoExist] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [isHost, setIsHost] = useState(false);
@@ -39,7 +41,39 @@ function ChattingRoom({route}) {
   const [mySingleModalVisible, setMySingleModalVisible] = useState(false);
   const {showToast} = useToast();
   const [userNickName, setUserNickName] = useState('');
+  const [isFixed, setIsFixed] = useState('');
   const userRef = useMemo(() => firestore().collection('User'), []);
+  const user = '연습용계정1';
+
+  // 아래는 params.data로 받아온 members라는, 참여자의 id값을 통해서 각각 참여자의 nickName을 받아와 객체화하는 과정이다. 결과값은 아래와 같다.
+  // {"연습용계정1": "남자", "연습용계정2": "소년", "연습용계정3": "소녀", "연습용계정4": "아저씨"}
+  // 이 객체를 userNickName이라는 state에 담아줄 것이고, 그렇게 되면 하위 페이지에서는 state를 받아 userId에 대응하는 알맞은 닉네임을 렌더링해줄 수 있다.
+  // asyncStorage를 사용하게 되면 관련 user의 닉네임 들을 저장해놓아 바로 렌더링할 수 있겠지만 지금은 그렇지 못하기때문에 이런 방법을 사용한다.
+
+  // 아래 방법에서 만약 Promise.all의 정보 호출이 순서가 맞지 않을 것이 걱정된다면, map을 돌릴 때 한 요소마다 한 번씩 바로 {el : nickName}의 형식으로
+  // memberNickName에 push해주고, 이후 reduce 함수를 사용하여 객체를 한번에 모아주는 방식도 고려해볼 수 있다.
+  const memberNickName = useMemo(() => {
+    return [];
+  }, []);
+  const users = useMemo(
+    () =>
+      Promise.all(
+        route.params.data.members.map(async el => {
+          memberNickName.push(Object.keys(el)[0]);
+          const result = await userRef.doc(Object.keys(el)[0]).get();
+          return result.data().nickName;
+        }),
+      )
+        .then(result => {
+          return result.reduce((acc, cur, idx) => {
+            return {...acc, [memberNickName[idx]]: cur};
+          }, 0);
+        })
+        .then(result => {
+          setUserNickName(result);
+        }),
+    [memberNickName, userRef, route.params.data],
+  );
 
   useEffect(() => {
     Animated.spring(animation, {
@@ -49,30 +83,20 @@ function ChattingRoom({route}) {
       bounciness: 0,
     }).start();
 
-    // 아래는 params.data로 받아온 members라는, 참여자의 id값을 통해서 각각 참여자의 nickName을 받아와 객체화하는 과정이다. 결과값은 아래와 같다.
-    // {"연습용계정1": "남자", "연습용계정2": "소년", "연습용계정3": "소녀", "연습용계정4": "아저씨"}
-    // 이 객체를 userNickName이라는 state에 담아줄 것이고, 그렇게 되면 하위 페이지에서는 state를 받아 userId에 대응하는 알맞은 닉네임을 렌더링해줄 수 있다.
-    // asyncStorage를 사용하게 되면 관련 user의 닉네임 들을 저장해놓아 바로 렌더링할 수 있겠지만 지금은 그렇지 못하기때문에 이런 방법을 사용한다.
-
-    const memberNickName = [];
-    // 아래 방법에서 만약 Promise.all의 정보 호출이 순서가 맞지 않을 것이 걱정된다면, map을 돌릴 때 한 요소마다 한 번씩 바로 {el : nickName}의 형식으로
-    // memberNickName에 push해주고, 이후 reduce 함수를 사용하여 객체를 한번에 모아주는 방식도 고려해볼 수 있다.
-    const users = Promise.all(
-      route.params.data.members.map(async el => {
-        memberNickName.push(Object.keys(el)[0]);
-        const result = await userRef.doc(Object.keys(el)[0]).get();
-        return result.data().nickName;
+    setIsFixed(
+      route.params.data.members.reduce((acc, cur) => {
+        return {...acc, ...cur};
       }),
     );
-    users
-      .then(result => {
-        return result.reduce((acc, cur, idx) => {
-          // console.log(cur);
-          return {...acc, [memberNickName[idx]]: cur};
-        }, 0);
-      })
-      .then(result => setUserNickName(result));
-  });
+    users;
+  }, [
+    animation,
+    roomInfo,
+    route.params.data.members,
+    userRef,
+    memberNickName,
+    users,
+  ]);
   return (
     <KeyboardAvoidingView
       behavior={'padding'}
@@ -94,6 +118,7 @@ function ChattingRoom({route}) {
           meetingEnd={meetingEnd}
           setProposeModalVisible={setProposeModalVisible}
           setModalVisible={setModalVisible}
+          isFixed={isFixed}
         />
         <ChatText
           data={route.params.data}
@@ -107,9 +132,9 @@ function ChattingRoom({route}) {
             <RoomInfo
               chatInfo={route.params.data}
               setModalVisible={setModalVisible}
-              setIsHost={setIsHost}
-              confirmation={confirmation}
               setMeetingEnd={setMeetingEnd}
+              isFixed={isFixed}
+              userNickName={userNickName}
             />
           </Animated.View>
         ) : null}

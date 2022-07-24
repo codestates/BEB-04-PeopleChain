@@ -16,8 +16,7 @@ function ChatText({data, roomInfo, userNickName}) {
   const [userInfoModalVisible, setUserInfoModalVisible] = useState(false);
   const [userInfo, setUserInfo] = useState('');
   const [chattings, setChattings] = useState('');
-  const [text, setText] = useState('');
-  const user = '연습용계정2';
+  const user = '연습용계정1';
 
   const chatRef = useMemo(
     () => firestore().collection('Meeting').doc(data.id).collection('Messages'),
