@@ -1,44 +1,46 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useMemo} from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
 import BasicButton from '../common/BasicButton';
+import firestore from '@react-native-firebase/firestore';
 const crown = require('../../pages/ChattingPage/dummydata/images/crown.png');
 
-function RoomInfo({
-  chatInfo,
-  setIsHost,
-  confirmation,
-  setProposeModalVisible,
-  meetingEnd,
-  setMeetingEnd,
-}) {
+function RoomInfo({chatInfo, confirmation, meetingEnd, setMeetingEnd}) {
   const [confirmed, setConfirmed] = useState(false);
   const [isRoomConfirmed, setIsRoomConfirmed] = useState(false);
 
-  const host = chatInfo.hostId;
-  const persons = chatInfo.joinersId.map((person, idx) => {
-    return <Joiner person={person} confirmed={confirmed} key={idx} />;
-  });
-  const roomConfirmed = () => {
-    for (let i = 0; i < chatInfo.joinersId.length; i++) {
-      if (chatInfo.joinersId[i].confirmed === false) return false;
-    }
-    return true;
-  };
+  const userRef = useMemo(() => firestore().collection('User'), []);
+
+  // const host = chatInfo.hostId;
+  // const persons = chatInfo.joinersId.map((person, idx) => {
+  //   return <Joiner person={person} confirmed={confirmed} key={idx} />;
+  // });
+  // const roomConfirmed = () => {
+  //   for (let i = 0; i < chatInfo.joinersId.length; i++) {
+  //     if (chatInfo.joinersId[i].confirmed === false) return false;
+  //   }
+  //   return true;
+  // };
 
   useEffect(() => {
-    if (roomConfirmed() === true) {
-      setIsRoomConfirmed(true);
-    }
-    setConfirmed(confirmation);
-  }, [confirmation]);
+    Promise.all(
+      chatInfo.members.map(el => {
+        // console.log(Object.keys(el)[0]);
 
-  const user = '김개똥';
+        userRef
+          .doc(Object.keys(el)[0])
+          .get()
+          .then(result => console.log(result));
+      }),
+    );
+  }, [chatInfo.members, userRef]);
+
+  const user = '연습용계정1';
   return (
     <View style={styles.container}>
       <View style={styles.wrapper}>
         <Text style={styles.hilightText}>미팅 참여자</Text>
         <Host person={chatInfo.hostId} confirmed={confirmed} />
-        {persons}
+        {/* {persons} */}
       </View>
       <BasicButton
         text="미팅종료"

@@ -15,8 +15,8 @@ import MyDoubleModal from '../../components/chattingComponents/myDoubleModal';
 import ChattingRoomTopTab from '../../components/chattingComponents/ChattingRoomTopTab';
 import SpendingModal from '../../components/common/UserInfoModal/SpendingModal';
 import MySingleModal from '../../components/chattingComponents/MySingleModal';
-import {useToast} from '../../utils/hooks/useToast';
 import firestore from '@react-native-firebase/firestore';
+import {useToast} from '../../utils/hooks/useToast';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -37,17 +37,9 @@ function ChattingRoom({route}) {
   const [meetingEnd, setMeetingEnd] = useState(false);
   const [spendingModalVisible, setSpendingModalVisible] = useState(false);
   const [mySingleModalVisible, setMySingleModalVisible] = useState(false);
-  const [chats, setChats] = useState('');
   const {showToast} = useToast();
-
-  const chatRef = useMemo(
-    () =>
-      firestore()
-        .collection('Meeting')
-        .doc(route.params.id)
-        .collection('Messages'),
-    [route.params.id],
-  );
+  const [userNickName, setUserNickName] = useState('');
+  const userRef = useMemo(() => firestore().collection('User'), []);
 
   useEffect(() => {
     Animated.spring(animation, {
@@ -56,26 +48,31 @@ function ChattingRoom({route}) {
       speed: 13,
       bounciness: 0,
     }).start();
-    // const chatId = route.params.id;
-    const getContent = async () => {
-      chatRef.orderBy('createdAt').onSnapshot(result => {
-        // 아래 부분을 if문없이 넘겨주면, createdAt을 서버 시간으로 설정하였는데 서버에 올라가기 전에 로컬에 미리 정보를 가져오므로 createdAt이 null이어서 에러가 생기게 된다.
-        if (result.docs.length === 0) {
-          return;
-        } else if (
-          result.docChanges()[result.docChanges().length - 1].doc._data
-            .createdAt
-          // 아래에서 기본 chat을 살리려고 [...chats, result.docs[result.docs.length-1]]을 setChats로 보내주려 했는데 계속해서 에러가 난다.
-          // 그런데 다시 생각해보니 어차피 윗줄의 코드도 원본을 건드리지 않고 새로운 배열을 만들어서 가져오는 것이기 때문에 같은 개념이다 싶어서 안하기로 했다.
-        ) {
-          setChats(result.docs);
-        }
-      });
-    };
 
-    getContent();
-  }, [roomInfo, animation, route.params.id, chatRef]);
+    // 아래는 params.data로 받아온 members라는, 참여자의 id값을 통해서 각각 참여자의 nickName을 받아와 객체화하는 과정이다. 결과값은 아래와 같다.
+    // {"연습용계정1": "남자", "연습용계정2": "소년", "연습용계정3": "소녀", "연습용계정4": "아저씨"}
+    // 이 객체를 userNickName이라는 state에 담아줄 것이고, 그렇게 되면 하위 페이지에서는 state를 받아 userId에 대응하는 알맞은 닉네임을 렌더링해줄 수 있다.
+    // asyncStorage를 사용하게 되면 관련 user의 닉네임 들을 저장해놓아 바로 렌더링할 수 있겠지만 지금은 그렇지 못하기때문에 이런 방법을 사용한다.
 
+    const memberNickName = [];
+    // 아래 방법에서 만약 Promise.all의 정보 호출이 순서가 맞지 않을 것이 걱정된다면, map을 돌릴 때 한 요소마다 한 번씩 바로 {el : nickName}의 형식으로
+    // memberNickName에 push해주고, 이후 reduce 함수를 사용하여 객체를 한번에 모아주는 방식도 고려해볼 수 있다.
+    const users = Promise.all(
+      route.params.data.members.map(async el => {
+        memberNickName.push(Object.keys(el)[0]);
+        const result = await userRef.doc(Object.keys(el)[0]).get();
+        return result.data().nickName;
+      }),
+    );
+    users
+      .then(result => {
+        return result.reduce((acc, cur, idx) => {
+          // console.log(cur);
+          return {...acc, [memberNickName[idx]]: cur};
+        }, 0);
+      })
+      .then(console.log);
+  });
   return (
     <KeyboardAvoidingView
       behavior={'padding'}
@@ -98,23 +95,16 @@ function ChattingRoom({route}) {
           setProposeModalVisible={setProposeModalVisible}
           setModalVisible={setModalVisible}
         />
-        <ChatText
-          data={route.params.data}
-          chattings={chats}
-          roomINfo={roomInfo}
-          chatId={route.params.id}
-        />
+        <ChatText data={route.params.data} roomINfo={roomInfo} />
 
         {roomInfoExist ? (
           <Animated.View
             style={[styles.roomInfo, {transform: [{translateX: animation}]}]}>
             <RoomInfo
-              chatInfo={route.params.item}
+              chatInfo={route.params.data}
               setModalVisible={setModalVisible}
               setIsHost={setIsHost}
               confirmation={confirmation}
-              roomConfirmation={roomConfirmation}
-              setProposeModalVisible={setProposeModalVisible}
               setMeetingEnd={setMeetingEnd}
             />
           </Animated.View>
