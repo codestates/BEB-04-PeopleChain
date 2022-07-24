@@ -7,21 +7,18 @@ import SpendingModal from '../common/UserInfoModal/SpendingModal';
 import {useToast} from '../../utils/hooks/useToast';
 import {filterMemin} from '../../lib/NFT';
 import {getUser} from '../../lib/Users';
-import useUser from '../../hooks/UseUser';
 
 function MyNFT({User}) {
   const [showNFT, setShowNFT] = useState(false);
-  const [user, setUser] = useState(null);
-  const userInfo = useUser();
-  const userUID = userInfo.id;
+
   const [meminImgUrl, setMeminImgUrl] = useState(null);
 
-  useEffect(() => {
-    getUser(userUID).then(setUser);
-    filterMemin(userUID).then(setMeminImgUrl);
-  }, [userUID]);
+  // useEffect(() => {
+  //   getUser(userUID).then(setUser);
+  //   filterMemin(userUID).then(setMeminImgUrl);
+  // }, [userUID]);
 
-  console.log(user);
+  // console.log(user);
   return (
     <>
       <View style={{flexDirection: 'row'}}>

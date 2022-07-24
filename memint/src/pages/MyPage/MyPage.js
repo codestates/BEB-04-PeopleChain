@@ -4,12 +4,8 @@ import BasicButton from '../../components/common/BasicButton';
 import MyMeetingList from '../../components/myPageComponent/MyMeetingList';
 import ParticipatedMeetingList from '../../components/myPageComponent/ParticipatedMeetingList';
 import MyProfile from '../../components/myPageComponent/MyProfle';
-import {getUser} from '../../lib/Users';
-import useUser from '../../hooks/UseUser';
 
 function MyPage({navigation}) {
-  const userInfo = useUser();
-
   const dummyUser = {
     nickname: '김개똥',
     birth: '1997.07.09',

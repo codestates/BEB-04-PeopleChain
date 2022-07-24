@@ -2,9 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {Text, StyleSheet, View, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import MyNFT from './MyNFT';
-import {filterProfile} from '../../lib/NFT';
-import {getUser} from '../../lib/Users';
-import useUser from '../../hooks/UseUser';
 
 function MyProfile({User, navigation}) {
   const [profileImgUrl, setProfileImgUrl] = useState(null);
