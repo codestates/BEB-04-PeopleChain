@@ -39,12 +39,15 @@ function MyNFT({User}) {
       </View>
 
       {showNFT ? (
-        <View style={{marginLeft: 40}}>
-          <FlatList
+        <View style={styles.myNFTs}>
+          {/* <FlatList
             data={User.myNfts}
             renderItem={({item}) => <MyNFTs item={item} />}
             numColumns="5"
-          />
+          /> */}
+          {User.myNfts.map(ele => (
+            <MyNFTs item={ele} />
+          ))}
         </View>
       ) : null}
     </>
@@ -202,6 +205,10 @@ const styles = StyleSheet.create({
   },
   rotate180: {
     transform: [{rotate: '180deg'}],
+  },
+  myNFTs: {
+    flexDirection: 'row',
+    marginLeft: 40,
   },
 });
 

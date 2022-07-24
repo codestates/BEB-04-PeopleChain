@@ -140,7 +140,7 @@ function MyPage({navigation}) {
         <MyProfile User={dummyUser} navigation={navigation} />
         {/* 탭 선택 버튼 */}
         <View style={styles.meetingButton}>
-          {room.map((ele, index) => {
+          {room.map((ele, index, key) => {
             return (
               <BasicButton
                 text={ele.name}
