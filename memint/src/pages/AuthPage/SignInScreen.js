@@ -22,12 +22,14 @@ import useAuthActions from '../../utils/hooks/UseAuthActions';
 import {signIn} from '../../lib/Auth';
 import {getUser} from '../../lib/Users';
 import useUser from '../../utils/hooks/UseUser';
-import {getNFTs} from '../../lib/NFT';
+import useNftActions from '../../utils/hooks/UseNftActions';
+import {getNFTs, getProfile, getMemin} from '../../lib/NFT';
 
 const SignInScreen = ({navigation, route}) => {
   const userInfo = useUser();
 
   const {saveInfo} = useAuthActions();
+  const {saveNFT, setNftProfile, setMemin} = useNftActions();
 
   const [form, setForm] = useState({
     email: '',
@@ -55,10 +57,16 @@ const SignInScreen = ({navigation, route}) => {
 
       console.log('userDetail is');
       console.log(userDetail);
-      // const res = await getNFTs(user.id);
-      // const nfts = res.docs.map(el => {
-      //   return {...el.data()};
-      // });
+      const res = await getNFTs(user.uid);
+      const nfts = res.docs.map(el => {
+        return {...el.data()};
+      });
+      saveNFT(nfts);
+      // const profile = getProfile(nfts);
+      // console.log(profile);
+      // console.log(getProfile());
+      setNftProfile(...getProfile(nfts));
+      setMemin(...getMemin(nfts));
 
       saveInfo({
         id: user.uid,
@@ -67,6 +75,8 @@ const SignInScreen = ({navigation, route}) => {
         gender: userDetail.gender,
         birth: userDetail.birth,
         nftIds: userDetail.nftIds,
+        picture: userDetail.picture,
+        tokenAmount: userDetail.tokenAmount,
       }),
         navigation.navigate('Main');
     } catch (e) {

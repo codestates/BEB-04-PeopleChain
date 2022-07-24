@@ -5,7 +5,7 @@ import BasicButton from '../../components/common/BasicButton';
 import WalletCustomButton from '../../components/walletComponents/WalletCustomButton';
 import TotalAccountButton from '../../components/walletComponents/TotalAccountButton';
 import HistoryButton from '../../components/walletComponents/HistoryButton';
-
+import useUser from '../../utils/hooks/UseUser';
 function WalletOffchainHistory({navigation}) {
   const dummyHistory = [
     {
@@ -83,11 +83,15 @@ function WalletOffchainHistory({navigation}) {
   const goToOffchainTrade = () => {
     navigation.navigate('WalletOffchainTrade');
   };
+  const user = useUser();
 
   return (
     <View>
       <Text style={styles.accountText}>Token Account</Text>
-      <TotalAccountButton amount={10} onPress={goToOffchainTrade} />
+      <TotalAccountButton
+        amount={user.tokenAmount}
+        onPress={goToOffchainTrade}
+      />
       <Text style={styles.historyText}>History</Text>
       <ScrollView>
         {dummyHistory.map(el => {

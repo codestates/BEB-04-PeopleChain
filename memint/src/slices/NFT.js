@@ -2,6 +2,8 @@ import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
   NFT: null,
+  profileImgUrl: null,
+  meminImgUrl: null,
 };
 
 const nftSlice = createSlice({
@@ -11,10 +13,16 @@ const nftSlice = createSlice({
     // state 변화할 action 이름 선언
 
     saveNFT(state, action) {
-      state.nft = action.payload;
+      state.NFT = action.payload;
+    },
+    setNftProfile(state, action) {
+      state.profileImgUrl = action.payload;
+    },
+    setMemin(state, action) {
+      state.meminImgUrl = action.payload;
     },
   },
 });
 
 export default nftSlice.reducer;
-export const {saveNFT} = nftSlice.actions;
+export const {saveNFT, setNftProfile, setMemin} = nftSlice.actions;

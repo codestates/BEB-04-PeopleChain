@@ -7,10 +7,13 @@ import SpendingModal from '../common/UserInfoModal/SpendingModal';
 import {useToast} from '../../utils/hooks/useToast';
 import {filterMemin} from '../../lib/NFT';
 import {getUser} from '../../lib/Users';
+import {useNft} from '../../utils/hooks/UseNft';
+import {useNftProfile, useMemin} from '../../utils/hooks/UseNft';
 
 function MyNFT({User}) {
   const [showNFT, setShowNFT] = useState(false);
-
+  const nft = useNft();
+  const myMemin = useMemin();
   const [meminImgUrl, setMeminImgUrl] = useState(null);
 
   // useEffect(() => {
@@ -24,7 +27,7 @@ function MyNFT({User}) {
       <View style={{flexDirection: 'row'}}>
         <Text style={styles.attribute}>나의 미민이</Text>
       </View>
-      <MyMeMin myMeMin={User.myNfts[User.myNfts.length - 1]} />
+      <MyMeMin myMeMin={myMemin} />
       <View style={{...styles.container, justifyContent: 'space-between'}}>
         <Text style={styles.attribute}>나의 NFT</Text>
         <Icon
@@ -42,8 +45,8 @@ function MyNFT({User}) {
             renderItem={({item}) => <MyNFTs item={item} />}
             numColumns="5"
           /> */}
-          {User.myNfts.map((ele, key) => (
-            <MyNFTs item={ele} key={ele.id} />
+          {nft.map((ele, index) => (
+            <MyNFTs item={ele} key={index} />
           ))}
         </View>
       ) : null}
@@ -62,10 +65,10 @@ function MyMeMin({myMeMin}) {
         <Image
           style={styles.myMeMin}
           source={{
-            uri: myMeMin.uri,
+            uri: myMeMin.nftImg,
           }}
         />
-        {myMeMin.valid ? (
+        {myMeMin.tokenId ? (
           <View style={{marginLeft: 40}}>
             <Image
               source={require('../../assets/icons/nftBadge.png')}
@@ -118,11 +121,11 @@ function MyNFTs({item}) {
   const {showToast} = useToast();
   return (
     <>
-      {item.valid ? (
+      {item.tokenId ? (
         <>
           <Image
-            style={[styles.nft, item.profile ? styles.currentProfileNft : '']}
-            source={{uri: item.uri}}
+            style={[styles.nft, item.isProfile ? styles.currentProfileNft : '']}
+            source={{uri: item.nftImg}}
             onPress={() => setChangeProfileModalVisible(true)}
           />
 

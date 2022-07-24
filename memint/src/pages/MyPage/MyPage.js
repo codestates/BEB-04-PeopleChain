@@ -6,39 +6,15 @@ import ParticipatedMeetingList from '../../components/myPageComponent/Participat
 import MyProfile from '../../components/myPageComponent/MyProfle';
 import useUser from '../../utils/hooks/UseUser';
 import {getNFTs} from '../../lib/NFT';
-import useNft from '../../utils/hooks/UseNft';
+import {useNftProfile, useMemin} from '../../utils/hooks/UseNft';
+import useNftActions from '../../utils/hooks/UseNftActions';
+import {getProfileUrl} from '../../lib/NFT';
 
 function MyPage({navigation}) {
   const user = useUser();
-  const nft = useNft();
-  console.log(nft);
+  // const test = useMemin();
 
-  // const getMeetingMarket = async () => {
-  //   const res = await getMeetings();
-  //   const data = res.docs.map(el => {
-  //     return {
-  //       ...el.data(),
-  //       id: el.id,
-  //       meetDate: handleDate(el.data().meetDate),
-  //     };
-  //   });
-  //   //hostNickname, hostAge 데이터 추가,
-  //   //members 데이터 추가
-  //   setMeetings(data);
-  // };
-  const onSubmitSignIn = async () => {
-    try {
-      console.log('userDetail');
-      console.log(user);
-      const res = await getNFTs(user.id);
-      const nfts = res.docs.map(el => {
-        return {...el.data()};
-      });
-      console.log(nfts);
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  // console.log(test);
 
   const dummyUser = {
     nickname: user.nickName,
@@ -52,7 +28,7 @@ function MyPage({navigation}) {
     ],
     nftImage:
       'https://lh3.googleusercontent.com/o7U7XfamFNTSn3HrcUWRgtAwracl2ygU_12XarpHIYnfGnOla4zgrRqz0OvLL0-KyYqOJSyp-1YmcdndjjuyThYB_IdLFk5LBoilNus=w600',
-    profileImage: 'https://randomuser.me/api/portraits/women/17.jpg',
+    profileImage: user.picture,
 
     myNfts: [
       {
@@ -166,15 +142,15 @@ function MyPage({navigation}) {
   return (
     <SafeAreaView>
       <ScrollView>
-        <BasicButton
+        {/* <BasicButton
           text="test"
           width={100}
           height={40}
           textSize={14}
           backgroundColor={'#007aff'}
           margin={[10, 3, 3, 3]}
-          onPress={onSubmitSignIn}
-        />
+          onPress=
+        /> */}
         {/* 유저 프로필 */}
         <MyProfile User={dummyUser} navigation={navigation} />
         {/* 탭 선택 버튼 */}

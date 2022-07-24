@@ -27,7 +27,7 @@ export async function filterProfile(userId) {
 //미민이 렌더링
 export async function filterMemin(userId) {
   let query = NFTCollection.where('userId', '==', userId).where(
-    'isMemint',
+    'isMemin',
     '==',
     true,
   );
@@ -39,4 +39,19 @@ export async function filterMemin(userId) {
 // 모든 NFT 렌더링
 export async function getNFTs(userId) {
   return await NFTCollection.where('userId', '==', userId).get();
+}
+
+export function getProfile(nfts) {
+  const profile = nfts.filter(el => {
+    return el.isProfile === true;
+  });
+
+  return profile;
+}
+export function getMemin(nfts) {
+  const memin = nfts.filter(el => {
+    return el.isMemin === true;
+  });
+
+  return memin;
 }

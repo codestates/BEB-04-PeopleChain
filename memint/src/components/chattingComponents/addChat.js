@@ -6,7 +6,7 @@ import firestore from '@react-native-firebase/firestore';
 
 // props로 채팅방의 아이디를 받아온다.
 function AddChat({chatId}) {
-  const user = '연습용계정4';
+  const user = '연습용계정2';
   const sendChat = async obj => {
     const chattingCollection = firestore()
       .collection('Meeting')
