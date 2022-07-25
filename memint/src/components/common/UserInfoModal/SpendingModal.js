@@ -13,7 +13,7 @@ import {updateTokenAmount} from '../../../lib/Users';
         spendingModalVisible={spendingModalVisible}
         setSpendingModalVisible={setSpendingModalVisible}
         pFunction={}
-        amount=1
+        amount={1}
         txType='프로필조회'
       />
  */

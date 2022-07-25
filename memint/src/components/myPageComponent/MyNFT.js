@@ -16,18 +16,45 @@ function MyNFT({User}) {
   const myMemin = useMemin();
   const [meminImgUrl, setMeminImgUrl] = useState(null);
 
-  // useEffect(() => {
-  //   getUser(userUID).then(setUser);
-  //   filterMemin(userUID).then(setMeminImgUrl);
-  // }, [userUID]);
+  const dummyNft = [
+    {
+      id: 1,
+      nftImg:
+        'https://lh3.googleusercontent.com/-jgMiZOhUs-3hdyDlg7_rPqFf8BhLEGWNlbg_RgqFKPPFnoCum_DfOUkGIPZIKonCbsM0ChJgwSVK36KAXTZAN6ZBPPSB0V_s0Kd=w600',
 
-  // console.log(user);
+      isprofile: false,
+    },
+    {
+      id: 2,
+      nftImg:
+        'https://lh3.googleusercontent.com/1lEK5t6aQvy_6YaVa0856-Dbtb8yhDYXU5q8ZWhSVGR2PNM397RTgBPsiSkG5nsZ0vM7LDand2dcIBzKOpNnyErv6c5AmXkbnR-B2A=w600',
+
+      isprofile: false,
+      tokenId: 1,
+    },
+    {
+      id: 3,
+      nftImg:
+        'https://lh3.googleusercontent.com/o7U7XfamFNTSn3HrcUWRgtAwracl2ygU_12XarpHIYnfGnOla4zgrRqz0OvLL0-KyYqOJSyp-1YmcdndjjuyThYB_IdLFk5LBoilNus=w600',
+
+      profile: true,
+      tokenId: 2,
+    },
+    {
+      id: 4,
+      nftImg:
+        'https://lh3.googleusercontent.com/aAw8TBIaLoC55VWQjamPt_9iPq_bbJksLuxTTX4WXmQrrJbMXcEBBKR83GtgU_DRTklmpE793TzeXWyCqsFcY-pg4gsHI-7Gah_ipA=w600',
+
+      profile: false,
+      tokenId: 3,
+    },
+  ];
   return (
     <>
       <View style={{flexDirection: 'row'}}>
         <Text style={styles.attribute}>나의 미민이</Text>
       </View>
-      <MyMeMin myMeMin={myMemin} />
+      <MyMeMin myMeMin={myMemin ? myMemin : dummyNft[0]} />
       <View style={{...styles.container, justifyContent: 'space-between'}}>
         <Text style={styles.attribute}>나의 NFT</Text>
         <Icon
@@ -45,9 +72,9 @@ function MyNFT({User}) {
             renderItem={({item}) => <MyNFTs item={item} />}
             numColumns="5"
           /> */}
-          {nft.map((ele, index) => (
-            <MyNFTs item={ele} key={index} />
-          ))}
+          {nft
+            ? nft.map((ele, index) => <MyNFTs item={ele} key={index} />)
+            : dummyNft.map((ele, index) => <MyNFTs item={ele} key={index} />)}
         </View>
       ) : null}
     </>
@@ -65,7 +92,9 @@ function MyMeMin({myMeMin}) {
         <Image
           style={styles.myMeMin}
           source={{
-            uri: myMeMin.nftImg,
+            uri: myMeMin
+              ? myMeMin.nftImg
+              : 'https://cdn-icons-png.flaticon.com/512/1053/1053244.png?w=360',
           }}
         />
         {myMeMin.tokenId ? (

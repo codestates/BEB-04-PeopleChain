@@ -5,6 +5,7 @@ import MyNFT from './MyNFT';
 import {useNftProfile} from '../../utils/hooks/UseNft';
 
 function MyProfile({User, navigation}) {
+  console.log(User);
   const nftProfile = useNftProfile();
 
   return (
@@ -22,7 +23,9 @@ function MyProfile({User, navigation}) {
           <Image
             style={styles.nftImage}
             source={{
-              uri: nftProfile.nftImg,
+              uri: nftProfile
+                ? nftProfile.nftImg
+                : 'https://cdn-icons-png.flaticon.com/512/1053/1053244.png?w=360',
             }}
           />
           <Image
@@ -37,7 +40,7 @@ function MyProfile({User, navigation}) {
           />
         </View>
         <View style={styles.userInfos}>
-          <Text style={styles.userInfo}>닉네임: {User.nickname}</Text>
+          <Text style={styles.userInfo}>닉네임: {User.nickName}</Text>
           <Text style={styles.userInfo}>생년월일: {User.birth}</Text>
           <Text style={styles.userInfo}>성별: {User.gender}</Text>
         </View>

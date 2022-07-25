@@ -3,7 +3,6 @@ import {createSlice} from '@reduxjs/toolkit';
 const initialState = {
   auth: null, //관리할 state 초기값 설정
   user: null,
-  nft: null,
 };
 
 const authSlice = createSlice({

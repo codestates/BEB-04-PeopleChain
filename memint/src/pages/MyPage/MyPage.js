@@ -10,7 +10,6 @@ import useOffchainActions from '../../utils/hooks/UseOffchainActions';
 
 function MyPage({navigation}) {
   const user = useUser();
-  const {addLog} = useOffchainActions();
 
   // const onSubmitSignIn = async () => {
   //   const res = await getOffchainTokenLog(user.id);
@@ -19,9 +18,8 @@ function MyPage({navigation}) {
   //   });
   //   addLog(logs);
   // };
-
-  const dummyUser = {
-    nickname: user.nickName,
+  const testUser = {
+    nickName: user.nickName,
     birth: user.birth,
     gender: user.gender,
     alcoholQuantity: ['소주 반 병'],
@@ -33,33 +31,24 @@ function MyPage({navigation}) {
     nftImage:
       'https://lh3.googleusercontent.com/o7U7XfamFNTSn3HrcUWRgtAwracl2ygU_12XarpHIYnfGnOla4zgrRqz0OvLL0-KyYqOJSyp-1YmcdndjjuyThYB_IdLFk5LBoilNus=w600',
     profileImage: user.picture,
+  };
 
-    myNfts: [
-      {
-        id: 1,
-        uri: 'https://lh3.googleusercontent.com/-jgMiZOhUs-3hdyDlg7_rPqFf8BhLEGWNlbg_RgqFKPPFnoCum_DfOUkGIPZIKonCbsM0ChJgwSVK36KAXTZAN6ZBPPSB0V_s0Kd=w600',
-        valid: true,
-        profile: false,
-      },
-      {
-        id: 2,
-        uri: 'https://lh3.googleusercontent.com/1lEK5t6aQvy_6YaVa0856-Dbtb8yhDYXU5q8ZWhSVGR2PNM397RTgBPsiSkG5nsZ0vM7LDand2dcIBzKOpNnyErv6c5AmXkbnR-B2A=w600',
-        valid: true,
-        profile: false,
-      },
-      {
-        id: 3,
-        uri: 'https://lh3.googleusercontent.com/o7U7XfamFNTSn3HrcUWRgtAwracl2ygU_12XarpHIYnfGnOla4zgrRqz0OvLL0-KyYqOJSyp-1YmcdndjjuyThYB_IdLFk5LBoilNus=w600',
-        valid: true,
-        profile: true,
-      },
-      {
-        id: 4,
-        uri: 'https://lh3.googleusercontent.com/aAw8TBIaLoC55VWQjamPt_9iPq_bbJksLuxTTX4WXmQrrJbMXcEBBKR83GtgU_DRTklmpE793TzeXWyCqsFcY-pg4gsHI-7Gah_ipA=w600',
-        valid: false,
-        profile: false,
-      },
+  const dummyUser = {
+    nickName: '김개똥',
+    birth: '2022년 7월 25일',
+    gender: '남성',
+    alcoholQuantity: ['소주 반 병'],
+    alcoholType: ['맥주', '와인', '술이라면 다 좋음'],
+    alcoholStyle: [
+      '일단 마시고 생각하자구요. 부어라 마셔라!',
+      '술보다 안주가 더 좋아요.',
     ],
+    nftImage: 'https://cdn-icons-png.flaticon.com/512/1053/1053244.png?w=360',
+    profileImage:
+      'https://cdn-icons-png.flaticon.com/512/1053/1053244.png?w=360',
+  };
+
+  const dummyMeeting = {
     myMeeting: [
       {
         id: 1,
@@ -156,7 +145,7 @@ function MyPage({navigation}) {
           onPress={onSubmitSignIn}
         /> */}
         {/* 유저 프로필 */}
-        <MyProfile User={dummyUser} navigation={navigation} />
+        <MyProfile User={user ? testUser : dummyUser} navigation={navigation} />
         {/* 탭 선택 버튼 */}
         <View style={styles.meetingButton}>
           {room.map((ele, index, key) => {
@@ -179,9 +168,12 @@ function MyPage({navigation}) {
         {/* 탭 선택에 따른 미팅 리스트 */}
 
         {meetingRoom === 0 ? (
-          <MyMeetingList List={dummyUser.myMeeting} navigation={navigation} />
+          <MyMeetingList
+            List={dummyMeeting.myMeeting}
+            navigation={navigation}
+          />
         ) : (
-          <ParticipatedMeetingList List={dummyUser.participatedMeeting} />
+          <ParticipatedMeetingList List={dummyMeeting.participatedMeeting} />
         )}
       </ScrollView>
     </SafeAreaView>
