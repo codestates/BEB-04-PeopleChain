@@ -40,6 +40,7 @@ function ChattingRoom({route}) {
   const {showToast} = useToast();
   const [userNickName, setUserNickName] = useState('');
   const [userImages, setUserImages] = useState('');
+  // 추후 추가해야할 data
   const [userNFTImages, setUserNFTImages] = useState('');
   const [isFixed, setIsFixed] = useState('');
   const userRef = useMemo(() => firestore().collection('User'), []);
@@ -99,8 +100,6 @@ function ChattingRoom({route}) {
       speed: 13,
       bounciness: 0,
     }).start();
-
-    console.log(route.params.item);
 
     setIsFixed(
       route.params.data.members.reduce((acc, cur) => {
@@ -164,11 +163,23 @@ function ChattingRoom({route}) {
               </Text>
               <View style={{alignItems: 'flex-start'}}>
                 {/* 리덕스에서 받아오는 meeting 정보로 업데이트할 것  */}
-                <Text style={{marginTop: 7}}>🗓 날짜: 2022년 7월 8일 (월)</Text>
                 <Text style={{marginTop: 7}}>
-                  ⏰ 시간 : 2022년 7월 15일 (토)
+                  🗓 날짜:{' '}
+                  {route.params.data.meetDate
+                    .toDate()
+                    .toLocaleString()
+                    .slice(0, 11)}
                 </Text>
-                <Text style={{marginTop: 7}}>🏖 장소 : 강남역</Text>
+                <Text style={{marginTop: 7}}>
+                  ⏰ 시간:{' '}
+                  {route.params.data.meetDate
+                    .toDate()
+                    .toLocaleString()
+                    .slice(13)}
+                </Text>
+                <Text style={{marginTop: 7}}>
+                  🏖 장소: {route.params.data.region}
+                </Text>
               </View>
             </>
           }
