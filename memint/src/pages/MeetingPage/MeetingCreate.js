@@ -17,14 +17,20 @@ import {useToast} from '../../utils/hooks/useToast';
 import SingleModal from '../../components/common/SingleModal';
 import TagElement from '../../components/meetingComponents/TagElement';
 import DoubleModal from '../../components/common/DoubleModal';
-import {createMeeting} from '../../lib/Meeting';
+import {createMeeting, getMeeting} from '../../lib/Meeting';
 import {getMeetingTags} from '../../lib/MeetingTag';
-import useUser from '../../utils/hooks/UseAuth';
-import { updateUserMeetingIn } from '../../lib/Users';
+import useUser from '../../utils/hooks/UseUser';
+import {updateUserMeetingIn} from '../../lib/Users';
+import useAuthActions from '../../utils/hooks/UseAuthActions';
+import useMeetingActions from '../../utils/hooks/UseMeetingActions';
+import {useMeeting} from '../../utils/hooks/UseMeeting';
 
 function MeetingCreate({route}) {
   const userInfo = useUser();
-  const loginUser = userInfo.id;
+  const {saveInfo} = useAuthActions();
+  const {saveMeeting} = useMeetingActions();
+  const rooms = useMeeting();
+
   const [submittable, setSubmittable] = useState(false);
   const [meetingInfo, setMeetingInfo] = useState({
     title: '',
@@ -39,6 +45,7 @@ function MeetingCreate({route}) {
   const [confirmModalVisible, setConfirmModalVisible] = useState(false);
   const [inviteModalVisible, setInviteModalVisible] = useState(false);
   const [tagData, setTagData] = useState({mood: [], topic: [], alcohol: []});
+  const {authorize} = useAuthActions();
   const navigation = useNavigation();
   const {showToast} = useToast();
   const RegionDropDownData = [
@@ -122,21 +129,33 @@ function MeetingCreate({route}) {
       setConfirmModalVisible(true);
     }
   };
-
   //생성 요청
   const handleCreateMeeting = async () => {
     const data = {
       ...meetingInfo,
-      hostId: loginUser,
+      hostId: userInfo.id,
     };
     try {
       const res = await createMeeting(data); //Meeting 추가
       updateUserMeetingIn(
         //User에 room 추가
-        loginUser,
+        userInfo.id,
         'createdroomId',
         res._documentPath._parts[1],
       );
+      const newMeeting = await getMeeting(res._documentPath._parts[1]);
+      saveInfo({
+        ...userInfo,
+        createdroomId: [...userInfo.createdroomId, newMeeting.id],
+      });
+      saveMeeting([
+        ...rooms,
+        {
+          id: newMeeting.id,
+          ...newMeeting.data(),
+          meetDate: newMeeting.data().meetDate.toDate().toISOString(),
+        },
+      ]);
       setConfirmModalVisible(false);
       showToast('success', '미팅이 생성되었습니다');
       navigation.navigate('MeetingMarket');

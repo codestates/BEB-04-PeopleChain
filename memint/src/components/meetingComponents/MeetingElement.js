@@ -1,6 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {TouchableOpacity, View, Text, StyleSheet} from 'react-native';
+import {handleBirth} from '../../utils/common/Functions';
 
 function MeetingElement({
   id,
@@ -53,7 +54,7 @@ function MeetingElement({
           <View style={styles.bar} />
           <Text style={[styles.infoEl]}>{peopleNum + ':' + peopleNum}</Text>
           <View style={styles.bar} />
-          <Text style={[styles.infoEl]}>{hostInfo.birth}</Text>
+          <Text style={[styles.infoEl]}>{handleBirth(hostInfo.birth)}</Text>
           <View style={styles.bar} />
           <Text style={[styles.infoEl]}>{meetDate}</Text>
         </View>
@@ -71,7 +72,7 @@ const styles = StyleSheet.create({
     height: 120,
   },
   title: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
     height: 25,
   },

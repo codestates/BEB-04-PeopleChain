@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {Text, StyleSheet, View, TouchableOpacity, FlatList} from 'react-native';
-import {useToast} from '../../utils/hooks/useToast';
+import {Text, StyleSheet, View, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import DoubleModal from '../../components/common/DoubleModal';
 import {useMeeting} from '../../utils/hooks/UseMeeting';
+import {handleISOtoLocale} from '../../utils/common/Functions';
 
 // function MyMeetingList({List, navigation}) {
 //   return (
@@ -18,9 +18,10 @@ import {useMeeting} from '../../utils/hooks/UseMeeting';
 //   );
 // }
 
-function MyMeetingList({List, navigation, user}) {
+function MyMeetingList({navigation, user}) {
   const meetingData = useMeeting(); //redux crete, join에 있는 모든 미팅 정보들
   const [createdRoom, setCreatedRoom] = useState([]);
+
   useEffect(() => {
     setCreatedRoom(
       user.createdroomId?.map(el => {
@@ -34,32 +35,20 @@ function MyMeetingList({List, navigation, user}) {
   }, [meetingData, user]);
   return (
     <>
-      {createdRoom.map((el, index) => (
-        <MyMeetings
-          id={el.id}
-          meetDate={el.meetDate}
-          title={el.title}
-          peopleNum={el.peopleNum}
-          region={el.region}
-          meetingTags={el.meetingTags}
-          item={el}
-          navigation={navigation}
-          key={index}
-        />
+      {createdRoom?.map((el, index) => (
+        <MyMeetings item={el} navigation={navigation} key={index} />
       ))}
     </>
   );
 }
 function MyMeetings({item, navigation}) {
-  const [deleteModal, setDeleteModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
-  const {showToast} = useToast();
   return (
     <>
       <View style={styles.meetingCard}>
-        <Text style={styles.title}>{item.title}</Text>
+        <Text style={styles.title}>{item?.title}</Text>
         <View style={styles.container}>
-          {item.meetingTags.map((type, index) => {
+          {item?.meetingTags.map((type, index) => {
             return (
               <View style={styles.tag} key={index}>
                 <Text style={styles.tagFont}># {type}</Text>
@@ -70,13 +59,13 @@ function MyMeetings({item, navigation}) {
         <View
           style={{
             ...styles.container,
-            justifyContent: 'space-between',
+            ...styles.spaceBetween,
           }}>
           <View style={styles.container}>
             <TouchableOpacity
               style={{
                 ...styles.deleteButton,
-                backgroundColor: '#007aff',
+                ...styles.backgroundColorBlue,
               }}
               onPress={() => setEditModal(true)}>
               <Text style={styles.buttonText}>미팅 정보 수정</Text>
@@ -100,11 +89,16 @@ function MyMeetings({item, navigation}) {
               setEditModal(false);
               navigation.navigate('EditMeetingInfo', {item});
             }}
+            nFunction={() => {
+              setEditModal(false);
+            }}
           />
           <View style={styles.container}>
-            <Text style={styles.details}>{item.region}</Text>
+            <Text style={styles.details}>{item?.region}</Text>
             <Icon name={'horizontal-rule'} size={20} style={styles.divider} />
-            <Text style={styles.details}>{item.meetDate}</Text>
+            <Text style={styles.details}>
+              {handleISOtoLocale(item?.meetDate)}
+            </Text>
             <Icon name={'horizontal-rule'} size={20} style={styles.divider} />
             {/* <Text
               style={[
@@ -124,6 +118,7 @@ function MyMeetings({item, navigation}) {
               ]}>
               {item.joinerSide.gathered.length}({item.joinerSide.sex})
             </Text> */}
+            <Text>{item?.peopleNum + ':' + item?.peopleNum}</Text>
           </View>
         </View>
       </View>
@@ -180,6 +175,12 @@ const styles = StyleSheet.create({
   },
   tagFont: {
     fontSize: 10,
+  },
+  spaceBetween: {
+    justifyContent: 'space-between',
+  },
+  backgroundColorBlue: {
+    backgroundColor: 'blue',
   },
 });
 

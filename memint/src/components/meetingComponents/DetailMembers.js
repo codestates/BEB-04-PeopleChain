@@ -1,8 +1,10 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {handleBirth} from '../../utils/common/Functions';
+import crown from '../../assets/icons/crown.png';
 
-function DetailMembers({membersInfo, peopleNum}) {
+function DetailMembers({membersInfo, peopleNum, hostId}) {
   const currentPeopleNum = () => {
     //2 ->2:2 현재 1:0
     if (membersInfo.length > peopleNum) {
@@ -24,13 +26,26 @@ function DetailMembers({membersInfo, peopleNum}) {
         {membersInfo.map((member, idx) => (
           <View key={idx} style={styles.memberInfo}>
             <View style={styles.memberInfoProfile}>
+              {member.id === hostId ? (
+                <View style={styles.hostCrown}>
+                  <Image
+                    source={crown}
+                    style={styles.image}
+                    resizeMode="contain"
+                  />
+                </View>
+              ) : (
+                ''
+              )}
               <Icon name="help" size={50} color={'gray'} />
             </View>
             <View>
               <Text style={styles.memberInfoContentEl}>{member.nickName}</Text>
               <View style={styles.memberGenderAge}>
                 <Text style={styles.memberInfoContentEl}>{member.gender}</Text>
-                <Text style={styles.memberInfoContentEl}>{member.birth}</Text>
+                <Text style={styles.memberInfoContentEl}>
+                  {handleBirth(member.birth)}
+                </Text>
               </View>
             </View>
           </View>
@@ -75,6 +90,16 @@ const styles = StyleSheet.create({
   },
   grayFont: {
     color: 'gray',
+  },
+  image: {
+    width: 40,
+    height: 40,
+  },
+  hostCrown: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    zIndex: 1,
   },
 });
 

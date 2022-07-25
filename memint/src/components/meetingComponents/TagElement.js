@@ -2,13 +2,15 @@ import React, {useState} from 'react';
 import {TouchableOpacity, Text, StyleSheet} from 'react-native';
 
 function TagElement({tag, meetingInfo, setMeetingInfo}) {
-  const [colored, setColored] = useState(false);
+  const [colored, setColored] = useState(
+    meetingInfo.meetingTags.indexOf(tag) !== -1 ? true : false,
+  );
   const handleClick = () => {
     if (colored) {
       setColored(false);
       setMeetingInfo({
         ...meetingInfo,
-        tags: meetingInfo.meetingTags.filter(el => el !== tag),
+        meetingTags: meetingInfo.meetingTags.filter(el => el !== tag),
       });
     } else {
       setColored(true);

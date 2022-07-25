@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Text,
   StyleSheet,
@@ -10,6 +10,8 @@ import {
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import DoubleModal from '../../components/common/DoubleModal';
+import {handleISOtoLocale} from '../../utils/common/Functions';
+import {useMeeting} from '../../utils/hooks/UseMeeting';
 import {useToast} from '../../utils/hooks/useToast';
 
 // function ParticipatedMeetingList({List}) {
@@ -22,11 +24,24 @@ import {useToast} from '../../utils/hooks/useToast';
 //     </>
 //   );
 // }
-function ParticipatedMeetingList({List}) {
+function ParticipatedMeetingList({user}) {
+  const meetingData = useMeeting();
+  const [joinedRoom, setJoinedRoom] = useState([]);
+  useEffect(() => {
+    setJoinedRoom(
+      user.joinedroomId?.map(el => {
+        //내가 가지고 있는 아이디
+        const meetingInfo = meetingData.filter(meeting => {
+          return meeting.id === el;
+        });
+        return meetingInfo[0];
+      }),
+    );
+  }, [meetingData, user]);
   return (
     <>
-      {List.map(ele => (
-        <ParticipatedMeetings item={ele} key={List.id} />
+      {joinedRoom?.map((el, index) => (
+        <ParticipatedMeetings item={el} key={index} />
       ))}
     </>
   );
@@ -38,38 +53,38 @@ function ParticipatedMeetings({item}) {
   return (
     <>
       <View style={styles.meetingCard}>
-        <Text style={styles.title}>{item.name}</Text>
+        <Text style={styles.title}>{item.title}</Text>
         <View style={styles.container}>
-          {item.type.map(type => {
+          {item.meetingTags.map((tag, index) => {
             return (
-              <>
-                <View style={styles.tag}>
-                  <Text style={styles.tagFont}># {type}</Text>
-                </View>
-              </>
+              <View style={styles.tag} key={index}>
+                <Text style={styles.tagFont}># {tag}</Text>
+              </View>
             );
           })}
         </View>
         <View
           style={{
             ...styles.container,
-            justifyContent: 'space-between',
+            ...styles.spaceBetween,
           }}>
-          <View style={styles.container}>
+          {/* <View style={styles.container}>
             <Image
               style={styles.hostImage}
               source={{
                 uri: item.hostImage,
               }}
             />
-            <Text style={styles.hostName}>{item.hostName}</Text>
-          </View>
+            <Text style={styles.hostName}>{item.hostId}</Text>
+          </View> */}
           <View style={styles.container}>
-            <Text style={styles.details}>{item.location}</Text>
+            <Text style={styles.details}>{item.region}</Text>
             <Icon name={'horizontal-rule'} size={20} style={styles.divider} />
-            <Text style={styles.details}>{item.date}</Text>
+            <Text style={styles.details}>
+              {handleISOtoLocale(item.meetDate)}
+            </Text>
             <Icon name={'horizontal-rule'} size={20} style={styles.divider} />
-            <Text
+            {/* <Text
               style={[
                 styles.details,
                 item.peopleNum === item.hostSide.gathered.length
@@ -86,13 +101,14 @@ function ParticipatedMeetings({item}) {
                   : '',
               ]}>
               {item.joinerSide.gathered.length}({item.joinerSide.sex})
-            </Text>
+            </Text> */}
+            <Text>{item.peopleNum + ':' + item.peopleNum}</Text>
           </View>
         </View>
         <View
           style={{
             ...styles.container,
-            justifyContent: 'space-between',
+            ...styles.spaceBetween,
           }}>
           <View style={{flexDirection: 'row'}}>
             <Text>상태: </Text>
@@ -112,7 +128,7 @@ function ParticipatedMeetings({item}) {
             <TouchableOpacity
               style={{
                 ...styles.cancelButton,
-                backgroundColor: '#007aff',
+                ...styles.backgroundColorBlue,
               }}>
               <Text style={styles.buttonText}>채팅방 이동하기</Text>
             </TouchableOpacity>
@@ -192,6 +208,12 @@ const styles = StyleSheet.create({
   },
   tagFont: {
     fontSize: 10,
+  },
+  spaceBetween: {
+    justifyContent: 'space-between',
+  },
+  backgroundColorBlue: {
+    backgroundColor: 'blue',
   },
 });
 

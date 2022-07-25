@@ -18,40 +18,51 @@ import {useToast} from '../../utils/hooks/useToast';
 import SingleModal from '../../components/common/SingleModal';
 import TagElement from '../../components/meetingComponents/TagElement';
 import DoubleModal from '../../components/common/DoubleModal';
+import {getUser, updateUserMeetingOut} from '../../lib/Users';
+import {getMeetingTags} from '../../lib/MeetingTag';
+import {deleteMeeting, updateMeeting} from '../../lib/Meeting';
+import useUser from '../../utils/hooks/UseUser';
+import useAuthActions from '../../utils/hooks/UseAuthActions';
 
 function EditMeetingInfo({route}) {
+  const userInfo = useUser();
+  const {saveInfo} = useAuthActions();
+  const item = route.params.item;
   const [submittable, setSubmittable] = useState(false);
   const [meetingInfo, setMeetingInfo] = useState({
-    title: route.params.item.name,
-    description: route.params.item.description,
-    date: new Date(),
-    region: 2,
-    peopleNum: route.params.item.peopleNum,
-    invitedFriends: [],
-    tags: ['부어라 마셔라', '연애2', '소주1'],
+    id: item.id,
+    title: item.title,
+    description: item.description,
+    meetDate: new Date(item.meetDate),
+    region: item.region,
+    peopleNum: item.peopleNum,
+    members: item.members,
+    meetingTags: route.params.item.meetingTags,
   });
   const [confirmModalVisible, setConfirmModalVisible] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [inviteModalVisible, setInviteModalVisible] = useState(false);
+  const [tagData, setTagData] = useState({mood: [], topic: [], alcohol: []});
+
   const navigation = useNavigation();
   const {showToast} = useToast();
   const RegionDropDownData = [
-    {label: '서울 전체', value: 1},
-    {label: '강남구', value: 2},
-    {label: '강동구', value: 3},
-    {label: '강북구', value: 4},
-    {label: '강서구', value: 5},
-    {label: '관악구', value: 6},
-    {label: '광진구', value: 7},
-    {label: '구로구', value: 8},
-    {label: '금천구', value: 9},
-    {label: '노원구', value: 10},
-    {label: '도봉구', value: 11},
-    {label: '동대문구', value: 12},
-    {label: '동작구', value: 13},
-    {label: '마포구', value: 14},
-    {label: '서대문구', value: 15},
-    {label: '서초구', value: 16},
+    {label: '서울 전체', value: '서울 전체'},
+    {label: '강남구', value: '강남구'},
+    {label: '강동구', value: '강동구'},
+    {label: '강북구', value: '강북구'},
+    {label: '강서구', value: '강서구'},
+    {label: '관악구', value: '관악구'},
+    {label: '광진구', value: '광진구'},
+    {label: '구로구', value: '구로구'},
+    {label: '금천구', value: '금천구'},
+    {label: '노원구', value: '노원구'},
+    {label: '도봉구', value: '도봉구'},
+    {label: '동대문구', value: '동대문구'},
+    {label: '동작구', value: '동작구'},
+    {label: '마포구', value: '마포구'},
+    {label: '서대문구', value: '서대문구'},
+    {label: '서초구', value: '서초구'},
   ];
   const PeopleDropDownData = [
     {label: '1:1', value: 1},
@@ -59,16 +70,16 @@ function EditMeetingInfo({route}) {
     {label: '3:3', value: 3},
     {label: '4:4', value: 4},
   ];
-  const tagData = {
-    mood: [
-      '부어라 마셔라',
-      '부어라 마셔라1',
-      '부어라 마셔라2',
-      '부어라 마셔라3',
-    ],
-    topic: ['연애', '연애1', '연애2', '연애2'],
-    alcoholType: ['소주', '소주1', '소주2', '소주3'],
-  };
+  // const tagData = {
+  //   mood: [
+  //     '부어라 마셔라',
+  //     '부어라 마셔라1',
+  //     '부어라 마셔라2',
+  //     '부어라 마셔라3',
+  //   ],
+  //   topic: ['연애', '연애1', '연애2', '연애2'],
+  //   alcoholType: ['소주', '소주1', '소주2', '소주3'],
+  // };
 
   useEffect(() => {
     const {title, description, region, peopleNum} = meetingInfo;
@@ -77,26 +88,60 @@ function EditMeetingInfo({route}) {
     } else {
       setSubmittable(false);
     }
-    handleInvitedFriends();
-  }, [meetingInfo, route, handleInvitedFriends]);
+    // handleInvitedFriends();
+  }, [meetingInfo]);
 
-  const handleInvitedFriends = useCallback(() => {
-    if (route.params !== undefined) {
-      if (route.params.friends === undefined) {
-        return;
-      }
-      if (meetingInfo.invitedFriends.indexOf(route.params.friends) !== -1) {
-        showToast('error', '이미 추가된 친구입니다');
-        route.params.friends = undefined;
-        return;
-      }
-      setMeetingInfo({
-        ...meetingInfo,
-        invitedFriends: [...meetingInfo.invitedFriends, route.params.friends],
-      });
-      route.params.friends = undefined;
+  useEffect(() => {
+    getMembers();
+    getTags();
+  }, [getMembers]);
+
+  const getMembers = useCallback(async () => {
+    const data = await Promise.all(
+      meetingInfo.members.map(async member => {
+        const memberId = Object.keys(member)[0];
+        const info = await getUser(memberId);
+        return info.nickName;
+      }),
+    );
+    setMeetingInfo({...meetingInfo, membersNickName: data});
+  }, [meetingInfo]);
+
+  const getTags = async () => {
+    try {
+      const res = await getMeetingTags();
+      const data = res.docs.reduce(
+        (acc, cur) => {
+          return {
+            ...acc,
+            [cur.data().type]: acc[cur.data().type].concat(cur.data().content),
+          };
+        },
+        {mood: [], topic: [], alcohol: []},
+      );
+      setTagData(data);
+    } catch (e) {
+      console.log(e);
     }
-  }, [meetingInfo, route, showToast]);
+  };
+
+  // const handleInvitedFriends = useCallback(() => {
+  //   if (route.params !== undefined) {
+  //     if (route.params.friends === undefined) {
+  //       return;
+  //     }
+  //     if (meetingInfo.invitedFriends.indexOf(route.params.friends) !== -1) {
+  //       showToast('error', '이미 추가된 친구입니다');
+  //       route.params.friends = undefined;
+  //       return;
+  //     }
+  //     setMeetingInfo({
+  //       ...meetingInfo,
+  //       invitedFriends: [...meetingInfo.invitedFriends, route.params.friends],
+  //     });
+  //     route.params.friends = undefined;
+  //   }
+  // }, [meetingInfo, route, showToast]);
 
   const handleSubmit = () => {
     if (!submittable) {
@@ -106,8 +151,34 @@ function EditMeetingInfo({route}) {
       setConfirmModalVisible(true);
     }
   };
-  // console.log(route.params.item.name);
-  // console.log(meetingInfo);
+  const handleUpdate = () => {
+    try {
+      updateMeeting(item.id, meetingInfo);
+      setConfirmModalVisible(false);
+      showToast('success', '미팅이 수정되었습니다');
+      navigation.pop();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const handleDelete = () => {
+    try {
+      deleteMeeting(item.id);
+      saveInfo({
+        ...userInfo,
+        createdroomId: userInfo.createdroomId.filter(el => {
+          return el !== item.id;
+        }),
+      });
+      updateUserMeetingOut(userInfo.id, 'createdroomId', item.id);
+      showToast('success', '미팅이 삭제되었습니다.');
+      navigation.pop();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <SafeAreaView>
       <View style={styles.headerBar}>
@@ -126,11 +197,7 @@ function EditMeetingInfo({route}) {
         buttonText="네"
         modalVisible={confirmModalVisible}
         setModalVisible={setConfirmModalVisible}
-        pFunction={() => {
-          setConfirmModalVisible(false);
-          showToast('success', '미팅이 수정되었습니다');
-          navigation.pop();
-        }}
+        pFunction={handleUpdate}
       />
       <View style={styles.createContainer}>
         <View>
@@ -156,12 +223,12 @@ function EditMeetingInfo({route}) {
         <View style={[styles.createElement, styles.flexRow]}>
           <Text style={styles.text}>날짜</Text>
           <RNDateTimePicker
-            value={meetingInfo.date}
+            value={meetingInfo.meetDate}
             mode="datetime"
             locale="ko"
             style={styles.datepicker}
             onChange={(event, date) =>
-              setMeetingInfo({...meetingInfo, date: date})
+              setMeetingInfo({...meetingInfo, meetDate: date})
             }
           />
         </View>
@@ -211,7 +278,7 @@ function EditMeetingInfo({route}) {
             <Icon name="arrow-drop-down" size={19} color={'gray'} />
           </TouchableOpacity>
           <ScrollView style={styles.invitedFriends} horizontal={true}>
-            {meetingInfo.invitedFriends.map((el, idx) => (
+            {meetingInfo.membersNickName?.map((el, idx) => (
               <View key={idx} style={styles.invitedFriend}>
                 <Text>{el}</Text>
               </View>
@@ -271,7 +338,7 @@ function EditMeetingInfo({route}) {
             <View style={styles.tagCategory}>
               <Text style={styles.tagCategoryTitle}>술</Text>
               <ScrollView style={styles.tags} horizontal={true}>
-                {tagData.alcoholType.map((tag, idx) => (
+                {tagData.alcohol.map((tag, idx) => (
                   <TagElement
                     key={idx}
                     tag={tag}
@@ -285,19 +352,25 @@ function EditMeetingInfo({route}) {
         </View>
       </View>
       <View style={styles.deleteButton}>
-        <Button onPress={alert} title="미팅 삭제하기" color="#DA6262" />
+        <Button
+          onPress={() => {
+            setDeleteModalVisible(true);
+          }}
+          title="미팅 삭제하기"
+          color="#DA6262"
+        />
       </View>
-      {/* <DoubleModal
+      <DoubleModal
         text="미팅룸 삭제 후 복구가 불가합니다. 삭제하시겠습니까?"
         nButtonText="네"
         pButtonText="아니오"
         modalVisible={deleteModalVisible}
         setModalVisible={setDeleteModalVisible}
-        nFunction={() => {
+        pFunction={() => {
           setDeleteModalVisible(false);
-          showToast('success', '삭제되었습니다.');
-        }} */}
-      {/* /> */}
+        }}
+        nFunction={handleDelete}
+      />
     </SafeAreaView>
   );
 }

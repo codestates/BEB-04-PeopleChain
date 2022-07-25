@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {handleBirth, handleISOtoLocale} from '../../utils/common/Functions';
 
 function AlarmElement({meetingInfo, createdAt, onPress, type, senderInfo}) {
   return (
@@ -26,10 +27,12 @@ function AlarmElement({meetingInfo, createdAt, onPress, type, senderInfo}) {
                   {meetingInfo.peopleNum + ':' + meetingInfo.peopleNum}
                 </Text>
                 <View style={styles.bar} />
-                <Text style={styles.meetingElement}>{'30대'}</Text>
+                <Text style={styles.meetingElement}>
+                  {handleBirth(senderInfo.birth)}
+                </Text>
                 <View style={styles.bar} />
                 <Text style={styles.meetingElement}>
-                  {meetingInfo?.meetDate}
+                  {handleISOtoLocale(meetingInfo.meetDate)}
                 </Text>
               </View>
             </>

@@ -10,6 +10,7 @@ import {updateWaitingIn} from '../../lib/Meeting';
 import {getUser} from '../../lib/Users';
 import {useToast} from '../../utils/hooks/useToast';
 import useUser from '../../utils/hooks/UseAuth';
+import {handleBirth, handleISOtoLocale} from '../../utils/common/Functions';
 
 function MeetingDetail({route}) {
   const userInfo = useUser();
@@ -144,10 +145,18 @@ function MeetingDetail({route}) {
         <View style={styles.infoRow}>
           <Text style={styles.infoEl}>{region}</Text>
           <View style={styles.bar} />
-          <Text style={styles.infoEl}>{meetDate}</Text>
+          <Text style={styles.infoEl}>
+            {meetDate.slice(-1) === 'Z'
+              ? handleISOtoLocale(meetDate)
+              : meetDate}
+          </Text>
         </View>
         <View>
-          <DetailMembers peopleNum={peopleNum} membersInfo={membersInfo} />
+          <DetailMembers
+            peopleNum={peopleNum}
+            membersInfo={membersInfo}
+            hostId={hostId}
+          />
         </View>
         <View style={styles.buttonRow}>{renderByUser()}</View>
       </View>

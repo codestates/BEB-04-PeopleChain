@@ -10,13 +10,12 @@ import {
   handleDateFromNow,
   handleDateInFormat,
 } from '../../utils/common/Functions';
+import {useMeeting} from '../../utils/hooks/UseMeeting';
 import useUser from '../../utils/hooks/UseUser';
 
 function AlarmPage({navigation}) {
   const userInfo = useUser();
-  const loginUser = userInfo.id;
-  // const loginUser = '8MspyF7xz7VHDThguMAv'; //test host 계정
-  // const loginUser = 'dbmtzzMFmqzshYNSOVo5' //joiner 계정
+  const meetingData = useMeeting();
   const [chattingConfirmModal, setChattingConfirmModal] = useState(false);
   const [alarms, setAlarms] = useState([]);
   const isFocused = useIsFocused();
@@ -27,7 +26,7 @@ function AlarmPage({navigation}) {
   const getAlarmPage = useCallback(async () => {
     try {
       //알림 데이터
-      const res = await getAlarmsById(loginUser);
+      const res = await getAlarmsById(userInfo.id);
       const data = res.docs.map(el => {
         return {
           ...el.data(),
@@ -46,29 +45,37 @@ function AlarmPage({navigation}) {
         }),
       );
       //미팅 데이터
-      const dataWithMeetingInfo = await Promise.all(
-        dataWithSenderInfo.map(async el => {
-          const meet = await getMeeting(el.meetingId);
-          if (meet.data()) {
-            return {
-              ...el,
-              meetingInfo: {
-                ...meet.data(),
-                meetDate: handleDateInFormat(meet.data().meetDate),
-              },
-            };
-          } else {
-            return {
-              ...el,
-            };
-          }
-        }),
-      );
-      setAlarms(dataWithMeetingInfo);
+      //   const dataWithMeetingInfo = await Promise.all(
+      //     dataWithSenderInfo.map(async el => {
+      //       const meet = await getMeeting(el.meetingId);
+      //       if (meet.data()) {
+      //         return {
+      //           ...el,
+      //           meetingInfo: {
+      //             ...meet.data(),
+      //             meetDate: handleDateInFormat(meet.data().meetDate),
+      //           },
+      //         };
+      //       } else {
+      //         return {
+      //           ...el,
+      //         };
+      //       }
+      //     }),
+      //   );
+      //   setAlarms(dataWithMeetingInfo);
+
+      const dataWithMeeting = dataWithSenderInfo.map(el => {
+        const meet = meetingData.filter(meeting => {
+          return meeting.id === el.meetingId;
+        });
+        return {...el, meetingInfo: meet[0]};
+      });
+      setAlarms(dataWithMeeting);
     } catch (e) {
       console.log(e);
     }
-  }, [loginUser]);
+  }, [userInfo, meetingData]);
 
   return (
     <SafeAreaView>

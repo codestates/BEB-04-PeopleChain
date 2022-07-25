@@ -34,7 +34,7 @@ import useNftActions from './utils/hooks/UseNftActions';
 import {getNFTs, getProfile, getMemin} from './lib/NFT';
 import {getMeeting} from './lib/Meeting';
 import useMeetingActions from './utils/hooks/UseMeetingActions';
-import {handleDate} from './utils/common/Functions';
+import {handleDate, handleDateInFormat} from './utils/common/Functions';
 
 const Stack = createNativeStackNavigator();
 const store = createStore(rootReducer);
@@ -66,7 +66,7 @@ function App() {
           return {
             id: meetingInfo.id,
             ...meetingInfo.data(),
-            meetDate: handleDate(meetingInfo.data().meetDate),
+            meetDate: meetingInfo.data().meetDate.toDate().toISOString(),
           };
         }),
       );

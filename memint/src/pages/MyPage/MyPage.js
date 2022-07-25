@@ -10,7 +10,6 @@ import useOffchainActions from '../../utils/hooks/UseOffchainActions';
 
 function MyPage({navigation}) {
   const user = useUser();
-  console.log(useUser());
   // const onSubmitSignIn = async () => {
   //   const res = await getOffchainTokenLog(user.id);
   //   const logs = res.docs.map(el => {
@@ -47,7 +46,6 @@ function MyPage({navigation}) {
     profileImage:
       'https://cdn-icons-png.flaticon.com/512/1053/1053244.png?w=360',
   };
-
   const dummyMeeting = {
     myMeeting: [
       {

@@ -20,6 +20,7 @@ import {
 import {useToast} from '../../utils/hooks/useToast';
 import useUser from '../../utils/hooks/UseAuth';
 import {updateUserMeetingIn} from '../../lib/Users';
+import {handleBirth, handleISOtoLocale} from '../../utils/common/Functions';
 
 function AlarmDetail({route}) {
   const userInfo = useUser();
@@ -69,15 +70,15 @@ function AlarmDetail({route}) {
           <View style={styles.userInfo}>
             <View style={styles.userInfoElement}>
               <Text style={styles.key}>닉네임</Text>
-              <Text style={styles.value}>{senderInfo?.nickName}</Text>
+              <Text style={styles.value}>{senderInfo.nickName}</Text>
             </View>
             <View style={styles.userInfoElement}>
               <Text style={styles.key}>나이</Text>
-              <Text style={styles.value}>{senderInfo?.birth}</Text>
+              <Text style={styles.value}>{senderInfo.birth}</Text>
             </View>
             <View style={styles.userInfoElement}>
               <Text style={styles.key}>성별</Text>
-              <Text style={styles.value}>{senderInfo?.gender}</Text>
+              <Text style={styles.value}>{senderInfo.gender}</Text>
             </View>
           </View>
         </View>
@@ -105,7 +106,9 @@ function AlarmDetail({route}) {
             <View style={styles.meetingInfo}>
               <Text style={styles.meetingElement}>{meetingInfo.region}</Text>
               <View style={styles.bar} />
-              <Text style={styles.meetingElement}>{meetingInfo.meetDate}</Text>
+              <Text style={styles.meetingElement}>
+                {handleISOtoLocale(meetingInfo.meetDate)}
+              </Text>
               <View style={styles.bar} />
               <Text style={styles.meetingElement}>
                 {meetingInfo.peopleNum + ':' + meetingInfo.peopleNum}
