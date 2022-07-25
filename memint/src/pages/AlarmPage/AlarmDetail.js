@@ -19,6 +19,7 @@ import {
 // import {updateUserMeetingIn} from '../../lib/Users';
 import {useToast} from '../../utils/hooks/useToast';
 import useUser from '../../utils/hooks/UseAuth';
+import { updateUserMeetingIn } from '../../lib/Users';
 
 function AlarmDetail({route}) {
   const userInfo = useUser();
@@ -42,7 +43,7 @@ function AlarmDetail({route}) {
     updateWaitingOut(meetingId, sender); //신청 메시지의 sender
     updateMembersIn(meetingId, sender); //신청 메시지의 sender
     updateMeetingProposal(id); //신청 알림 완료로 update
-    // updateUserMeetingIn(sender, 'joinedroomId', meetingId); //User에 room 추가하기
+    updateUserMeetingIn(sender, 'joinedroomId', meetingId); //User에 room 추가하기
     if (meetingInfo.peopleNum * 2 - 1 === meetingInfo.members.length) {
       //미팅의 상태도 손수 수정해줍니다.(임시로)
       updateMeeting(meetingId, {status: 'full'});

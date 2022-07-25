@@ -20,6 +20,7 @@ import DoubleModal from '../../components/common/DoubleModal';
 import {createMeeting} from '../../lib/Meeting';
 import {getMeetingTags} from '../../lib/MeetingTag';
 import useUser from '../../utils/hooks/UseAuth';
+import { updateUserMeetingIn } from '../../lib/Users';
 
 function MeetingCreate({route}) {
   const userInfo = useUser();
@@ -130,12 +131,12 @@ function MeetingCreate({route}) {
     };
     try {
       const res = await createMeeting(data); //Meeting 추가
-      // updateUserMeetingIn(
-      //   //User에 room 추가
-      //   loginUser,
-      //   'createdroomId',
-      //   res._documentPath._parts[1],
-      // );
+      updateUserMeetingIn(
+        //User에 room 추가
+        loginUser,
+        'createdroomId',
+        res._documentPath._parts[1],
+      );
       setConfirmModalVisible(false);
       showToast('success', '미팅이 생성되었습니다');
       navigation.navigate('MeetingMarket');

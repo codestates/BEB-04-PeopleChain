@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import BackButton from '../../components/common/BackButton';
-// import {getUserByNickname} from '../../lib/Users';
+import {getUserByNickname} from '../../lib/Users';
 import useUser from '../../utils/hooks/UseUser';
 
 function InviteFriend() {
@@ -22,8 +22,8 @@ function InviteFriend() {
   const navigation = useNavigation();
   const handleSubmit = async () => {
     //return 시 검색 결과를 받아옴
-    // const data = await getUserByNickname(searchNickName, loginUser);
-    // setSearchResult(data);
+    const data = await getUserByNickname(searchNickName, loginUser);
+    setSearchResult(data);
   };
 
   return (
