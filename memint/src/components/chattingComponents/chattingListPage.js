@@ -14,7 +14,6 @@ import {useMeeting} from '../../utils/hooks/UseMeeting';
 function ChattingListPage({navigation}) {
   const [chatLog, setChatLog] = useState('');
   const userInfo = useUser();
-  const Meetings = useMeeting();
 
   useEffect(() => {
     const getChatLogs = async () => {

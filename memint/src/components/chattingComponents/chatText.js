@@ -47,7 +47,15 @@ function ChatText({data, roomInfo, userNickName, userImages}) {
   return (
     <View style={roomInfo ? {flex: 1, opacity: 0.8} : {flex: 1}}>
       <FlatList
-        contentContainerStyle={{flexGrow: 1, justifyContent: 'flex-end'}}
+        // horizontal={true}
+        // 플랫리스트에서 하단부터 렌더링을 해주는 설정
+        inverted={true}
+        contentContainerStyle={{
+          flexGrow: 1,
+          justifyContent: 'flex-end',
+          flexDirection: 'column-reverse',
+        }}
+        // initialScrollIndex={0}
         style={styles.container}
         data={chattings}
         renderItem={({item}) =>
