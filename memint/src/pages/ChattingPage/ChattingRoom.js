@@ -14,9 +14,9 @@ import RoomInfo from '../../components/chattingComponents/roomInfo';
 import MyDoubleModal from '../../components/chattingComponents/myDoubleModal';
 import ChattingRoomTopTab from '../../components/chattingComponents/ChattingRoomTopTab';
 import SpendingModal from '../../components/common/UserInfoModal/SpendingModal';
-import MySingleModal from '../../components/chattingComponents/MySingleModal';
 import firestore from '@react-native-firebase/firestore';
 import {useToast} from '../../utils/hooks/useToast';
+import {changeMeetingState} from '../../lib/Chatting';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -36,12 +36,11 @@ function ChattingRoom({route}) {
   const [isConfirmed, setIsConfirmed] = useState(false);
   const [meetingEnd, setMeetingEnd] = useState(false);
   const [spendingModalVisible, setSpendingModalVisible] = useState(false);
-  const [mySingleModalVisible, setMySingleModalVisible] = useState(false);
   const {showToast} = useToast();
   const [userNickName, setUserNickName] = useState('');
   const [isFixed, setIsFixed] = useState('');
   const userRef = useMemo(() => firestore().collection('User'), []);
-  const user = '연습용계정2';
+  const user = '연습용계정1';
 
   // 아래는 params.data로 받아온 members라는, 참여자의 id값을 통해서 각각 참여자의 nickName을 받아와 객체화하는 과정이다. 결과값은 아래와 같다.
   // {"연습용계정1": "남자", "연습용계정2": "소년", "연습용계정3": "소녀", "연습용계정4": "아저씨"}
@@ -141,6 +140,7 @@ function ChattingRoom({route}) {
                   : '미팅 참가를 확정하시겠습니까?'}
               </Text>
               <View style={{alignItems: 'flex-start'}}>
+                {/* 리덕스에서 받아오는 meeting 정보로 업데이트할 것  */}
                 <Text style={{marginTop: 7}}>🗓 날짜: 2022년 7월 8일 (월)</Text>
                 <Text style={{marginTop: 7}}>
                   ⏰ 시간 : 2022년 7월 15일 (토)
@@ -161,21 +161,10 @@ function ChattingRoom({route}) {
         <SpendingModal
           spendingModalVisible={spendingModalVisible}
           setSpendingModalVisible={setSpendingModalVisible}
-          setMySingleModalVisible={setMySingleModalVisible}
           pFunction={() => {
+            changeMeetingState(route.params.id);
             setSpendingModalVisible(false);
-            setMySingleModalVisible(true);
-          }}
-        />
-        <MySingleModal
-          text="LCN이 차감되었습니다!"
-          buttonText="확인"
-          modalVisible={mySingleModalVisible}
-          setModalVisible={setMySingleModalVisible}
-          pFunction={() => {
-            setMySingleModalVisible(false);
-            showToast('basic', '확정되었습니다!');
-            setIsConfirmed(true);
+            showToast('basic', '미팅이 확정되었습니다.');
           }}
         />
       </View>

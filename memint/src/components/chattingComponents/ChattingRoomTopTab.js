@@ -3,7 +3,9 @@ import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useToast} from '../../utils/hooks/useToast';
 import firestore from '@react-native-firebase/firestore';
-const user = '연습용계정2';
+import SpendingModal from '../common/UserInfoModal/SpendingModal';
+
+const user = '연습용계정1';
 
 function ChattingRoomTopTab({setProposeModalVisible, setModalVisible, data}) {
   const meetingRef = useMemo(() => {
@@ -169,7 +171,8 @@ const Joiner = ({data, count, setProposeModalVisible, setModalVisible}) => {
               onPress={
                 data.status === 'full'
                   ? () => {
-                      data.members?.filter(el => {
+                      data.members &&
+                      data.members.filter(el => {
                         return el[user] === 'fixed';
                       }).length === 1
                         ? showToast(
@@ -187,14 +190,16 @@ const Joiner = ({data, count, setProposeModalVisible, setModalVisible}) => {
               }>
               <View
                 style={
-                  data.members?.filter(el => {
+                  data.members &&
+                  data.members.filter(el => {
                     return el[user] === 'fixed';
                   }).length === 1
                     ? {...styles.button, backgroundColor: 'gray'}
                     : styles.button
                 }>
                 <Text style={{color: 'black'}}>
-                  {data.members?.filter(el => {
+                  {data.members &&
+                  data.members.filter(el => {
                     return el[user] === 'fixed';
                   }).length === 1
                     ? '후기 작성하기'

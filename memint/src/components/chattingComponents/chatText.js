@@ -80,6 +80,9 @@ function NotMyChat({item, setUserInfoModalVisible, setUserInfo, userNickName}) {
       <TouchableOpacity
         activeOpacity={1}
         onPress={() => {
+          // 1. redux에 저장된 data의 visibleUser list에 해당 유저의 아이디가 있는지 확인한다.
+          // 2. 있다면 사진을 렌더링, 없다면 spendingModal을 띄운다.
+          // 3. 토큰을 차감하고 visibleUser list에 해당 아이디를 추가해준다.
           setUserInfoModalVisible(true);
           setUserInfo(item.sender);
         }}>
