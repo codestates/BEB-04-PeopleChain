@@ -3,11 +3,10 @@ import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useToast} from '../../utils/hooks/useToast';
 import firestore from '@react-native-firebase/firestore';
-import SpendingModal from '../common/UserInfoModal/SpendingModal';
-
-const user = '연습용계정1';
+import useUser from '../../utils/hooks/UseUser';
 
 function ChattingRoomTopTab({setProposeModalVisible, setModalVisible, data}) {
+  const user = useUser().id;
   const meetingRef = useMemo(() => {
     return firestore().collection('Meeting').doc(data.id);
   }, [data]);
@@ -17,7 +16,6 @@ function ChattingRoomTopTab({setProposeModalVisible, setModalVisible, data}) {
 
   useEffect(() => {
     meetingRef.onSnapshot(result => {
-      console.log(result.data());
       setRoomData(result.data());
       const memberStatusCount = result.data().members.filter(el => {
         return Object.values(el)[0] === 'accepted';
@@ -37,9 +35,9 @@ function ChattingRoomTopTab({setProposeModalVisible, setModalVisible, data}) {
   ) : (
     <Joiner
       data={roomData}
-      count={count}
       setProposeModalVisible={setProposeModalVisible}
       setModalVisible={setModalVisible}
+      user={user}
     />
   );
 }
@@ -48,10 +46,6 @@ const Host = ({data, count, setProposeModalVisible, setModalVisible}) => {
   const {showToast} = useToast();
   const navigation = useNavigation();
 
-  useEffect(() => {
-    console.log(data.status);
-    console.log(count);
-  }, [data, count]);
   return (
     <View style={styles.container}>
       <View>
@@ -125,14 +119,10 @@ const Host = ({data, count, setProposeModalVisible, setModalVisible}) => {
   );
 };
 
-const Joiner = ({data, count, setProposeModalVisible, setModalVisible}) => {
+const Joiner = ({data, user, setModalVisible}) => {
   const {showToast} = useToast();
   const navigation = useNavigation();
 
-  useEffect(() => {
-    console.log(data.status);
-    console.log(count);
-  }, [data]);
   return (
     <View style={styles.container}>
       <View>

@@ -7,7 +7,7 @@ import useUser from '../../utils/hooks/UseUser';
 
 // props로 채팅방의 아이디를 받아온다.
 function AddChat({chatId}) {
-  const user = '연습용계정2';
+  const user = useUser().id;
   const sendChat = async obj => {
     const chattingCollection = firestore()
       .collection('Meeting')

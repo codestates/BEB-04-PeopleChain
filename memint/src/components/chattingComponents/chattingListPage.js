@@ -10,42 +10,29 @@ import {
 import ChatContext from './context/chatContext';
 import firestore from '@react-native-firebase/firestore';
 import useUser from '../../utils/hooks/UseUser';
-
-// 추후 리덕스 기능으로 구현 예정
+import {useMeeting} from '../../utils/hooks/UseMeeting';
 
 function ChattingListPage({navigation}) {
   const [chatLog, setChatLog] = useState('');
   const user = useUser();
-  // console.log(user);
+  const Meetings = useMeeting();
+  console.log(Meetings);
   useEffect(() => {
     const getChatLogs = async () => {
       const meetingList = [];
       const userInfo = await firestore().collection('User').doc(user.id).get();
-      // console.log(...userInfo.data().joinedroomId);
 
       userInfo.data().createdroomId &&
         meetingList.push(...userInfo.data().createdroomId);
       userInfo.data().joinedroomId &&
         meetingList.push(...userInfo.data().joinedroomId);
-      // console.log(
-      //   `ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ`,
-      // );
-      // console.log(meetingList);
-      // 이유는 알 수 없지만 배열의 첫번째에 오는 MeetingId는 앞에 공백이 두 칸 생긴 상태로 출력된다. 이를 없애주는 작업을 추가해야 할 것 같다.
-      // meetingList[0] = meetingList[0].slice(2);
-      // 두 칸 공백이 다시 없어졌다. 이게 무슨일이지
+
       const meetingInfos = await Promise.all(
         meetingList.map(async meetingId => {
           const meetingInfo = await firestore()
             .collection('Meeting')
             .doc(meetingId)
             .get();
-          // console.log(meetingInfo);
-          await firestore()
-            .collection('Meeting')
-            .doc(meetingId)
-            .collection('Messages')
-            .add({hi: 'hello'});
 
           const lastMsg = await firestore()
             .collection('Meeting')
@@ -71,11 +58,11 @@ function ChattingListPage({navigation}) {
           }
         }),
       );
-      console.log(meetingInfos);
+
       setChatLog(meetingInfos);
     };
     getChatLogs();
-  }, []);
+  }, [user]);
 
   return (
     <FlatList
@@ -105,7 +92,6 @@ function MetaData({item, navigation}) {
               result.docChanges()[result.docChanges().length - 1].doc._data
                 .createdAt
             ) {
-              // console.log({result: });
               setLastMsg(result.docs[0].data().text);
               setLastTime(
                 result.docs[0]

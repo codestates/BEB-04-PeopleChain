@@ -5,18 +5,20 @@ import {
   View,
   FlatList,
   TouchableOpacity,
-  ScrollView,
+  Image,
 } from 'react-native';
 import AddChat from './addChat';
 import UserInfoModal from '../common/UserInfoModal';
 import firestore from '@react-native-firebase/firestore';
+import useUser from '../../utils/hooks/UseUser';
 
-function ChatText({data, roomInfo, userNickName}) {
+function ChatText({data, roomInfo, userNickName, userImages}) {
   // const [chats, setChats] = useState(chattings);
   const [userInfoModalVisible, setUserInfoModalVisible] = useState(false);
   const [userInfo, setUserInfo] = useState('');
   const [chattings, setChattings] = useState('');
-  const user = '연습용계정1';
+  const userDesc = useUser();
+  const user = userDesc.id;
 
   const chatRef = useMemo(
     () => firestore().collection('Meeting').doc(data.id).collection('Messages'),
@@ -50,13 +52,14 @@ function ChatText({data, roomInfo, userNickName}) {
         data={chattings}
         renderItem={({item}) =>
           item.data().sender === user ? (
-            <MyChat item={item} userNickName={userNickName} />
+            <MyChat item={item} userNickName={userNickName} user={userDesc} />
           ) : (
             <NotMyChat
               userNickName={userNickName}
               item={item}
               setUserInfoModalVisible={setUserInfoModalVisible}
               setUserInfo={setUserInfo}
+              userImages={userImages}
             />
           )
         }
@@ -73,7 +76,16 @@ function ChatText({data, roomInfo, userNickName}) {
   );
 }
 
-function NotMyChat({item, setUserInfoModalVisible, setUserInfo, userNickName}) {
+function NotMyChat({
+  item,
+  setUserInfoModalVisible,
+  setUserInfo,
+  userNickName,
+  userImages,
+}) {
+  useEffect(() => {
+    console.log(item.data().sender);
+  }, []);
   return (
     <View style={styles.messageWrapper}>
       {/* 클릭할 시 유저 정보를 열겠냐고 물어보는 모달 창 띄우는 값 true로 설정 */}
@@ -86,7 +98,10 @@ function NotMyChat({item, setUserInfoModalVisible, setUserInfo, userNickName}) {
           setUserInfoModalVisible(true);
           setUserInfo(item.sender);
         }}>
-        <View style={styles.image} />
+        <Image
+          style={styles.image}
+          source={{uri: userImages[item.data().sender]}}
+        />
       </TouchableOpacity>
       <View style={styles.textWrapper}>
         <Text style={styles.senderName}>
@@ -115,7 +130,7 @@ function NotMyChat({item, setUserInfoModalVisible, setUserInfo, userNickName}) {
 function MyChat({item, userNickName}) {
   return (
     <View style={styles.MymessageWrapper}>
-      <View style={styles.image} />
+      {/* <Image source={{uri: user.picture}} style={styles.image} /> */}
       <View style={[styles.textWrapper, {alignItems: 'flex-end'}]}>
         <Text style={styles.senderName}>
           {userNickName[item.data().sender]}
@@ -153,7 +168,7 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: 'gray',
+    // backgroundColor: 'gray',
     marginRight: 7,
     marginLeft: 7,
   },
@@ -183,6 +198,7 @@ const styles = StyleSheet.create({
     width: '60%',
     marginLeft: 'auto',
     marginBottom: 10,
+    right: 10,
   },
 });
 

@@ -14,7 +14,6 @@ export const changeJoinerState = async (meetingId, userId, setModalVisible) => {
       });
     })
     .then(result => {
-      console.log(result);
       meetingCollection.doc(meetingId).update({
         members: result,
       }),

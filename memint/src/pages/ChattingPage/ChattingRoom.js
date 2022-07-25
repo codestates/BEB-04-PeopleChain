@@ -17,6 +17,7 @@ import SpendingModal from '../../components/common/UserInfoModal/SpendingModal';
 import firestore from '@react-native-firebase/firestore';
 import {useToast} from '../../utils/hooks/useToast';
 import {changeMeetingState} from '../../lib/Chatting';
+import useUser from '../../utils/hooks/UseUser';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -38,9 +39,11 @@ function ChattingRoom({route}) {
   const [spendingModalVisible, setSpendingModalVisible] = useState(false);
   const {showToast} = useToast();
   const [userNickName, setUserNickName] = useState('');
+  const [userImages, setUserImages] = useState('');
+  const [userNFTImages, setUserNFTImages] = useState('');
   const [isFixed, setIsFixed] = useState('');
   const userRef = useMemo(() => firestore().collection('User'), []);
-  const user = '연습용계정1';
+  const user = useUser().id;
 
   // 아래는 params.data로 받아온 members라는, 참여자의 id값을 통해서 각각 참여자의 nickName을 받아와 객체화하는 과정이다. 결과값은 아래와 같다.
   // {"연습용계정1": "남자", "연습용계정2": "소년", "연습용계정3": "소녀", "연습용계정4": "아저씨"}
@@ -52,12 +55,29 @@ function ChattingRoom({route}) {
   const memberNickName = useMemo(() => {
     return [];
   }, []);
+  const memberProfile = useMemo(() => {
+    return [];
+  }, []);
+
   const users = useMemo(
     () =>
       Promise.all(
         route.params.data.members.map(async el => {
           memberNickName.push(Object.keys(el)[0]);
+
           const result = await userRef.doc(Object.keys(el)[0]).get();
+          // 이 아래는 {user1Id : user1PictureUri, user2Id, user2PictureUri} 형식의 object를 만들어서 state에 올려주는 과정입니다.
+          memberProfile.push(result.data().picture);
+          if (memberProfile.length === memberNickName.length) {
+            setUserImages(
+              memberNickName.reduce((acc, cur, idx) => {
+                return {
+                  ...acc,
+                  [cur]: memberProfile[idx],
+                };
+              }, 0),
+            );
+          }
           return result.data().nickName;
         }),
       )
@@ -69,7 +89,7 @@ function ChattingRoom({route}) {
         .then(result => {
           setUserNickName(result);
         }),
-    [memberNickName, userRef, route.params.data],
+    [memberNickName, userRef, route.params.data, memberProfile],
   );
 
   useEffect(() => {
@@ -80,6 +100,8 @@ function ChattingRoom({route}) {
       bounciness: 0,
     }).start();
 
+    console.log(route.params.id);
+
     setIsFixed(
       route.params.data.members.reduce((acc, cur) => {
         return {...acc, ...cur};
@@ -87,7 +109,7 @@ function ChattingRoom({route}) {
     );
     users;
     setIsHost(route.params.data.hostId === user);
-  }, [animation, roomInfo, route.params, userRef, memberNickName, users]);
+  }, [animation, roomInfo, route.params, userRef, memberNickName, users, user]);
   return (
     <KeyboardAvoidingView
       behavior={'padding'}
@@ -116,6 +138,7 @@ function ChattingRoom({route}) {
           data={route.params.data}
           roomINfo={roomInfo}
           userNickName={userNickName}
+          userImages={userImages}
         />
 
         {roomInfoExist ? (
@@ -161,6 +184,7 @@ function ChattingRoom({route}) {
         <SpendingModal
           spendingModalVisible={spendingModalVisible}
           setSpendingModalVisible={setSpendingModalVisible}
+          amount={1}
           pFunction={() => {
             changeMeetingState(route.params.id);
             setSpendingModalVisible(false);
