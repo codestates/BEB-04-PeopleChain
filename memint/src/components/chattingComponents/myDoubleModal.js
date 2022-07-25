@@ -1,6 +1,9 @@
 import React from 'react';
 import {View, Modal, StyleSheet} from 'react-native';
 import BasicButton from '../common/BasicButton';
+import {changeJoinerState} from '../../lib/Chatting';
+import {useToast} from '../../utils/hooks/useToast';
+const user = '연습용계정2';
 
 /*
 사용할 컴포넌트에서 state 사용이 필요함.
@@ -23,7 +26,10 @@ function MyDoubleModal({
   modalVisible,
   setModalVisible,
   setSpendingModalVisible,
+  isHost,
+  id,
 }) {
+  const {showToast} = useToast();
   return (
     <View style={styles.centeredView}>
       <Modal animationType="fade" transparent={true} visible={modalVisible}>
@@ -40,10 +46,21 @@ function MyDoubleModal({
               <BasicButton
                 text={pButtonText}
                 size="small"
-                onPress={() => {
-                  setModalVisible(false);
-                  setSpendingModalVisible(true);
-                }}
+                onPress={
+                  isHost
+                    ? () => {
+                        setModalVisible(false);
+                        setSpendingModalVisible(true);
+                      }
+                    : () => {
+                        changeJoinerState(id, user, setModalVisible).then(
+                          result => {
+                            result === 'runModal' &&
+                              showToast('basic', '미팅 참가가 확정되었습니다!');
+                          },
+                        );
+                      }
+                }
               />
             </View>
           </View>

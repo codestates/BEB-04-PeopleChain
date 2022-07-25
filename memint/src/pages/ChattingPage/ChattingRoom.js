@@ -32,8 +32,6 @@ function ChattingRoom({route}) {
   const [roomInfoExist, setRoomInfoExist] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [isHost, setIsHost] = useState(false);
-  const [confirmation, setConfirmation] = useState(false);
-  const [roomConfirmation, setRoomConfirmation] = useState(false);
   const [proposeModalVisible, setProposeModalVisible] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
   const [meetingEnd, setMeetingEnd] = useState(false);
@@ -43,7 +41,7 @@ function ChattingRoom({route}) {
   const [userNickName, setUserNickName] = useState('');
   const [isFixed, setIsFixed] = useState('');
   const userRef = useMemo(() => firestore().collection('User'), []);
-  const user = '연습용계정1';
+  const user = '연습용계정2';
 
   // 아래는 params.data로 받아온 members라는, 참여자의 id값을 통해서 각각 참여자의 nickName을 받아와 객체화하는 과정이다. 결과값은 아래와 같다.
   // {"연습용계정1": "남자", "연습용계정2": "소년", "연습용계정3": "소녀", "연습용계정4": "아저씨"}
@@ -89,14 +87,8 @@ function ChattingRoom({route}) {
       }),
     );
     users;
-  }, [
-    animation,
-    roomInfo,
-    route.params.data.members,
-    userRef,
-    memberNickName,
-    users,
-  ]);
+    setIsHost(route.params.data.hostId === user);
+  }, [animation, roomInfo, route.params, userRef, memberNickName, users]);
   return (
     <KeyboardAvoidingView
       behavior={'padding'}
@@ -119,6 +111,7 @@ function ChattingRoom({route}) {
           setProposeModalVisible={setProposeModalVisible}
           setModalVisible={setModalVisible}
           isFixed={isFixed}
+          data={route.params.data}
         />
         <ChatText
           data={route.params.data}
@@ -143,7 +136,7 @@ function ChattingRoom({route}) {
           body={
             <>
               <Text style={{marginTop: 7}}>
-                {isHost
+                {user === route.params.data.hostId
                   ? '미팅 개최를 확정하시겠습니까?'
                   : '미팅 참가를 확정하시겠습니까?'}
               </Text>
@@ -162,6 +155,8 @@ function ChattingRoom({route}) {
           setModalVisible={setModalVisible}
           setIsConfirmed={setIsConfirmed}
           setSpendingModalVisible={setSpendingModalVisible}
+          isHost={isHost}
+          id={route.params.data.id}
         />
         <SpendingModal
           spendingModalVisible={spendingModalVisible}
