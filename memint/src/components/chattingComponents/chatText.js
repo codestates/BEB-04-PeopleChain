@@ -83,9 +83,6 @@ function NotMyChat({
   userNickName,
   userImages,
 }) {
-  useEffect(() => {
-    console.log(item.data().sender);
-  }, []);
   return (
     <View style={styles.messageWrapper}>
       {/* 클릭할 시 유저 정보를 열겠냐고 물어보는 모달 창 띄우는 값 true로 설정 */}

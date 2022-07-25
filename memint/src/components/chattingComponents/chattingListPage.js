@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext, useMemo} from 'react';
+import React, {useEffect, useState, useMemo} from 'react';
 import {
   Text,
   StyleSheet,
@@ -7,25 +7,21 @@ import {
   FlatList,
   Image,
 } from 'react-native';
-import ChatContext from './context/chatContext';
 import firestore from '@react-native-firebase/firestore';
 import useUser from '../../utils/hooks/UseUser';
 import {useMeeting} from '../../utils/hooks/UseMeeting';
 
 function ChattingListPage({navigation}) {
   const [chatLog, setChatLog] = useState('');
-  const user = useUser();
+  const userInfo = useUser();
   const Meetings = useMeeting();
-  console.log(Meetings);
+
   useEffect(() => {
     const getChatLogs = async () => {
       const meetingList = [];
-      const userInfo = await firestore().collection('User').doc(user.id).get();
 
-      userInfo.data().createdroomId &&
-        meetingList.push(...userInfo.data().createdroomId);
-      userInfo.data().joinedroomId &&
-        meetingList.push(...userInfo.data().joinedroomId);
+      userInfo.createdroomId && meetingList.push(...userInfo.createdroomId);
+      userInfo.joinedroomId && meetingList.push(...userInfo.joinedroomId);
 
       const meetingInfos = await Promise.all(
         meetingList.map(async meetingId => {
@@ -42,8 +38,17 @@ function ChattingListPage({navigation}) {
             .limit(1)
             .get();
 
+          const hostImage = await firestore()
+            .collection('User')
+            .doc(meetingInfo.data().hostId)
+            .get();
+
           if (lastMsg.docs.length === 0) {
-            return {...meetingInfo.data(), id: meetingId};
+            return {
+              ...meetingInfo.data(),
+              id: meetingId,
+              hostImage: hostImage.data().picture,
+            };
           } else {
             return {
               ...meetingInfo.data(),
@@ -54,6 +59,7 @@ function ChattingListPage({navigation}) {
                 .createdAt.toDate()
                 .toLocaleString()
                 .slice(6),
+              hostImage: hostImage.data().picture,
             };
           }
         }),
@@ -62,7 +68,7 @@ function ChattingListPage({navigation}) {
       setChatLog(meetingInfos);
     };
     getChatLogs();
-  }, [user]);
+  }, [userInfo]);
 
   return (
     <FlatList
@@ -76,6 +82,8 @@ function ChattingListPage({navigation}) {
 function MetaData({item, navigation}) {
   const [lastMsg, setLastMsg] = useState('');
   const [lastTime, setLastTime] = useState('');
+  // 추후 NFT 이미지로 바꿀 것
+
   const MessageRef = useMemo(
     () => firestore().collection('Meeting').doc(item.id).collection('Messages'),
     [item.id],
@@ -111,8 +119,8 @@ function MetaData({item, navigation}) {
     <TouchableOpacity
       onPress={() => navigation.navigate('ChattingRoom', {data: item})}>
       <View style={styles.container}>
-        <View style={styles.image} />
-        {/* source={item.image} resizeMode="contain" /> */}
+        <Image style={styles.image} source={{uri: item.hostImage}} />
+
         <View style={styles.chatInfo}>
           <View>
             <Text style={styles.titleText}>{item.title}</Text>
@@ -141,13 +149,11 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 30,
     marginLeft: 7,
-    backgroundColor: 'lightblue',
   },
   chatInfo: {
     flexDirection: 'row',
     height: '100%',
     width: '80%',
-    // backgroundColor: 'red',
     justifyContent: 'space-between',
     paddingLeft: 10,
     flexWrap: 'wrap',

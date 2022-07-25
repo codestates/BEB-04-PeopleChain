@@ -100,7 +100,7 @@ function ChattingRoom({route}) {
       bounciness: 0,
     }).start();
 
-    console.log(route.params.id);
+    console.log(route.params.item);
 
     setIsFixed(
       route.params.data.members.reduce((acc, cur) => {
