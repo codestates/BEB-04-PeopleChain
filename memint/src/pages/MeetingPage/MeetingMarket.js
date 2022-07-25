@@ -58,12 +58,12 @@ function MeetingMarket({navigation}) {
         }),
       );
       setMeetings(dataWithHostInfo);
-      setRegionMeetings(meetings);
-      setFilteredMeetings(regionMeetings);
+      setRegionMeetings(dataWithHostInfo);
+      setFilteredMeetings(dataWithHostInfo);
     } catch (e) {
       console.log(e);
     }
-  }, [meetings, regionMeetings]);
+  }, []);
 
   const handleFilter = () => {
     if (filter.peopleNum && filter.meetDate) {
