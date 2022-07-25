@@ -62,9 +62,6 @@ const SignInScreen = ({navigation, route}) => {
         return {...el.data()};
       });
       saveNFT(nfts);
-      // const profile = getProfile(nfts);
-      // console.log(profile);
-      // console.log(getProfile());
       setNftProfile(...getProfile(nfts));
       setMemin(...getMemin(nfts));
 

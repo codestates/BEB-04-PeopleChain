@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {SafeAreaView, Text, View, StyleSheet, ScrollView} from 'react-native';
 import BackButton from '../../components/common/BackButton';
 import BasicButton from '../../components/common/BasicButton';
@@ -6,6 +6,12 @@ import WalletCustomButton from '../../components/walletComponents/WalletCustomBu
 import TotalAccountButton from '../../components/walletComponents/TotalAccountButton';
 import HistoryButton from '../../components/walletComponents/HistoryButton';
 import useUser from '../../utils/hooks/UseUser';
+import {useOfftxlog} from '../../utils/hooks/UseOffchain';
+import {usersCollection} from '../../lib/Users';
+import {getOffchainTokenLog} from '../../lib/OffchianTokenLog';
+import useOffchainActions from '../../utils/hooks/UseOffchainActions';
+import {handleDate} from '../../utils/common/Functions';
+import {ActivityIndicator} from 'react-native-paper';
 function WalletOffchainHistory({navigation}) {
   const dummyHistory = [
     {
@@ -79,11 +85,25 @@ function WalletOffchainHistory({navigation}) {
       content: '미팅 참여',
     },
   ];
+  const {addLog} = useOffchainActions();
+  const user = useUser();
+
+  useEffect(() => {
+    getOffchainLog();
+  });
+  const getOffchainLog = async () => {
+    const res = await getOffchainTokenLog(user.id);
+    const logs = res.docs.map(el => {
+      return {...el.data()};
+    });
+    addLog(logs);
+  };
+
+  const offTxLogs = useOfftxlog();
 
   const goToOffchainTrade = () => {
     navigation.navigate('WalletOffchainTrade');
   };
-  const user = useUser();
 
   return (
     <View>
@@ -94,17 +114,20 @@ function WalletOffchainHistory({navigation}) {
       />
       <Text style={styles.historyText}>History</Text>
       <ScrollView>
-        {dummyHistory.map(el => {
-          return (
-            <HistoryButton
-              key={el.id}
-              time={el.time}
-              balanceChange={el.balanceChange}
-              balance={el.balance}
-              content={el.content}
-            />
-          );
-        })}
+        {offTxLogs ? (
+          offTxLogs.map(el => {
+            return (
+              <HistoryButton
+                time={handleDate(el.createdAt)}
+                balanceChange={el.amount}
+                balance={el.balance}
+                content={el.txType}
+              />
+            );
+          })
+        ) : (
+          <ActivityIndicator size="large" color="black" />
+        )}
       </ScrollView>
     </View>
   );

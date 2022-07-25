@@ -30,6 +30,8 @@ import useAuth from './utils/hooks/UseAuth';
 import useAuthActions from './utils/hooks/UseAuthActions';
 import {subscribeAuth} from './lib/Auth';
 import {getUser} from './lib/Users';
+import useNftActions from './utils/hooks/UseNftActions';
+import {getNFTs, getProfile, getMemin} from './lib/NFT';
 
 const Stack = createNativeStackNavigator();
 const store = createStore(rootReducer);
@@ -37,17 +39,29 @@ const store = createStore(rootReducer);
 function App() {
   const userInfo = useAuth();
   const {authorize, logout, saveInfo} = useAuthActions();
+  const {saveNFT, setNftProfile, setMemin} = useNftActions();
   const [initialRouteName, setInitialRouteName] = useState('SignIn');
 
   const saveUserInfo = async user => {
     try {
       const userDetail = await getUser(user.uid);
+      const res = await getNFTs(user.uid);
+      const nfts = res.docs.map(el => {
+        return {...el.data()};
+      });
+      saveNFT(nfts);
+
+      setNftProfile(...getProfile(nfts));
+      setMemin(...getMemin(nfts));
       saveInfo({
         id: user.uid,
         email: user.email,
         nickName: userDetail.nickName,
         gender: userDetail.gender,
         birth: userDetail.birth,
+        nftIds: userDetail.nftIds,
+        picture: userDetail.picture,
+        tokenAmount: userDetail.tokenAmount,
       });
     } catch (e) {
       console.log(e);

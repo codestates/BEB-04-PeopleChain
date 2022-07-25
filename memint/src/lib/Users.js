@@ -1,4 +1,5 @@
 import firestore from '@react-native-firebase/firestore';
+import UseUser from '../utils/hooks/UseUser';
 
 export const usersCollection = firestore().collection('User');
 
@@ -27,3 +28,8 @@ export function createProperty({userId, drinkCapa, drinkStyle, alcoholType}) {
     alcoholType,
   });
 }
+// export function updateTokenAmount({userId, balance}) {
+//   return usersCollection.doc(userId).update({
+//     tokenAmount: balance,
+//   });
+// }

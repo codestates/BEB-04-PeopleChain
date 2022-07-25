@@ -127,6 +127,8 @@ function UserInfoModal({
             setSpendingModalVisible(false);
             setIsValid(true);
           }}
+          amount={1}
+          txType="프로필 조회"
         />
       </Modal>
     </View>

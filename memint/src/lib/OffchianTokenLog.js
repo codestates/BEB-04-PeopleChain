@@ -11,3 +11,18 @@ export async function getOffchainTokenLog(userId) {
 
   return offchainTokenLog;
 }
+
+export function createSpendOffTxLg(userId, amount, txType, balance) {
+  return firestore()
+    .collection('User')
+    .doc(userId)
+    .collection('OffchainTokenLog')
+    .add({
+      amount,
+      txType,
+      createdAt: firestore.FieldValue.serverTimestamp(),
+      from: userId,
+      to: 'serverId',
+      balance,
+    });
+}

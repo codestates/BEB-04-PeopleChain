@@ -1,7 +1,10 @@
 import React from 'react';
 import {View, Modal, StyleSheet, Text} from 'react-native';
 import BasicButton from '../BasicButton';
-
+import useUser from '../../../utils/hooks/UseUser';
+import useAuthActions from '../../../utils/hooks/UseAuthActions';
+import {createSpendOffTxLg} from '../../../lib/OffchianTokenLog';
+import {updateTokenAmount} from '../../../lib/Users';
 /*
 사용할 컴포넌트에서 state 사용이 필요함.
   const [spendModalVisible, setSpendModalVisible] = useState(false);
@@ -10,6 +13,8 @@ import BasicButton from '../BasicButton';
         spendingModalVisible={spendingModalVisible}
         setSpendingModalVisible={setSpendingModalVisible}
         pFunction={}
+        amount=1
+        txType='프로필조회'
       />
  */
 
@@ -17,7 +22,21 @@ function SpendingModal({
   spendingModalVisible,
   setSpendingModalVisible,
   pFunction,
+  amount,
+  txType,
 }) {
+  const user = useUser();
+  const {decreaseBy} = useAuthActions();
+  const transactionMade = () => {
+    //사용자의 TokenAmount 양 바꿈 (redux 정보 바꿈)
+    decreaseBy(amount);
+    //TokenLog 생성
+    createSpendOffTxLg(user.id, amount, txType, user.tokenAmount);
+    //token 변화 firebase에 저장
+    // updateTokenAmount(user.id, user.tokenAmount);
+    pFunction;
+    setSpendingModalVisible(false);
+  };
   return (
     <View style={styles.centeredView}>
       <Modal
@@ -33,15 +52,17 @@ function SpendingModal({
               }}>
               <View style={styles.calcText}>
                 <Text style={{fontWeight: 'bold'}}>현재 보유 LCN</Text>
-                <Text style={{fontWeight: 'bold'}}>10개</Text>
+                <Text style={{fontWeight: 'bold'}}>{user.tokenAmount}</Text>
               </View>
               <View style={styles.calcText}>
                 <Text style={{fontWeight: 'bold'}}>필요 LCN</Text>
-                <Text style={{fontWeight: 'bold'}}>1개</Text>
+                <Text style={{fontWeight: 'bold'}}>{amount}개</Text>
               </View>
               <View style={styles.calcText}>
                 <Text style={{fontWeight: 'bold'}}>차감 후 LCN</Text>
-                <Text style={{fontWeight: 'bold'}}>9개</Text>
+                <Text style={{fontWeight: 'bold'}}>
+                  {user.tokenAmount - amount}개
+                </Text>
               </View>
             </View>
             <View style={styles.buttonRow}>
@@ -51,7 +72,7 @@ function SpendingModal({
                 variant="disable"
                 onPress={() => setSpendingModalVisible(false)}
               />
-              <BasicButton text="네" size="small" onPress={pFunction} />
+              <BasicButton text="네" size="small" onPress={transactionMade} />
             </View>
           </View>
         </View>

@@ -22,8 +22,15 @@ const authSlice = createSlice({
     logout(state) {
       state.auth = null;
     },
+    increaseBy(state, action) {
+      state.user.tokenAmount += action.payload;
+    },
+    decreaseBy(state, action) {
+      state.user.tokenAmount -= action.payload;
+    },
   },
 });
 
 export default authSlice.reducer;
-export const {authorize, saveInfo, logout} = authSlice.actions;
+export const {authorize, saveInfo, logout, increaseBy, decreaseBy} =
+  authSlice.actions;

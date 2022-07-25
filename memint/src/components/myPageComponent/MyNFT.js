@@ -107,6 +107,8 @@ function MyMeMin({myMeMin}) {
                 setSpendingModalVisible(false);
                 showToast('success', '민팅이 되었습니다');
               }}
+              amount={2}
+              txType="NFT 민팅"
             />
           </View>
         )}

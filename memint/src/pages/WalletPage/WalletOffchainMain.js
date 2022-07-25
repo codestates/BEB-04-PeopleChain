@@ -13,6 +13,7 @@ import useUser from '../../utils/hooks/UseUser';
 function WalletOffchainMain({navigation}) {
   const [walletSelected, setWalletSelected] = useState(false);
   const [spendingSelected, setSpendingSelected] = useState(true);
+  const user = useUser();
   const {logout} = useAuthActions();
 
   const handleWalletSelect = () => {
@@ -44,16 +45,6 @@ function WalletOffchainMain({navigation}) {
       <BackButton />
       <View style={styles.contentContainer}>
         <View style={styles.buttonWrapper}>
-          <BasicButton
-            style={styles.button}
-            width={70}
-            height={35}
-            textSize={13}
-            margin={[5, 5, 5, 5]}
-            text="임시 로그아웃 버튼"
-            hasMarginBottom
-            onPress={handleSignOut}
-          />
           <WalletCustomButton
             style={styles.buttonWrapper}
             width={140}

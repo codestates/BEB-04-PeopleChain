@@ -5,16 +5,20 @@ import MyMeetingList from '../../components/myPageComponent/MyMeetingList';
 import ParticipatedMeetingList from '../../components/myPageComponent/ParticipatedMeetingList';
 import MyProfile from '../../components/myPageComponent/MyProfle';
 import useUser from '../../utils/hooks/UseUser';
-import {getNFTs} from '../../lib/NFT';
-import {useNftProfile, useMemin} from '../../utils/hooks/UseNft';
-import useNftActions from '../../utils/hooks/UseNftActions';
-import {getProfileUrl} from '../../lib/NFT';
+import {getOffchainTokenLog} from '../../lib/OffchianTokenLog';
+import useOffchainActions from '../../utils/hooks/UseOffchainActions';
 
 function MyPage({navigation}) {
   const user = useUser();
-  // const test = useMemin();
+  const {addLog} = useOffchainActions();
 
-  // console.log(test);
+  const onSubmitSignIn = async () => {
+    const res = await getOffchainTokenLog(user.id);
+    const logs = res.docs.map(el => {
+      return {...el.data()};
+    });
+    addLog(logs);
+  };
 
   const dummyUser = {
     nickname: user.nickName,
@@ -142,15 +146,15 @@ function MyPage({navigation}) {
   return (
     <SafeAreaView>
       <ScrollView>
-        {/* <BasicButton
+        <BasicButton
           text="test"
           width={100}
           height={40}
           textSize={14}
           backgroundColor={'#007aff'}
           margin={[10, 3, 3, 3]}
-          onPress=
-        /> */}
+          onPress={onSubmitSignIn}
+        />
         {/* 유저 프로필 */}
         <MyProfile User={dummyUser} navigation={navigation} />
         {/* 탭 선택 버튼 */}

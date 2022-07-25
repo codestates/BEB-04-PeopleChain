@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {
   Text,
   View,
@@ -107,6 +107,7 @@ function MeetingMarket({navigation}) {
       <View style={styles.titleArea}>
         <Text style={styles.title}>새로운 친구들과 술 한잔 어뗘?</Text>
       </View>
+
       <View style={styles.areaEnd}>
         <TouchableOpacity
           style={styles.createButton}
