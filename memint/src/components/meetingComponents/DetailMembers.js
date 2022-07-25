@@ -27,7 +27,7 @@ function DetailMembers({membersInfo, peopleNum}) {
               <Icon name="help" size={50} color={'gray'} />
             </View>
             <View>
-              <Text style={styles.memberInfoContentEl}>{member.nickname}</Text>
+              <Text style={styles.memberInfoContentEl}>{member.nickName}</Text>
               <View style={styles.memberGenderAge}>
                 <Text style={styles.memberInfoContentEl}>{member.gender}</Text>
                 <Text style={styles.memberInfoContentEl}>{member.birth}</Text>

@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Text, StyleSheet, View, TouchableOpacity, FlatList} from 'react-native';
 import {useToast} from '../../utils/hooks/useToast';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import DoubleModal from '../../components/common/DoubleModal';
+import {useMeeting} from '../../utils/hooks/UseMeeting';
 
 // function MyMeetingList({List, navigation}) {
 //   return (
@@ -16,11 +17,35 @@ import DoubleModal from '../../components/common/DoubleModal';
 //     </>
 //   );
 // }
-function MyMeetingList({List, navigation}) {
+
+function MyMeetingList({List, navigation, user}) {
+  const meetingData = useMeeting(); //redux crete, join에 있는 모든 미팅 정보들
+  const [createdRoom, setCreatedRoom] = useState([]);
+  useEffect(() => {
+    setCreatedRoom(
+      user.createdroomId?.map(el => {
+        //내가 가지고 있는 아이디
+        const meetingInfo = meetingData.filter(meeting => {
+          return meeting.id === el;
+        });
+        return meetingInfo[0];
+      }),
+    );
+  }, [meetingData, user]);
   return (
     <>
-      {List.map((ele, index) => (
-        <MyMeetings item={ele} navigation={navigation} key={ele.id} />
+      {createdRoom.map((el, index) => (
+        <MyMeetings
+          id={el.id}
+          meetDate={el.meetDate}
+          title={el.title}
+          peopleNum={el.peopleNum}
+          region={el.region}
+          meetingTags={el.meetingTags}
+          item={el}
+          navigation={navigation}
+          key={index}
+        />
       ))}
     </>
   );
@@ -32,9 +57,9 @@ function MyMeetings({item, navigation}) {
   return (
     <>
       <View style={styles.meetingCard}>
-        <Text style={styles.title}>{item.name}</Text>
+        <Text style={styles.title}>{item.title}</Text>
         <View style={styles.container}>
-          {item.type.map((type, index) => {
+          {item.meetingTags.map((type, index) => {
             return (
               <View style={styles.tag} key={index}>
                 <Text style={styles.tagFont}># {type}</Text>
@@ -77,18 +102,18 @@ function MyMeetings({item, navigation}) {
             }}
           />
           <View style={styles.container}>
-            <Text style={styles.details}>{item.location}</Text>
+            <Text style={styles.details}>{item.region}</Text>
             <Icon name={'horizontal-rule'} size={20} style={styles.divider} />
-            <Text style={styles.details}>{item.date}</Text>
+            <Text style={styles.details}>{item.meetDate}</Text>
             <Icon name={'horizontal-rule'} size={20} style={styles.divider} />
-            <Text
+            {/* <Text
               style={[
                 styles.details,
                 item.peopleNum === item.hostSide.gathered.length
                   ? styles.title
                   : '',
               ]}>
-              {item.peopleNum}({item.hostSide.sex}):
+              {item.peopleNum}({'일단 생략'}):
             </Text>
             <Text
               style={[
@@ -98,7 +123,7 @@ function MyMeetings({item, navigation}) {
                   : '',
               ]}>
               {item.joinerSide.gathered.length}({item.joinerSide.sex})
-            </Text>
+            </Text> */}
           </View>
         </View>
       </View>

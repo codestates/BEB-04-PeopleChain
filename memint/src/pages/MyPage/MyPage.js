@@ -10,7 +10,7 @@ import useOffchainActions from '../../utils/hooks/UseOffchainActions';
 
 function MyPage({navigation}) {
   const user = useUser();
-
+  console.log(useUser());
   // const onSubmitSignIn = async () => {
   //   const res = await getOffchainTokenLog(user.id);
   //   const logs = res.docs.map(el => {
@@ -168,12 +168,12 @@ function MyPage({navigation}) {
         {/* 탭 선택에 따른 미팅 리스트 */}
 
         {meetingRoom === 0 ? (
-          <MyMeetingList
-            List={dummyMeeting.myMeeting}
-            navigation={navigation}
-          />
+          <MyMeetingList navigation={navigation} user={user} />
         ) : (
-          <ParticipatedMeetingList List={dummyMeeting.participatedMeeting} />
+          <ParticipatedMeetingList
+            List={dummyMeeting.participatedMeeting}
+            user={user}
+          />
         )}
       </ScrollView>
     </SafeAreaView>

@@ -32,6 +32,9 @@ import {subscribeAuth} from './lib/Auth';
 import {getUser} from './lib/Users';
 import useNftActions from './utils/hooks/UseNftActions';
 import {getNFTs, getProfile, getMemin} from './lib/NFT';
+import {getMeeting} from './lib/Meeting';
+import useMeetingActions from './utils/hooks/UseMeetingActions';
+import {handleDate} from './utils/common/Functions';
 
 const Stack = createNativeStackNavigator();
 const store = createStore(rootReducer);
@@ -40,6 +43,7 @@ function App() {
   const userInfo = useAuth();
   const {authorize, logout, saveInfo} = useAuthActions();
   const {saveNFT, setNftProfile, setMemin} = useNftActions();
+  const {saveMeeting} = useMeetingActions();
   const [initialRouteName, setInitialRouteName] = useState('SignIn');
 
   const saveUserInfo = async user => {
@@ -50,9 +54,23 @@ function App() {
         return {...el.data()};
       });
       saveNFT(nfts);
-
       setNftProfile(...getProfile(nfts));
       setMemin(...getMemin(nfts));
+      const meetingIdArray = [
+        ...userDetail.createdroomId,
+        ...userDetail.joinedroomId,
+      ];
+      const meetingRes = await Promise.all(
+        meetingIdArray.map(async el => {
+          const meetingInfo = await getMeeting(el);
+          return {
+            id: meetingInfo.id,
+            ...meetingInfo.data(),
+            meetDate: handleDate(meetingInfo.data().meetDate),
+          };
+        }),
+      );
+      saveMeeting(meetingRes);
       saveInfo({
         id: user.uid,
         email: user.email,
@@ -62,6 +80,8 @@ function App() {
         nftIds: userDetail.nftIds,
         picture: userDetail.picture,
         tokenAmount: userDetail.tokenAmount,
+        createdroomId: userDetail.createdroomId,
+        joinedroomId: userDetail.joinedroomId,
       });
     } catch (e) {
       console.log(e);

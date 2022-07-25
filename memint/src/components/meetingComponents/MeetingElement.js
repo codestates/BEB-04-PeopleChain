@@ -46,7 +46,7 @@ function MeetingElement({
       </View>
       <View style={styles.infoRow}>
         <View style={styles.userInfo}>
-          <Text style={styles.username}>{hostInfo.nickname}</Text>
+          <Text style={styles.username}>{hostInfo.nickName}</Text>
         </View>
         <View style={styles.infoList}>
           <Text style={[styles.infoEl]}>{region}</Text>

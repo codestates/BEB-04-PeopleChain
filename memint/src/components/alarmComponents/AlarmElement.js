@@ -10,8 +10,8 @@ function AlarmElement({meetingInfo, createdAt, onPress, type, senderInfo}) {
         <View style={styles.messageHead}>
           <Text style={styles.message}>
             {type === 'proposal'
-              ? `${senderInfo?.nickname}님의 신청이 도착했습니다!`
-              : `${senderInfo?.nickname}님이 신청을 수락했습니다!`}
+              ? `${senderInfo?.nickName}님의 신청이 도착했습니다!`
+              : `${senderInfo?.nickName}님이 신청을 수락했습니다!`}
           </Text>
           <Text>{createdAt}</Text>
         </View>
