@@ -106,8 +106,8 @@ function EditMeetingInfo({route}) {
       setConfirmModalVisible(true);
     }
   };
-  console.log(route.params.item.name);
-  console.log(meetingInfo);
+  // console.log(route.params.item.name);
+  // console.log(meetingInfo);
   return (
     <SafeAreaView>
       <View style={styles.headerBar}>

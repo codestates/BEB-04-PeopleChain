@@ -3,6 +3,7 @@ import {View, StyleSheet, TextInput, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ChatContext from './context/chatContext';
 import firestore from '@react-native-firebase/firestore';
+import useUser from '../../utils/hooks/UseUser';
 
 // props로 채팅방의 아이디를 받아온다.
 function AddChat({chatId}) {
