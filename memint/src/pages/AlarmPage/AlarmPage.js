@@ -5,6 +5,7 @@ import AlarmElement from '../../components/alarmComponents/AlarmElement';
 import DoubleModal from '../../components/common/DoubleModal';
 import {getAlarmsById} from '../../lib/Alarm';
 import {getMeeting} from '../../lib/Meeting';
+import {filterProfile} from '../../lib/NFT';
 import {getUser} from '../../lib/Users';
 import {
   handleDateFromNow,
@@ -76,7 +77,6 @@ function AlarmPage({navigation}) {
       console.log(e);
     }
   }, [userInfo, meetingData]);
-
   const handleMoveChattingRoom = meetingInfo => {
     //meetingInfo 받아서
     //navigate

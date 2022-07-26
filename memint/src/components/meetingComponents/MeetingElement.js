@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {TouchableOpacity, View, Text, StyleSheet} from 'react-native';
+import {TouchableOpacity, View, Text, StyleSheet, Image} from 'react-native';
 import {handleBirth, handleDateInFormat} from '../../utils/common/Functions';
 
 function MeetingElement({item}) {
@@ -21,6 +21,10 @@ function MeetingElement({item}) {
       </View>
       <View style={styles.infoRow}>
         <View style={styles.userInfo}>
+          <Image
+            source={{uri: item.hostInfo.nftProfile}}
+            style={styles.userImage}
+          />
           <Text style={styles.username}>{item.hostInfo.nickName}</Text>
         </View>
         <View style={styles.infoList}>
@@ -49,10 +53,10 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     paddingVertical: 18,
     paddingHorizontal: 30,
-    height: 120,
+    height: 130,
   },
   title: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: 'bold',
     height: 25,
   },
@@ -62,12 +66,15 @@ const styles = StyleSheet.create({
     height: 35,
   },
   tag: {
-    backgroundColor: 'gray',
+    backgroundColor: 'lightgray',
     marginHorizontal: 3,
     marginVertical: 3,
     padding: 5,
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  tagText: {
+    fontSize: 11,
   },
   infoRow: {
     flexDirection: 'row',
@@ -78,11 +85,23 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  infoEl: {
+    fontSize: 13,
+  },
   bar: {
     width: 1,
     height: 12,
     marginHorizontal: 4,
     backgroundColor: 'gray',
+  },
+  userImage: {
+    borderRadius: 100,
+    width: 40,
+    height: 40,
+  },
+  userInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
 

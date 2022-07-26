@@ -1,6 +1,5 @@
 import React from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import {handleBirth} from '../../utils/common/Functions';
 import crown from '../../assets/icons/crown.png';
 
@@ -37,7 +36,10 @@ function DetailMembers({membersInfo, peopleNum, hostId}) {
               ) : (
                 ''
               )}
-              <Icon name="help" size={50} color={'gray'} />
+              <Image
+                source={{uri: member.nftProfile}}
+                style={styles.userImage}
+              />
             </View>
             <View>
               <Text style={styles.memberInfoContentEl}>{member.nickName}</Text>
@@ -100,6 +102,11 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     zIndex: 1,
+  },
+  userImage: {
+    borderRadius: 100,
+    width: 40,
+    height: 40,
   },
 });
 

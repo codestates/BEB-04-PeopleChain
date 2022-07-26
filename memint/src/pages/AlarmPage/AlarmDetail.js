@@ -55,6 +55,7 @@ function AlarmDetail({route}) {
   //   showToast('basic', '신청이 거절되었습니다');
   //   navigation.pop();
   // };
+  console.log(senderInfo);
 
   return (
     <SafeAreaView style={styles.screen}>
@@ -62,9 +63,10 @@ function AlarmDetail({route}) {
       <View style={styles.container}>
         <View style={styles.profileArea}>
           <Image
-            source={require('../ChattingPage/dummydata/images/26.png')}
+            source={{uri: senderInfo.nftProfile}}
             style={styles.userImage}
           />
+
           <View style={styles.userInfo}>
             <View style={styles.userInfoElement}>
               <Text style={styles.key}>닉네임</Text>

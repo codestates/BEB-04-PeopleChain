@@ -15,7 +15,6 @@ function MyPage({navigation}) {
   //     .getDownloadURL();
   // };
   // getimgUrl();
-  console.log(user);
 
   // const onSubmitSignIn = async () => {
   //   const res = await getOffchainTokenLog(user.id);
