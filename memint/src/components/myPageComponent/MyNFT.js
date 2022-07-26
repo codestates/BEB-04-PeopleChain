@@ -5,17 +5,13 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import SingleModal from '../../components/common/SingleModal';
 import SpendingModal from '../common/UserInfoModal/SpendingModal';
 import {useToast} from '../../utils/hooks/useToast';
-import {filterMemin} from '../../lib/NFT';
-import {getUser} from '../../lib/Users';
 import {useNft} from '../../utils/hooks/UseNft';
-import {useNftProfile, useMemin} from '../../utils/hooks/UseNft';
+import {useMemin} from '../../utils/hooks/UseNft';
 
 function MyNFT({User}) {
   const [showNFT, setShowNFT] = useState(false);
   const nft = useNft();
   const myMemin = useMemin();
-  // console.log(myMemin);
-  const [meminImgUrl, setMeminImgUrl] = useState(null);
 
   const dummyNft = [
     {
@@ -55,7 +51,7 @@ function MyNFT({User}) {
       <View style={{flexDirection: 'row'}}>
         <Text style={styles.attribute}>나의 미민이</Text>
       </View>
-      <MyMeMin myMeMin={myMemin ? myMemin : dummyNft[0]} />
+      <MyMeMin myMeMin={myMemin} />
       <View style={{...styles.container, justifyContent: 'space-between'}}>
         <Text style={styles.attribute}>나의 NFT</Text>
         <Icon

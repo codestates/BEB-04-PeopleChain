@@ -41,9 +41,13 @@ function ParticipatedMeetingList({user}) {
   }, [meetingData, user]);
   return (
     <>
-      {joinedRoom?.map((el, index) => (
-        <ParticipatedMeetings item={el} key={index} />
-      ))}
+      {joinedRoom ? (
+        joinedRoom.map((el, index) => (
+          <ParticipatedMeetings item={el} key={index} />
+        ))
+      ) : (
+        <Text>참여 중인 미팅이 없습니다.</Text>
+      )}
     </>
   );
 }

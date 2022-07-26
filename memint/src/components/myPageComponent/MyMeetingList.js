@@ -35,9 +35,13 @@ function MyMeetingList({navigation, user}) {
   }, [meetingData, user]);
   return (
     <>
-      {createdRoom?.map((el, index) => (
-        <MyMeetings item={el} navigation={navigation} key={index} />
-      ))}
+      {createdRoom ? (
+        createdRoom.map((el, index) => (
+          <MyMeetings item={el} navigation={navigation} key={index} />
+        ))
+      ) : (
+        <Text>생성한 미팅이 없습니다.</Text>
+      )}
     </>
   );
 }
