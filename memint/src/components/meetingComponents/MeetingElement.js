@@ -1,7 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {TouchableOpacity, View, Text, StyleSheet} from 'react-native';
-import {handleBirth} from '../../utils/common/Functions';
+import {handleBirth, handleDateInFormat} from '../../utils/common/Functions';
 
 function MeetingElement({item}) {
   const navigation = useNavigation();
@@ -35,7 +35,7 @@ function MeetingElement({item}) {
           </Text>
           <View style={styles.bar} />
           <Text style={[styles.infoEl]}>
-            {item.meetDate.toDate().toLocaleString()}
+            {handleDateInFormat(item.meetDate)}
           </Text>
         </View>
       </View>

@@ -14,7 +14,6 @@ import WalletButton from '../../components/common/WalletButton';
 import SingleModal from '../../components/common/SingleModal';
 import {getMeetings} from '../../lib/Meeting';
 import {useIsFocused} from '@react-navigation/native';
-import {handleDateInFormat} from '../../utils/common/Functions';
 import RNPickerSelect from 'react-native-picker-select';
 import FilterModal from '../../components/meetingComponents/FilterModal';
 import {getUser} from '../../lib/Users';

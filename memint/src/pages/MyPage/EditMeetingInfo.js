@@ -41,7 +41,6 @@ function EditMeetingInfo({route}) {
   });
   const [confirmModalVisible, setConfirmModalVisible] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
-  const [inviteModalVisible, setInviteModalVisible] = useState(false);
   const [tagData, setTagData] = useState({mood: [], topic: [], alcohol: []});
 
   const navigation = useNavigation();
@@ -70,16 +69,6 @@ function EditMeetingInfo({route}) {
     {label: '3:3', value: 3},
     {label: '4:4', value: 4},
   ];
-  // const tagData = {
-  //   mood: [
-  //     '부어라 마셔라',
-  //     '부어라 마셔라1',
-  //     '부어라 마셔라2',
-  //     '부어라 마셔라3',
-  //   ],
-  //   topic: ['연애', '연애1', '연애2', '연애2'],
-  //   alcoholType: ['소주', '소주1', '소주2', '소주3'],
-  // };
 
   useEffect(() => {
     const {title, description, region, peopleNum} = meetingInfo;
@@ -88,7 +77,6 @@ function EditMeetingInfo({route}) {
     } else {
       setSubmittable(false);
     }
-    // handleInvitedFriends();
   }, [meetingInfo]);
 
   useEffect(() => {
@@ -124,24 +112,6 @@ function EditMeetingInfo({route}) {
       console.log(e);
     }
   };
-
-  // const handleInvitedFriends = useCallback(() => {
-  //   if (route.params !== undefined) {
-  //     if (route.params.friends === undefined) {
-  //       return;
-  //     }
-  //     if (meetingInfo.invitedFriends.indexOf(route.params.friends) !== -1) {
-  //       showToast('error', '이미 추가된 친구입니다');
-  //       route.params.friends = undefined;
-  //       return;
-  //     }
-  //     setMeetingInfo({
-  //       ...meetingInfo,
-  //       invitedFriends: [...meetingInfo.invitedFriends, route.params.friends],
-  //     });
-  //     route.params.friends = undefined;
-  //   }
-  // }, [meetingInfo, route, showToast]);
 
   const handleSubmit = () => {
     if (!submittable) {
@@ -284,28 +254,7 @@ function EditMeetingInfo({route}) {
               </View>
             ))}
           </ScrollView>
-
-          <TouchableOpacity
-            onPress={() => {
-              setInviteModalVisible(true);
-            }}>
-            <Text style={[styles.text, styles.leftMargin]}>친구 초대하기</Text>
-          </TouchableOpacity>
         </View>
-        <DoubleModal
-          text="친구 초대 시 하트가 차감됩니다.    초대하시겠습니까?"
-          nButtonText="아니요"
-          pButtonText="네"
-          modalVisible={inviteModalVisible}
-          setModalVisible={setInviteModalVisible}
-          pFunction={() => {
-            setInviteModalVisible(!inviteModalVisible);
-            navigation.navigate('InviteFriend');
-          }}
-          nFunction={() => {
-            setInviteModalVisible(!inviteModalVisible);
-          }}
-        />
         <View style={styles.tagElement}>
           <Text style={[styles.text, styles.tagTitle]}>태그</Text>
           <View style={styles.tagsContainer}>

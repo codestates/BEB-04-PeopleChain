@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {handleBirth, handleISOtoLocale} from '../../utils/common/Functions';
+import {handleBirth, handleDateInFormat, handleISOtoLocale} from '../../utils/common/Functions';
 import DoubleModal from '../common/DoubleModal';
 
 function AlarmElement({
@@ -54,7 +54,7 @@ function AlarmElement({
                 </Text>
                 <View style={styles.bar} />
                 <Text style={styles.meetingElement}>
-                  {handleISOtoLocale(meetingInfo.meetDate)}
+                  {handleDateInFormat(meetingInfo.meetDate)}
                 </Text>
               </View>
             </>

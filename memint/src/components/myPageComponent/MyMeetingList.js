@@ -3,7 +3,10 @@ import {Text, StyleSheet, View, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import DoubleModal from '../../components/common/DoubleModal';
 import {useMeeting} from '../../utils/hooks/UseMeeting';
-import {handleISOtoLocale} from '../../utils/common/Functions';
+import {
+  handleDateInFormat,
+  handleISOtoLocale,
+} from '../../utils/common/Functions';
 
 // function MyMeetingList({List, navigation}) {
 //   return (
@@ -91,7 +94,12 @@ function MyMeetings({item, navigation}) {
             setModalVisible={setEditModal}
             pFunction={() => {
               setEditModal(false);
-              navigation.navigate('EditMeetingInfo', {item});
+              navigation.navigate('EditMeetingInfo', {
+                item: {
+                  ...item,
+                  meetDate: item.meetDate.toDate().toISOString(),
+                },
+              });
             }}
             nFunction={() => {
               setEditModal(false);
@@ -101,7 +109,7 @@ function MyMeetings({item, navigation}) {
             <Text style={styles.details}>{item?.region}</Text>
             <Icon name={'horizontal-rule'} size={20} style={styles.divider} />
             <Text style={styles.details}>
-              {handleISOtoLocale(item?.meetDate)}
+              {handleDateInFormat(item?.meetDate)}
             </Text>
             <Icon name={'horizontal-rule'} size={20} style={styles.divider} />
             {/* <Text

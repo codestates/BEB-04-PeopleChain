@@ -11,7 +11,10 @@ import {
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import DoubleModal from '../../components/common/DoubleModal';
-import {handleISOtoLocale} from '../../utils/common/Functions';
+import {
+  handleDateInFormat,
+  handleISOtoLocale,
+} from '../../utils/common/Functions';
 import {useMeeting} from '../../utils/hooks/UseMeeting';
 import {useToast} from '../../utils/hooks/useToast';
 
@@ -87,7 +90,7 @@ function ParticipatedMeetings({item}) {
             <Text style={styles.details}>{item.region}</Text>
             <Icon name={'horizontal-rule'} size={20} style={styles.divider} />
             <Text style={styles.details}>
-              {handleISOtoLocale(item.meetDate)}
+              {handleDateInFormat(item.meetDate)}
             </Text>
             <Icon name={'horizontal-rule'} size={20} style={styles.divider} />
             {/* <Text

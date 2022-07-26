@@ -1,15 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {SafeAreaView, ScrollView, View, StyleSheet} from 'react-native';
 import BasicButton from '../../components/common/BasicButton';
 import MyMeetingList from '../../components/myPageComponent/MyMeetingList';
 import ParticipatedMeetingList from '../../components/myPageComponent/ParticipatedMeetingList';
 import MyProfile from '../../components/myPageComponent/MyProfle';
 import useUser from '../../utils/hooks/UseUser';
-import {getOffchainTokenLog} from '../../lib/OffchianTokenLog';
-import useOffchainActions from '../../utils/hooks/UseOffchainActions';
-import {getUser, getUserProperty} from '../../lib/Users';
-import storage from '@react-native-firebase/storage';
-import {getImgUrl} from '../../lib/NFT';
 function MyPage({navigation}) {
   const user = useUser();
   // const getimgUrl = async () => {
@@ -39,7 +34,6 @@ function MyPage({navigation}) {
     nftImage: user.nftProfile,
     profileImage: user.picture,
   };
-  console.log(user)
   const dummyUser = {
     nickName: '김개똥',
     birth: '2022년 7월 25일',

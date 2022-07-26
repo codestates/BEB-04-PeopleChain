@@ -154,7 +154,6 @@ function MeetingCreate({route}) {
         {
           id: newMeeting.id,
           ...newMeeting.data(),
-          meetDate: newMeeting.data().meetDate.toDate().toISOString(),
         },
       ]);
       setConfirmModalVisible(false);

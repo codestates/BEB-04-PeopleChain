@@ -20,7 +20,11 @@ import {
 import {useToast} from '../../utils/hooks/useToast';
 import useUser from '../../utils/hooks/UseAuth';
 import {updateUserMeetingIn} from '../../lib/Users';
-import {handleBirth, handleISOtoLocale} from '../../utils/common/Functions';
+import {
+  handleBirth,
+  handleDateInFormat,
+  handleISOtoLocale,
+} from '../../utils/common/Functions';
 
 function AlarmDetail({route}) {
   const userInfo = useUser();
@@ -74,7 +78,7 @@ function AlarmDetail({route}) {
             </View>
             <View style={styles.userInfoElement}>
               <Text style={styles.key}>나이</Text>
-              <Text style={styles.value}>{senderInfo.birth}</Text>
+              <Text style={styles.value}>{handleBirth(senderInfo.birth)}</Text>
             </View>
             <View style={styles.userInfoElement}>
               <Text style={styles.key}>성별</Text>
@@ -88,26 +92,14 @@ function AlarmDetail({route}) {
           <Text style={styles.key}>미팅 정보</Text>
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate('MeetingDetail', {
-                id,
-                title: meetingInfo.title,
-                meetingTags: meetingInfo.meetingTags,
-                hostId: meetingInfo.hostId,
-                region: meetingInfo.region,
-                peopleNum: meetingInfo.peopleNum,
-                meetDate: meetingInfo.meetDate,
-                description: meetingInfo.description,
-                members: meetingInfo.members,
-                waiting: meetingInfo.waiting,
-                hostInfo: meetingInfo.hostInfo,
-              })
+              navigation.navigate('MeetingDetail', {data: meetingInfo})
             }>
             <Text style={styles.meetingTitle}>{meetingInfo.title}</Text>
             <View style={styles.meetingInfo}>
               <Text style={styles.meetingElement}>{meetingInfo.region}</Text>
               <View style={styles.bar} />
               <Text style={styles.meetingElement}>
-                {handleISOtoLocale(meetingInfo.meetDate)}
+                {handleDateInFormat(meetingInfo.meetDate)}
               </Text>
               <View style={styles.bar} />
               <Text style={styles.meetingElement}>
