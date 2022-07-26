@@ -1,20 +1,10 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
-import {
-  Text,
-  StyleSheet,
-  View,
-  Image,
-  TouchableOpacity,
-  FlatList,
-} from 'react-native';
+import {Text, StyleSheet, View, TouchableOpacity} from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import DoubleModal from '../../components/common/DoubleModal';
-import {
-  handleDateInFormat,
-  handleISOtoLocale,
-} from '../../utils/common/Functions';
+import {handleDateInFormat} from '../../utils/common/Functions';
 import {useMeeting} from '../../utils/hooks/UseMeeting';
 import {useToast} from '../../utils/hooks/useToast';
 
@@ -62,7 +52,20 @@ function ParticipatedMeetings({item}) {
   return (
     <>
       <View style={styles.meetingCard}>
-        <Text style={styles.title}>{item.title}</Text>
+        <View style={styles.titleRow}>
+          <Text style={styles.title}>{item.title}</Text>
+          <TouchableOpacity
+            style={{
+              ...styles.cancelButton,
+              ...styles.backgroundColorBlue,
+            }}
+            onPress={() => {
+              navigation.navigate('ChattingRoom', {data: item});
+            }}>
+            <Text style={styles.buttonText}>채팅방 이동하기</Text>
+          </TouchableOpacity>
+        </View>
+
         <View style={styles.container}>
           {item.meetingTags.map((tag, index) => {
             return (
@@ -119,15 +122,14 @@ function ParticipatedMeetings({item}) {
             ...styles.container,
             ...styles.spaceBetween,
           }}>
-          <View style={{flexDirection: 'row'}}>
+          {/* <View style={{flexDirection: 'row'}}>
             <Text>상태: </Text>
             <Text style={{fontWeight: 'bold', marginRight: 10}}>
               {item.status === 'pending' ? '대기 중' : '참여 완료'}
             </Text>
 
-            {/* 참가신청 취소 / 채팅방 이동 버튼 */}
-          </View>
-          {item.status === 'pending' ? (
+          </View> */}
+          {/* {item.status === 'pending' ? (
             <TouchableOpacity
               style={styles.cancelButton}
               onPress={() => setCancelModal(true)}>
@@ -144,7 +146,7 @@ function ParticipatedMeetings({item}) {
               }}>
               <Text style={styles.buttonText}>채팅방 이동하기</Text>
             </TouchableOpacity>
-          )}
+          )} */}
         </View>
         <DoubleModal
           text="미팅 참가신청을 취소하시겠어요?"
@@ -179,6 +181,11 @@ const styles = StyleSheet.create({
     height: 20,
     borderRadius: 100,
     position: 'relative',
+  },
+  titleRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   title: {
     fontWeight: '700',

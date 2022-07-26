@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {handleBirth, handleDateInFormat, handleISOtoLocale} from '../../utils/common/Functions';
+import {handleBirth, handleDateInFormat} from '../../utils/common/Functions';
 import DoubleModal from '../common/DoubleModal';
 
 function AlarmElement({

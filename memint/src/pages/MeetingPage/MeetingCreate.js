@@ -14,7 +14,6 @@ import RNPickerSelect from 'react-native-picker-select';
 import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useToast} from '../../utils/hooks/useToast';
-import SingleModal from '../../components/common/SingleModal';
 import TagElement from '../../components/meetingComponents/TagElement';
 import DoubleModal from '../../components/common/DoubleModal';
 import {createMeeting, getMeeting} from '../../lib/Meeting';

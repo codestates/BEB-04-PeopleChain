@@ -20,11 +20,7 @@ import {
 import {useToast} from '../../utils/hooks/useToast';
 import useUser from '../../utils/hooks/UseAuth';
 import {updateUserMeetingIn} from '../../lib/Users';
-import {
-  handleBirth,
-  handleDateInFormat,
-  handleISOtoLocale,
-} from '../../utils/common/Functions';
+import {handleBirth, handleDateInFormat} from '../../utils/common/Functions';
 
 function AlarmDetail({route}) {
   const userInfo = useUser();

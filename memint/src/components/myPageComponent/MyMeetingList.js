@@ -109,7 +109,19 @@ function MyMeetings({item, navigation}) {
   return (
     <>
       <View style={styles.meetingCard}>
-        <Text style={styles.title}>{item?.title}</Text>
+        <View style={styles.titleRow}>
+          <Text style={styles.title}>{item.title}</Text>
+          <TouchableOpacity
+            style={{
+              ...styles.deleteButton,
+              ...styles.backgroundColorBlue,
+            }}
+            onPress={() => {
+              navigation.navigate('ChattingRoom', {data: item});
+            }}>
+            <Text style={styles.buttonText}>채팅방 이동하기</Text>
+          </TouchableOpacity>
+        </View>
 
         <View style={styles.container}>
           {item?.meetingTags.map((type, index) => {
@@ -213,6 +225,7 @@ const styles = StyleSheet.create({
   titleRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
   title: {
     fontWeight: '700',
@@ -230,10 +243,9 @@ const styles = StyleSheet.create({
   deleteButton: {
     justifyContent: 'center',
     borderRadius: 10,
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    marginHorizontal: 2,
+    padding: 5,
     backgroundColor: '#DA6262',
+    width: 100,
   },
   buttonText: {
     color: 'white',
