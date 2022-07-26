@@ -2,7 +2,7 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 
-const walletRouter = require("./routes/wallet");
+const wallet = require("./routes/wallet");
 const transactionRouter = require("./routes/transaction");
 const app = express();
 const fs = require("fs");
@@ -16,7 +16,7 @@ app.get("/", (req, res) => {
   res.send("hello Web3");
 });
 
-app.use("/wallet", walletRouter);
+app.use("/wallet", wallet);
 app.use("/transaction", transactionRouter);
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
