@@ -195,6 +195,7 @@ function ChattingRoom({route}) {
         <SpendingModal
           spendingModalVisible={spendingModalVisible}
           setSpendingModalVisible={setSpendingModalVisible}
+          txType="미팅 확정"
           amount={1}
           pFunction={() => {
             changeMeetingState(route.params.id);

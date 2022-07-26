@@ -112,6 +112,7 @@ function MetaData({item, navigation}) {
           [MessageRef],
         );
     };
+
     getContent();
   }, [MessageRef]);
   return (

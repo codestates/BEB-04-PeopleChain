@@ -46,29 +46,38 @@ const Host = ({data, count, setProposeModalVisible, setModalVisible}) => {
   const {showToast} = useToast();
   const navigation = useNavigation();
 
+  useEffect(() => {
+    console.log(data.status);
+  }, [data]);
+
   return (
     <View style={styles.container}>
       <View>
         <View style={{flexDirection: 'row'}}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Text style={{paddingRight: 7}}>{data.title}</Text>
-            <View
-              style={
-                // status가 fixed이면
-                data.status === 'full'
-                  ? {...styles.status, backgroundColor: 'gray'} // 아니면 회색 view 렌더링
-                  : styles.status // 파란색 view 렌더링
-              }>
-              <Text style={{color: 'black'}}>확정</Text>
-            </View>
+            {data.status === 'open' ? null : (
+              <View
+                style={
+                  // status가 fixed이면
+                  data.status === 'full'
+                    ? {...styles.status, backgroundColor: 'gray'} // 아니면 회색 view 렌더링
+                    : styles.status // 파란색 view 렌더링
+                }>
+                <Text style={{color: 'black'}}>확정</Text>
+              </View>
+            )}
           </View>
         </View>
-        <Text style={{marginTop: 20}}>미팅 정보 보러가기 ></Text>
+        {/* 미팅 상세페이지로 라우팅 설정해놓기 */}
+        <TouchableOpacity onPress={() => navigation.navigate()}>
+          <Text style={{marginTop: 20}}>미팅 정보 보러가기 ></Text>
+        </TouchableOpacity>
       </View>
       <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
         {
           //status가 end이면
-          data.status === 'end' ? (
+          data.status === 'open' ? null : data.status === 'end' ? (
             <TouchableOpacity
               onPress={() => {
                 // proposeModal이 왜 렌더링이 안되는지 모르겠다. 파일 변경이 있었던 것 같다.
@@ -140,7 +149,10 @@ const Joiner = ({data, user, setModalVisible}) => {
             </View>
           </View>
         </View>
-        <Text style={{marginTop: 20}}>미팅 정보 보러가기 ></Text>
+        {/* 미팅 상세페이지로 라우팅 설정해놓기 */}
+        <TouchableOpacity onPress={() => navigation.navigate()}>
+          <Text style={{marginTop: 20}}>미팅 정보 보러가기 ></Text>
+        </TouchableOpacity>
       </View>
       <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
         {
