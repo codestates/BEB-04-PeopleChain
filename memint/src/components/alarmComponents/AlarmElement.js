@@ -2,10 +2,32 @@ import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {handleBirth, handleISOtoLocale} from '../../utils/common/Functions';
+import DoubleModal from '../common/DoubleModal';
 
-function AlarmElement({meetingInfo, createdAt, onPress, type, senderInfo}) {
+function AlarmElement({
+  meetingInfo,
+  createdAt,
+  onPress,
+  type,
+  senderInfo,
+  chattingConfirmModal,
+  setChattingConfirmModal,
+  handleMoveChattingRoom,
+}) {
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
+      <DoubleModal
+        text="채팅창으로 이동하시겠습니까?"
+        //body={<Text>정말로?</Text>}
+        nButtonText="아니요"
+        pButtonText="네"
+        modalVisible={chattingConfirmModal}
+        setModalVisible={setChattingConfirmModal}
+        pFunction={() => handleMoveChattingRoom(meetingInfo)}
+        nFunction={() => {
+          setChattingConfirmModal(!chattingConfirmModal);
+        }}
+      />
       <Icon name="notifications" size={30} style={styles.icon} />
       <View style={styles.content}>
         <View style={styles.messageHead}>

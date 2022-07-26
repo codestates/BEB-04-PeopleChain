@@ -3,43 +3,17 @@ import React from 'react';
 import {TouchableOpacity, View, Text, StyleSheet} from 'react-native';
 import {handleBirth} from '../../utils/common/Functions';
 
-function MeetingElement({
-  id,
-  title,
-  meetingTags,
-  hostId,
-  region,
-  peopleNum,
-  meetDate,
-  description,
-  members,
-  waiting,
-  hostInfo,
-}) {
+function MeetingElement({item}) {
   const navigation = useNavigation();
   return (
     <TouchableOpacity
       style={styles.container}
-      onPress={() =>
-        navigation.navigate('MeetingDetail', {
-          id,
-          title,
-          meetingTags,
-          hostId,
-          region,
-          peopleNum,
-          meetDate,
-          description,
-          members,
-          waiting,
-          hostInfo,
-        })
-      }>
+      onPress={() => navigation.navigate('MeetingDetail', {data: item})}>
       <View>
-        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.title}>{item.title}</Text>
       </View>
       <View style={styles.meetingTags}>
-        {meetingTags?.map((tag, idx) => (
+        {item.meetingTags?.map((tag, idx) => (
           <View key={idx} style={styles.tag}>
             <Text style={styles.tagText}>{tag}</Text>
           </View>
@@ -47,16 +21,22 @@ function MeetingElement({
       </View>
       <View style={styles.infoRow}>
         <View style={styles.userInfo}>
-          <Text style={styles.username}>{hostInfo.nickName}</Text>
+          <Text style={styles.username}>{item.hostInfo.nickName}</Text>
         </View>
         <View style={styles.infoList}>
-          <Text style={[styles.infoEl]}>{region}</Text>
+          <Text style={[styles.infoEl]}>{item.region}</Text>
           <View style={styles.bar} />
-          <Text style={[styles.infoEl]}>{peopleNum + ':' + peopleNum}</Text>
+          <Text style={[styles.infoEl]}>
+            {item.peopleNum + ':' + item.peopleNum}
+          </Text>
           <View style={styles.bar} />
-          <Text style={[styles.infoEl]}>{handleBirth(hostInfo.birth)}</Text>
+          <Text style={[styles.infoEl]}>
+            {handleBirth(item.hostInfo.birth)}
+          </Text>
           <View style={styles.bar} />
-          <Text style={[styles.infoEl]}>{meetDate}</Text>
+          <Text style={[styles.infoEl]}>
+            {item.meetDate.toDate().toLocaleString()}
+          </Text>
         </View>
       </View>
     </TouchableOpacity>

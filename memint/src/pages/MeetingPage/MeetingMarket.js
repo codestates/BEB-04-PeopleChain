@@ -193,22 +193,7 @@ function MeetingMarket({navigation}) {
 
       <ScrollView style={styles.meetingLists}>
         {filteredMeetings.map((meeting, idx) => {
-          return (
-            <MeetingElement
-              key={idx}
-              id={meeting.id}
-              title={meeting.title}
-              meetingTags={meeting.meetingTags}
-              hostId={meeting.hostId}
-              region={meeting.region}
-              peopleNum={meeting.peopleNum}
-              meetDate={handleDateInFormat(meeting.meetDate)}
-              description={meeting.description}
-              members={meeting.members}
-              waiting={meeting.waiting}
-              hostInfo={meeting.hostInfo}
-            />
-          );
+          return <MeetingElement key={idx} item={meeting} />;
         })}
       </ScrollView>
       <WalletButton />

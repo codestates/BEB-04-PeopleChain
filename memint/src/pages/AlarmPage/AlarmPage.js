@@ -77,6 +77,13 @@ function AlarmPage({navigation}) {
     }
   }, [userInfo, meetingData]);
 
+  const handleMoveChattingRoom = meetingInfo => {
+    //meetingInfo 받아서
+    //navigate
+    setChattingConfirmModal(!setChattingConfirmModal);
+    navigation.navigate('ChattingRoom', {data: meetingInfo});
+  };
+
   return (
     <SafeAreaView>
       <Text style={styles.title}>알림</Text>
@@ -91,6 +98,9 @@ function AlarmPage({navigation}) {
             type={alarm.type}
             sender={alarm.sender}
             senderInfo={alarm.senderInfo}
+            chattingConfirmModal={chattingConfirmModal}
+            setChattingConfirmModal={setChattingConfirmModal}
+            handleMoveChattingRoom={handleMoveChattingRoom}
             onPress={
               alarm.type === 'proposal'
                 ? () => {
@@ -111,18 +121,6 @@ function AlarmPage({navigation}) {
           />
         ))}
       </View>
-      <DoubleModal
-        text="채팅창으로 이동하시겠습니까?"
-        //body={<Text>정말로?</Text>}
-        nButtonText="아니요"
-        pButtonText="네"
-        modalVisible={chattingConfirmModal}
-        setModalVisible={setChattingConfirmModal}
-        pFunction={() => {}}
-        nFunction={() => {
-          setChattingConfirmModal(!chattingConfirmModal);
-        }}
-      />
     </SafeAreaView>
   );
 }

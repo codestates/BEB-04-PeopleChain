@@ -63,13 +63,16 @@ function App() {
       const meetingRes = await Promise.all(
         meetingIdArray.map(async el => {
           const meetingInfo = await getMeeting(el);
+          console.log(meetingInfo.data())
+          console.log(meetingInfo.data().meetDate.toDate().toISOString())
           return {
             id: meetingInfo.id,
             ...meetingInfo.data(),
-            meetDate: meetingInfo.data().meetDate.toDate().toISOString(),
+            meetDate: meetingInfo.data().meetDate,
           };
         }),
       );
+
       saveMeeting(meetingRes);
       saveInfo({
         id: user.uid,

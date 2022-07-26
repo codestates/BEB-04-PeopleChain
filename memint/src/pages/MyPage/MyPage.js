@@ -31,7 +31,7 @@ function MyPage({navigation}) {
       'https://lh3.googleusercontent.com/o7U7XfamFNTSn3HrcUWRgtAwracl2ygU_12XarpHIYnfGnOla4zgrRqz0OvLL0-KyYqOJSyp-1YmcdndjjuyThYB_IdLFk5LBoilNus=w600',
     profileImage: user.picture,
   };
-
+  console.log(user)
   const dummyUser = {
     nickName: '김개똥',
     birth: '2022년 7월 25일',

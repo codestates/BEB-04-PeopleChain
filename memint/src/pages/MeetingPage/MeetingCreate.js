@@ -24,6 +24,7 @@ import {updateUserMeetingIn} from '../../lib/Users';
 import useAuthActions from '../../utils/hooks/UseAuthActions';
 import useMeetingActions from '../../utils/hooks/UseMeetingActions';
 import {useMeeting} from '../../utils/hooks/UseMeeting';
+import SpendingModal from '../../components/common/UserInfoModal/SpendingModal';
 
 function MeetingCreate({route}) {
   const userInfo = useUser();
@@ -43,9 +44,9 @@ function MeetingCreate({route}) {
   });
   const [friendsNames, setFriendsName] = useState([]);
   const [confirmModalVisible, setConfirmModalVisible] = useState(false);
+  const [spendModalVisible, setSpendModalVisible] = useState(false);
   const [inviteModalVisible, setInviteModalVisible] = useState(false);
   const [tagData, setTagData] = useState({mood: [], topic: [], alcohol: []});
-  const {authorize} = useAuthActions();
   const navigation = useNavigation();
   const {showToast} = useToast();
   const RegionDropDownData = [
@@ -287,11 +288,21 @@ function MeetingCreate({route}) {
           setModalVisible={setInviteModalVisible}
           pFunction={() => {
             setInviteModalVisible(!inviteModalVisible);
-            navigation.navigate('InviteFriend');
+            setSpendModalVisible(true);
           }}
           nFunction={() => {
             setInviteModalVisible(!inviteModalVisible);
           }}
+        />
+        <SpendingModal
+          spendingModalVisible={spendModalVisible}
+          setSpendingModalVisible={setSpendModalVisible}
+          pFunction={() => {
+            setSpendModalVisible(!spendModalVisible);
+            navigation.navigate('InviteFriend'); //이동
+          }}
+          amount={1}
+          txType="친구초대"
         />
         <View style={styles.tagElement}>
           <Text style={[styles.text, styles.tagTitle]}>태그</Text>

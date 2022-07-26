@@ -1,3 +1,4 @@
+import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {
   Text,
@@ -48,6 +49,7 @@ function ParticipatedMeetingList({user}) {
 }
 
 function ParticipatedMeetings({item}) {
+  const navigation = useNavigation();
   const [cancelModal, setCancelModal] = useState(false);
   const {showToast} = useToast();
   return (
@@ -129,6 +131,9 @@ function ParticipatedMeetings({item}) {
               style={{
                 ...styles.cancelButton,
                 ...styles.backgroundColorBlue,
+              }}
+              onPress={() => {
+                navigation.navigate('ChattingRoom', {data: item});
               }}>
               <Text style={styles.buttonText}>채팅방 이동하기</Text>
             </TouchableOpacity>

@@ -10,23 +10,12 @@ import {updateWaitingIn} from '../../lib/Meeting';
 import {getUser} from '../../lib/Users';
 import {useToast} from '../../utils/hooks/useToast';
 import useUser from '../../utils/hooks/UseAuth';
-import {handleBirth, handleISOtoLocale} from '../../utils/common/Functions';
+import {handleISOtoLocale} from '../../utils/common/Functions';
 
 function MeetingDetail({route}) {
   const userInfo = useUser();
   const loginUser = userInfo.id;
-  const {
-    id,
-    title,
-    meetingTags,
-    hostId,
-    region,
-    peopleNum,
-    meetDate,
-    description,
-    members,
-    waiting,
-  } = route.params;
+  const {data} = route.params;
   const [modalVisible_1, setModalVisible_1] = useState(false);
   const [modalVisible_2, setModalVisible_2] = useState(false);
   const [textMessage, setTextMessage] = useState('');
@@ -36,7 +25,7 @@ function MeetingDetail({route}) {
 
   const renderByUser = () => {
     if (
-      members.reduce((acc, cur) => {
+      data.members.reduce((acc, cur) => {
         if (cur[loginUser] === 'accepted') {
           return true || acc;
         } else {
@@ -50,10 +39,12 @@ function MeetingDetail({route}) {
           height={50}
           textSize={17}
           text="채팅창으로 이동"
-          onPress={() => {}}
+          onPress={() => {
+            navigation.navigate('ChattingRoom', {data});
+          }}
         />
       );
-    } else if (waiting && waiting.indexOf(loginUser) !== -1) {
+    } else if (data.waiting?.indexOf(loginUser) !== -1) {
       return (
         <BasicButton
           width={300}
@@ -81,15 +72,15 @@ function MeetingDetail({route}) {
 
   const handleCreateProposal = () => {
     try {
-      const data = {
+      const createData = {
         sender: loginUser, //로그인된 유저
-        receiver: hostId,
-        meetingId: id,
+        receiver: data.hostId,
+        meetingId: data.id,
         message: textMessage,
       };
-      createMeetingProposal(data);
+      createMeetingProposal(createData);
       //meeting waiting 추가
-      updateWaitingIn(id, loginUser); //로그인된 유저
+      updateWaitingIn(data.id, loginUser); //로그인된 유저
       setModalVisible_2(!modalVisible_2);
       setTextMessage('');
       showToast(
@@ -107,18 +98,18 @@ function MeetingDetail({route}) {
 
   const getMembersInfo = useCallback(async () => {
     try {
-      const data = await Promise.all(
-        members.map(async member => {
+      const memberInfo = await Promise.all(
+        data.members.map(async member => {
           const memberId = Object.keys(member)[0];
           const info = await getUser(memberId);
           return {id: memberId, ...info};
         }),
       );
-      setMembersInfo(data);
+      setMembersInfo(memberInfo);
     } catch (e) {
       console.log(e);
     }
-  }, [members]);
+  }, [data]);
 
   useEffect(() => {
     getMembersInfo();
@@ -128,10 +119,10 @@ function MeetingDetail({route}) {
       <BackButton />
       <View style={styles.container}>
         <View style={styles.titleRow}>
-          <Text style={styles.title}>{title}</Text>
+          <Text style={styles.title}>{data.title}</Text>
         </View>
         <View style={styles.meetingTags}>
-          {meetingTags.map((tag, idx) => {
+          {data.meetingTags.map((tag, idx) => {
             return (
               <View key={idx} style={styles.tag}>
                 <Text style={styles.tagText}>{tag}</Text>
@@ -140,22 +131,22 @@ function MeetingDetail({route}) {
           })}
         </View>
         <View style={styles.descriptionRow}>
-          <Text>{description}</Text>
+          <Text>{data.description}</Text>
         </View>
         <View style={styles.infoRow}>
-          <Text style={styles.infoEl}>{region}</Text>
+          <Text style={styles.infoEl}>{data.region}</Text>
           <View style={styles.bar} />
           <Text style={styles.infoEl}>
-            {meetDate.slice(-1) === 'Z'
-              ? handleISOtoLocale(meetDate)
-              : meetDate}
+            {typeof data.meetDate === 'object'
+              ? data.meetDate.toDate().toLocaleString()
+              : handleISOtoLocale(data.meetDate)}
           </Text>
         </View>
         <View>
           <DetailMembers
-            peopleNum={peopleNum}
+            peopleNum={data.peopleNum}
             membersInfo={membersInfo}
-            hostId={hostId}
+            hostId={data.hostId}
           />
         </View>
         <View style={styles.buttonRow}>{renderByUser()}</View>
@@ -224,7 +215,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center',
+    aligndatas: 'center',
   },
   infoEl: {
     fontSize: 22,
