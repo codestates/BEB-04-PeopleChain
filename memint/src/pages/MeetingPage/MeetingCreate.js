@@ -44,7 +44,10 @@ function MeetingCreate({route}) {
   });
   const [friendsNames, setFriendsName] = useState([]);
   const [confirmModalVisible, setConfirmModalVisible] = useState(false);
-  const [spendModalVisible, setSpendModalVisible] = useState(false);
+  const [inviteSpendingModalVisible, setInviteSpendingModalVisible] =
+    useState(false);
+  const [createSpendingModalVisible, setCreateSpendingModalVisible] =
+    useState(false);
   const [inviteModalVisible, setInviteModalVisible] = useState(false);
   const [tagData, setTagData] = useState({mood: [], topic: [], alcohol: []});
   const navigation = useNavigation();
@@ -159,12 +162,15 @@ function MeetingCreate({route}) {
       setConfirmModalVisible(false);
       showToast('success', '미팅이 생성되었습니다');
       navigation.navigate('MeetingMarket');
-      //새로 만들어진 미팅 세부 페이지로 이동
     } catch (e) {
       setConfirmModalVisible(false);
       showToast('error', '미팅 생성에 실패했습니다');
       console.log(e);
     }
+  };
+
+  const handleNavigate = () => {
+    navigation.navigate('InviteFriend');
   };
 
   return (
@@ -180,12 +186,25 @@ function MeetingCreate({route}) {
           </Text>
         </TouchableOpacity>
       </View>
-      <SingleModal
-        text="미팅을 생성하시겠습니까?"
+      <DoubleModal
+        text="미팅 생성 시 하트가 차감됩니다.    미팅을 생성하시겠습니까?"
         buttonText="네"
         modalVisible={confirmModalVisible}
         setModalVisible={setConfirmModalVisible}
+        nFunction={() => {
+          setConfirmModalVisible(!confirmModalVisible);
+        }}
+        pFunction={() => {
+          setConfirmModalVisible(!confirmModalVisible);
+          setCreateSpendingModalVisible(true);
+        }}
+      />
+      <SpendingModal
+        spendingModalVisible={createSpendingModalVisible}
+        setSpendingModalVisible={setCreateSpendingModalVisible}
         pFunction={handleCreateMeeting}
+        amount={1}
+        txType="미팅 생성"
       />
       <View style={styles.createContainer}>
         <View>
@@ -287,19 +306,16 @@ function MeetingCreate({route}) {
           setModalVisible={setInviteModalVisible}
           pFunction={() => {
             setInviteModalVisible(!inviteModalVisible);
-            setSpendModalVisible(true);
+            setInviteSpendingModalVisible(true);
           }}
           nFunction={() => {
             setInviteModalVisible(!inviteModalVisible);
           }}
         />
         <SpendingModal
-          spendingModalVisible={spendModalVisible}
-          setSpendingModalVisible={setSpendModalVisible}
-          pFunction={() => {
-            setSpendModalVisible(!spendModalVisible);
-            navigation.navigate('InviteFriend'); //이동
-          }}
+          spendingModalVisible={inviteSpendingModalVisible}
+          setSpendingModalVisible={setInviteSpendingModalVisible}
+          pFunction={handleNavigate}
           amount={1}
           txType="친구초대"
         />
