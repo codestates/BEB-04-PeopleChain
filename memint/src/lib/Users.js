@@ -3,7 +3,14 @@ import UseUser from '../utils/hooks/UseUser';
 
 export const usersCollection = firestore().collection('User');
 
-export function createUser({userId, nickName, gender, birth, picture}) {
+export function createUser({
+  userId,
+  nickName,
+  gender,
+  birth,
+  picture,
+  nftProfileImg,
+}) {
   // return usersCollection.doc(id).get();
   // console.log(usersCollection);
   return usersCollection.doc(userId).set({
@@ -13,12 +20,20 @@ export function createUser({userId, nickName, gender, birth, picture}) {
     birth,
     createdAt: firestore.FieldValue.serverTimestamp(),
     picture,
+    nftProfileImg,
   });
 }
 
 export async function getUser(id) {
   const doc = await usersCollection.doc(id).get();
   return doc.data();
+}
+
+export async function getUserProperty(id) {
+  const doc = await usersCollection.doc(id).collection('Property').get();
+  const property = doc.docs.map(doc => doc.data());
+
+  return property;
 }
 
 export function createProperty({userId, drinkCapa, drinkStyle, alcoholType}) {

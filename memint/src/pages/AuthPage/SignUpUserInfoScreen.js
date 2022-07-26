@@ -19,6 +19,7 @@ import CameraButton from '../../components/AuthComponents/CameraButton';
 import {signUp} from '../../lib/Auth';
 import {createUser, getUser} from '../../lib/Users';
 import storage from '@react-native-firebase/storage';
+import {getImgUrl} from '../../lib/NFT';
 
 // const reference = storage().ref('/directory/filename.png');
 // await reference.putFile(uri);
@@ -61,12 +62,17 @@ const SignUpUserInfoScreen = ({navigation, route}) => {
 
         photoURL = response ? await reference.getDownloadURL() : null;
       }
+
+      const nftProfileImg = await getImgUrl();
+      console.log(nftProfileImg);
+
       createUser({
         userId: uid,
         nickName: form.nickName,
         gender: form.gender,
         birth: `${form.birthYear}년 ${form.birthMonth}월 ${form.birthDay}일`,
         picture: photoURL,
+        nftProfile: nftProfileImg,
       });
       navigation.push('SignUpUserDetail', {uid: uid});
     } catch (e) {

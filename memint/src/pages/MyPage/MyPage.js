@@ -7,9 +7,22 @@ import MyProfile from '../../components/myPageComponent/MyProfle';
 import useUser from '../../utils/hooks/UseUser';
 import {getOffchainTokenLog} from '../../lib/OffchianTokenLog';
 import useOffchainActions from '../../utils/hooks/UseOffchainActions';
-
+import {getUser, getUserProperty} from '../../lib/Users';
+import storage from '@react-native-firebase/storage';
+import {getImgUrl} from '../../lib/NFT';
 function MyPage({navigation}) {
   const user = useUser();
+  // const getimgUrl = async () => {
+  //   const randNum1 = Math.floor(Math.random() * 4);
+  //   const randNum2 = Math.floor(Math.random() * 11);
+  //   const imgUrl = await storage()
+  //     .ref(`/NFTs/dinosaur_nft_0${randNum1}${randNum2}.png`)
+  //     .getDownloadURL();
+  // };
+  // getimgUrl();
+  const url = getImgUrl();
+  console.log(url);
+
   // const onSubmitSignIn = async () => {
   //   const res = await getOffchainTokenLog(user.id);
   //   const logs = res.docs.map(el => {
@@ -21,12 +34,9 @@ function MyPage({navigation}) {
     nickName: user.nickName,
     birth: user.birth,
     gender: user.gender,
-    alcoholQuantity: ['소주 반 병'],
-    alcoholType: ['맥주', '와인', '술이라면 다 좋음'],
-    alcoholStyle: [
-      '일단 마시고 생각하자구요. 부어라 마셔라!',
-      '술보다 안주가 더 좋아요.',
-    ],
+    drinkCapa: user.drinkCapa,
+    alcoholType: user.alcoholType,
+    drinkStyle: user.drinkStyle,
     nftImage:
       'https://lh3.googleusercontent.com/o7U7XfamFNTSn3HrcUWRgtAwracl2ygU_12XarpHIYnfGnOla4zgrRqz0OvLL0-KyYqOJSyp-1YmcdndjjuyThYB_IdLFk5LBoilNus=w600',
     profileImage: user.picture,

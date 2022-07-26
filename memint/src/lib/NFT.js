@@ -1,7 +1,18 @@
 import firestore from '@react-native-firebase/firestore';
+import storage from '@react-native-firebase/storage';
 
 export const NFTCollection = firestore().collection('NFT');
 
+export async function getImgUrl() {
+  const randNum1 = Math.floor(Math.random() * 4);
+  const randNum2 = Math.floor(Math.random() * 10);
+  const imgUrl = await storage()
+    .ref(`/NFTs/dinosaur_nft_0${randNum1}${randNum2}.png`)
+    .getDownloadURL();
+  return imgUrl;
+}
+
+//NFT 스키마에 넣을 doc을 create
 export function createNFT({userId, nftImg}) {
   return NFTCollection.add({
     userId,
@@ -9,7 +20,6 @@ export function createNFT({userId, nftImg}) {
     isProfile: true,
     isMemint: true,
   });
-  // User collection doc에 NFT Id 추가
 }
 
 //프로필 렌더링

@@ -5,7 +5,6 @@ import MyNFT from './MyNFT';
 import {useNftProfile} from '../../utils/hooks/UseNft';
 
 function MyProfile({User, navigation}) {
-  console.log(User);
   const nftProfile = useNftProfile();
 
   return (
@@ -48,11 +47,9 @@ function MyProfile({User, navigation}) {
       <MyNFT User={User} />
       <Text style={styles.attribute}>주량</Text>
       <View style={styles.tagContainer}>
-        {User.alcoholQuantity.map((el, index) => (
-          <View style={styles.tag} key={index}>
-            <Text style={styles.tagFont}># {el}</Text>
-          </View>
-        ))}
+        <View style={styles.tag}>
+          <Text style={styles.tagFont}># {User.drinkCapa}</Text>
+        </View>
       </View>
       <Text style={styles.attribute}>선호 주류</Text>
       <View style={styles.tagContainer}>
@@ -64,7 +61,7 @@ function MyProfile({User, navigation}) {
       </View>
       <Text style={styles.attribute}>스타일</Text>
       <View style={styles.tagContainer}>
-        {User.alcoholStyle.map((el, index) => (
+        {User.drinkStyle.map((el, index) => (
           <View style={styles.tag} key={index}>
             <Text style={styles.tagFont}># {el}</Text>
           </View>

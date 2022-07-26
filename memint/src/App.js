@@ -29,7 +29,7 @@ import WalletOffchainScreen from './pages/WalletPage/WalletOffchainScreen';
 import useAuth from './utils/hooks/UseAuth';
 import useAuthActions from './utils/hooks/UseAuthActions';
 import {subscribeAuth} from './lib/Auth';
-import {getUser} from './lib/Users';
+import {getUser, getUserProperty} from './lib/Users';
 import useNftActions from './utils/hooks/UseNftActions';
 import {getNFTs, getProfile, getMemin} from './lib/NFT';
 import {getMeeting} from './lib/Meeting';
@@ -49,6 +49,8 @@ function App() {
   const saveUserInfo = async user => {
     try {
       const userDetail = await getUser(user.uid);
+      const userProperty = await getUserProperty(user.uid);
+      // console.log(userProperty);
       const res = await getNFTs(user.uid);
       const nfts = res.docs.map(el => {
         return {...el.data()};
@@ -83,8 +85,12 @@ function App() {
         nftIds: userDetail.nftIds,
         picture: userDetail.picture,
         tokenAmount: userDetail.tokenAmount,
-        createdroomId: userDetail.createdroomId,
-        joinedroomId: userDetail.joinedroomId,
+        // createdroomId: userDetail.createdroomId,
+        // joinedroomId: userDetail.joinedroomId,
+        nftProfile: userDetail.nftProfile,
+        alcoholType: userProperty[0].alcoholType,
+        drinkCapa: userProperty[0].drinkCapa,
+        drinkStyle: userProperty[0].drinkStyle,
       });
     } catch (e) {
       console.log(e);
