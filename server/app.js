@@ -1,9 +1,9 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
-
 const wallet = require("./routes/wallet");
 const transactionRouter = require("./routes/transaction");
+const auth = require("./routes/auth");
 const app = express();
 const fs = require("fs");
 const port = 5000;
@@ -16,6 +16,7 @@ app.get("/", (req, res) => {
   res.send("hello Web3");
 });
 
+app.use("/auth", auth);
 app.use("/wallet", wallet);
 app.use("/transaction", transactionRouter);
 // catch 404 and forward to error handler

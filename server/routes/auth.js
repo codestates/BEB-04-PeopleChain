@@ -7,14 +7,16 @@ const web3 = new Web3(new Web3.providers.HttpProvider(process.env.ETH_NETWORK));
 // const db = getFirestore()
 
 // 회원가입 시 user의 db에 address, privateKey를 추가해주는 함수
-auth.route("/register").post(async (req, res) => {
+auth.route("/register").get(async (req, res) => {
   try {
-    const { id } = req.body.id;
+    // const { id } = req.body.id;
     const account = await web3.eth.accounts.create();
+
+    console.log(account);
     // await db.collection('User').doc(id).set({
     // address : account.address, privateKey : account.privateKey
     // })
-    res.status(200).send("success");
+    res.status(200).send(account);
   } catch (error) {
     res.status(404).send(error);
   }

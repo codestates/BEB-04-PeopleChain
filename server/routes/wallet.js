@@ -1,17 +1,14 @@
 const express = require("express");
 const wallet = express.Router();
-// const Web3 = require("web3");
-// require("dotenv").config();
-// const fs = require("fs");
-// const web3 = new Web3(new Web3.providers.HttpProvider(process.env.ETH_NETWORK));
+const { ETHToLCN, LCNToETH, toOffChain, toOnChain } = require("./walletCtrl");
 
-wallet.route("/ETHToLCN").post(async (req, res) => {});
+wallet.route("/ETHToLCN").post(ETHToLCN);
 
-wallet.route("/LCNToETH").post();
+wallet.route("/LCNToETH").post(LCNToETH);
 
-wallet.route("/toOffChain").post();
+wallet.route("/toOffChain").post(toOffChain);
 
-wallet.route("/toOnChain").post();
+wallet.route("/toOnChain").post(toOnChain);
 
 // router.get("/getBalance", async (req, res) => {
 //   try {
