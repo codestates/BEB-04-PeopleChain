@@ -13,30 +13,30 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.get("/", (req, res) => {
-	res.send("hello Web3");
+  res.send("hello Web3");
 });
 
 app.use("/wallet", walletRouter);
 app.use("/transaction", transactionRouter);
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
-	const err = new Error("Not Found");
-	err["status"] = 404;
-	next(err);
+  const err = new Error("Not Found");
+  err["status"] = 404;
+  next(err);
 });
 
 // error handler
 app.use((err, req, res, next) => {
-	res.status(err.status || 500);
-	res.json({
-		errors: {
-			message: err.message,
-		},
-	});
+  res.status(err.status || 500);
+  res.json({
+    errors: {
+      message: err.message,
+    },
+  });
 });
 
 app.listen(port, () => {
-	console.log(`Memint Server listening att http://localhost:${port}`);
+  console.log(`Memint Server listening at http://localhost:${port}`);
 });
 
 module.exports = app;
