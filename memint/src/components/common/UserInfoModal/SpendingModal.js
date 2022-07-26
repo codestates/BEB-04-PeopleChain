@@ -72,7 +72,14 @@ function SpendingModal({
                 variant="disable"
                 onPress={() => setSpendingModalVisible(false)}
               />
-              <BasicButton text="네" size="small" onPress={transactionMade} />
+              <BasicButton
+                text="네"
+                size="small"
+                onPress={() => {
+                  pFunction();
+                  transactionMade;
+                }}
+              />
             </View>
           </View>
         </View>

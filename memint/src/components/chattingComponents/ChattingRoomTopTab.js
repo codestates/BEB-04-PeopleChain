@@ -20,13 +20,13 @@ function ChattingRoomTopTab({setProposeModalVisible, setModalVisible, data}) {
       const memberStatusCount = result.data().members.filter(el => {
         return Object.values(el)[0] === 'accepted';
       }).length;
-
       setCount(memberStatusCount);
     });
   }, [meetingRef]);
 
   return user === data.hostId ? (
     <Host
+      meetingInfo={data}
       data={roomData}
       count={count}
       setProposeModalVisible={setProposeModalVisible}
@@ -34,6 +34,7 @@ function ChattingRoomTopTab({setProposeModalVisible, setModalVisible, data}) {
     />
   ) : (
     <Joiner
+      meetingInfo={data}
       data={roomData}
       setProposeModalVisible={setProposeModalVisible}
       setModalVisible={setModalVisible}
@@ -42,13 +43,11 @@ function ChattingRoomTopTab({setProposeModalVisible, setModalVisible, data}) {
   );
 }
 
-const Host = ({data, count, setProposeModalVisible, setModalVisible}) => {
+const Host = ({data, count, meetingInfo, setModalVisible}) => {
   const {showToast} = useToast();
   const navigation = useNavigation();
 
-  useEffect(() => {
-    console.log(data.status);
-  }, [data]);
+  console.log(data);
 
   return (
     <View style={styles.container}>
@@ -69,8 +68,11 @@ const Host = ({data, count, setProposeModalVisible, setModalVisible}) => {
             )}
           </View>
         </View>
-        {/* 미팅 상세페이지로 라우팅 설정해놓기 */}
-        <TouchableOpacity onPress={() => navigation.navigate()}>
+
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('MeetingDetail', {data: meetingInfo})
+          }>
           <Text style={{marginTop: 20}}>미팅 정보 보러가기 ></Text>
         </TouchableOpacity>
       </View>
@@ -128,7 +130,7 @@ const Host = ({data, count, setProposeModalVisible, setModalVisible}) => {
   );
 };
 
-const Joiner = ({data, user, setModalVisible}) => {
+const Joiner = ({data, user, setModalVisible, meetingInfo}) => {
   const {showToast} = useToast();
   const navigation = useNavigation();
 
@@ -150,7 +152,10 @@ const Joiner = ({data, user, setModalVisible}) => {
           </View>
         </View>
         {/* 미팅 상세페이지로 라우팅 설정해놓기 */}
-        <TouchableOpacity onPress={() => navigation.navigate()}>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('MeetingDetail', {data: meetingInfo})
+          }>
           <Text style={{marginTop: 20}}>미팅 정보 보러가기 ></Text>
         </TouchableOpacity>
       </View>

@@ -25,7 +25,7 @@ export const changeJoinerState = async (meetingId, userId, setModalVisible) => {
 // meeintgId를 받아 Meeting의 status를 fixed로 바꿔주는 함수
 // spendingModal에서 토큰 차감이 완료된 후에 실행되어야한다.
 export const changeMeetingState = async meetingId => {
-  return meetingCollection.doc(meetingId).update({
+  return await meetingCollection.doc(meetingId).update({
     status: 'fixed',
   });
 };

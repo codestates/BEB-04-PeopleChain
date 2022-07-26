@@ -198,7 +198,7 @@ function ChattingRoom({route}) {
           txType="미팅 확정"
           amount={1}
           pFunction={() => {
-            changeMeetingState(route.params.id);
+            changeMeetingState(route.params.data.id);
             setSpendingModalVisible(false);
             showToast('basic', '미팅이 확정되었습니다.');
           }}
