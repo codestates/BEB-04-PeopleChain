@@ -35,7 +35,6 @@ import useNftActions from './utils/hooks/UseNftActions';
 import {getNFTs, getProfile, getMemin} from './lib/NFT';
 import {getMeeting} from './lib/Meeting';
 import useMeetingActions from './utils/hooks/UseMeetingActions';
-import {handleDate, handleDateInFormat} from './utils/common/Functions';
 
 const Stack = createNativeStackNavigator();
 const store = createStore(rootReducer);
@@ -66,8 +65,6 @@ function App() {
       const meetingRes = await Promise.all(
         meetingIdArray.map(async el => {
           const meetingInfo = await getMeeting(el);
-          console.log(meetingInfo.data());
-          console.log(meetingInfo.data().meetDate.toDate().toISOString());
           return {
             id: meetingInfo.id,
             ...meetingInfo.data(),

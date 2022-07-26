@@ -77,7 +77,7 @@ function SpendingModal({
                 size="small"
                 onPress={() => {
                   pFunction();
-                  transactionMade;
+                  transactionMade();
                 }}
               />
             </View>
