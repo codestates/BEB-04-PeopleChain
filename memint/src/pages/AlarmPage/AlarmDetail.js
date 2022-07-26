@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import React, {useState} from 'react';
 import {
   Text,
   View,
@@ -16,23 +16,21 @@ import {
   updateMembersIn,
   updateWaitingOut,
 } from '../../lib/Meeting';
-// import {updateUserMeetingIn} from '../../lib/Users';
 import {useToast} from '../../utils/hooks/useToast';
 import useUser from '../../utils/hooks/UseAuth';
 import {updateUserMeetingIn} from '../../lib/Users';
 import {handleBirth, handleDateInFormat} from '../../utils/common/Functions';
+import DoubleModal from '../../components/common/DoubleModal';
 
 function AlarmDetail({route}) {
   const userInfo = useUser();
   const loginUser = userInfo.id;
-  // const loginUser = '8MspyF7xz7VHDThguMAv'; //test host 계정
-  // const loginUser = 'dbmtzzMFmqzshYNSOVo5' //joiner 계정
   const {id, message, meetingId, meetingInfo, sender, complete, senderInfo} =
     route.params;
   const navigation = useNavigation();
   const {showToast} = useToast();
+  const [modalVisible, setModalVisible] = useState(false);
 
-  //수락하시겠습니까? 추가
   const handleAccept = () => {
     const data = {
       sender: loginUser, //로그인된 유저,
@@ -125,12 +123,24 @@ function AlarmDetail({route}) {
                 height={50}
                 textSize={17}
                 margin={[5, 20, 5, 20]}
-                onPress={handleAccept}
+                onPress={setModalVisible(true)}
               />
             </View>
           </>
         )}
       </View>
+      <DoubleModal
+        text="수락하시겠습니까?"
+        nButtonText="아니요"
+        pButtonText="네"
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        pFunction={() => {}}
+        nFunction={() => {
+          handleAccept();
+          setModalVisible(!modalVisible);
+        }}
+      />
     </SafeAreaView>
   );
 }

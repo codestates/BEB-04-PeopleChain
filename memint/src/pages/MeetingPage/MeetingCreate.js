@@ -292,6 +292,13 @@ function MeetingCreate({route}) {
 
           <TouchableOpacity
             onPress={() => {
+              if (meetingInfo.friends.length + 1 >= meetingInfo.peopleNum) {
+                showToast(
+                  'error',
+                  '설정한 인원의 과반수 이상 초대할 수 없습니다',
+                );
+                return;
+              }
               setInviteModalVisible(true);
             }}>
             <Text style={[styles.text, styles.leftMargin]}>친구 초대하기</Text>
