@@ -19,6 +19,7 @@ import VerifyMobileScreen from './pages/AuthPage/VerifyMobileScreen';
 import SignUpUserInfoScreen from './pages/AuthPage/SignUpUserInfoScreen';
 import SignUpUserDetailScreen from './pages/AuthPage/SignUpUserDetailScreen';
 import SplashScreen from 'react-native-splash-screen';
+import SignUpServeNFTScreen from './pages/AuthPage/SignUpServeNFTScreen';
 import SignUpAgreementScreen from './pages/AuthPage/SignUpAgreement';
 import SignUpAlarmScreen from './pages/AuthPage/SignUpAlarmScreen';
 import FindIdVerifyMobileScreen from './pages/AuthPage/FindIdVerifyMobileScreen';
@@ -42,7 +43,7 @@ const store = createStore(rootReducer);
 function App() {
   const userInfo = useAuth();
   const {authorize, logout, saveInfo} = useAuthActions();
-  const {saveNFT, setNftProfile, setMemin} = useNftActions();
+  const {saveNFT, setMemin} = useNftActions();
   const {saveMeeting} = useMeetingActions();
   const [initialRouteName, setInitialRouteName] = useState('SignIn');
 
@@ -50,13 +51,13 @@ function App() {
     try {
       const userDetail = await getUser(user.uid);
       const userProperty = await getUserProperty(user.uid);
-      // console.log(userProperty);
+
       const res = await getNFTs(user.uid);
       const nfts = res.docs.map(el => {
         return {...el.data()};
       });
       saveNFT(nfts);
-      setNftProfile(...getProfile(nfts));
+
       setMemin(...getMemin(nfts));
       const meetingIdArray = [
         ...userDetail.createdroomId,
@@ -85,9 +86,9 @@ function App() {
         nftIds: userDetail.nftIds,
         picture: userDetail.picture,
         tokenAmount: userDetail.tokenAmount,
-        // createdroomId: userDetail.createdroomId,
-        // joinedroomId: userDetail.joinedroomId,
-        nftProfile: userDetail.nftProfile,
+        createdroomId: userDetail.createdroomId,
+        joinedroomId: userDetail.joinedroomId,
+        nftProfile: userDetail.nftProfile.toString(),
         alcoholType: userProperty[0].alcoholType,
         drinkCapa: userProperty[0].drinkCapa,
         drinkStyle: userProperty[0].drinkStyle,
@@ -170,6 +171,11 @@ function App() {
             <Stack.Screen
               name="SignUpUserDetail"
               component={SignUpUserDetailScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="SignUpServeNFT"
+              component={SignUpServeNFTScreen}
               options={{headerShown: false}}
             />
             <Stack.Screen

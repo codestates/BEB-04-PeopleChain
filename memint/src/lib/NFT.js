@@ -4,12 +4,16 @@ import storage from '@react-native-firebase/storage';
 export const NFTCollection = firestore().collection('NFT');
 
 export async function getImgUrl() {
-  const randNum1 = Math.floor(Math.random() * 4);
+  const randNum1 = Math.floor(Math.random() * 3);
   const randNum2 = Math.floor(Math.random() * 10);
-  const imgUrl = await storage()
-    .ref(`/NFTs/dinosaur_nft_0${randNum1}${randNum2}.png`)
-    .getDownloadURL();
-  return imgUrl;
+  try {
+    const imgUrl = await storage()
+      .ref(`/NFTs/dinosaur_nft_0${randNum1}${randNum2}.png`)
+      .getDownloadURL();
+    return imgUrl;
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 //NFT 스키마에 넣을 doc을 create
@@ -18,7 +22,7 @@ export function createNFT({userId, nftImg}) {
     userId,
     nftImg,
     isProfile: true,
-    isMemint: true,
+    isMemin: true,
   });
 }
 

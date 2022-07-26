@@ -14,6 +14,7 @@ function MyNFT({User}) {
   const [showNFT, setShowNFT] = useState(false);
   const nft = useNft();
   const myMemin = useMemin();
+  // console.log(myMemin);
   const [meminImgUrl, setMeminImgUrl] = useState(null);
 
   const dummyNft = [

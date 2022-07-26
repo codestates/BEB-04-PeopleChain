@@ -30,7 +30,7 @@ const SignUpUserDetailScreen = ({navigation: {navigate}, route}) => {
       drinkStyle: drinkInfo.drinkStyle,
       alcoholType: drinkInfo.alcoholType,
     });
-    navigate('SignUpAgreement', route.params);
+    navigate('SignUpServeNFT', route.params);
   };
 
   const tagData = {

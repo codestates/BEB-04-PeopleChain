@@ -5,8 +5,6 @@ import MyNFT from './MyNFT';
 import {useNftProfile} from '../../utils/hooks/UseNft';
 
 function MyProfile({User, navigation}) {
-  const nftProfile = useNftProfile();
-
   return (
     <>
       <View style={{alignItems: 'flex-end'}}>
@@ -22,15 +20,13 @@ function MyProfile({User, navigation}) {
           <Image
             style={styles.nftImage}
             source={{
-              uri: nftProfile
-                ? nftProfile.nftImg
-                : 'https://cdn-icons-png.flaticon.com/512/1053/1053244.png?w=360',
+              uri: User.nftProfile,
             }}
           />
           <Image
             style={styles.profileImage}
             source={{
-              uri: User.profileImage,
+              uri: User.picture,
             }}
           />
           <Image

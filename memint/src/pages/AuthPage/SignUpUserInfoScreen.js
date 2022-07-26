@@ -63,18 +63,14 @@ const SignUpUserInfoScreen = ({navigation, route}) => {
         photoURL = response ? await reference.getDownloadURL() : null;
       }
 
-      const nftProfileImg = await getImgUrl();
-      console.log(nftProfileImg);
-
       createUser({
         userId: uid,
         nickName: form.nickName,
         gender: form.gender,
         birth: `${form.birthYear}년 ${form.birthMonth}월 ${form.birthDay}일`,
         picture: photoURL,
-        nftProfile: nftProfileImg,
       });
-      navigation.push('SignUpUserDetail', {uid: uid});
+      navigation.push('SignUpUserDetail', {uid: uid, nickName: form.nickName});
     } catch (e) {
       console.log(e);
     } finally {

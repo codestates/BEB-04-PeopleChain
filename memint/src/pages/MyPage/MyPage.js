@@ -20,8 +20,7 @@ function MyPage({navigation}) {
   //     .getDownloadURL();
   // };
   // getimgUrl();
-  const url = getImgUrl();
-  console.log(url);
+  console.log(user);
 
   // const onSubmitSignIn = async () => {
   //   const res = await getOffchainTokenLog(user.id);
@@ -37,8 +36,7 @@ function MyPage({navigation}) {
     drinkCapa: user.drinkCapa,
     alcoholType: user.alcoholType,
     drinkStyle: user.drinkStyle,
-    nftImage:
-      'https://lh3.googleusercontent.com/o7U7XfamFNTSn3HrcUWRgtAwracl2ygU_12XarpHIYnfGnOla4zgrRqz0OvLL0-KyYqOJSyp-1YmcdndjjuyThYB_IdLFk5LBoilNus=w600',
+    nftImage: user.nftProfile,
     profileImage: user.picture,
   };
   console.log(user)
@@ -153,7 +151,7 @@ function MyPage({navigation}) {
           onPress={onSubmitSignIn}
         /> */}
         {/* 유저 프로필 */}
-        <MyProfile User={user ? testUser : dummyUser} navigation={navigation} />
+        <MyProfile User={user ? user : dummyUser} navigation={navigation} />
         {/* 탭 선택 버튼 */}
         <View style={styles.meetingButton}>
           {room.map((ele, index, key) => {

@@ -20,7 +20,7 @@ import memintLogo from '../../assets/icons/memint.png';
 import useAuth from '../../utils/hooks/UseAuth';
 import useAuthActions from '../../utils/hooks/UseAuthActions';
 import {signIn} from '../../lib/Auth';
-import {getUser} from '../../lib/Users';
+import {getUser, getUserProperty} from '../../lib/Users';
 import useUser from '../../utils/hooks/UseUser';
 import useNftActions from '../../utils/hooks/UseNftActions';
 import {getNFTs, getProfile, getMemin} from '../../lib/NFT';
@@ -54,6 +54,7 @@ const SignInScreen = ({navigation, route}) => {
     try {
       const {user} = await signIn(info);
       const userDetail = await getUser(user.uid);
+      const userProperty = await getUserProperty(user.uid);
 
       console.log('userDetail is');
       console.log(userDetail);
@@ -74,6 +75,10 @@ const SignInScreen = ({navigation, route}) => {
         nftIds: userDetail.nftIds,
         picture: userDetail.picture,
         tokenAmount: userDetail.tokenAmount,
+        nftProfile: userDetail.nftProfile.toString(),
+        alcoholType: userProperty[0].alcoholType,
+        drinkCapa: userProperty[0].drinkCapa,
+        drinkStyle: userProperty[0].drinkStyle,
       }),
         navigation.navigate('Main');
     } catch (e) {

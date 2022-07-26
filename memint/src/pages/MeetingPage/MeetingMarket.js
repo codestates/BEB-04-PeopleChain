@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  Button,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import MeetingElement from '../../components/meetingComponents/MeetingElement';
@@ -17,6 +18,9 @@ import {handleDateInFormat} from '../../utils/common/Functions';
 import RNPickerSelect from 'react-native-picker-select';
 import FilterModal from '../../components/meetingComponents/FilterModal';
 import {getUser} from '../../lib/Users';
+import {signOut} from '../../lib/Auth';
+import useAuthActions from '../../utils/hooks/UseAuthActions';
+import useUser from '../../utils/hooks/UseUser';
 
 function MeetingMarket({navigation}) {
   const [meetings, setMeetings] = useState([]);
@@ -30,6 +34,9 @@ function MeetingMarket({navigation}) {
     peopleNum: undefined,
     meetDate: new Date(),
   });
+
+  const user = useUser();
+  console.log(user);
 
   const isFocused = useIsFocused();
 
@@ -132,9 +139,20 @@ function MeetingMarket({navigation}) {
     {label: '3:3', value: 3},
     {label: '4:4', value: 4},
   ];
-
+  const {logout} = useAuthActions();
+  const handleSignOut = useCallback(async () => {
+    try {
+      logout();
+      await signOut();
+    } catch (e) {
+      console.log(e);
+    } finally {
+      navigation.navigate('SignIn');
+    }
+  }, [navigation, logout]);
   return (
     <SafeAreaView style={styles.container}>
+      <Button title="로그아웃 하기" color="red" onPress={handleSignOut} />
       <TouchableOpacity style={styles.areaEnd}>
         <RNPickerSelect
           placeholder={{}}

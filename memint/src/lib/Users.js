@@ -1,5 +1,4 @@
 import firestore from '@react-native-firebase/firestore';
-import UseUser from '../utils/hooks/UseUser';
 
 export const usersCollection = firestore().collection('User');
 
@@ -20,7 +19,8 @@ export function createUser({
     birth,
     createdAt: firestore.FieldValue.serverTimestamp(),
     picture,
-    nftProfileImg,
+    nftProfile: null,
+    nftIds: [],
   });
 }
 
@@ -41,6 +41,13 @@ export function createProperty({userId, drinkCapa, drinkStyle, alcoholType}) {
     drinkCapa,
     drinkStyle,
     alcoholType,
+  });
+}
+
+export function createUserNFT({userId, nftProfile, nftId}) {
+  return usersCollection.doc(userId).update({
+    nftProfile: nftProfile,
+    nftIds: firestore.FieldValue.arrayUnion(nftId),
   });
 }
 // export function updateTokenAmount({userId, balance}) {
