@@ -18,6 +18,7 @@ import firestore from '@react-native-firebase/firestore';
 import {useToast} from '../../utils/hooks/useToast';
 import {changeMeetingState} from '../../lib/Chatting';
 import useUser from '../../utils/hooks/UseUser';
+import LinearGradient from 'react-native-linear-gradient';
 
 const windowWidth = Dimensions.get('window').width;
 

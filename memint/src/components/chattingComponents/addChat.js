@@ -31,7 +31,7 @@ function AddChat({chatId}) {
         <Icon
           name="send"
           size={30}
-          color="green"
+          color="black"
           onPress={() => {
             const obj = {
               createdAt: firestore.FieldValue.serverTimestamp(),

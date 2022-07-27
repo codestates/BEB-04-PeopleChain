@@ -23,6 +23,7 @@ import {
   handleISOtoLocale,
 } from '../../utils/common/Functions';
 import crown from '../../assets/icons/crown.png';
+import GradientButton from '../../components/common/GradientButton';
 
 function MeetingDetail({route}) {
   const userInfo = useUser();
@@ -71,6 +72,15 @@ function MeetingDetail({route}) {
       );
     } else {
       return (
+        // <GradientButton
+        // width={340}
+        //   height={50}
+        //   textSize={17}
+        //   text="미팅 신청 보내기"
+        //   onPress={() => {
+        //     setModalVisible_1(true);
+        //   }}
+        // />
         <BasicButton
           width={340}
           height={50}

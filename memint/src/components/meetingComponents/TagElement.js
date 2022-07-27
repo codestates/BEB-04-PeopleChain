@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import {TouchableOpacity, Text, StyleSheet} from 'react-native';
+import {TouchableOpacity, Text, StyleSheet, View} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 
 function TagElement({tag, meetingInfo, setMeetingInfo}) {
   const [colored, setColored] = useState(
@@ -22,9 +23,17 @@ function TagElement({tag, meetingInfo, setMeetingInfo}) {
   };
   return (
     <TouchableOpacity
-      style={[styles.tag, colored ? styles.coloredTag : '']}
+      // style={[styles.tag, colored ? styles.coloredTag : '']
       onPress={handleClick}>
-      <Text style={styles.text}>{tag}</Text>
+      {colored ? (
+        <LinearGradient colors={['#A7BFEB', '#FBC2EA']} style={styles.tag}>
+          <Text style={styles.text}>{tag}</Text>
+        </LinearGradient>
+      ) : (
+        <View style={styles.tag}>
+          <Text style={styles.text}>{tag}</Text>
+        </View>
+      )}
     </TouchableOpacity>
   );
 }

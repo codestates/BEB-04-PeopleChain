@@ -19,6 +19,7 @@ import FilterModal from '../../components/meetingComponents/FilterModal';
 import {getUser} from '../../lib/Users';
 // import {signOut} from '../../lib/Auth';
 // import useAuthActions from '../../utils/hooks/UseAuthActions';
+import LinearGradient from 'react-native-linear-gradient';
 
 function MeetingMarket({navigation}) {
   const [meetings, setMeetings] = useState([]);
@@ -159,6 +160,7 @@ function MeetingMarket({navigation}) {
             items={RegionDropDownData}
             value={regionSelect}
           />
+
           <Icon name="check-circle" size={19} style={styles.checkicon} />
         </Pressable>
         <View style={styles.titleArea}>

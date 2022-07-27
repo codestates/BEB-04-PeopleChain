@@ -11,6 +11,7 @@ import AddChat from './addChat';
 import UserInfoModal from '../common/UserInfoModal';
 import firestore from '@react-native-firebase/firestore';
 import useUser from '../../utils/hooks/UseUser';
+import LinearGradient from 'react-native-linear-gradient';
 
 function ChatText({data, roomInfo, userNickName, userImages}) {
   // const [chats, setChats] = useState(chattings);
@@ -46,39 +47,43 @@ function ChatText({data, roomInfo, userNickName, userImages}) {
 
   return (
     <View style={roomInfo ? {flex: 1, opacity: 0.8} : {flex: 1}}>
-      <FlatList
-        // horizontal={true}
-        // 플랫리스트에서 하단부터 렌더링을 해주는 설정
-        inverted={true}
-        contentContainerStyle={{
-          flexGrow: 1,
-          justifyContent: 'flex-end',
-          flexDirection: 'column-reverse',
-        }}
-        // initialScrollIndex={0}
-        style={styles.container}
-        data={chattings}
-        renderItem={({item}) =>
-          item.data().sender === user ? (
-            <MyChat item={item} userNickName={userNickName} user={userDesc} />
-          ) : (
-            <NotMyChat
-              userNickName={userNickName}
-              item={item}
-              setUserInfoModalVisible={setUserInfoModalVisible}
-              setUserInfo={setUserInfo}
-              userImages={userImages}
-            />
-          )
-        }
-      />
-      <UserInfoModal
-        userInfo={userInfo}
-        nButtonText="아니오"
-        pButtonText="네"
-        userInfoModalVisible={userInfoModalVisible}
-        setUserInfoModalVisible={setUserInfoModalVisible}
-      />
+      <LinearGradient
+        colors={['#A7BFEB', '#FBC2EA']}
+        style={roomInfo ? {flex: 1, opacity: 0.8} : {flex: 1}}>
+        <FlatList
+          // horizontal={true}
+          // 플랫리스트에서 하단부터 렌더링을 해주는 설정
+          inverted={true}
+          contentContainerStyle={{
+            flexGrow: 1,
+            justifyContent: 'flex-end',
+            flexDirection: 'column-reverse',
+          }}
+          // initialScrollIndex={0}
+          style={styles.container}
+          data={chattings}
+          renderItem={({item}) =>
+            item.data().sender === user ? (
+              <MyChat item={item} userNickName={userNickName} user={userDesc} />
+            ) : (
+              <NotMyChat
+                userNickName={userNickName}
+                item={item}
+                setUserInfoModalVisible={setUserInfoModalVisible}
+                setUserInfo={setUserInfo}
+                userImages={userImages}
+              />
+            )
+          }
+        />
+        <UserInfoModal
+          userInfo={userInfo}
+          nButtonText="아니오"
+          pButtonText="네"
+          userInfoModalVisible={userInfoModalVisible}
+          setUserInfoModalVisible={setUserInfoModalVisible}
+        />
+      </LinearGradient>
       <AddChat chatId={data.id} />
     </View>
   );
@@ -140,7 +145,7 @@ function MyChat({item, userNickName}) {
         <Text style={styles.senderName}>
           {userNickName[item.data().sender]}
         </Text>
-        <View style={[styles.messageBody, {backgroundColor: 'lightyellow'}]}>
+        <View style={[styles.messageBody, {backgroundColor: 'white'}]}>
           <Text style={{padding: 3}}>{item.data().text}</Text>
         </View>
       </View>
@@ -161,8 +166,7 @@ function MyChat({item, userNickName}) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-  },
+  container: {},
   messageWrapper: {
     flexDirection: 'row',
     width: '60%',

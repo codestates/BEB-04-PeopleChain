@@ -24,6 +24,7 @@ import {getUser, getUserProperty} from '../../lib/Users';
 import useUser from '../../utils/hooks/UseUser';
 import useNftActions from '../../utils/hooks/UseNftActions';
 import {getNFTs, getProfile, getMemin} from '../../lib/NFT';
+import GradientButton from '../../components/common/GradientButton';
 
 const SignInScreen = ({navigation, route}) => {
   const userInfo = useUser();
@@ -158,6 +159,7 @@ const SignInScreen = ({navigation, route}) => {
 const styles = StyleSheet.create({
   KeyboardAvoidingView: {
     flex: 1,
+    backgroundColor: 'white',
   },
   fullscreen: {
     flex: 1,

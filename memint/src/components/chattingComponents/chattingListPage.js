@@ -11,6 +11,7 @@ import {
 import firestore from '@react-native-firebase/firestore';
 import useUser from '../../utils/hooks/UseUser';
 import {useMeeting} from '../../utils/hooks/UseMeeting';
+import WalletButton from '../common/WalletButton';
 
 function ChattingListPage({navigation}) {
   const [chatLog, setChatLog] = useState('');
@@ -82,6 +83,7 @@ function ChattingListPage({navigation}) {
           <MetaData item={item} navigation={navigation} />
         )}
       />
+      <WalletButton />
     </SafeAreaView>
   );
 }

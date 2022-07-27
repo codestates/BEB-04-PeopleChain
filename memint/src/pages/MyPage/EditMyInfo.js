@@ -64,7 +64,7 @@ const EditMyInfo = ({route}) => {
             <Text style={styles.title}>나의 정보 수정</Text>
           </View>
           <TouchableOpacity onPress={handleSubmit}>
-            <Text>저장</Text>
+            <Text style={styles.submit}>저장</Text>
           </TouchableOpacity>
         </View>
 
@@ -136,6 +136,11 @@ const EditMyInfo = ({route}) => {
 const styles = StyleSheet.create({
   KeyboardAvoidingView: {
     flex: 1,
+    backgroundColor: 'white',
+  },
+  submit: {
+    fontSize: 15,
+    fontWeight: '700',
   },
   fullscreen: {
     flex: 1,
