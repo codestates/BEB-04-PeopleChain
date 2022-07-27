@@ -14,8 +14,9 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import BasicButton from '../../components/common/BasicButton';
 import BorderedInput from '../../components/AuthComponents/BorderedInput';
 import BackButton from '../../components/common/BackButton';
-import memintLogo from '../../assets/icons/memint.png';
+import logo from '../../assets/icons/logo.png';
 import {signUp} from '../../lib/Auth';
+import GradientButton from '../../components/common/GradientButton';
 
 const SignUpScreen = ({navigation}) => {
   const [form, setForm] = useState({
@@ -64,7 +65,7 @@ const SignUpScreen = ({navigation}) => {
       <SafeAreaView style={styles.fullscreen}>
         <BackButton />
         <View style={styles.fullscreenSub}>
-          <Image source={memintLogo} style={styles.logo} />
+          <Image source={logo} style={styles.logo} />
           <Text style={styles.contentText}>
             아이디와 비밀번호를 입력해주세요
           </Text>
@@ -112,7 +113,16 @@ const SignUpScreen = ({navigation}) => {
               ref={confirmPasswordRef}
             />
           </View>
-          <BasicButton
+          <GradientButton
+            style={styles.button}
+            width={300}
+            height={40}
+            textSize={17}
+            margin={[30, 5, 5, 5]}
+            text="다음 단계"
+            onPress={onSubmitSignUp}
+          />
+          {/* <BasicButton
             style={styles.button}
             width={300}
             height={40}
@@ -121,7 +131,7 @@ const SignUpScreen = ({navigation}) => {
             text="다음 단계"
             hasMarginBottom
             onPress={onSubmitSignUp}
-          />
+          /> */}
         </View>
       </SafeAreaView>
     </KeyboardAvoidingView>
@@ -131,6 +141,7 @@ const SignUpScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   KeyboardAvoidingView: {
     flex: 1,
+    backgroundColor: 'white',
   },
   fullscreen: {
     flex: 1,
@@ -141,8 +152,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
-    width: 160,
-    height: 160,
+    width: 290,
+    height: 200,
     marginTop: 70,
   },
   infoText: {

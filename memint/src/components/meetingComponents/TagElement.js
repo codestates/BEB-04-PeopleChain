@@ -27,7 +27,7 @@ function TagElement({tag, meetingInfo, setMeetingInfo}) {
       onPress={handleClick}>
       {colored ? (
         <LinearGradient colors={['#A7BFEB', '#FBC2EA']} style={styles.tag}>
-          <Text style={styles.text}>{tag}</Text>
+          <Text style={styles.coloredtext}>{tag}</Text>
         </LinearGradient>
       ) : (
         <View style={styles.tag}>
@@ -40,7 +40,7 @@ function TagElement({tag, meetingInfo, setMeetingInfo}) {
 
 const styles = StyleSheet.create({
   tag: {
-    backgroundColor: 'black',
+    backgroundColor: 'lightgray',
     paddingHorizontal: 10,
     paddingVertical: 8,
     marginHorizontal: 8,
@@ -49,8 +49,11 @@ const styles = StyleSheet.create({
   coloredTag: {
     backgroundColor: 'blue',
   },
-  text: {
+  coloredtext: {
     color: 'white',
+    fontWeight: '500',
+  },
+  text: {
     fontWeight: '500',
   },
 });

@@ -9,6 +9,7 @@ import useNftActions from '../../utils/hooks/UseNftActions';
 import {useNftProfile} from '../../utils/hooks/UseNft';
 import {ActivityIndicator} from 'react-native-paper';
 import {createUserNFT} from '../../lib/Users';
+import GradientButton from '../../components/common/GradientButton';
 
 const SignUpServeNFTScreen = ({navigation: {navigate}, route}) => {
   const [loading, setLoading] = useState();
@@ -62,7 +63,7 @@ const SignUpServeNFTScreen = ({navigation: {navigate}, route}) => {
           <ActivityIndicator sixe="large" color="black" />
         )}
 
-        <BasicButton
+        {/* <BasicButton
           style={styles.button}
           width={300}
           height={40}
@@ -70,6 +71,15 @@ const SignUpServeNFTScreen = ({navigation: {navigate}, route}) => {
           margin={[5, 5, 5, 5]}
           text="다음 단계"
           hasMarginBottom
+          onPress={onSubmit}
+        /> */}
+        <GradientButton
+          style={styles.button}
+          width={300}
+          height={40}
+          textSize={17}
+          margin={[50, 5, 5, 5]}
+          text="다음 단계"
           onPress={onSubmit}
         />
       </View>
@@ -87,6 +97,7 @@ const styles = StyleSheet.create({
   },
   fullscreen: {
     flex: 1,
+    backgroundColor: 'white',
   },
   fullscreenSub: {
     flex: 1,
@@ -128,7 +139,7 @@ const styles = StyleSheet.create({
   textMain: {
     marginBottom: 20,
     paddingHorizontal: 6,
-    fontSize: 30,
+    fontSize: 18,
     fontWeight: 'bold',
   },
   textSub: {

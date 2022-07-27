@@ -20,6 +20,7 @@ import {signUp} from '../../lib/Auth';
 import {createUser, getUser} from '../../lib/Users';
 import storage from '@react-native-firebase/storage';
 import {getImgUrl} from '../../lib/NFT';
+import GradientButton from '../../components/common/GradientButton';
 
 // const reference = storage().ref('/directory/filename.png');
 // await reference.putFile(uri);
@@ -254,7 +255,7 @@ const SignUpUserInfoScreen = ({navigation, route}) => {
             {'\n'} ❗️닉네임, 생년월일, 성별 등 개인을 식별할 수 있는 정보는
             추후 수정이 불가능합니다. {'\n'}
           </Text>
-          <BasicButton
+          {/* <BasicButton
             style={styles.button}
             width={300}
             height={40}
@@ -262,6 +263,15 @@ const SignUpUserInfoScreen = ({navigation, route}) => {
             margin={[5, 5, 5, 5]}
             text="다음 단계"
             hasMarginBottom
+            onPress={onSubmit}
+          /> */}
+          <GradientButton
+            style={styles.button}
+            width={300}
+            height={40}
+            textSize={17}
+            margin={[5, 5, 5, 5]}
+            text="다음 단계"
             onPress={onSubmit}
           />
         </View>
@@ -273,6 +283,7 @@ const SignUpUserInfoScreen = ({navigation, route}) => {
 const styles = StyleSheet.create({
   KeyboardAvoidingView: {
     flex: 1,
+    backgroundColor: 'white',
   },
   fullscreen: {
     flex: 1,

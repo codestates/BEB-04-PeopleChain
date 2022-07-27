@@ -6,6 +6,7 @@ import BasicButton from '../../components/common/BasicButton';
 import CheckElement from '../../components/AuthComponents/CheckElement';
 import CheckBox from '@react-native-community/checkbox';
 import {signUp} from '../../lib/Auth';
+import GradientButton from '../../components/common/GradientButton';
 
 const SignUpAgreementScreen = ({navigation: {navigate}, route}) => {
   const [checkInfo, setCheckInfo] = useState({
@@ -137,7 +138,17 @@ const SignUpAgreementScreen = ({navigation: {navigate}, route}) => {
           <CheckBox value={allCheck} onChange={allBtnEvent} />
           <Text style={styles.text}>모두 동의합니다</Text>
         </View>
-        <BasicButton
+        {/* <BasicButton
+          style={styles.button}
+          width={300}
+          height={40}
+          textSize={17}
+          margin={[5, 5, 5, 5]}
+          text="회원가입 완료"
+          hasMarginBottom
+          onPress={onSubmitSignUp}
+        /> */}
+        <GradientButton
           style={styles.button}
           width={300}
           height={40}
@@ -158,6 +169,7 @@ const styles = StyleSheet.create({
   },
   fullscreen: {
     flex: 1,
+    backgroundColor: 'white',
   },
   fullscreenSub: {
     flex: 1,

@@ -4,6 +4,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import BackButton from '../../components/common/BackButton';
 import BasicButton from '../../components/common/BasicButton';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import GradientButton from '../../components/common/GradientButton';
 
 const SignUpAlarmScreen = ({navigation}) => {
   const goToNextPage = () => {
@@ -27,12 +28,22 @@ const SignUpAlarmScreen = ({navigation}) => {
             있습니다
           </Text>
         </View>
-        <BasicButton
+        {/* <BasicButton
           style={styles.button}
           width={300}
           height={40}
           textSize={17}
           margin={[5, 5, 5, 5]}
+          text="필수알림 동의하기"
+          hasMarginBottom
+          onPress={goToNextPage}
+        /> */}
+        <GradientButton
+          style={styles.button}
+          width={300}
+          height={40}
+          textSize={17}
+          margin={[30, 5, 5, 5]}
           text="필수알림 동의하기"
           hasMarginBottom
           onPress={goToNextPage}
@@ -48,6 +59,7 @@ const styles = StyleSheet.create({
   },
   fullscreen: {
     flex: 1,
+    backgroundColor: 'white',
   },
   fullscreenSub: {
     flex: 1,

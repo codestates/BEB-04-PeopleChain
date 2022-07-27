@@ -17,6 +17,7 @@ import OauthButton from '../../components/AuthComponents/OauthButton';
 import SignForm from '../../components/AuthComponents/SignForm';
 import SignButtons from '../../components/AuthComponents/SignButtons';
 import memintLogo from '../../assets/icons/memint.png';
+import logo from '../../assets/icons/logo.png';
 import useAuth from '../../utils/hooks/UseAuth';
 import useAuthActions from '../../utils/hooks/UseAuthActions';
 import {signIn} from '../../lib/Auth';
@@ -110,7 +111,7 @@ const SignInScreen = ({navigation, route}) => {
       style={styles.KeyboardAvoidingView}
       behavior={Platform.select({ios: 'padding'})}>
       <SafeAreaView style={styles.fullscreen}>
-        <Image source={memintLogo} style={styles.logo} />
+        <Image source={logo} style={styles.logo} />
         <View style={styles.form}>
           <SignForm
             onSubmit={onSubmitSignIn}
@@ -167,8 +168,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   logo: {
-    width: 160,
-    height: 160,
+    width: 290,
+    height: 200,
     marginTop: 70,
   },
   text: {

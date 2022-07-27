@@ -13,6 +13,7 @@ import BasicButton from '../../components/common/BasicButton';
 import SelectDropdown from 'react-native-select-dropdown';
 import TagElement from '../../components/AuthComponents/TagElement';
 import {createProperty} from '../../lib/Users';
+import GradientButton from '../../components/common/GradientButton';
 
 const SignUpUserDetailScreen = ({navigation: {navigate}, route}) => {
   const {uid} = route.params || {};
@@ -108,7 +109,7 @@ const SignUpUserDetailScreen = ({navigation: {navigate}, route}) => {
               />
             ))}
           </View>
-          <BasicButton
+          {/* <BasicButton
             style={styles.button}
             width={300}
             height={40}
@@ -116,6 +117,15 @@ const SignUpUserDetailScreen = ({navigation: {navigate}, route}) => {
             margin={[5, 5, 5, 5]}
             text="다음 단계"
             hasMarginBottom
+            onPress={goToNextPage}
+          /> */}
+          <GradientButton
+            style={styles.button}
+            width={300}
+            height={40}
+            textSize={17}
+            margin={[30, 5, 5, 5]}
+            text="다음 단계"
             onPress={goToNextPage}
           />
         </View>
@@ -127,6 +137,7 @@ const SignUpUserDetailScreen = ({navigation: {navigate}, route}) => {
 const styles = StyleSheet.create({
   KeyboardAvoidingView: {
     flex: 1,
+    backgroundColor: 'white',
   },
   fullscreen: {
     flex: 1,

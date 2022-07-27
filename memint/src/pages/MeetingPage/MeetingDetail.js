@@ -58,7 +58,7 @@ function MeetingDetail({route}) {
           }}
         />
       );
-    } else if (data.waiting?.indexOf(loginUser) !== -1) {
+    } else if (data.waiting && data.waiting.indexOf(loginUser) !== -1) {
       return (
         <BasicButton
           width={340}
