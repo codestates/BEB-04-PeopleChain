@@ -36,12 +36,12 @@ function AlarmElement({
               ? `${senderInfo?.nickName}님의 신청이 도착했습니다!`
               : `${senderInfo?.nickName}님이 신청을 수락했습니다!`}
           </Text>
-          <Text>{createdAt}</Text>
+          <Text style={styles.createdAt}>{createdAt}</Text>
         </View>
         <View style={styles.meetingArea}>
           {meetingInfo ? (
             <>
-              <Text>{meetingInfo.title}</Text>
+              <Text style={styles.meetingTitle}>{meetingInfo.title}</Text>
               <View style={styles.meetingInfo}>
                 <Text style={styles.meetingElement}>{meetingInfo.region}</Text>
                 <View style={styles.bar} />
@@ -69,13 +69,28 @@ function AlarmElement({
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: 'white',
-    marginVertical: 5,
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
+    marginBottom: 5,
     paddingHorizontal: 20,
-    paddingVertical: 15,
-    height: 100,
+    paddingVertical: 23,
+    height: 130,
+    borderColor: 'black',
+    borderRadius: 30,
+    borderWidth: 1,
+    marginHorizontal: 10,
+    marginVertical: 8,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+
+    elevation: 4,
   },
   icon: {
     marginRight: 10,
@@ -88,9 +103,15 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'flex-start',
     height: 35,
+    marginTop: 5,
   },
   message: {
-    fontSize: 16,
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  createdAt: {
+    fontSize: 10,
+    color: '#767676',
   },
   meetingArea: {
     height: 40,
@@ -104,6 +125,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'gray',
     marginVertical: 1,
     marginHorizontal: 5,
+  },
+  meetingElement: {
+    fontSize: 12,
+    fontWeight: '500',
+  },
+  meetingTitle: {
+    fontWeight: '500',
   },
 });
 

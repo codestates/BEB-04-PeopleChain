@@ -44,6 +44,7 @@ function Main() {
             tabBarIcon: ({color}) => (
               <Icon name="home" color={color} size={24} />
             ),
+            tabBarColor: 'black',
           }}
         />
         <Tab.Screen
@@ -54,6 +55,7 @@ function Main() {
             tabBarIcon: ({color}) => (
               <Icon name="notifications" color={color} size={24} />
             ),
+            tabBarColor: 'black',
           }}
         />
         <Tab.Screen
@@ -64,6 +66,7 @@ function Main() {
             tabBarIcon: ({color}) => (
               <Icon name="message" color={color} size={24} />
             ),
+            tabBarColor: 'black',
           }}
         />
         <Tab.Screen
@@ -74,6 +77,7 @@ function Main() {
             tabBarIcon: ({color}) => (
               <Icon name="person" color={color} size={24} />
             ),
+            tabBarColor: 'black',
           }}
         />
       </Tab.Navigator>
@@ -133,7 +137,11 @@ const MeetingScreen = () => {
 const ChattingScreen = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="채팅 목록" component={ChattingListPage} />
+      <Stack.Screen
+        name="채팅 목록"
+        component={ChattingListPage}
+        options={{headerShown: false}}
+      />
 
       <Stack.Screen
         name="FeedbackChoicePage"

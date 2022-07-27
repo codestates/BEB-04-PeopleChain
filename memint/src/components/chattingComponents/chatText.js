@@ -162,7 +162,6 @@ function MyChat({item, userNickName}) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'lightblue',
   },
   messageWrapper: {
     flexDirection: 'row',

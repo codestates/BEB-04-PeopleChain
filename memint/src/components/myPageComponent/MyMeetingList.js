@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {Text, StyleSheet, View, TouchableOpacity} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import DoubleModal from '../../components/common/DoubleModal';
 import {useMeeting} from '../../utils/hooks/UseMeeting';
 import {handleDateInFormat} from '../../utils/common/Functions';
 import {updateMeeting} from '../../lib/Meeting';
 import useMeetingActions from '../../utils/hooks/UseMeetingActions';
+import EarnModal from '../common/UserInfoModal/EarnModal';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 // function MyMeetingList({List, navigation}) {
 //   return (
@@ -51,6 +52,7 @@ function MyMeetings({item, navigation}) {
   const [editModal, setEditModal] = useState(false);
   const [startModal, setStartModal] = useState(false);
   const [endModal, setEndModal] = useState(false);
+  const [earnModalVisible, setEarnModalVisible] = useState(false);
   const meetings = useMeeting();
   const {saveMeeting} = useMeetingActions();
   const renderButton = () => {
@@ -77,7 +79,7 @@ function MyMeetings({item, navigation}) {
         </TouchableOpacity>
       );
     } else if (item.status === 'end') {
-      return <Text>종료된 미팅</Text>;
+      return <Text style={styles.editText}>종료된 미팅</Text>;
     }
   };
 
@@ -108,22 +110,16 @@ function MyMeetings({item, navigation}) {
   };
   return (
     <>
-      <View style={styles.meetingCard}>
+      <TouchableOpacity
+        style={styles.meetingCard}
+        onPress={() => {
+          navigation.navigate('ChattingRoom', {data: item});
+        }}>
         <View style={styles.titleRow}>
           <Text style={styles.title}>{item.title}</Text>
-          <TouchableOpacity
-            style={{
-              ...styles.deleteButton,
-              ...styles.backgroundColorBlue,
-            }}
-            onPress={() => {
-              navigation.navigate('ChattingRoom', {data: item});
-            }}>
-            <Text style={styles.buttonText}>채팅방 이동하기</Text>
-          </TouchableOpacity>
         </View>
 
-        <View style={styles.container}>
+        <View style={styles.tagcontainer}>
           {item?.meetingTags.map((type, index) => {
             return (
               <View style={styles.tag} key={index}>
@@ -135,22 +131,24 @@ function MyMeetings({item, navigation}) {
 
         <View style={styles.container}>
           <Text style={styles.details}>{item?.region}</Text>
-          <Icon name={'horizontal-rule'} size={20} style={styles.divider} />
+          <View style={styles.bar} />
+
           <Text style={styles.details}>
             {handleDateInFormat(item?.meetDate)}
           </Text>
-          <Icon name={'horizontal-rule'} size={20} style={styles.divider} />
-          <Text>{item?.peopleNum + ':' + item?.peopleNum}</Text>
+          <View style={styles.bar} />
+
+          <Text style={styles.details}>
+            {item?.peopleNum + ':' + item?.peopleNum}
+          </Text>
         </View>
 
         <View style={[styles.container, styles.spaceBetween]}>
           <TouchableOpacity
-            style={{
-              ...styles.deleteButton,
-              ...styles.backgroundColorBlue,
-            }}
+            style={styles.edit}
             onPress={() => setEditModal(true)}>
-            <Text style={styles.buttonText}>미팅 정보 수정</Text>
+            <Text style={styles.editText}>미팅 정보 수정</Text>
+            <Icon name="edit" size={14} />
           </TouchableOpacity>
           {renderButton()}
         </View>
@@ -184,7 +182,7 @@ function MyMeetings({item, navigation}) {
             setStartModal(false);
             //earnModal 띄우기
             //earnModal 후에는 status 변경
-            handleMeetingStart();
+            setEarnModalVisible(true);
           }}
           nFunction={() => {
             setStartModal(false);
@@ -205,7 +203,14 @@ function MyMeetings({item, navigation}) {
             setEndModal(false);
           }}
         />
-      </View>
+        <EarnModal
+          EarnModalVisible={earnModalVisible}
+          setEarnModalVisible={setEarnModalVisible}
+          pFunction={() => handleMeetingStart()}
+          amount={1}
+          txType="미팅 참여"
+        />
+      </TouchableOpacity>
     </>
   );
 }
@@ -213,62 +218,95 @@ function MyMeetings({item, navigation}) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: '2%',
+    alignItems: 'flex-end',
+    marginVertical: 6,
   },
+  tagcontainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 3,
+    height: 10,
+  },
+  // meetingCard: {
+  //   backgroundColor: 'white',
+  //   marginVertical: '2%',
+  //   paddingVertical: '3%',
+  //   paddingHorizontal: '10%',
+  // },
   meetingCard: {
     backgroundColor: 'white',
-    marginVertical: '2%',
-    paddingVertical: '3%',
-    paddingHorizontal: '10%',
+    marginBottom: 5,
+    paddingHorizontal: 27,
+    paddingVertical: 22,
+    height: 140,
+    borderColor: 'black',
+    borderRadius: 30,
+    borderWidth: 1,
+    marginHorizontal: 10,
+    marginVertical: 8,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+
+    elevation: 4,
   },
   titleRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginBottom: 5,
   },
   title: {
     fontWeight: '700',
-    paddingVertical: '3%',
+    fontSize: 14,
   },
 
   details: {
-    fontSize: 13,
-  },
-  divider: {
-    transform: [{rotate: '90deg'}],
-    marginHorizontal: -3,
+    fontSize: 10,
   },
 
   deleteButton: {
     justifyContent: 'center',
     borderRadius: 10,
     padding: 5,
-    backgroundColor: '#DA6262',
-    width: 100,
+    backgroundColor: 'black',
+    width: 80,
   },
   buttonText: {
     color: 'white',
     textAlign: 'center',
-    fontWeight: 'bold',
+    fontWeight: '500',
     fontSize: 10,
   },
   tag: {
-    paddingHorizontal: '3%',
-    paddingVertical: '2%',
-    borderRadius: 5,
-    backgroundColor: '#E6E6E6',
     alignSelf: 'flex-start',
-    marginRight: '1%',
+    marginRight: 5,
   },
   tagFont: {
     fontSize: 10,
+    color: '#787878',
   },
   spaceBetween: {
     justifyContent: 'space-between',
   },
-  backgroundColorBlue: {
-    backgroundColor: 'blue',
+  bar: {
+    width: 1,
+    height: 9,
+    marginHorizontal: 4,
+    backgroundColor: 'black',
+  },
+  editText: {
+    fontSize: 12,
+    fontWeight: '500',
+  },
+  edit: {
+    marginTop: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
 

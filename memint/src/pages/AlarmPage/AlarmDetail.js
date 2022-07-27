@@ -95,11 +95,11 @@ function AlarmDetail({route}) {
               <Text style={styles.meetingElement}>{meetingInfo.region}</Text>
               <View style={styles.bar} />
               <Text style={styles.meetingElement}>
-                {handleDateInFormat(meetingInfo.meetDate)}
+                {meetingInfo.peopleNum + ':' + meetingInfo.peopleNum}
               </Text>
               <View style={styles.bar} />
               <Text style={styles.meetingElement}>
-                {meetingInfo.peopleNum + ':' + meetingInfo.peopleNum}
+                {handleDateInFormat(meetingInfo.meetDate)}
               </Text>
             </View>
           </TouchableOpacity>
@@ -150,23 +150,40 @@ function AlarmDetail({route}) {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+    backgroundColor: 'white',
   },
   container: {
-    marginVertical: 10,
+    backgroundColor: 'white',
+    marginVertical: 50,
+    paddingVertical: 40,
     paddingHorizontal: 30,
-    flex: 1,
     justifyContent: 'center',
+    borderColor: 'black',
+    borderRadius: 30,
+    borderWidth: 1,
+    marginHorizontal: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+
+    elevation: 4,
   },
   profileArea: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     marginBottom: 40,
   },
   userImage: {
     borderRadius: 100,
     width: 80,
     height: 80,
+    borderColor: 'black',
+    borderWidth: 1,
   },
   buttonArea: {
     flexDirection: 'row',
@@ -178,10 +195,11 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: 'bold',
     marginTop: 50,
-    marginBottom: 40,
+    marginBottom: 20,
   },
   userInfo: {
-    marginLeft: 30,
+    marginLeft: 10,
+    width: 190,
   },
   userInfoElement: {
     flexDirection: 'row',
@@ -201,12 +219,15 @@ const styles = StyleSheet.create({
   },
   key: {
     color: 'gray',
-    width: 80,
+    width: 60,
+    fontSize: 12,
+    fontWeight: '500',
   },
   value: {
-    width: 80,
+    width: 130,
     justifyContent: 'flex-end',
-    fontSize: 18,
+    fontSize: 15,
+    fontWeight: '500',
   },
   message: {
     marginTop: 10,

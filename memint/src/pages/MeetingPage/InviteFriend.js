@@ -27,7 +27,7 @@ function InviteFriend() {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.view}>
       <View style={styles.headerBar}>
         <BackButton />
         <Text style={styles.title}>친구 초대하기</Text>
@@ -55,10 +55,7 @@ function InviteFriend() {
                   friendNickname: el.nickName,
                 });
               }}>
-              <Image
-                source={require('../ChattingPage/dummydata/images/26.png')}
-                style={styles.userImage}
-              />
+              <Image source={{uri: el.nftProfile}} style={styles.userImage} />
               <Text style={styles.username}>{el.nickName}</Text>
             </TouchableOpacity>
           ))}
@@ -68,6 +65,10 @@ function InviteFriend() {
   );
 }
 const styles = StyleSheet.create({
+  view: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
   headerBar: {
     flexDirection: 'row',
     paddingRight: 20,

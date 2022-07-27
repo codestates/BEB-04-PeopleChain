@@ -1,6 +1,6 @@
 import {useIsFocused} from '@react-navigation/native';
 import React, {useEffect, useState, useCallback} from 'react';
-import {Text, View, SafeAreaView, StyleSheet} from 'react-native';
+import {Text, View, SafeAreaView, StyleSheet, ScrollView} from 'react-native';
 import AlarmElement from '../../components/alarmComponents/AlarmElement';
 import DoubleModal from '../../components/common/DoubleModal';
 import {getAlarmsById} from '../../lib/Alarm';
@@ -13,6 +13,7 @@ import {
 } from '../../utils/common/Functions';
 import {useMeeting} from '../../utils/hooks/UseMeeting';
 import useUser from '../../utils/hooks/UseUser';
+import WalletButton from '../../components/common/WalletButton';
 
 function AlarmPage({navigation}) {
   const userInfo = useUser();
@@ -85,51 +86,64 @@ function AlarmPage({navigation}) {
   };
 
   return (
-    <SafeAreaView>
-      <Text style={styles.title}>알림</Text>
-      <View>
-        {alarms.map((alarm, idx) => (
-          <AlarmElement
-            key={idx}
-            message={alarm.message}
-            meetingId={alarm.meetingId}
-            createdAt={alarm.createdAt}
-            meetingInfo={alarm.meetingInfo}
-            type={alarm.type}
-            sender={alarm.sender}
-            senderInfo={alarm.senderInfo}
-            chattingConfirmModal={chattingConfirmModal}
-            setChattingConfirmModal={setChattingConfirmModal}
-            handleMoveChattingRoom={handleMoveChattingRoom}
-            onPress={
-              alarm.type === 'proposal'
-                ? () => {
-                    if (alarm.meetingInfo) {
-                      navigation.navigate('AlarmDetail', {
-                        id: alarm.id,
-                        message: alarm.message,
-                        meetingId: alarm.meetingId,
-                        meetingInfo: alarm.meetingInfo,
-                        sender: alarm.sender,
-                        senderInfo: alarm.senderInfo,
-                        complete: alarm.complete,
-                      });
-                    }
-                  }
-                : () => setChattingConfirmModal(true)
-            }
-          />
-        ))}
+    <SafeAreaView style={styles.view}>
+      <View style={styles.header}>
+        <Text style={styles.title}>알림</Text>
       </View>
+      <ScrollView>
+        <View>
+          {alarms.map((alarm, idx) => (
+            <AlarmElement
+              key={idx}
+              message={alarm.message}
+              meetingId={alarm.meetingId}
+              createdAt={alarm.createdAt}
+              meetingInfo={alarm.meetingInfo}
+              type={alarm.type}
+              sender={alarm.sender}
+              senderInfo={alarm.senderInfo}
+              chattingConfirmModal={chattingConfirmModal}
+              setChattingConfirmModal={setChattingConfirmModal}
+              handleMoveChattingRoom={handleMoveChattingRoom}
+              onPress={
+                alarm.type === 'proposal'
+                  ? () => {
+                      if (alarm.meetingInfo) {
+                        navigation.navigate('AlarmDetail', {
+                          id: alarm.id,
+                          message: alarm.message,
+                          meetingId: alarm.meetingId,
+                          meetingInfo: alarm.meetingInfo,
+                          sender: alarm.sender,
+                          senderInfo: alarm.senderInfo,
+                          complete: alarm.complete,
+                        });
+                      }
+                    }
+                  : () => setChattingConfirmModal(true)
+              }
+            />
+          ))}
+        </View>
+      </ScrollView>
+      <WalletButton />
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  view: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  header: {
+    height: 80,
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
   title: {
-    fontSize: 26,
-    fontWeight: 'bold',
-    marginVertical: 60,
+    fontSize: 31,
+    fontWeight: '500',
     marginLeft: 20,
   },
 });

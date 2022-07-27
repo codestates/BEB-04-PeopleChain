@@ -173,7 +173,7 @@ function MeetingCreate({route}) {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.view}>
       <View style={styles.headerBar}>
         <View style={styles.flexRow}>
           <BackButton />
@@ -375,6 +375,10 @@ function MeetingCreate({route}) {
 }
 
 const styles = StyleSheet.create({
+  view: {
+    backgroundColor: 'white',
+    flex: 1,
+  },
   headerBar: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -451,7 +455,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   invitedFriend: {
-    backgroundColor: 'gray',
+    backgroundColor: 'lightgray',
     padding: 8,
     marginHorizontal: 8,
   },

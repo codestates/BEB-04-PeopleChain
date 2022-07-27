@@ -54,16 +54,18 @@ const Host = ({data, count, meetingInfo, setModalVisible}) => {
       <View>
         <View style={{flexDirection: 'row'}}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={{paddingRight: 7}}>{data.title}</Text>
+            <Text style={{paddingRight: 7, fontSize: 16, fontWeight: '700'}}>
+              {data.title}
+            </Text>
             {data.status === 'open' ? null : (
               <View
                 style={
                   // status가 fixed이면
                   data.status === 'full'
                     ? {...styles.status, backgroundColor: 'gray'} // 아니면 회색 view 렌더링
-                    : styles.status // 파란색 view 렌더링
+                    : styles.status // 검정색 view 렌더링
                 }>
-                <Text style={{color: 'black'}}>확정</Text>
+                <Text style={{color: 'white', fontWeight: '500'}}>확정</Text>
               </View>
             )}
           </View>
@@ -76,7 +78,7 @@ const Host = ({data, count, meetingInfo, setModalVisible}) => {
           <Text style={{marginTop: 20}}>미팅 정보 보러가기 ></Text>
         </TouchableOpacity>
       </View>
-      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'flex-end'}}>
         {
           //status가 end이면
           data.status === 'open' ? null : data.status === 'end' ? (
@@ -87,7 +89,9 @@ const Host = ({data, count, meetingInfo, setModalVisible}) => {
                 navigation.navigate('FeedbackChoicePage');
               }}>
               <View style={styles.button}>
-                <Text>후기 작성</Text>
+                <Text style={{color: 'white', fontWeight: '500'}}>
+                  후기 작성
+                </Text>
               </View>
             </TouchableOpacity>
           ) : (
@@ -115,7 +119,7 @@ const Host = ({data, count, meetingInfo, setModalVisible}) => {
                     : // 나를 제외한 모든 사람이 fixed이고 status가 fixed이면?
                       {...styles.button, backgroundColor: 'gray'}
                 }>
-                <Text style={{color: 'black'}}>
+                <Text style={{color: 'black', fontWeight: '500'}}>
                   {
                     //'status가 full이면'
                     data.status === 'full' ? '확정하기' : '후기 작성하기'
@@ -139,7 +143,9 @@ const Joiner = ({data, user, setModalVisible, meetingInfo}) => {
       <View>
         <View style={{flexDirection: 'row'}}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={{paddingRight: 7}}>{data.title}</Text>
+            <Text style={{paddingRight: 7, fontSize: 16, fontWeight: '700'}}>
+              {data.title}
+            </Text>
             <View
               style={
                 // status가 fixed이면
@@ -147,7 +153,7 @@ const Joiner = ({data, user, setModalVisible, meetingInfo}) => {
                   ? {...styles.status, backgroundColor: 'gray'} // 아니면 회색 view 렌더링
                   : styles.status // 파란색 view 렌더링
               }>
-              <Text style={{color: 'black'}}>확정</Text>
+              <Text style={{color: 'white'}}>확정</Text>
             </View>
           </View>
         </View>
@@ -159,7 +165,7 @@ const Joiner = ({data, user, setModalVisible, meetingInfo}) => {
           <Text style={{marginTop: 20}}>미팅 정보 보러가기 ></Text>
         </TouchableOpacity>
       </View>
-      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <View style={{flex: 1, alignItems: 'flex-end', justifyContent: 'center'}}>
         {
           //status가 end이면
           data.status === 'end' ? (
@@ -204,7 +210,7 @@ const Joiner = ({data, user, setModalVisible, meetingInfo}) => {
                     ? {...styles.button, backgroundColor: 'gray'}
                     : styles.button
                 }>
-                <Text style={{color: 'black'}}>
+                <Text style={{color: 'white'}}>
                   {data.members &&
                   data.members.filter(el => {
                     return el[user] === 'fixed';
@@ -225,8 +231,12 @@ const styles = StyleSheet.create({
   container: {
     height: 90,
     borderTopWidth: 0.3,
-    padding: 15,
+    padding: 20,
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderBottomColor: 'black',
+    borderBottomWidth: 1,
     // position: 'absolute',
     // backgroundColor: '',
   },
@@ -235,14 +245,16 @@ const styles = StyleSheet.create({
     width: 40,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'skyblue',
+    backgroundColor: 'black',
+    borderRadius: 5,
   },
   button: {
     width: 90,
     height: 40,
-    backgroundColor: 'skyblue',
+    backgroundColor: 'black',
     alignItems: 'center',
     justifyContent: 'center',
+    borderRadius: 13,
   },
 });
 

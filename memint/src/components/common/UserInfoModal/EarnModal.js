@@ -7,42 +7,39 @@ import {createSpendOffTxLg} from '../../../lib/OffchianTokenLog';
 import {updateTokenAmount} from '../../../lib/Users';
 /*
 사용할 컴포넌트에서 state 사용이 필요함.
-  const [spendModalVisible, setSpendModalVisible] = useState(false);
+  const [earnModalVisible, setSpendModalVisible] = useState(false);
 
-      <SpendingModal
-        spendingModalVisible={spendingModalVisible}
-        setSpendingModalVisible={setSpendingModalVisible}
+      <EarnModal
+        EarnModalVisible={earnModalVisible}
+        setEarnModalVisible={setEarnModalVisible}
         pFunction={}
         amount={1}
         txType='프로필조회'
       />
  */
 
-function SpendingModal({
-  spendingModalVisible,
-  setSpendingModalVisible,
+function EarnModal({
+  EarnModalVisible,
+  setEarnModalVisible,
   pFunction,
   amount,
   txType,
 }) {
   const user = useUser();
-  const {decreaseBy} = useAuthActions();
+  const {increaseBy} = useAuthActions();
+  //earn 모달로 바뀌면서 이함수 수정 필요(은민)
+
   const transactionMade = () => {
     //사용자의 TokenAmount 양 바꿈 (redux 정보 바꿈)
-    decreaseBy(amount);
+    increaseBy(amount);
     //TokenLog 생성
-    createSpendOffTxLg(user.id, amount, txType, user.tokenAmount);
+    createSpendOffTxLg(user.id, amount, txType, user.tokenAmount + amount); //확인필요!!!(은민)
     //token 변화 firebase에 저장
-    // updateTokenAmount(user.id, user.tokenAmount);
-    // pFunction;
-    setSpendingModalVisible(false);
+    setEarnModalVisible(false);
   };
   return (
     <View style={styles.centeredView}>
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={spendingModalVisible}>
+      <Modal animationType="fade" transparent={true} visible={EarnModalVisible}>
         <View style={[styles.centeredView, styles.backgroudDim]}>
           <View style={styles.modalView}>
             <View
@@ -51,34 +48,29 @@ function SpendingModal({
                 width: '100%',
               }}>
               <View style={styles.calcText}>
-                <Text style={{fontWeight: 'bold'}}>현재 보유 LCN</Text>
-                <Text style={{fontWeight: 'bold'}}>{user.tokenAmount}</Text>
-              </View>
-              <View style={styles.calcText}>
-                <Text style={{fontWeight: 'bold'}}>필요 LCN</Text>
+                <Text style={{fontWeight: 'bold'}}>보상 LCN</Text>
                 <Text style={{fontWeight: 'bold'}}>{amount}개</Text>
               </View>
               <View style={styles.calcText}>
-                <Text style={{fontWeight: 'bold'}}>차감 후 LCN</Text>
-                <Text style={{fontWeight: 'bold'}}>
-                  {user.tokenAmount - amount}개
-                </Text>
+                <Text style={{fontWeight: 'bold'}}>현재 보유 LCN</Text>
+                <Text style={{fontWeight: 'bold'}}>{user.tokenAmount}</Text>
               </View>
             </View>
             <View style={styles.buttonRow}>
-              <BasicButton
+              {/* <BasicButton
                 text="아니오"
                 size="small"
                 variant="disable"
-                onPress={() => setSpendingModalVisible(false)}
-              />
+                onPress={() => setEarnModalVisible(false)}
+              /> */}
               <BasicButton
-                text="네"
-                size="small"
+                text="보상을 받으세요!"
+                width={120}
                 onPress={() => {
                   pFunction();
                   transactionMade();
                 }}
+                margin={[15, 0, 0, 0]}
               />
             </View>
           </View>
@@ -129,4 +121,4 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
 });
-export default SpendingModal;
+export default EarnModal;

@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   FlatList,
   Image,
+  SafeAreaView,
 } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import useUser from '../../utils/hooks/UseUser';
@@ -46,7 +47,7 @@ function ChattingListPage({navigation}) {
             return {
               ...meetingInfo.data(),
               id: meetingId,
-              hostImage: hostImage.data().picture,
+              hostInfo: hostImage.data(),
             };
           } else {
             return {
@@ -58,7 +59,7 @@ function ChattingListPage({navigation}) {
                 .createdAt.toDate()
                 .toLocaleString()
                 .slice(6),
-              hostImage: hostImage.data().picture,
+              hostInfo: hostImage.data(),
             };
           }
         }),
@@ -70,11 +71,18 @@ function ChattingListPage({navigation}) {
   }, [userInfo]);
 
   return (
-    <FlatList
-      ItemSeparatorComponent={() => <View style={styles.separator} />}
-      data={chatLog}
-      renderItem={({item}) => <MetaData item={item} navigation={navigation} />}
-    />
+    <SafeAreaView style={styles.view}>
+      <View style={styles.header}>
+        <Text style={styles.title}>채팅</Text>
+      </View>
+      <FlatList
+        ItemSeparatorComponent={() => <View style={styles.separator} />}
+        data={chatLog}
+        renderItem={({item}) => (
+          <MetaData item={item} navigation={navigation} />
+        )}
+      />
+    </SafeAreaView>
   );
 }
 
@@ -119,7 +127,7 @@ function MetaData({item, navigation}) {
     <TouchableOpacity
       onPress={() => navigation.navigate('ChattingRoom', {data: item})}>
       <View style={styles.container}>
-        <Image style={styles.image} source={{uri: item.hostImage}} />
+        <Image style={styles.image} source={{uri: item.hostInfo.nftProfile}} />
 
         <View style={styles.chatInfo}>
           <View>
@@ -136,6 +144,20 @@ function MetaData({item, navigation}) {
 }
 
 const styles = StyleSheet.create({
+  view: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  header: {
+    height: 80,
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
+  title: {
+    fontSize: 31,
+    fontWeight: '500',
+    marginLeft: 20,
+  },
   container: {
     flexDirection: 'row',
     height: 70,
@@ -143,6 +165,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexWrap: 'wrap',
     // justifyContent: 'space-between',
+    paddingHorizontal: 10,
   },
   image: {
     width: 60,

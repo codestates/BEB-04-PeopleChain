@@ -24,19 +24,25 @@ function TagElement({tag, meetingInfo, setMeetingInfo}) {
     <TouchableOpacity
       style={[styles.tag, colored ? styles.coloredTag : '']}
       onPress={handleClick}>
-      <Text>{tag}</Text>
+      <Text style={styles.text}>{tag}</Text>
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
   tag: {
-    backgroundColor: 'gray',
-    padding: 8,
+    backgroundColor: 'black',
+    paddingHorizontal: 10,
+    paddingVertical: 8,
     marginHorizontal: 8,
+    borderRadius: 10,
   },
   coloredTag: {
-    backgroundColor: 'yellow',
+    backgroundColor: 'blue',
+  },
+  text: {
+    color: 'white',
+    fontWeight: '500',
   },
 });
 

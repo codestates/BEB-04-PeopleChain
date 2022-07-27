@@ -1,10 +1,22 @@
 import React, {useEffect, useState} from 'react';
-import {Text, StyleSheet, View, Image} from 'react-native';
+import {Text, StyleSheet, View, Image, useWindowDimensions} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import MyNFT from './MyNFT';
-import {useNftProfile} from '../../utils/hooks/UseNft';
+import {useMemin, useNftProfile} from '../../utils/hooks/UseNft';
+import {useToast} from '../../utils/hooks/useToast';
+import BasicButton from '../common/BasicButton';
+import SingleModal from '../common/SingleModal';
+import SpendingModal from '../common/UserInfoModal/SpendingModal';
+import MyMeMin from './MyMeMin';
+
+// <Image
+//   source={require('../../assets/icons/nftBadge.png')}
+//   style={styles.badge}
+// />
 
 function MyProfile({User, navigation}) {
+  const window = useWindowDimensions();
+  const myMemin = useMemin();
+
   return (
     <>
       <View style={{alignItems: 'flex-end'}}>
@@ -15,68 +27,96 @@ function MyProfile({User, navigation}) {
           onPress={() => navigation.navigate('EditMyInfo')}
         />
       </View>
-      <View style={styles.container}>
-        <View style={styles.images}>
-          <Image
-            style={styles.nftImage}
-            source={{
-              uri: User.nftProfile,
+      <View>
+        <Image
+          style={{width: window.width, height: 300}}
+          source={{
+            uri: User.nftProfile,
+          }}
+        />
+        <View
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            zIndex: 1,
+            width: window.width,
+            height: 300,
+            // borderWidth: 1,
+            // borderColor: 'black'
+          }}>
+          <View
+            style={{backgroundColor: 'white', width: window.width, height: 50}}
+          />
+          <View
+            style={{
+              backgroundColor: 'white',
+              opacity: 0.5,
+              width: window.width,
+              height: 200,
             }}
           />
-          <Image
-            style={styles.profileImage}
-            source={{
-              uri: User.picture,
-            }}
-          />
-          <Image
-            source={require('../../assets/icons/nftBadge.png')}
-            style={styles.badge}
+          <View
+            style={{backgroundColor: 'white', width: window.width, height: 50}}
           />
         </View>
-        <View style={styles.userInfos}>
-          <Text style={styles.userInfo}>닉네임: {User.nickName}</Text>
-          <Text style={styles.userInfo}>생년월일: {User.birth}</Text>
-          <Text style={styles.userInfo}>성별: {User.gender}</Text>
+        <Image
+          style={styles.profileImage}
+          source={{
+            uri: User.picture,
+          }}
+        />
+        <MyMeMin myMeMin={myMemin} />
+      </View>
+
+      <View style={styles.userInfos}>
+        <Text style={styles.userNickName}>{User.nickName}</Text>
+        <Text style={styles.userBirth}>{User.birth}</Text>
+      </View>
+      <View style={styles.userTags}>
+        <View style={styles.userTag}>
+          <Text style={styles.tagText}>주량은 </Text>
+          {<Text style={styles.tagFont}>#{User.drinkCapa}</Text>}
         </View>
-      </View>
-      <MyNFT User={User} />
-      <Text style={styles.attribute}>주량</Text>
-      <View style={styles.tagContainer}>
-        <View style={styles.tag}>
-          <Text style={styles.tagFont}># {User.drinkCapa}</Text>
+        <View style={styles.userTag}>
+          <Text style={styles.tagText}>선호하는 주종은 </Text>
+          {User.alcoholType.map((el, index) => (
+            <Text style={styles.tagFont} key={index}>
+              #{el}{' '}
+            </Text>
+          ))}
         </View>
-      </View>
-      <Text style={styles.attribute}>선호 주류</Text>
-      <View style={styles.tagContainer}>
-        {User.alcoholType.map((el, index) => (
-          <View style={styles.tag} key={index}>
-            <Text style={styles.tagFont}># {el}</Text>
-          </View>
-        ))}
-      </View>
-      <Text style={styles.attribute}>스타일</Text>
-      <View style={styles.tagContainer}>
         {User.drinkStyle.map((el, index) => (
-          <View style={styles.tag} key={index}>
-            <Text style={styles.tagFont}># {el}</Text>
-          </View>
+          <Text style={styles.tagFont} key={index}>
+            #{el}
+          </Text>
         ))}
       </View>
+
+      {/* <MyNFT User={User} /> */}
     </>
   );
 }
+
 const styles = StyleSheet.create({
   edit: {
-    top: 20,
-    left: -10,
+    marginTop: 20,
+    marginRight: 10,
   },
   container: {
     flexDirection: 'row',
   },
+  layer: {
+    backgroundColor: 'white',
+    opacity: 0.5,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    zIndex: 1,
+  },
   images: {
     flex: 0.4,
-    marginHorizontal: '5%',
+    marginHorizontal: 30,
     marginVertical: '0%',
   },
   nftImage: {
@@ -88,29 +128,44 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   profileImage: {
-    width: 40,
-    height: 40,
+    width: 130,
+    height: 130,
     borderRadius: 100,
-    top: 0,
-    left: 95,
-    position: 'relative',
+    bottom: 0,
+    left: 20,
+    position: 'absolute',
+    zIndex: 2,
   },
 
   userInfos: {
-    marginVertical: '10%',
-    flex: 0.6,
+    marginVertical: 20,
+    marginHorizontal: 30,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
-  userInfo: {
-    fontSize: 17,
-    fontWeight: '500',
-    marginHorizontal: '5%',
-    marginVertical: '5%',
+  userNickName: {
+    fontSize: 24,
+    fontWeight: '700',
   },
-  attribute: {
-    fontSize: 20,
+  userBirth: {
+    fontSize: 15,
     fontWeight: '500',
-    marginHorizontal: '10%',
-    marginVertical: '2%',
+    color: '#787878',
+  },
+  userTags: {
+    marginHorizontal: 30,
+    marginVertical: 20,
+  },
+  userTag: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  tagText: {
+    fontWeight: '500',
+    fontSize: 15,
+    marginVertical: 3,
+    color: '#787878',
   },
 
   mintButton: {
@@ -119,25 +174,10 @@ const styles = StyleSheet.create({
     paddingBottom: 0,
   },
 
-  tag: {
-    paddingHorizontal: '2%',
-    paddingVertical: 6,
-    borderRadius: 5,
-    backgroundColor: 'white',
-    alignSelf: 'flex-start',
-    marginHorizontal: '1%',
-    marginVertical: '2%',
-    marginBottom: 6,
-  },
-  tagContainer: {
-    flexDirection: 'row',
-    marginHorizontal: '10%',
-    flexWrap: 'wrap',
-  },
   tagFont: {
-    textAlign: 'center',
-    fontWeight: '400',
-    fontSize: 13,
+    fontWeight: '500',
+    fontSize: 15,
+    marginVertical: 3,
   },
   badge: {
     width: 35,

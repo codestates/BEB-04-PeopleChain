@@ -48,7 +48,7 @@ function MyNFT({User}) {
   ];
   return (
     <>
-      <View style={{flexDirection: 'row'}}>
+      <View style={{flexDirection: 'row', marginTop: 20}}>
         <Text style={styles.attribute}>나의 미민이</Text>
       </View>
       <MyMeMin myMeMin={myMemin} />
@@ -78,10 +78,11 @@ function MyNFT({User}) {
   );
 }
 
-function MyMeMin({myMeMin}) {
+export function MyMeMin({myMeMin}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [spendingModalVisible, setSpendingModalVisible] = useState(false);
   const {showToast} = useToast();
+  console.log(myMeMin);
 
   return (
     <>
@@ -184,7 +185,7 @@ const styles = StyleSheet.create({
   },
   images: {
     flex: 0.4,
-    marginHorizontal: '5%',
+    marginHorizontal: 30,
     marginVertical: '0%',
   },
 
@@ -217,9 +218,9 @@ const styles = StyleSheet.create({
     borderWidth: 3,
   },
   attribute: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: '500',
-    marginHorizontal: '10%',
+    marginHorizontal: 30,
     marginVertical: '2%',
   },
 

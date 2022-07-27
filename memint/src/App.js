@@ -65,10 +65,11 @@ function App() {
       const meetingRes = await Promise.all(
         meetingIdArray.map(async el => {
           const meetingInfo = await getMeeting(el);
+          const hostInfo = await getUser(meetingInfo.hostId);
           return {
             id: meetingInfo.id,
             ...meetingInfo.data(),
-            meetDate: meetingInfo.data().meetDate,
+            hostInfo: {...hostInfo},
           };
         }),
       );

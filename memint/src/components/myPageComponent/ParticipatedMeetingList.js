@@ -2,7 +2,6 @@ import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {Text, StyleSheet, View, TouchableOpacity} from 'react-native';
 
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import DoubleModal from '../../components/common/DoubleModal';
 import {handleDateInFormat} from '../../utils/common/Functions';
 import {useMeeting} from '../../utils/hooks/UseMeeting';
@@ -51,22 +50,16 @@ function ParticipatedMeetings({item}) {
   const {showToast} = useToast();
   return (
     <>
-      <View style={styles.meetingCard}>
+      <TouchableOpacity
+        style={styles.meetingCard}
+        onPress={() => {
+          navigation.navigate('ChattingRoom', {data: item});
+        }}>
         <View style={styles.titleRow}>
           <Text style={styles.title}>{item.title}</Text>
-          <TouchableOpacity
-            style={{
-              ...styles.cancelButton,
-              ...styles.backgroundColorBlue,
-            }}
-            onPress={() => {
-              navigation.navigate('ChattingRoom', {data: item});
-            }}>
-            <Text style={styles.buttonText}>채팅방 이동하기</Text>
-          </TouchableOpacity>
         </View>
 
-        <View style={styles.container}>
+        <View style={styles.tagcontainer}>
           {item.meetingTags.map((tag, index) => {
             return (
               <View style={styles.tag} key={index}>
@@ -75,12 +68,8 @@ function ParticipatedMeetings({item}) {
             );
           })}
         </View>
-        <View
-          style={{
-            ...styles.container,
-            ...styles.spaceBetween,
-          }}>
-          {/* <View style={styles.container}>
+
+        {/* <View style={styles.container}>
             <Image
               style={styles.hostImage}
               source={{
@@ -89,14 +78,16 @@ function ParticipatedMeetings({item}) {
             />
             <Text style={styles.hostName}>{item.hostId}</Text>
           </View> */}
-          <View style={styles.container}>
-            <Text style={styles.details}>{item.region}</Text>
-            <Icon name={'horizontal-rule'} size={20} style={styles.divider} />
-            <Text style={styles.details}>
-              {handleDateInFormat(item.meetDate)}
-            </Text>
-            <Icon name={'horizontal-rule'} size={20} style={styles.divider} />
-            {/* <Text
+        <View style={styles.container}>
+          <Text style={styles.details}>{item.region}</Text>
+          <View style={styles.bar} />
+
+          <Text style={styles.details}>
+            {handleDateInFormat(item.meetDate)}
+          </Text>
+          <View style={styles.bar} />
+
+          {/* <Text
               style={[
                 styles.details,
                 item.peopleNum === item.hostSide.gathered.length
@@ -114,8 +105,9 @@ function ParticipatedMeetings({item}) {
               ]}>
               {item.joinerSide.gathered.length}({item.joinerSide.sex})
             </Text> */}
-            <Text>{item.peopleNum + ':' + item.peopleNum}</Text>
-          </View>
+          <Text Text style={styles.details}>
+            {item.peopleNum + ':' + item.peopleNum}
+          </Text>
         </View>
         <View
           style={{
@@ -159,7 +151,7 @@ function ParticipatedMeetings({item}) {
             showToast('success', '취소되었습니다');
           }}
         />
-      </View>
+      </TouchableOpacity>
     </>
   );
 }
@@ -168,71 +160,85 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: '2%',
+    marginVertical: 6,
   },
+  tagcontainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 3,
+    height: 10,
+  },
+  // meetingCard: {
+  //   backgroundColor: 'white',
+  //   marginVertical: '2%',
+  //   paddingVertical: '3%',
+  //   paddingHorizontal: '10%',
+  // },
   meetingCard: {
     backgroundColor: 'white',
-    marginVertical: '2%',
-    paddingVertical: '3%',
-    paddingHorizontal: '10%',
-  },
-  hostImage: {
-    width: 20,
-    height: 20,
-    borderRadius: 100,
-    position: 'relative',
+    marginBottom: 5,
+    paddingHorizontal: 27,
+    paddingVertical: 22,
+    height: 110,
+    borderColor: 'black',
+    borderRadius: 30,
+    borderWidth: 1,
+    marginHorizontal: 10,
+    marginVertical: 8,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+
+    elevation: 4,
   },
   titleRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginBottom: 5,
   },
   title: {
     fontWeight: '700',
-    paddingVertical: '3%',
+    fontSize: 14,
   },
-  hostName: {
-    fontWeight: '500',
-    color: 'gray',
-    marginLeft: 5,
-  },
+
   details: {
-    fontSize: 13,
+    fontSize: 10,
   },
-  divider: {
-    transform: [{rotate: '90deg'}],
-    marginHorizontal: -3,
-  },
-  cancelButton: {
+
+  button: {
     justifyContent: 'center',
     borderRadius: 10,
     padding: 5,
-    backgroundColor: '#DA6262',
-    width: 100,
+    backgroundColor: 'black',
+    width: 80,
   },
-
   buttonText: {
     color: 'white',
     textAlign: 'center',
-    fontWeight: 'bold',
+    fontWeight: '500',
     fontSize: 10,
   },
   tag: {
-    paddingHorizontal: '3%',
-    paddingVertical: '2%',
-    borderRadius: 5,
-    backgroundColor: '#E6E6E6',
     alignSelf: 'flex-start',
-    marginRight: '1%',
+    marginRight: 5,
   },
   tagFont: {
     fontSize: 10,
+    color: '#787878',
   },
   spaceBetween: {
     justifyContent: 'space-between',
   },
-  backgroundColorBlue: {
-    backgroundColor: 'blue',
+  bar: {
+    width: 1,
+    height: 9,
+    marginHorizontal: 4,
+    backgroundColor: 'black',
   },
 });
 

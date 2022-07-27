@@ -42,7 +42,9 @@ function DoubleModal({
                   text={nButtonText}
                   width={80}
                   height={40}
-                  backgroundColor="gray"
+                  backgroundColor="white"
+                  textColor="black"
+                  border={true}
                   onPress={nFunction}
                 />
               ) : (
@@ -50,7 +52,9 @@ function DoubleModal({
                   text={nButtonText}
                   width={80}
                   height={40}
-                  backgroundColor="gray"
+                  backgroundColor="white"
+                  textColor="black"
+                  border={true}
                   onPress={() => setModalVisible(!modalVisible)}
                 />
               )}

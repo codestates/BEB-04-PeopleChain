@@ -21,8 +21,11 @@ import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
     height={40}
     textSize={14}
     backgroundColor="blue"
+    textColor = 'white'
     margin={[10, 3, 3, 3]}
+    borderRadius={10}
     onPress={onPress}
+    border={true}
   />
 
 */
@@ -35,6 +38,9 @@ function BasicButton({
   textSize,
   margin,
   onPress,
+  textColor,
+  borderRadius,
+  border,
 }) {
   const [marginTop, marginRight, marginBottom, marginLeft] = margin;
   return (
@@ -50,9 +56,14 @@ function BasicButton({
             marginRight: marginRight,
             marginBottom: marginBottom,
             marginLeft: marginLeft,
+            borderRadius: borderRadius,
           },
+          border ? styles.border : '',
         ]}>
-        <Text style={[styles.buttonText, {fontSize: textSize}]}>{text}</Text>
+        <Text
+          style={[styles.buttonText, {fontSize: textSize, color: textColor}]}>
+          {text}
+        </Text>
       </View>
     </TouchableOpacity>
   );
@@ -61,23 +72,29 @@ function BasicButton({
 BasicButton.defaultProps = {
   width: 100,
   height: 40,
-  backgroundColor: '#007aff',
+  backgroundColor: 'black',
+  textColor: 'white',
   text: '버튼',
   textSize: 14,
   margin: [5, 5, 5, 5],
   onPress: () => {},
+  borderRadius: 13,
+  border: true,
 };
 
 const styles = StyleSheet.create({
   button: {
     justifyContent: 'center',
-    borderRadius: 5,
     margin: 5,
   },
   buttonText: {
     color: 'white',
     textAlign: 'center',
     fontWeight: 'bold',
+  },
+  border: {
+    borderWidth: 1,
+    borderColor: 'black',
   },
 });
 

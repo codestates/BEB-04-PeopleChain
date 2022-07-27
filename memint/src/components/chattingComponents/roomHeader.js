@@ -11,16 +11,21 @@ function RoomHeader({title, roomInfo, setRoomInfo, setRoomInfoExist}) {
       <TouchableOpacity
         style={{flexDirection: 'row'}}
         onPress={() => navigation.pop()}>
-        <Icon name="arrow-back-ios" size={20} color={'#007aff'} />
-        <Text style={styles.buttonText}>목록</Text>
+        <Icon
+          name="arrow-back-ios"
+          size={20}
+          color={'black'}
+          style={{marginLeft: 5}}
+        />
+        {/* <Text style={styles.buttonText}>목록</Text> */}
       </TouchableOpacity>
-      <Text style={{fontWeight: 'bold', fontSize: 18}}>{title}</Text>
+      {/* <Text style={{fontWeight: 'bold', fontSize: 18}}>{title}</Text> */}
       <TouchableOpacity
         onPress={() => {
           setRoomInfo(!roomInfo);
           setRoomInfoExist(true);
         }}>
-        <Icon name="menu" size={30} color="green" style={{marginRight: 10}} />
+        <Icon name="menu" size={30} color="black" style={{marginRight: 10}} />
       </TouchableOpacity>
     </View>
   );
@@ -36,7 +41,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 18,
-    color: '#007aff',
+    color: 'black',
   },
 });
 

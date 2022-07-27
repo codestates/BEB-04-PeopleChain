@@ -1,6 +1,14 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState, useCallback} from 'react';
-import {Text, SafeAreaView, View, StyleSheet, TextInput} from 'react-native';
+import {
+  Text,
+  SafeAreaView,
+  View,
+  StyleSheet,
+  TextInput,
+  Image,
+  ScrollView,
+} from 'react-native';
 import BackButton from '../../components/common/BackButton';
 import BasicButton from '../../components/common/BasicButton';
 import DoubleModal from '../../components/common/DoubleModal';
@@ -14,6 +22,7 @@ import {
   handleDateInFormat,
   handleISOtoLocale,
 } from '../../utils/common/Functions';
+import crown from '../../assets/icons/crown.png';
 
 function MeetingDetail({route}) {
   const userInfo = useUser();
@@ -25,7 +34,6 @@ function MeetingDetail({route}) {
   const [membersInfo, setMembersInfo] = useState([]);
   const {showToast} = useToast();
   const navigation = useNavigation();
-
   const renderByUser = () => {
     if (
       data.members.reduce((acc, cur) => {
@@ -38,9 +46,11 @@ function MeetingDetail({route}) {
     ) {
       return (
         <BasicButton
-          width={300}
+          width={340}
           height={50}
           textSize={17}
+          backgroundColor={'white'}
+          textColor={'black'}
           text="채팅창으로 이동"
           onPress={() => {
             navigation.navigate('ChattingRoom', {data});
@@ -50,10 +60,11 @@ function MeetingDetail({route}) {
     } else if (data.waiting?.indexOf(loginUser) !== -1) {
       return (
         <BasicButton
-          width={300}
+          width={340}
           height={50}
           textSize={17}
-          backgroundColor={'gray'}
+          border={false}
+          backgroundColor={'#767676'}
           text="신청 수락 대기 중"
           onPress={() => {}}
         />
@@ -61,7 +72,7 @@ function MeetingDetail({route}) {
     } else {
       return (
         <BasicButton
-          width={300}
+          width={340}
           height={50}
           textSize={17}
           text="미팅 신청 보내기"
@@ -118,116 +129,206 @@ function MeetingDetail({route}) {
     getMembersInfo();
   }, [getMembersInfo]);
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.view}>
       <BackButton />
-      <View style={styles.container}>
-        <View style={styles.titleRow}>
-          <Text style={styles.title}>{data.title}</Text>
-        </View>
-        <View style={styles.meetingTags}>
-          {data.meetingTags.map((tag, idx) => {
-            return (
-              <View key={idx} style={styles.tag}>
-                <Text style={styles.tagText}>{tag}</Text>
+      <ScrollView>
+        <View style={styles.container}>
+          <View style={styles.hostArea}>
+            <View style={styles.titleRow}>
+              <Text style={styles.titleFirstRow}>
+                {data.title.slice(0, 11)}
+              </Text>
+              <Text style={styles.title}>
+                {data.title.slice(11, 12) === ' '
+                  ? data.title.slice(12)
+                  : data.title.slice(11)}
+              </Text>
+            </View>
+            <View style={styles.hostInfo}>
+              <View style={styles.hostImageWithCrown}>
+                <View style={styles.hostCrown}>
+                  <Image
+                    source={crown}
+                    style={styles.image}
+                    resizeMode="contain"
+                  />
+                </View>
+                <Image
+                  source={{uri: data.hostInfo.nftProfile}}
+                  style={styles.hostImage}
+                />
               </View>
-            );
-          })}
-        </View>
-        <View style={styles.descriptionRow}>
-          <Text>{data.description}</Text>
-        </View>
-        <View style={styles.infoRow}>
-          <Text style={styles.infoEl}>{data.region}</Text>
-          <View style={styles.bar} />
-          <Text style={styles.infoEl}>
-            {typeof data.meetDate === 'object'
-              ? handleDateInFormat(data.meetDate)
-              : handleISOtoLocale(data.meetDate)}
-          </Text>
-        </View>
-        <View>
-          <DetailMembers
-            peopleNum={data.peopleNum}
-            membersInfo={membersInfo}
-            hostId={data.hostId}
-          />
-        </View>
-        <View style={styles.buttonRow}>{renderByUser()}</View>
-      </View>
 
-      <DoubleModal
-        text="미팅을 신청하시겠습니까?"
-        nButtonText="아니요"
-        pButtonText="신청하기"
-        modalVisible={modalVisible_1}
-        setModalVisible={setModalVisible_1}
-        nFunction={() => setModalVisible_1(!modalVisible_1)}
-        pFunction={() => {
-          setModalVisible_1(false);
-          setModalVisible_2(true);
-        }}
-      />
-      <DoubleModal
-        text="주선자에게 보낼 메시지를 작성해주세요"
-        body={
-          <View style={styles.inputBlock}>
-            <TextInput
-              placeholder="메시지를 작성하세요"
-              multiline={true}
-              style={styles.input}
-              value={textMessage}
-              onChangeText={setTextMessage}
+              <Text style={styles.hostnickName}>
+                {'@' + data.hostInfo.nickName}
+              </Text>
+            </View>
+          </View>
+
+          <View style={styles.descriptionRow}>
+            <Text style={styles.description}>{data.description}</Text>
+          </View>
+          <View style={styles.meetingTags}>
+            {data.meetingTags.map((tag, idx) => {
+              return (
+                <View key={idx} style={styles.tag}>
+                  <Text style={styles.tagText}>{'#' + tag}</Text>
+                </View>
+              );
+            })}
+          </View>
+          <View style={styles.infoRow}>
+            <Text style={styles.infoEl}>{data.region}</Text>
+            <View style={styles.bar} />
+            <Text style={styles.infoEl}>
+              {typeof data.meetDate === 'object'
+                ? handleDateInFormat(data.meetDate)
+                : handleISOtoLocale(data.meetDate)}
+            </Text>
+          </View>
+          <View>
+            <DetailMembers
+              peopleNum={data.peopleNum}
+              membersInfo={membersInfo}
+              hostId={data.hostId}
             />
           </View>
-        }
-        nButtonText="닫기"
-        pButtonText="신청 보내기"
-        modalVisible={modalVisible_2}
-        setModalVisible={setModalVisible_2}
-        nFunction={() => setModalVisible_2(!modalVisible_2)}
-        pFunction={handleCreateProposal}
-      />
+          <View style={styles.buttonRow}>{renderByUser()}</View>
+        </View>
+
+        <DoubleModal
+          text="미팅을 신청하시겠습니까?"
+          nButtonText="아니요"
+          pButtonText="신청하기"
+          modalVisible={modalVisible_1}
+          setModalVisible={setModalVisible_1}
+          nFunction={() => setModalVisible_1(!modalVisible_1)}
+          pFunction={() => {
+            setModalVisible_1(false);
+            setModalVisible_2(true);
+          }}
+        />
+        <DoubleModal
+          text="주선자에게 보낼 메시지를 작성해주세요"
+          body={
+            <View style={styles.inputBlock}>
+              <TextInput
+                placeholder="메시지를 작성하세요"
+                multiline={true}
+                style={styles.input}
+                value={textMessage}
+                onChangeText={setTextMessage}
+              />
+            </View>
+          }
+          nButtonText="닫기"
+          pButtonText="신청 보내기"
+          modalVisible={modalVisible_2}
+          setModalVisible={setModalVisible_2}
+          nFunction={() => setModalVisible_2(!modalVisible_2)}
+          pFunction={handleCreateProposal}
+        />
+      </ScrollView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  view: {
+    backgroundColor: 'white',
+    flex: 1,
+  },
   container: {
-    padding: 20,
+    paddingHorizontal: 20,
+    marginBottom: 20,
+  },
+  hostArea: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  hostInfo: {
+    alignItems: 'center',
+    flexDirection: 'column',
+  },
+  hostImageWithCrown: {
+    width: 72,
+    height: 72,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  image: {
+    width: 30,
+    height: 30,
+  },
+  hostCrown: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    zIndex: 1,
+  },
+  hostImage: {
+    borderRadius: 100,
+    width: 50,
+    height: 50,
+    borderWidth: 1,
+    borderColor: 'black',
+  },
+  hostnickName: {
+    fontSize: 10,
+    fontWeight: '500',
   },
   titleRow: {
-    marginBottom: 10,
+    marginBottom: 25,
+    marginTop: 60,
   },
   title: {
-    fontSize: 25,
-    fontWeight: 'bold',
+    fontSize: 30,
+    fontWeight: '500',
+  },
+  titleFirstRow: {
+    fontSize: 30,
+    fontWeight: '500',
+  },
+  description: {
+    fontSize: 15,
+    fontWeight: '500',
+    width: 305,
   },
   meetingTags: {
     marginVertical: 10,
     flexDirection: 'row',
   },
   tag: {
-    backgroundColor: 'gray',
-    marginHorizontal: 3,
-    padding: 5,
+    backgroundColor: 'black',
+    marginRight: 5,
+    paddingHorizontal: 5,
+    paddingVertical: 3,
+    borderRadius: 4.5,
+  },
+  tagText: {
+    color: 'white',
+    fontSize: 12,
+    fontWeight: '500',
   },
   descriptionRow: {
-    marginVertical: 10,
+    marginVertical: 20,
   },
   infoRow: {
-    marginVertical: 10,
+    marginVertical: 18,
     flexDirection: 'row',
     justifyContent: 'center',
-    aligndatas: 'center',
+    alignItems: 'center',
   },
   infoEl: {
-    fontSize: 22,
+    fontSize: 24,
     fontWeight: 'bold',
+    color: 'black',
     marginHorizontal: 10,
   },
   bar: {
-    backgroundColor: 'gray',
-    width: 2,
+    backgroundColor: 'black',
+    width: 3,
     height: 20,
   },
   buttonRow: {

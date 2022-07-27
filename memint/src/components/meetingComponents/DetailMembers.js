@@ -1,7 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
 import {handleBirth} from '../../utils/common/Functions';
-import crown from '../../assets/icons/crown.png';
 
 function DetailMembers({membersInfo, peopleNum, hostId}) {
   const currentPeopleNum = () => {
@@ -15,43 +14,37 @@ function DetailMembers({membersInfo, peopleNum, hostId}) {
   return (
     <View style={styles.memberBox}>
       <View style={styles.memberBoxInfo}>
-        <Text style={styles.boldFont}>현재 모인 멤버</Text>
+        <Text style={styles.title}>현재 모인 멤버</Text>
         <View style={styles.memberBoxInfopeopleNum}>
-          <Text style={styles.boldFont}>{currentPeopleNum()}</Text>
-          <Text style={styles.grayFont}>{`(${peopleNum}:${peopleNum})`}</Text>
+          <Text style={styles.currentPeopleNum}>{currentPeopleNum()}</Text>
+          <Text style={styles.peopleNum}>{`(${peopleNum}:${peopleNum})`}</Text>
         </View>
       </View>
       <View style={styles.memberList}>
         {membersInfo.map((member, idx) => (
           <View key={idx} style={styles.memberInfo}>
             <View style={styles.memberInfoProfile}>
-              {member.id === hostId ? (
-                <View style={styles.hostCrown}>
-                  <Image
-                    source={crown}
-                    style={styles.image}
-                    resizeMode="contain"
-                  />
-                </View>
-              ) : (
-                ''
-              )}
               <Image
                 source={{uri: member.nftProfile}}
                 style={styles.userImage}
               />
             </View>
             <View>
-              <Text style={styles.memberInfoContentEl}>{member.nickName}</Text>
+              <Text style={styles.memberInfoNickName}>{member.nickName}</Text>
               <View style={styles.memberGenderAge}>
-                <Text style={styles.memberInfoContentEl}>{member.gender}</Text>
                 <Text style={styles.memberInfoContentEl}>
                   {handleBirth(member.birth)}
                 </Text>
+                <Text
+                  style={styles.memberInfoContentEl}>{`(${member.gender?.slice(
+                  0,
+                  1,
+                )})`}</Text>
               </View>
             </View>
           </View>
         ))}
+        {membersInfo.peopleNum * 2 > membersInfo.length ? '' : ''}
       </View>
     </View>
   );
@@ -60,8 +53,22 @@ function DetailMembers({membersInfo, peopleNum, hostId}) {
 const styles = StyleSheet.create({
   memberBox: {
     backgroundColor: 'white',
-    padding: 20,
+    paddingVertical: 23,
+    paddingHorizontal: 32,
     marginVertical: 10,
+    marginHorizontal: 3,
+    borderRadius: 35,
+    borderWidth: 1,
+    borderColor: 'black',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+
+    elevation: 4,
   },
   memberBoxInfo: {
     flexDirection: 'row',
@@ -87,11 +94,20 @@ const styles = StyleSheet.create({
   memberInfoContentEl: {
     margin: 5,
   },
-  boldFont: {
-    fontWeight: 'bold',
+  memberInfoNickName: {
+    margin: 5,
+    fontWeight: '700',
   },
-  grayFont: {
-    color: 'gray',
+  title: {
+    fontWeight: '700',
+    color: 'black',
+  },
+  currentPeopleNum: {
+    fontWeight: '500',
+  },
+  peopleNum: {
+    fontWeight: '500',
+    color: 'black',
   },
   image: {
     width: 40,

@@ -15,7 +15,7 @@ function BackButton() {
     <TouchableOpacity
       style={styles.backButton}
       onPress={() => navigation.pop()}>
-      <Icon name="arrow-back-ios" size={20} color={'#007aff'} />
+      <Icon name="arrow-back-ios" size={20} color={'black'} />
       <Text style={styles.buttonText}>Back</Text>
     </TouchableOpacity>
   );
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 18,
-    color: '#007aff',
+    color: 'black',
   },
 });
 

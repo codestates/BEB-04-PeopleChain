@@ -6,7 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  Button,
+  Pressable,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import MeetingElement from '../../components/meetingComponents/MeetingElement';
@@ -17,9 +17,8 @@ import {useIsFocused} from '@react-navigation/native';
 import RNPickerSelect from 'react-native-picker-select';
 import FilterModal from '../../components/meetingComponents/FilterModal';
 import {getUser} from '../../lib/Users';
-import {signOut} from '../../lib/Auth';
-import useAuthActions from '../../utils/hooks/UseAuthActions';
-import useUser from '../../utils/hooks/UseUser';
+// import {signOut} from '../../lib/Auth';
+// import useAuthActions from '../../utils/hooks/UseAuthActions';
 
 function MeetingMarket({navigation}) {
   const [meetings, setMeetings] = useState([]);
@@ -33,9 +32,6 @@ function MeetingMarket({navigation}) {
     peopleNum: undefined,
     meetDate: new Date(),
   });
-
-  const user = useUser();
-  console.log(user);
 
   const isFocused = useIsFocused();
 
@@ -138,93 +134,95 @@ function MeetingMarket({navigation}) {
     {label: '3:3', value: 3},
     {label: '4:4', value: 4},
   ];
-  const {logout} = useAuthActions();
-  const handleSignOut = useCallback(async () => {
-    try {
-      logout();
-      await signOut();
-    } catch (e) {
-      console.log(e);
-    } finally {
-      navigation.navigate('SignIn');
-    }
-  }, [navigation, logout]);
+  // const {logout} = useAuthActions();
+  // const handleSignOut = useCallback(async () => {
+  //   try {
+  //     logout();
+  //     await signOut();
+  //   } catch (e) {
+  //     console.log(e);
+  //   } finally {
+  //     navigation.navigate('SignIn');
+  //   }
+  // }, [navigation, logout]);
   return (
     <SafeAreaView style={styles.container}>
-      <Button title="로그아웃 하기" color="red" onPress={handleSignOut} />
-      <TouchableOpacity style={styles.areaEnd}>
-        <RNPickerSelect
-          placeholder={{}}
-          onValueChange={value => {
-            setRegionSelect(value);
-            handleRegion(value);
-          }}
-          items={RegionDropDownData}
-          value={regionSelect}
-        />
-        <Icon name="arrow-drop-down" size={19} />
-      </TouchableOpacity>
-      <View style={styles.titleArea}>
-        <Text style={styles.title}>새로운 친구들과 술 한잔 어뗘?</Text>
-      </View>
-
-      <View style={styles.areaEnd}>
-        <TouchableOpacity
-          style={styles.createButton}
-          onPress={() => {
-            setConfirmModalVisible(true);
-          }}>
-          <Icon name="add-box" size={35} />
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.listfilterArea}>
-        <TouchableOpacity
-          style={styles.listfilter}
-          onPress={() => {
-            setFilterModalVisible(true);
-          }}>
-          <Icon name="filter-alt" size={15} />
-          <Text> 조건 설정</Text>
-          <FilterModal
-            setFilter={setFilter}
-            FilterPeopleDropDownData={FilterPeopleDropDownData}
-            filter={filter}
-            filterModalVisible={filterModalVisible}
-            setFilterModalVisible={setFilterModalVisible}
-            handleFilter={handleFilter}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.listfilter}>
+      {/* <Button title="로그아웃 하기" color="red" onPress={handleSignOut} /> */}
+      <ScrollView>
+        <Pressable style={styles.areaEnd}>
           <RNPickerSelect
             placeholder={{}}
             onValueChange={value => {
-              setSortSelect(value);
+              setRegionSelect(value);
+              handleRegion(value);
             }}
-            items={SortDropDownData}
-            value={sortSelect}
+            items={RegionDropDownData}
+            value={regionSelect}
           />
-          <Icon name="arrow-drop-down" size={19} />
-        </TouchableOpacity>
-      </View>
+          <Icon name="check-circle" size={19} style={styles.checkicon} />
+        </Pressable>
+        <View style={styles.titleArea}>
+          <Text style={styles.title}>새로운 친구들과 술 한잔 어때?</Text>
+        </View>
 
-      <ScrollView style={styles.meetingLists}>
-        {filteredMeetings.map((meeting, idx) => {
-          return <MeetingElement key={idx} item={meeting} />;
-        })}
+        <View style={styles.areaEnd}>
+          <TouchableOpacity
+            style={styles.createButton}
+            onPress={() => {
+              setConfirmModalVisible(true);
+            }}>
+            <Icon name="add-box" size={35} />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.listfilterArea}>
+          <Pressable
+            style={styles.listfilter}
+            onPress={() => {
+              setFilterModalVisible(true);
+            }}>
+            <Icon name="filter-alt" size={20} />
+            <Text> 조건 설정</Text>
+            <FilterModal
+              setFilter={setFilter}
+              FilterPeopleDropDownData={FilterPeopleDropDownData}
+              filter={filter}
+              filterModalVisible={filterModalVisible}
+              setFilterModalVisible={setFilterModalVisible}
+              handleFilter={handleFilter}
+            />
+          </Pressable>
+          <Pressable style={styles.listfilter}>
+            <RNPickerSelect
+              placeholder={{}}
+              onValueChange={value => {
+                setSortSelect(value);
+              }}
+              items={SortDropDownData}
+              value={sortSelect}
+            />
+            <Icon name="arrow-drop-down" size={18} />
+          </Pressable>
+        </View>
+
+        <View style={styles.meetingLists}>
+          {filteredMeetings.map((meeting, idx) => {
+            return <MeetingElement key={idx} item={meeting} />;
+          })}
+        </View>
+        <SingleModal
+          text="미팅을 생성하시겠습니까?"
+          //body={<Text>정말로?</Text>}
+          buttonText="네"
+          modalVisible={confirmModalVisible}
+          setModalVisible={setConfirmModalVisible}
+          pFunction={() => {
+            setConfirmModalVisible(!confirmModalVisible);
+            navigation.navigate('MeetingCreate');
+          }}
+        />
       </ScrollView>
       <WalletButton />
-      <SingleModal
-        text="미팅을 생성하시겠습니까?"
-        //body={<Text>정말로?</Text>}
-        buttonText="네"
-        modalVisible={confirmModalVisible}
-        setModalVisible={setConfirmModalVisible}
-        pFunction={() => {
-          setConfirmModalVisible(!confirmModalVisible);
-          navigation.navigate('MeetingCreate');
-        }}
-      />
     </SafeAreaView>
   );
 }
@@ -232,12 +230,17 @@ function MeetingMarket({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 60,
+    backgroundColor: 'white',
   },
   areaEnd: {
+    marginTop: 20,
     flexDirection: 'row',
     justifyContent: 'flex-end',
+    alignItems: 'center',
     paddingRight: 10,
+  },
+  checkicon: {
+    marginLeft: 5,
   },
   createButton: {},
   titleArea: {
@@ -246,19 +249,23 @@ const styles = StyleSheet.create({
     paddingTop: 25,
   },
   title: {
-    fontSize: 30,
-    fontWeight: 'bold',
+    fontSize: 31,
+    fontWeight: '500',
   },
   listfilterArea: {
     marginTop: 20,
     marginBottom: 5,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
   listfilter: {
     paddingHorizontal: 10,
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  meetingLists: {
+    marginBottom: 40,
   },
 });
 
