@@ -87,6 +87,8 @@ function WalletOffchainHistory({navigation}) {
   ];
   const {addLog} = useOffchainActions();
   const user = useUser();
+  // console.log('@@@@@@@@@@@@@@@@@@@@USER@@@@@@@@@@@@@@@@@@@@@');
+  // console.log(user);
 
   useEffect(() => {
     getOffchainLog();

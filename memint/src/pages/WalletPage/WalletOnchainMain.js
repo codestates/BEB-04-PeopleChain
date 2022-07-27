@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
+  Button,
 } from 'react-native';
 
 import WalletAccountElement from '../../components/walletComponents/WalletAccountElement';
@@ -16,11 +17,14 @@ import useUser from '../../utils/hooks/UseUser';
 const WalletOnchainMain = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [transferModalVisible, setTransferModalVisible] = useState(false);
+  const [refresh, setRefresh] = useState(false);
   const {showToast} = useToast();
   const userInfo = useUser();
   const goToOnchainTrade = () => {
     navigation.navigate('WalletOnchainTrade');
   };
+
+  useEffect(() => {}, [refresh]);
 
   return (
     <View>
@@ -113,6 +117,12 @@ const WalletOnchainMain = ({navigation}) => {
         pFunction={() => {
           setTransferModalVisible(false);
           navigation.navigate('WalletLcnTransfer');
+        }}
+      />
+      <Button
+        title="refresh"
+        onPress={() => {
+          setRefresh(!refresh);
         }}
       />
     </View>

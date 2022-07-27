@@ -22,7 +22,7 @@ function MyMeMin({myMeMin}) {
               : 'https://cdn-icons-png.flaticon.com/512/1053/1053244.png?w=360',
           }}
         />
-        {myMeMin.tokenId ? (
+        {myMeMin?.tokenId ? (
           <View style={{marginLeft: 40}}>
             <Image
               source={require('../../assets/icons/nftBadge.png')}

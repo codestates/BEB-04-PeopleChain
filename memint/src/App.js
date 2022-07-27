@@ -140,6 +140,7 @@ function App() {
         setInitializing(false);
       }
     });
+    console.log('@@UseEffect Re-rendering@@@@');
     return unsubscribe;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

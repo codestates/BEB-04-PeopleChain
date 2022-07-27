@@ -68,21 +68,21 @@ const SignInScreen = ({navigation, route}) => {
       setNftProfile(...getProfile(nfts));
       setMemin(...getMemin(nfts));
 
-      saveInfo({
-        id: user.uid,
-        email: user.email,
-        nickName: userDetail.nickName,
-        gender: userDetail.gender,
-        birth: userDetail.birth,
-        nftIds: userDetail.nftIds,
-        picture: userDetail.picture,
-        tokenAmount: userDetail.tokenAmount,
-        nftProfile: userDetail.nftProfile.toString(),
-        alcoholType: userProperty[0].alcoholType,
-        drinkCapa: userProperty[0].drinkCapa,
-        drinkStyle: userProperty[0].drinkStyle,
-      }),
-        navigation.navigate('Main');
+      // saveInfo({
+      //   id: user.uid,
+      //   email: user.email,
+      //   nickName: userDetail.nickName,
+      //   gender: userDetail.gender,
+      //   birth: userDetail.birth,
+      //   nftIds: userDetail.nftIds,
+      //   picture: userDetail.picture,
+      //   tokenAmount: userDetail.tokenAmount,
+      //   nftProfile: userDetail.nftProfile.toString(),
+      //   alcoholType: userProperty[0].alcoholType,
+      //   drinkCapa: userProperty[0].drinkCapa,
+      //   drinkStyle: userProperty[0].drinkStyle,
+      // }),
+      navigation.navigate('Main');
     } catch (e) {
       Alert.alert('실패');
       console.log(e);
