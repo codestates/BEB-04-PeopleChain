@@ -52,12 +52,12 @@ function App() {
       let userDetail = await getUser(user.uid);
 
       //createdroomId, joinedroomId 관련 에러 해결을 위해 임시로 추가한 코드입니다.
-      userDetail = userDetail.createdroomId
-        ? userDetail
-        : {...userDetail, createdroomId: []};
-      userDetail = userDetail.joinedroomId
-        ? userDetail
-        : {...userDetail, joinedroomId: []};
+      // userDetail = userDetail.createdroomId
+      //   ? userDetail
+      //   : {...userDetail, createdroomId: []};
+      // userDetail = userDetail.joinedroomId
+      //   ? userDetail
+      //   : {...userDetail, joinedroomId: []};
 
       const userProperty = await getUserProperty(user.uid);
 

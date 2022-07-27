@@ -15,6 +15,8 @@ export function createUser({userId, nickName, gender, birth, picture}) {
     nftProfile: null,
     nftIds: [],
     tokenAmount: 0,
+    createdroomId: [],
+    joinedroomId: [],
   });
 }
 
