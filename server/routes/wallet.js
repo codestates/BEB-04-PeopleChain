@@ -7,6 +7,7 @@ const {
   toOnChain,
   transferETH,
   transferLCN,
+  getBalance,
 } = require("./walletCtrl");
 
 wallet.route("/ETHToLCN").post(ETHToLCN);
@@ -20,6 +21,8 @@ wallet.route("/toOnChain").post(toOnChain);
 wallet.route("/transferETH").post(transferETH);
 
 wallet.route("/transferLCN").post(transferLCN);
+
+wallet.route("/getBalance").post(getBalance);
 
 // router.get("/getBalance", async (req, res) => {
 //   try {
