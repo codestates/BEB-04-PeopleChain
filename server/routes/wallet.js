@@ -1,6 +1,13 @@
 const express = require("express");
 const wallet = express.Router();
-const { ETHToLCN, LCNToETH, toOffChain, toOnChain } = require("./walletCtrl");
+const {
+  ETHToLCN,
+  LCNToETH,
+  toOffChain,
+  toOnChain,
+  transferETH,
+  transferLCN,
+} = require("./walletCtrl");
 
 wallet.route("/ETHToLCN").post(ETHToLCN);
 
@@ -9,6 +16,10 @@ wallet.route("/LCNToETH").post(LCNToETH);
 wallet.route("/toOffChain").post(toOffChain);
 
 wallet.route("/toOnChain").post(toOnChain);
+
+wallet.route("/transferETH").post(transferETH);
+
+wallet.route("/transferLCN").post(transferLCN);
 
 // router.get("/getBalance", async (req, res) => {
 //   try {

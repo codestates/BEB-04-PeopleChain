@@ -138,13 +138,120 @@ const LCNToETH = async (req, res) => {
   }
 };
 
-const toOffChain = async (req, res) => {};
+const toOffChain = async (req, res) => {
+  const { address, privateKey, tokenAmount } = req.body;
+  try {
+    // address에 tokenAmount만큼의 LCN이 있는지 확인한다.
+    const beforeBalance = await myContract.methods.balanceOf(address).call();
 
-const toOnChain = async (req, res) => {};
+    // tokenAmount만큼 user의 계정에서 server의 계정으로 LCN을 transfer해주는 함수
+    const getLCNFromUser = async () => {
+      const gasPrice = await web3.eth.getGasPrice();
+      const data = myContract.methods
+        .transfer(SERVER_ADDRESS, toWei(tokenAmount.toString()))
+        .encodeABI();
+
+      const rawTx = {
+        to: contractAddress,
+        gas: 2000000,
+        gasPrice,
+        data,
+      };
+
+      const signedTx = await web3.eth.accounts.signTransaction(
+        rawTx,
+        privateKey
+      );
+
+      return await web3.eth.sendSignedTransaction(
+        signedTx.rawTransaction,
+        async (err, result) => {
+          if (err) return res.status(400).send({ error: err });
+          return result;
+        }
+      );
+    };
+
+    getLCNFromUser().then(async () => {
+      // 아래 나와있는 balance를 firestore db에 업데이트해준다.
+      const LCNBalance = await myContract.methods.balanceOf(address).call();
+      res.status(200).send({
+        LCNBalance: fromWei(LCNBalance.toString()),
+      });
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const toOnChain = async (req, res) => {
+  const { address, privateKey, tokenAmount } = req.body;
+  // firestore에서 user db에 저장되어있는 토큰의 개수가 tokenAmount이상인지 확인한다.
+  // ex) const userInfo = await db.collection('User').doc(id).get()
+  // if(userInfo.data().tokenAmount >= tokenAmount) { ... }
+
+  // server의 account에서 user의 account로, 알맞은 양의 LCN을 지급하는 함수
+  const sendLCNToUser = async () => {
+    return await myContract.methods
+      .transfer(address, toWei(tokenAmount.toString()))
+      .send({
+        from: SERVER_ADDRESS,
+        gas: 2000000,
+        gasPrice: await web3.eth.getGasPrice(),
+      });
+  };
+
+  sendLCNToUser().then(async () => {
+    const LCNBalance = await myContract.methods.balanceOf(address).call();
+    // const afterTokenAmount = 원래 user document의 tokenAmount - 파라미터로 받은 tokenAmount
+    // firebase에서 onChainTokenAmount에 LCNBalance 값을, tokenAmount에 afterTokenAmount 값을 업데이트해준 후 front에 res를 보내준다.
+  });
+};
+
+transferETH = async (req, res) => {
+  const { address, privateKey, toAddress, ETHAmount } = req.body;
+  // ETHAmount보다 beforeBalance의 값이 크거나 같은지 먼저 체크한다.
+  try {
+    const beforeBalance = await web3.eth.getBalance(address);
+
+    // user의 address에서 toAddress로 eth를 보내주는 함수
+    const sendETHTo = async () => {
+      const signedTx = await web3.eth.accounts.signTransaction(
+        {
+          to: toAddress,
+          gas: 2000000,
+          gasPrice: await web3.eth.getGasPrice(),
+          value: toWei(ETHAmount.toString()),
+        },
+        privateKey
+      );
+
+      await web3.eth.sendSignedTransaction(
+        signedTx.rawTransaction,
+        async (err, result) => {
+          if (err) return res.status(400).send({ error: err });
+          return result;
+        }
+      );
+    };
+
+    sendETHTo().then(async () => {
+      // 아래 afterBalance 값을 user document의 onChainTokenAmount 값에 업데이트해준다.
+      const afterBalance = await web3.eth.getBalance(address);
+      res.status(200).send({ balance: fromWei(afterBalance.toString()) });
+    });
+  } catch (error) {
+    res.status(400).send({ error });
+  }
+};
+
+transferLCN = () => {};
 
 module.exports = {
   ETHToLCN,
   LCNToETH,
   toOffChain,
   toOnChain,
+  transferETH,
+  transferLCN,
 };
