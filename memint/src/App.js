@@ -48,7 +48,17 @@ function App() {
 
   const saveUserInfo = async user => {
     try {
-      const userDetail = await getUser(user.uid);
+      // const userDetail = await getUser(user.uid);
+      let userDetail = await getUser(user.uid);
+
+      //createdroomId, joinedroomId 관련 에러 해결을 위해 임시로 추가한 코드입니다.
+      userDetail = userDetail.createdroomId
+        ? userDetail
+        : {...userDetail, createdroomId: []};
+      userDetail = userDetail.joinedroomId
+        ? userDetail
+        : {...userDetail, joinedroomId: []};
+
       const userProperty = await getUserProperty(user.uid);
 
       const res = await getNFTs(user.uid);
@@ -84,8 +94,8 @@ function App() {
         nftIds: userDetail.nftIds,
         picture: userDetail.picture,
         tokenAmount: userDetail.tokenAmount,
-        createdroomId: userDetail.createdroomId,
-        joinedroomId: userDetail.joinedroomId,
+        createdroomId: userDetail.createdroomId ? userDetail.createdroomId : [],
+        joinedroomId: userDetail.joinedroomId ? userDetail.joinedroomId : [],
         nftProfile: userDetail.nftProfile.toString(),
         alcoholType: userProperty[0].alcoholType,
         drinkCapa: userProperty[0].drinkCapa,
@@ -95,7 +105,7 @@ function App() {
       console.log(e);
     }
   };
-
+  console.log(userInfo);
   const [initializing, setInitializing] = useState(true);
   useEffect(() => {
     try {
