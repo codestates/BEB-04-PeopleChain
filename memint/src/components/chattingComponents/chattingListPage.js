@@ -12,13 +12,22 @@ import firestore from '@react-native-firebase/firestore';
 import useUser from '../../utils/hooks/UseUser';
 import {useMeeting} from '../../utils/hooks/UseMeeting';
 import WalletButton from '../common/WalletButton';
+import {useIsFocused} from '@react-navigation/native';
 
 function ChattingListPage({navigation}) {
   const [chatLog, setChatLog] = useState('');
-  const userInfo = useUser();
+  const user = useUser();
+
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     const getChatLogs = async () => {
+      const userInfoData = await firestore()
+        .collection('User')
+        .doc(user.id)
+        .get();
+
+      const userInfo = userInfoData.data();
       const meetingList = [];
 
       userInfo.createdroomId && meetingList.push(...userInfo.createdroomId);
@@ -67,9 +76,11 @@ function ChattingListPage({navigation}) {
       );
 
       setChatLog(meetingInfos);
+
+      // return isFocused;
     };
     getChatLogs();
-  }, [userInfo]);
+  }, [user, isFocused]);
 
   return (
     <SafeAreaView style={styles.view}>
