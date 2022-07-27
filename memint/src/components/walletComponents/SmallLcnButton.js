@@ -1,17 +1,19 @@
 import React from 'react';
 import {View, StyleSheet, Text, Image} from 'react-native';
 import klayIcon from '../../assets/icons/klaytn-klay-logo.png';
+import ethIcon from '../../assets/icons/ethereum.png';
 import lovechainIcon from '../../assets/icons/lovechain.png';
 function SmallLcnButton({
   width,
   height,
   text,
   margin,
+  amount,
   onPress,
   backgroundColor,
   content,
 }) {
-  const imgSrc = content === 'KLAY' ? klayIcon : lovechainIcon;
+  const imgSrc = content === 'ETH' ? ethIcon : lovechainIcon;
   const [marginTop, marginRight, marginBottom, marginLeft] = margin;
   return (
     <View
@@ -29,6 +31,7 @@ function SmallLcnButton({
       ]}>
       <View style={styles.leftWrapper}>
         <Text style={styles.textFromTo}>{text}</Text>
+        <Text style={styles.text}>{amount}</Text>
       </View>
       <View style={styles.rightWrapper}>
         <View style={styles.lcnWrapper}>
@@ -55,6 +58,13 @@ const styles = StyleSheet.create({
     width: 35,
     height: 35,
   },
+  text: {
+    marginTop: 10,
+    width: 150,
+    height: 30,
+    fontWeight: 'bold',
+    fontSize: 25,
+  },
   leftWrapper: {
     marginLeft: 20,
     flexDirection: 'column',
@@ -79,7 +89,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     margin: 5,
   },
-  textFromTo: {fontSize: 20, fontWeight: 'bold'},
+  textFromTo: {fontSize: 18, fontWeight: 'bold'},
   textLcn: {
     marginLeft: 5,
     fontSzie: 20,

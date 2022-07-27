@@ -1,6 +1,7 @@
 import React from 'react';
-import {View, StyleSheet, Text, Image} from 'react-native';
+import {View, StyleSheet, Text, Image, TextInput} from 'react-native';
 import klayIcon from '../../assets/icons/klaytn-klay-logo.png';
+import ethIcon from '../../assets/icons/ethereum.png';
 import lovechainIcon from '../../assets/icons/lovechain.png';
 function LargeLcnButton({
   width,
@@ -8,12 +9,13 @@ function LargeLcnButton({
   text,
   margin,
   amount,
+  setAmount,
   onPress,
   backgroundColor,
   balance,
   content,
 }) {
-  const imgSrc = content === 'KLAY' ? klayIcon : lovechainIcon;
+  const imgSrc = content === 'ETH' ? ethIcon : lovechainIcon;
   const [marginTop, marginRight, marginBottom, marginLeft] = margin;
   return (
     <View
@@ -31,10 +33,16 @@ function LargeLcnButton({
       ]}>
       <View style={styles.leftWrapper}>
         <Text style={styles.textFromTo}>{text}</Text>
-        <Text style={[styles.textAmount]}>{amount}</Text>
+        <TextInput
+          style={styles.textInput}
+          value={amount}
+          onChangeText={setAmount}
+        />
       </View>
       <View style={styles.rightWrapper}>
-        <Text style={[styles.textLight]}>Balance : {balance}</Text>
+        <Text style={[styles.textLight]}>
+          Balance : {Math.round((balance + Number.EPSILON) * 10000) / 10000}
+        </Text>
         <View style={styles.lcnWrapper}>
           <Image source={imgSrc} style={styles.icon} />
           <Text style={styles.textLcn}>{content}</Text>
@@ -60,6 +68,12 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     width: 35,
     height: 35,
+  },
+  textInput: {
+    width: 150,
+    height: 30,
+    fontWeight: 'bold',
+    fontSize: 25,
   },
   leftWrapper: {
     marginLeft: 20,
@@ -88,7 +102,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     margin: 5,
   },
-  textFromTo: {fontSize: 20, fontWeight: 'bold', marginBottom: 15},
+  textFromTo: {fontSize: 18, fontWeight: 'bold', marginBottom: 15},
   textLight: {fontSize: 15, fontWeight: '200', marginBottom: 0},
   textLcn: {
     marginLeft: 5,

@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {View, Text, SafeAreaView, Image, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import BackButton from '../../components/common/BackButton';
 import LargeLcnButton from '../../components/walletComponents/LargeLcnButton';
 import SmallLcnButton from '../../components/walletComponents/SmallLcnButton';
@@ -7,32 +14,62 @@ import BasicButton from '../../components/common/BasicButton';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import DoubleModal from '../../components/common/DoubleModal';
 import {useToast} from '../../utils/hooks/useToast';
-
+import useUser from '../../utils/hooks/UseUser';
+import {ETHToLCN} from '../../lib/api/wallet';
 const WalletOnchainTrade = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const {showToast} = useToast();
-
+  const [fromEth, setFromEth] = useState(true);
+  const userInfo = useUser();
+  const [amount, setAmount] = useState({
+    fromAmount: '0',
+    toAmount: '0',
+  });
+  const createChangeAmountHandler = name => value => {
+    setAmount({
+      ...amount,
+      [name]: Number(value),
+      toAmount: fromEth ? Number(value) * 1000 : Number(value) / 1000,
+    });
+  };
+  const transferETHToLCN = async () => {
+    console.log(amount.fromAmount);
+    const body = {
+      id: userInfo.id,
+      ethAmount: amount.fromAmount,
+    };
+    try {
+      await ETHToLCN(body);
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <SafeAreaView>
       <BackButton />
       <Text style={styles.tradeText}>Trade</Text>
       <View style={styles.buttonContainer}>
         <LargeLcnButton
-          balance={0}
+          amount={amount.fromAmount}
+          setAmount={createChangeAmountHandler('fromAmount')}
+          balance={fromEth ? userInfo.ethAmount : userInfo.onChainTokenAmount}
           width={330}
           height={120}
           margin={[30, 0, 10, 0]}
           text="From"
-          content="KLAY"
+          content={fromEth ? 'ETH' : 'LCN'}
           //   backgroundColor={'lightblue'}
         />
-        <Icon name="autorenew" size={70} />
+        <TouchableOpacity onPress={() => setFromEth(!fromEth)}>
+          <Icon name="autorenew" size={70} />
+        </TouchableOpacity>
         <SmallLcnButton
+          amount={amount.toAmount}
           width={330}
           height={90}
           margin={[10, 0, 0, 0]}
           text="To (Estimated)"
-          content="LCN"
+          content={fromEth ? 'LCN' : 'ETH'}
         />
         <BasicButton
           margin={[100, 0, 0, 0]}
@@ -53,7 +90,8 @@ const WalletOnchainTrade = () => {
         nFunction={() => {
           setModalVisible(false);
         }}
-        pFunction={() => {
+        pFunction={async () => {
+          await transferETHToLCN();
           setModalVisible(false);
           showToast('success', '완료되었습니다!');
         }}

@@ -2,7 +2,15 @@ import firestore from '@react-native-firebase/firestore';
 
 export const usersCollection = firestore().collection('User');
 
-export function createUser({userId, nickName, gender, birth, picture}) {
+export function createUser({
+  userId,
+  nickName,
+  gender,
+  birth,
+  picture,
+  address,
+  privateKey,
+}) {
   // return usersCollection.doc(id).get();
   // console.log(usersCollection);
   return usersCollection.doc(userId).set({
@@ -14,9 +22,13 @@ export function createUser({userId, nickName, gender, birth, picture}) {
     picture,
     nftProfile: null,
     nftIds: [],
+    address: null,
+    privateKey: null,
     tokenAmount: 0,
     createdroomId: [],
     joinedroomId: [],
+    ethAmount: 0,
+    onChainTokenAmount: 0,
   });
 }
 

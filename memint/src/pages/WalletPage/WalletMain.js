@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {SafeAreaView, Text, View, StyleSheet, ScrollView} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
@@ -6,10 +6,14 @@ import WalletOffchainMain from './WalletOffchainMain';
 import WalletOnchainMain from './WalletOnchainMain';
 import {Icon} from 'react-native-vector-icons/MaterialIcons';
 import WalletOffchainRecieve from './WalletOffchainRecieve';
+// import useAuthActions from '../utils/hooks/UseAuthActions';
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
-
 function WalletMain() {
+  // const {updateTokenAmount} = useAuthActions();
+  // useEffect(() => {
+  //   updateTokenAmount();
+  // }, []);
   return (
     <>
       <Tab.Navigator

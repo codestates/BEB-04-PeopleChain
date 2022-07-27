@@ -8,7 +8,7 @@ const provider = new HDWalletProvider(SERVER_PRIVATEKEY, ETH_NETWORK);
 const web3 = new Web3(provider);
 const { toWei, fromWei } = web3.utils;
 const myContract = new web3.eth.Contract(abi, contractAddress);
-
+const app = require("../app");
 // 원래는 userUID를 통해 계정의 address와 pk를 받아서 tx를 해야하지만, 현재는 firestore가 연결되어있지 않기 때문에 post요청에서 address와 pk를 받아서 진행한다.
 // 토큰 가격은 0.001eth === 1LCN으로 고정한 상태로 진행한다.
 const ETHToLCN = async (req, res) => {

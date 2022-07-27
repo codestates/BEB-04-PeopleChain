@@ -8,12 +8,13 @@ import BasicButton from '../../components/common/BasicButton';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import DoubleModal from '../../components/common/DoubleModal';
 import {useToast} from '../../utils/hooks/useToast';
-
+import useUser from '../../utils/hooks/UseUser';
 const WalletOffchainTransfer = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [recieveSelected, setRecieveSelected] = useState(false);
   const [transferSelected, setTransferSelected] = useState(true);
   const {showToast} = useToast();
+  const user = useUser();
   const handleRecieveSelect = () => {
     setRecieveSelected(true);
     setTransferSelected(false);
@@ -36,7 +37,7 @@ const WalletOffchainTransfer = ({navigation}) => {
         />
         <Icon name="arrow-upward" size={70} />
         <LargeLcnButton
-          balance={12}
+          balance={user.tokenAmount}
           width={330}
           height={120}
           margin={[10, 0, 0, 0]}

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   SafeAreaView,
   View,
@@ -12,12 +12,12 @@ import WalletAccountElement from '../../components/walletComponents/WalletAccoun
 import SingleModal from '../../components/common/SingleModal';
 import WalletCustomModal from '../../components/walletComponents/WalletCustomModal';
 import {useToast} from '../../utils/hooks/useToast';
-
+import useUser from '../../utils/hooks/UseUser';
 const WalletOnchainMain = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [transferModalVisible, setTransferModalVisible] = useState(false);
   const {showToast} = useToast();
-
+  const userInfo = useUser();
   const goToOnchainTrade = () => {
     navigation.navigate('WalletOnchainTrade');
   };
@@ -25,9 +25,12 @@ const WalletOnchainMain = ({navigation}) => {
   return (
     <View>
       <View style={styles.contentContainer}>
-        <Text style={styles.balanceText}>0 KLAY</Text>
+        <Text style={styles.balanceText}>
+          {Math.round((userInfo.ethAmount + Number.EPSILON) * 10000) / 10000}{' '}
+          ETH
+        </Text>
         <View style={styles.address}>
-          <Text style={styles.addressText}>0xFYgBQhnkgHNDDlasKSDNBMZGxRE</Text>
+          <Text style={styles.addressText}>{userInfo.address}</Text>
         </View>
         <View style={styles.iconContainer}>
           <View style={styles.iconWrapper}>
@@ -69,17 +72,26 @@ const WalletOnchainMain = ({navigation}) => {
           </View>
         </View>
         <Text style={styles.walletText}>Wallet Account</Text>
-        <WalletAccountElement content="KLAY" balance={0} />
-        <WalletAccountElement content="LCN" balance={0} />
+        <WalletAccountElement
+          content="ETH"
+          balance={
+            Math.round((userInfo.ethAmount + Number.EPSILON) * 10000) / 10000
+          }
+        />
+        <WalletAccountElement
+          content="LCN"
+          balance={
+            Math.round((userInfo.onChainTokenAmount + Number.EPSILON) * 10000) /
+            10000
+          }
+        />
       </View>
       <SingleModal
-        text="Recieve KLAY"
+        text="Recieve ETH"
         buttonText="주소 복사하기"
         body={
           <View style={styles.address}>
-            <Text style={styles.addressText}>
-              0xFYgBQhnkgHNDDlasKSDNBMZGxRE
-            </Text>
+            <Text style={styles.addressText}>{userInfo.address}</Text>
           </View>
         }
         modalVisible={modalVisible}
@@ -90,13 +102,13 @@ const WalletOnchainMain = ({navigation}) => {
         }}
       />
       <WalletCustomModal
-        text="Recieve KLAY"
+        text="Recieve ETH"
         buttonText="주소 복사하기"
         modalVisible={transferModalVisible}
         setModalVisible={setTransferModalVisible}
         nFunction={() => {
           setTransferModalVisible(false);
-          navigation.navigate('WalletKlayTransfer');
+          navigation.navigate('WalletEthTransfer');
         }}
         pFunction={() => {
           setTransferModalVisible(false);

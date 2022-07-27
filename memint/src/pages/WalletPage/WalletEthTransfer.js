@@ -14,9 +14,9 @@ import BackButton from '../../components/common/BackButton';
 import BasicButton from '../../components/common/BasicButton';
 import DoubleModal from '../../components/common/DoubleModal';
 import {useToast} from '../../utils/hooks/useToast';
-import klayIcon from '../../assets/icons/klaytn-klay-logo.png';
+import ethIcon from '../../assets/icons/ethereum.png';
 
-const WalletKlayTransfer = () => {
+const WalletEthTransfer = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const {showToast} = useToast();
   const [form, setForm] = useState({
@@ -39,7 +39,7 @@ const WalletKlayTransfer = () => {
         <View style={styles.container}>
           <Text style={styles.transferText}>Transfer</Text>
           <View style={styles.imageContainer}>
-            <Image source={klayIcon} style={styles.icon} />
+            <Image source={ethIcon} style={styles.icon} />
           </View>
           <Text style={styles.text}>To Address</Text>
           <TextInput
@@ -53,7 +53,7 @@ const WalletKlayTransfer = () => {
             style={styles.input}
             value={form.amount}
             onChangeText={createChangeTextHandler('amount')}
-            placeholder="KLAY"
+            placeholder="ETH"
             keyboardType="numeric"
             returnKeyType={'done'}
             onPress={onSubmit}
@@ -137,4 +137,4 @@ const styles = StyleSheet.create({
   },
   text: {fontWeight: 'bold', fontSize: 16, marginTop: 20, marginLeft: 25},
 });
-export default WalletKlayTransfer;
+export default WalletEthTransfer;

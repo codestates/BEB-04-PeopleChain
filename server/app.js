@@ -17,17 +17,8 @@ const firebaseApp = admin.initializeApp({
 	credential: admin.credential.cert(serviceAccount),
 });
 
-const db = firestore.getFirestore(firebaseApp);
+module.exports.db = firestore.getFirestore(firebaseApp);
 //Firebase setting
-
-// test();
-// async function test() {
-// 	db.collection("cities").doc("LA2").set({
-// 		name: "Los Angeles 2",
-// 		state: "CA 2",
-// 		country: "USA 2",
-// 	});
-// }
 
 app.use(logger("dev"));
 app.use(express.json());

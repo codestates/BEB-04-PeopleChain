@@ -17,6 +17,11 @@ const authSlice = createSlice({
     saveInfo(state, action) {
       state.user = action.payload;
     },
+    updateTokenInfo(state, action) {
+      state.user.tokenAmount = action.payload.tokenAmount;
+      state.user.onChainTokenAmount = action.payload.onChainTokenAmount;
+      state.user.ethAmount = action.payload.ethAmount;
+    },
     // action 인자값 없는 경우
     logout(state) {
       state.auth = null;
@@ -31,5 +36,11 @@ const authSlice = createSlice({
 });
 
 export default authSlice.reducer;
-export const {authorize, saveInfo, logout, increaseBy, decreaseBy} =
-  authSlice.actions;
+export const {
+  authorize,
+  saveInfo,
+  updateTokenInfo,
+  logout,
+  increaseBy,
+  decreaseBy,
+} = authSlice.actions;

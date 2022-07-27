@@ -22,6 +22,7 @@ import storage from '@react-native-firebase/storage';
 import {getImgUrl} from '../../lib/NFT';
 import GradientButton from '../../components/common/GradientButton';
 
+import {createWallet} from '../../lib/api/wallet';
 // const reference = storage().ref('/directory/filename.png');
 // await reference.putFile(uri);
 // const url = await reference.getDownloadURL();
@@ -71,6 +72,12 @@ const SignUpUserInfoScreen = ({navigation, route}) => {
         birth: `${form.birthYear}년 ${form.birthMonth}월 ${form.birthDay}일`,
         picture: photoURL,
       });
+      //create Wallet
+      const body = {
+        id: uid,
+      };
+      console.log(body);
+      await createWallet(body);
       navigation.push('SignUpUserDetail', {uid: uid, nickName: form.nickName});
     } catch (e) {
       console.log(e);

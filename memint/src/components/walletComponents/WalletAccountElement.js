@@ -1,9 +1,10 @@
 import React from 'react';
 import {View, StyleSheet, Text, TouchableOpacity, Image} from 'react-native';
 import klayIcon from '../../assets/icons/klaytn-klay-logo.png';
+import ethIcon from '../../assets/icons/ethereum.png';
 import lovechainIcon from '../../assets/icons/lovechain.png';
 function WalletAccountElement({onPress, balance, content}) {
-  const imgSrc = content === 'KLAY' ? klayIcon : lovechainIcon;
+  const imgSrc = content === 'ETH' ? ethIcon : lovechainIcon;
   return (
     <View style={[styles.button]}>
       <View style={styles.tokenWrapper}>
@@ -20,7 +21,7 @@ WalletAccountElement.defaultProps = {
   height: 40,
   borderColor: '#bdbddd',
   balance: 0,
-  content: 'KLAY',
+  content: 'ETH',
   onPress: () => {},
 };
 

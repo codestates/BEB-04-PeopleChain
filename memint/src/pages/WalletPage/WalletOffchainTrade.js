@@ -5,12 +5,13 @@ import WalletCustomButton from '../../components/walletComponents/WalletCustomBu
 import {useToast} from '../../utils/hooks/useToast';
 import WalletOffchainRecieve from './WalletOffchainRecieve';
 import WalletOffchainTransfer from './WalletOffchainTransfer';
-
+import useUser from '../../utils/hooks/UseUser';
 const WalletOffchainTrade = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [recieveSelected, setRecieveSelected] = useState(true);
   const [transferSelected, setTransferSelected] = useState(false);
   const {showToast} = useToast();
+  const user = useUser();
   const handleRecieveSelect = () => {
     setRecieveSelected(true);
     setTransferSelected(false);
@@ -30,7 +31,7 @@ const WalletOffchainTrade = ({navigation}) => {
           style={styles.icon}
         />
         <View style={styles.accountTextWrapper}>
-          <Text style={styles.balanceText}>12</Text>
+          <Text style={styles.balanceText}>{user.tokenAmount}</Text>
           <Text style={styles.lcnText}> LCN</Text>
         </View>
       </View>

@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import klayIcon from '../../assets/icons/klaytn-klay-logo.png';
 import lcnIcon from '../../assets/icons/lovechain.png';
+import ethIcon from '../../assets/icons/ethereum.png';
 /*
   사용할 컴포넌트에서 state 사용이 필요함.
   Ex)
@@ -42,8 +43,8 @@ function WalletCustomModal({
         <View style={[styles.centeredView, styles.backgroudDim]}>
           <View style={styles.modalView}>
             <TouchableOpacity style={styles.tokenWrapper} onPress={nFunction}>
-              <Image source={klayIcon} style={styles.icon} />
-              <Text style={styles.contentText}>KLAY</Text>
+              <Image source={ethIcon} style={styles.icon} />
+              <Text style={styles.contentText}>ETH</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.tokenWrapper} onPress={pFunction}>
               <Image source={lcnIcon} style={styles.icon} />

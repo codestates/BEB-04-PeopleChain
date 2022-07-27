@@ -8,16 +8,17 @@ import BasicButton from '../../components/common/BasicButton';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import DoubleModal from '../../components/common/DoubleModal';
 import {useToast} from '../../utils/hooks/useToast';
-
+import useUser from '../../utils/hooks/UseUser';
 const WalletOffchainRecieve = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const {showToast} = useToast();
+  const user = useUser();
 
   return (
     <View style={styles.container}>
       <View style={styles.contentContainer}>
         <LargeLcnButton
-          balance={12}
+          balance={user.tokenAmount}
           width={330}
           height={120}
           margin={[30, 0, 10, 0]}

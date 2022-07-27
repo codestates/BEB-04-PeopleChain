@@ -3,6 +3,7 @@ import {
   authorize,
   saveInfo,
   logout,
+  updateTokenInfo,
   increaseBy,
   decreaseBy,
 } from '../../slices/Auth';
@@ -14,7 +15,7 @@ export default function useAuthActions() {
   return useMemo(
     () =>
       bindActionCreators(
-        {authorize, saveInfo, logout, increaseBy, decreaseBy},
+        {authorize, saveInfo, logout, updateTokenInfo, increaseBy, decreaseBy},
         dispatch,
       ), //authorize, logout자리에 action이름 선언
     [dispatch],
