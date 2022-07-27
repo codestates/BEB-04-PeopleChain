@@ -26,3 +26,9 @@ export const transferETH = async body => {
 export const transferLCN = async body => {
   axios.post('wallet/transferLCN', body);
 };
+
+export const getBalance = async body => {
+  return axios.post('wallet/getBalance', body).then(result => {
+    return result.data;
+  });
+};

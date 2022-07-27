@@ -4,12 +4,16 @@ import {useToast} from '../../utils/hooks/useToast';
 import BasicButton from '../common/BasicButton';
 import SingleModal from '../common/SingleModal';
 import SpendingModal from '../common/UserInfoModal/SpendingModal';
+import {mintNFT} from '../../lib/api/mintNFT';
+import useUser from '../../utils/hooks/UseUser';
 
 function MyMeMin({myMeMin}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [spendingModalVisible, setSpendingModalVisible] = useState(false);
   const {showToast} = useToast();
+  const userInfo = useUser();
   console.log(myMeMin);
+  console.log(userInfo);
 
   return (
     <>
@@ -59,8 +63,16 @@ function MyMeMin({myMeMin}) {
               spendingModalVisible={spendingModalVisible}
               setSpendingModalVisible={setSpendingModalVisible}
               pFunction={() => {
+                mintNFT({
+                  address: userInfo.address,
+                  NFTId: userInfo.nftIds[0],
+                  imgUri: userInfo.nftProfile,
+                }).then(result => {
+                  console.log(result.data);
+                  result.data.message === 'success' &&
+                    showToast('success', '민팅이 되었습니다');
+                });
                 setSpendingModalVisible(false);
-                showToast('success', '민팅이 되었습니다');
               }}
               amount={2}
               txType="NFT 민팅"
