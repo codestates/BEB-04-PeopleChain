@@ -9,23 +9,47 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import DoubleModal from '../../components/common/DoubleModal';
 import {useToast} from '../../utils/hooks/useToast';
 import useUser from '../../utils/hooks/UseUser';
+import {toOffChain} from '../../lib/api/wallet';
 const WalletOffchainRecieve = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const {showToast} = useToast();
   const user = useUser();
+  const [amount, setAmount] = useState();
+
+  const sendToOffChain = async () => {
+    const body = {
+      id: user.id,
+      tokenAmount: Number(amount),
+      currentTokenAmount: Number(user.tokenAmount),
+    };
+    try {
+      await toOffChain(body);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.contentContainer}>
         <LargeLcnButton
-          balance={user.tokenAmount}
+          balance={user.onChainTokenAmount}
           width={330}
           height={120}
           margin={[30, 0, 10, 0]}
+          text={'From'}
+          amount={amount}
+          setAmount={setAmount}
           backgroundColor={'lightblue'}
         />
         <Icon name="arrow-downward" size={70} />
-        <SmallLcnButton width={330} height={60} margin={[10, 0, 0, 0]} />
+        <SmallLcnButton
+          width={330}
+          height={60}
+          margin={[10, 0, 0, 0]}
+          text={'To'}
+          amount={amount}
+        />
         <BasicButton
           margin={[30, 0, 0, 0]}
           width={330}
@@ -46,7 +70,8 @@ const WalletOffchainRecieve = ({navigation}) => {
         nFunction={() => {
           setModalVisible(false);
         }}
-        pFunction={() => {
+        pFunction={async () => {
+          await sendToOffChain();
           setModalVisible(false);
           showToast('success', 'LCN을 가져왔습니다!');
         }}

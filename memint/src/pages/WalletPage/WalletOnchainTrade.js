@@ -15,7 +15,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import DoubleModal from '../../components/common/DoubleModal';
 import {useToast} from '../../utils/hooks/useToast';
 import useUser from '../../utils/hooks/UseUser';
-import {ETHToLCN} from '../../lib/api/wallet';
+import {ETHToLCN, LCNToETH} from '../../lib/api/wallet';
 const WalletOnchainTrade = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const {showToast} = useToast();
@@ -33,13 +33,24 @@ const WalletOnchainTrade = () => {
     });
   };
   const transferETHToLCN = async () => {
-    console.log(amount.fromAmount);
     const body = {
       id: userInfo.id,
       ethAmount: amount.fromAmount,
     };
     try {
       await ETHToLCN(body);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const transferLCNToETH = async () => {
+    const body = {
+      id: userInfo.id,
+      tokenAmount: amount.fromAmount,
+    };
+    try {
+      await LCNToETH(body);
     } catch (e) {
       console.log(e);
     }
@@ -91,7 +102,7 @@ const WalletOnchainTrade = () => {
           setModalVisible(false);
         }}
         pFunction={async () => {
-          await transferETHToLCN();
+          fromEth ? await transferETHToLCN() : await transferLCNToETH();
           setModalVisible(false);
           showToast('success', '완료되었습니다!');
         }}

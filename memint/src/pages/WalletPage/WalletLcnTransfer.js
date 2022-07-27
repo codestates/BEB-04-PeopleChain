@@ -15,10 +15,12 @@ import BasicButton from '../../components/common/BasicButton';
 import DoubleModal from '../../components/common/DoubleModal';
 import {useToast} from '../../utils/hooks/useToast';
 import lcnIcon from '../../assets/icons/lovechain.png';
-
+import {transferLCN} from '../../lib/api/wallet';
+import useUser from '../../utils/hooks/UseUser';
 const WalletLcnTransfer = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const {showToast} = useToast();
+  const userInfo = useUser();
   const [form, setForm] = useState({
     address: '',
     amount: '',
@@ -29,6 +31,18 @@ const WalletLcnTransfer = () => {
   const onSubmit = () => {
     Keyboard.dismiss();
     console.log(form);
+  };
+  const sendLCN = async () => {
+    const body = {
+      id: userInfo.id,
+      tokenAmount: form.amount,
+      toAddress: form.address,
+    };
+    try {
+      await transferLCN(body);
+    } catch (e) {
+      console.log(e);
+    }
   };
   return (
     <KeyboardAvoidingView
@@ -78,7 +92,8 @@ const WalletLcnTransfer = () => {
             nFunction={() => {
               setModalVisible(false);
             }}
-            pFunction={() => {
+            pFunction={async () => {
+              await sendLCN();
               setModalVisible(false);
               showToast('success', '완료되었습니다!');
             }}
