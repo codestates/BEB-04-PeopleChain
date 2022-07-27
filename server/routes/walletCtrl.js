@@ -245,7 +245,48 @@ transferETH = async (req, res) => {
   }
 };
 
-transferLCN = () => {};
+transferLCN = async (req, res) => {
+  const { address, privateKey, toAddress, tokenAmount } = req.body;
+  try {
+    // tokenAmount보다 beforeBalance의 값이 크거나 같은지 먼저 체크한다.
+    const beforeBalance = await myContract.methods.balanceOf(address).call();
+
+    // user의 address에서 toAddress로 LCN을 보내주는 함수
+    const sendLCNTo = async () => {
+      const data = await myContract.methods
+        .transfer(toAddress, toWei(tokenAmount.toString()))
+        .encodeABI();
+
+      const rawTx = {
+        to: contractAddress,
+        gas: 2000000,
+        gasPrice: await web3.eth.getGasPrice(),
+        data,
+      };
+
+      const signedTx = await web3.eth.accounts.signTransaction(
+        rawTx,
+        privateKey
+      );
+
+      return await web3.eth.sendSignedTransaction(
+        signedTx.rawTransaction,
+        async (err, result) => {
+          if (err) return res.status(400).send({ error: err });
+          return result;
+        }
+      );
+    };
+
+    sendLCNTo().then(async () => {
+      // 아래 afterBalance 값을 firestore에 업데이트해준다.
+      const afterBalance = await myContract.methods.balanceOf(address).call();
+      res.status(200).send({ balance: fromWei(afterBalance.toString()) });
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 module.exports = {
   ETHToLCN,
