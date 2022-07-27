@@ -8,12 +8,33 @@ const app = express();
 const fs = require("fs");
 const port = 5000;
 
+//Firebase setting
+const admin = require("firebase-admin");
+const firestore = require("firebase-admin/firestore");
+const serviceAccount = require("./key/memint-c2130-firebase-adminsdk-p6jhw-39f8a3b04b.json");
+
+const firebaseApp = admin.initializeApp({
+	credential: admin.credential.cert(serviceAccount),
+});
+
+const db = firestore.getFirestore(firebaseApp);
+//Firebase setting
+
+// test();
+// async function test() {
+// 	db.collection("cities").doc("LA2").set({
+// 		name: "Los Angeles 2",
+// 		state: "CA 2",
+// 		country: "USA 2",
+// 	});
+// }
+
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.get("/", (req, res) => {
-  res.send("hello Web3");
+	res.send("hello Web3");
 });
 
 app.use("/auth", auth);
@@ -21,23 +42,23 @@ app.use("/wallet", wallet);
 app.use("/transaction", transactionRouter);
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
-  const err = new Error("Not Found");
-  err["status"] = 404;
-  next(err);
+	const err = new Error("Not Found");
+	err["status"] = 404;
+	next(err);
 });
 
 // error handler
 app.use((err, req, res, next) => {
-  res.status(err.status || 500);
-  res.json({
-    errors: {
-      message: err.message,
-    },
-  });
+	res.status(err.status || 500);
+	res.json({
+		errors: {
+			message: err.message,
+		},
+	});
 });
 
 app.listen(port, () => {
-  console.log(`Memint Server listening at http://localhost:${port}`);
+	console.log(`Memint Server listening at http://localhost:${port}`);
 });
 
 module.exports = app;
