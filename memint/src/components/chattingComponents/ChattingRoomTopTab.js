@@ -17,7 +17,7 @@ function ChattingRoomTopTab({setProposeModalVisible, setModalVisible, data}) {
   useEffect(() => {
     meetingRef.onSnapshot(result => {
       setRoomData(result.data());
-      const memberStatusCount = result.data().members.filter(el => {
+      const memberStatusCount = result.data().members?.filter(el => {
         return Object.values(el)[0] === 'accepted';
       }).length;
       setCount(memberStatusCount);
@@ -146,15 +146,17 @@ const Joiner = ({data, user, setModalVisible, meetingInfo}) => {
             <Text style={{paddingRight: 7, fontSize: 16, fontWeight: '700'}}>
               {data.title}
             </Text>
-            <View
-              style={
-                // status가 fixed이면
-                data.status === 'full'
-                  ? {...styles.status, backgroundColor: 'gray'} // 아니면 회색 view 렌더링
-                  : styles.status // 파란색 view 렌더링
-              }>
-              <Text style={{color: 'white'}}>확정</Text>
-            </View>
+            {data.status === 'open' ? null : (
+              <View
+                style={
+                  // status가 fixed이면
+                  data.status === 'full'
+                    ? {...styles.status, backgroundColor: 'gray'} // 아니면 회색 view 렌더링
+                    : styles.status // 파란색 view 렌더링
+                }>
+                <Text style={{color: 'white'}}>확정</Text>
+              </View>
+            )}
           </View>
         </View>
         {/* 미팅 상세페이지로 라우팅 설정해놓기 */}
@@ -168,7 +170,7 @@ const Joiner = ({data, user, setModalVisible, meetingInfo}) => {
       <View style={{flex: 1, alignItems: 'flex-end', justifyContent: 'center'}}>
         {
           //status가 end이면
-          data.status === 'end' ? (
+          data.status === 'open' ? null : data.status === 'end' ? (
             <TouchableOpacity
               onPress={() => {
                 // proposeModal이 왜 렌더링이 안되는지 모르겠다. 파일 변경이 있었던 것 같다.
