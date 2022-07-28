@@ -108,7 +108,7 @@ function WalletOffchainHistory({navigation}) {
   };
 
   return (
-    <View>
+    <View style={styles.view}>
       <Text style={styles.accountText}>Token Account</Text>
       <TotalAccountButton
         amount={user.tokenAmount}
@@ -136,6 +136,9 @@ function WalletOffchainHistory({navigation}) {
 }
 
 const styles = StyleSheet.create({
+  view: {
+    alignItems: 'center',
+  },
   container: {
     flex: 1,
     marginTop: 60,

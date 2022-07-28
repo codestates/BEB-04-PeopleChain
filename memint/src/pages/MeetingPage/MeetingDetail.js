@@ -24,6 +24,8 @@ import {
 } from '../../utils/common/Functions';
 import crown from '../../assets/icons/crown.png';
 import GradientButton from '../../components/common/GradientButton';
+import WalletButton from '../../components/common/WalletButton';
+import LinearGradient from 'react-native-linear-gradient';
 
 function MeetingDetail({route}) {
   const userInfo = useUser();
@@ -65,7 +67,7 @@ function MeetingDetail({route}) {
           height={50}
           textSize={17}
           border={false}
-          backgroundColor={'#767676'}
+          backgroundColor={'lightgray'}
           text="신청 수락 대기 중"
           onPress={() => {}}
         />
@@ -73,7 +75,7 @@ function MeetingDetail({route}) {
     } else {
       return (
         // <GradientButton
-        // width={340}
+        //   width={340}
         //   height={50}
         //   textSize={17}
         //   text="미팅 신청 보내기"
@@ -163,12 +165,12 @@ function MeetingDetail({route}) {
                     resizeMode="contain"
                   />
                 </View>
+
                 <Image
                   source={{uri: data.hostInfo.nftProfile}}
                   style={styles.hostImage}
                 />
               </View>
-
               <Text style={styles.hostnickName}>
                 {'@' + data.hostInfo.nickName}
               </Text>
@@ -181,9 +183,13 @@ function MeetingDetail({route}) {
           <View style={styles.meetingTags}>
             {data.meetingTags.map((tag, idx) => {
               return (
-                <View key={idx} style={styles.tag}>
+                <LinearGradient
+                  colors={['#A7BFEB', '#FBC2EA']}
+                  style={styles.tag}>
+                  {/* <View key={idx} style={styles.tag}> */}
                   <Text style={styles.tagText}>{'#' + tag}</Text>
-                </View>
+                  {/* </View> */}
+                </LinearGradient>
               );
             })}
           </View>
@@ -239,6 +245,7 @@ function MeetingDetail({route}) {
           pFunction={handleCreateProposal}
         />
       </ScrollView>
+      <WalletButton />
     </SafeAreaView>
   );
 }
@@ -267,6 +274,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+
   image: {
     width: 30,
     height: 30,
@@ -281,8 +289,9 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     width: 50,
     height: 50,
-    borderWidth: 1,
-    borderColor: 'black',
+    // position: 'absolute',
+    // bottom: 0,
+    // right: 0
   },
   hostnickName: {
     fontSize: 10,
@@ -312,9 +321,9 @@ const styles = StyleSheet.create({
   tag: {
     backgroundColor: 'black',
     marginRight: 5,
-    paddingHorizontal: 5,
-    paddingVertical: 3,
-    borderRadius: 4.5,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderRadius: 10,
   },
   tagText: {
     color: 'white',

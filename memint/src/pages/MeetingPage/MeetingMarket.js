@@ -20,7 +20,6 @@ import FilterModal from '../../components/meetingComponents/FilterModal';
 import {getUser} from '../../lib/Users';
 import {signOut} from '../../lib/Auth';
 import useAuthActions from '../../utils/hooks/UseAuthActions';
-import LinearGradient from 'react-native-linear-gradient';
 
 function MeetingMarket({navigation}) {
   const [meetings, setMeetings] = useState([]);
@@ -108,21 +107,19 @@ function MeetingMarket({navigation}) {
 
   const RegionDropDownData = [
     {label: '서울 전체', value: '서울 전체'},
-    {label: '강남구', value: '강남구'},
-    {label: '강동구', value: '강동구'},
-    {label: '강북구', value: '강북구'},
-    {label: '강서구', value: '강서구'},
-    {label: '관악구', value: '관악구'},
-    {label: '광진구', value: '광진구'},
-    {label: '구로구', value: '구로구'},
-    {label: '금천구', value: '금천구'},
-    {label: '노원구', value: '노원구'},
-    {label: '도봉구', value: '도봉구'},
-    {label: '동대문구', value: '동대문구'},
-    {label: '동작구', value: '동작구'},
-    {label: '마포구', value: '마포구'},
-    {label: '서대문구', value: '서대문구'},
-    {label: '서초구', value: '서초구'},
+    {label: '강남', value: '강남'},
+    {label: '신사', value: '신사'},
+    {label: '홍대', value: '홍대'},
+    {label: '신촌', value: '신촌'},
+    {label: '여의도', value: '여의도'},
+    {label: '구로', value: '구로'},
+    {label: '신도림', value: '신도림'},
+    {label: '혜화', value: '혜화'},
+    {label: '안암', value: '안암'},
+    {label: '종로', value: '종로'},
+    {label: '동대문', value: '동대문'},
+    {label: '성수', value: '성수'},
+    {label: '이태원', value: '이태원'},
   ];
   const SortDropDownData = [
     {label: '정렬', value: 0},

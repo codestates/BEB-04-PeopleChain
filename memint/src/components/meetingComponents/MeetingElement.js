@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     paddingHorizontal: 27,
     paddingVertical: 20,
-    paddingRight: 65,
+    paddingRight: 50,
     height: 130,
     borderColor: 'black',
     borderRadius: 30,
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   },
   info: {
     flex: 0,
-    marginLeft: 10,
+    marginLeft: 15,
     height: 80,
     width: 215,
     flexDirection: 'column',

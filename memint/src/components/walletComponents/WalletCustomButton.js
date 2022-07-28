@@ -37,7 +37,8 @@ function WalletCustomButton({
   selected,
 }) {
   const [marginTop, marginRight, marginBottom, marginLeft] = margin;
-  const backgroundColor = selected ? '#007aff' : 'lightgrey';
+  const backgroundColor = selected ? 'black' : 'white';
+  const textColor = selected ? 'white' : 'black';
   return (
     <TouchableOpacity onPress={onPress}>
       <View
@@ -53,7 +54,10 @@ function WalletCustomButton({
             marginLeft: marginLeft,
           },
         ]}>
-        <Text style={[styles.buttonText, {fontSize: textSize}]}>{text}</Text>
+        <Text
+          style={[styles.buttonText, {fontSize: textSize, color: textColor}]}>
+          {text}
+        </Text>
       </View>
     </TouchableOpacity>
   );
@@ -63,7 +67,7 @@ WalletCustomButton.defaultProps = {
   width: 100,
   height: 40,
   borderColor: '#bdbddd',
-  backgroundColor: '#007aff',
+  backgroundColor: 'black',
   text: '버튼',
   textSize: 14,
   margin: [5, 5, 5, 5],
@@ -75,7 +79,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderColor: 'black',
     borderWidth: 1,
-    borderRadius: 3,
+    borderRadius: 30,
     margin: 5,
   },
   buttonText: {

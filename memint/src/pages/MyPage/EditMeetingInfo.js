@@ -150,7 +150,7 @@ function EditMeetingInfo({route}) {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.view}>
       <View style={styles.headerBar}>
         <View style={styles.flexRow}>
           <BackButton />
@@ -325,6 +325,10 @@ function EditMeetingInfo({route}) {
 }
 
 const styles = StyleSheet.create({
+  view: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
   headerBar: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -356,13 +360,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   createElement: {
-    borderBottomColor: 'gray',
+    borderBottomColor: 'lightgray',
     borderBottomWidth: 1,
     paddingHorizontal: 12,
     paddingVertical: 10,
     height: 60,
   },
   tagElement: {
+    borderBottomColor: 'lightgray',
+    borderBottomWidth: 1,
     paddingHorizontal: 12,
     paddingVertical: 10,
   },
@@ -401,9 +407,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   invitedFriend: {
-    backgroundColor: 'gray',
+    backgroundColor: 'lightgray',
     padding: 8,
     marginHorizontal: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderRadius: 10,
   },
   leftMargin: {
     marginLeft: 5,

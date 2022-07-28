@@ -13,7 +13,8 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import BasicButton from '../../components/common/BasicButton';
 import BorderedInput from '../../components/AuthComponents/BorderedInput';
 import BackButton from '../../components/common/BackButton';
-import memintLogo from '../../assets/icons/memint.png';
+import logo from '../../assets/icons/logo.png';
+import GradientButton from '../../components/common/GradientButton';
 
 const FindIdVerifyMobileScreen = ({navigation}) => {
   const [form, setForm] = useState({
@@ -42,7 +43,7 @@ const FindIdVerifyMobileScreen = ({navigation}) => {
       <SafeAreaView style={styles.fullscreen}>
         <BackButton />
         <View style={styles.fullscreenSub}>
-          <Image source={memintLogo} style={styles.logo} />
+          <Image source={logo} style={styles.logo} />
           <Text style={styles.contentText}>
             회원가입 시 사용하신 전화번호를 입력해주세요.
           </Text>
@@ -62,9 +63,19 @@ const FindIdVerifyMobileScreen = ({navigation}) => {
               returnKeyType={'done'}
               onSubmitEditing={() => verificationCodeRef.current.focus()}
             />
-            <BasicButton
+            {/* <BasicButton
               style={styles.button}
               width={70}
+              height={35}
+              textSize={13}
+              margin={[5, 5, 5, 5]}
+              text="인증번호받기"
+              hasMarginBottom
+              onPress={onSubmit}
+            /> */}
+            <GradientButton
+              style={styles.button}
+              width={80}
               height={35}
               textSize={13}
               margin={[5, 5, 5, 5]}
@@ -87,7 +98,7 @@ const FindIdVerifyMobileScreen = ({navigation}) => {
                 onSubmit();
               }}
             />
-            <BasicButton
+            {/* <BasicButton
               style={styles.button}
               width={70}
               height={35}
@@ -96,9 +107,29 @@ const FindIdVerifyMobileScreen = ({navigation}) => {
               text="인증"
               hasMarginBottom
               onPress={onSubmit}
+            /> */}
+            <GradientButton
+              style={styles.button}
+              width={80}
+              height={35}
+              textSize={13}
+              margin={[5, 5, 5, 5]}
+              text="인증"
+              hasMarginBottom
+              onPress={onSubmit}
             />
           </View>
-          <BasicButton
+          <GradientButton
+            style={styles.button}
+            width={300}
+            height={45}
+            textSize={17}
+            margin={[5, 5, 5, 5]}
+            text="다음 단계"
+            hasMarginBottom
+            onPress={goToNextPage}
+          />
+          {/* <BasicButton
             style={styles.button}
             width={300}
             height={40}
@@ -107,7 +138,7 @@ const FindIdVerifyMobileScreen = ({navigation}) => {
             text="다음 단계"
             hasMarginBottom
             onPress={goToNextPage}
-          />
+          /> */}
         </View>
       </SafeAreaView>
     </KeyboardAvoidingView>
@@ -117,6 +148,7 @@ const FindIdVerifyMobileScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   KeyboardAvoidingView: {
     flex: 1,
+    backgroundColor: 'white',
   },
   fullscreen: {
     flex: 1,
@@ -128,7 +160,7 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
   },
   logo: {
-    width: 160,
+    width: 200,
     height: 160,
     marginTop: 70,
   },

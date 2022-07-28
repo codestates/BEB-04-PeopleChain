@@ -33,6 +33,7 @@ HistoryButton.defaultProps = {
 const styles = StyleSheet.create({
   timeText: {
     fontSize: 12,
+    marginBottom: 3,
   },
   contentText: {
     fontSize: 20,
@@ -73,6 +74,7 @@ const styles = StyleSheet.create({
   balanceChange: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'flex-end',
   },
   text: {
     marginHorizontal: 20,

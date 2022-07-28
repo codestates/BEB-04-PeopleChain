@@ -13,7 +13,8 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import BasicButton from '../../components/common/BasicButton';
 import BorderedInput from '../../components/AuthComponents/BorderedInput';
 import BackButton from '../../components/common/BackButton';
-import memintLogo from '../../assets/icons/memint.png';
+import logo from '../../assets/icons/logo.png';
+import GradientButton from '../../components/common/GradientButton';
 
 const SetNewPWScreen = ({navigation}) => {
   const [form, setForm] = useState({
@@ -42,7 +43,7 @@ const SetNewPWScreen = ({navigation}) => {
       <SafeAreaView style={styles.fullscreen}>
         <BackButton />
         <View style={styles.fullscreenSub}>
-          <Image source={memintLogo} style={styles.logo} />
+          <Image source={logo} style={styles.logo} />
           <Text style={styles.contentText}>
             새로운 비밀번호를 입력해주세요.
           </Text>
@@ -75,7 +76,17 @@ const SetNewPWScreen = ({navigation}) => {
               }}
             />
           </View>
-          <BasicButton
+          {/* <BasicButton
+            style={styles.button}
+            width={300}
+            height={40}
+            textSize={17}
+            margin={[5, 5, 5, 5]}
+            text="비밀번호 재설정하기"
+            hasMarginBottom
+            onPress={goToNextPage}
+          /> */}
+          <GradientButton
             style={styles.button}
             width={300}
             height={40}
@@ -94,6 +105,7 @@ const SetNewPWScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   KeyboardAvoidingView: {
     flex: 1,
+    backgroundColor: 'white',
   },
   fullscreen: {
     flex: 1,
@@ -105,7 +117,7 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
   },
   logo: {
-    width: 160,
+    width: 200,
     height: 160,
     marginTop: 70,
   },

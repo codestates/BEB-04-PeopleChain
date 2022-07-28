@@ -24,7 +24,6 @@ function MyPage({navigation}) {
   //   });
   //   addLog(logs);
   // };
-
   const dummyUser = {
     nickName: '김개똥',
     birth: '2022년 7월 25일',

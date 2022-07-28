@@ -81,7 +81,7 @@ function WalletOffchainMain({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 60,
+    backgroundColor: 'white',
   },
   contentContainer: {
     flex: 1,

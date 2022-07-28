@@ -1,15 +1,17 @@
-import {useNavigation} from '@react-navigation/native';
-import React, {useEffect, useState} from 'react';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
+import React, {useEffect, useState, useCallback} from 'react';
 import {Text, StyleSheet, View, TouchableOpacity} from 'react-native';
 
 import DoubleModal from '../../components/common/DoubleModal';
+import {getMeeting} from '../../lib/Meeting';
+import {getUser} from '../../lib/Users';
 import {handleDateInFormat} from '../../utils/common/Functions';
 import {useMeeting} from '../../utils/hooks/UseMeeting';
 import {useToast} from '../../utils/hooks/useToast';
 
 // function ParticipatedMeetingList({List}) {
 //   return (
-//     <>
+//     <>1
 //       <FlatList
 //         data={List}
 //         renderItem={({item}) => <ParticipatedMeetings item={item} />}
@@ -21,24 +23,51 @@ function ParticipatedMeetingList({user}) {
   const meetingData = useMeeting();
   const [joinedRoom, setJoinedRoom] = useState([]);
   useEffect(() => {
-    setJoinedRoom(
-      user.joinedroomId?.map(el => {
-        //내가 가지고 있는 아이디
-        const meetingInfo = meetingData.filter(meeting => {
-          return meeting.id === el;
-        });
-        return meetingInfo[0];
+    getJoinedRoom();
+    // setJoinedRoom(
+    //   user.joinedroomId?.map(el => {
+    //     //내가 가지고 있는 아이디
+    //     const meetingInfo = meetingData.filter(meeting => {
+    //       return meeting.id === el;
+    //     });
+    //     return meetingInfo[0];
+    //   }),
+    // );
+  }, [getJoinedRoom, isFocused]);
+
+  const isFocused = useIsFocused();
+
+  const getJoinedRoom = useCallback(async () => {
+    const userData = await getUser(user.id);
+
+    const data = await Promise.all(
+      userData.joinedroomId.map(async el => {
+        const res = await getMeeting(el);
+        const host = await getUser(res.data().hostId);
+        return {
+          id: res.id,
+          ...res.data(),
+          hostInfo: host,
+        };
       }),
     );
-  }, [meetingData, user]);
+    setJoinedRoom(data);
+  }, [user]);
   return (
     <>
-      {joinedRoom ? (
+      {joinedRoom.length !== 0 ? (
         joinedRoom.map((el, index) => (
           <ParticipatedMeetings item={el} key={index} />
         ))
       ) : (
-        <Text>참여 중인 미팅이 없습니다.</Text>
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            paddingTop: 30,
+          }}>
+          <Text style={{color: 'lightgray'}}>참여 중인 미팅이 없습니다.</Text>
+        </View>
       )}
     </>
   );
@@ -53,6 +82,7 @@ function ParticipatedMeetings({item}) {
       <TouchableOpacity
         style={styles.meetingCard}
         onPress={() => {
+          console.log(item);
           navigation.navigate('ChattingRoom', {data: item});
         }}>
         <View style={styles.titleRow}>

@@ -28,8 +28,8 @@ import SpendingModal from '../../components/common/UserInfoModal/SpendingModal';
 function MeetingCreate({route}) {
   const userInfo = useUser();
   const {saveInfo} = useAuthActions();
-  const {saveMeeting} = useMeetingActions();
-  const rooms = useMeeting();
+  // const {saveMeeting} = useMeetingActions();
+  // const rooms = useMeeting();
 
   const [submittable, setSubmittable] = useState(false);
   const [meetingInfo, setMeetingInfo] = useState({
@@ -53,21 +53,19 @@ function MeetingCreate({route}) {
   const {showToast} = useToast();
   const RegionDropDownData = [
     {label: '서울 전체', value: '서울 전체'},
-    {label: '강남구', value: '강남구'},
-    {label: '강동구', value: '강동구'},
-    {label: '강북구', value: '강북구'},
-    {label: '강서구', value: '강서구'},
-    {label: '관악구', value: '관악구'},
-    {label: '광진구', value: '광진구'},
-    {label: '구로구', value: '구로구'},
-    {label: '금천구', value: '금천구'},
-    {label: '노원구', value: '노원구'},
-    {label: '도봉구', value: '도봉구'},
-    {label: '동대문구', value: '동대문구'},
-    {label: '동작구', value: '동작구'},
-    {label: '마포구', value: '마포구'},
-    {label: '서대문구', value: '서대문구'},
-    {label: '서초구', value: '서초구'},
+    {label: '강남', value: '강남'},
+    {label: '신사', value: '신사'},
+    {label: '홍대', value: '홍대'},
+    {label: '신촌', value: '신촌'},
+    {label: '여의도', value: '여의도'},
+    {label: '구로', value: '구로'},
+    {label: '신도림', value: '신도림'},
+    {label: '혜화', value: '혜화'},
+    {label: '안암', value: '안암'},
+    {label: '종로', value: '종로'},
+    {label: '동대문', value: '동대문'},
+    {label: '성수', value: '성수'},
+    {label: '이태원', value: '이태원'},
   ];
   const PeopleDropDownData = [
     {label: '1:1', value: 1},
@@ -146,18 +144,18 @@ function MeetingCreate({route}) {
         'createdroomId',
         res._documentPath._parts[1],
       );
-      const newMeeting = await getMeeting(res._documentPath._parts[1]);
-      saveInfo({
-        ...userInfo,
-        createdroomId: [...userInfo.createdroomId, newMeeting.id],
-      });
-      saveMeeting([
-        ...rooms,
-        {
-          id: newMeeting.id,
-          ...newMeeting.data(),
-        },
-      ]);
+      // const newMeeting = await getMeeting(res._documentPath._parts[1]);
+      // saveInfo({
+      //   ...userInfo,
+      //   createdroomId: [...userInfo.createdroomId, res._documentPath._parts[1]],
+      // });
+      // saveMeeting([
+      //   ...rooms,
+      //   {
+      //     id: newMeeting.id,
+      //     ...newMeeting.data(),
+      //   },
+      // ]);
       setConfirmModalVisible(false);
       showToast('success', '미팅이 생성되었습니다');
       navigation.navigate('MeetingMarket');
@@ -323,7 +321,7 @@ function MeetingCreate({route}) {
           setSpendingModalVisible={setInviteSpendingModalVisible}
           pFunction={handleNavigate}
           amount={1}
-          txType="친구초대"
+          txType="친구 초대"
         />
         <View style={styles.tagElement}>
           <Text style={[styles.text, styles.tagTitle]}>태그</Text>
@@ -410,7 +408,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   createElement: {
-    borderBottomColor: 'gray',
+    borderBottomColor: 'lightgray',
     borderBottomWidth: 1,
     paddingHorizontal: 12,
     paddingVertical: 10,
@@ -455,8 +453,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   invitedFriend: {
+    borderRadius: 10,
     backgroundColor: 'lightgray',
-    padding: 8,
+    paddingVertical: 8,
+    paddingHorizontal: 10,
     marginHorizontal: 8,
   },
   leftMargin: {

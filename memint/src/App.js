@@ -48,16 +48,7 @@ function App() {
 
   const saveUserInfo = async user => {
     try {
-      // const userDetail = await getUser(user.uid);
-      let userDetail = await getUser(user.uid);
-
-      //createdroomId, joinedroomId 관련 에러 해결을 위해 임시로 추가한 코드입니다.
-      // userDetail = userDetail.createdroomId
-      //   ? userDetail
-      //   : {...userDetail, createdroomId: []};
-      // userDetail = userDetail.joinedroomId
-      //   ? userDetail
-      //   : {...userDetail, joinedroomId: []};
+      const userDetail = await getUser(user.uid);
 
       const userProperty = await getUserProperty(user.uid);
 
@@ -68,23 +59,23 @@ function App() {
       saveNFT(nfts);
 
       setMemin(...getMemin(nfts));
-      const meetingIdArray = [
-        ...userDetail.createdroomId,
-        ...userDetail.joinedroomId,
-      ];
-      const meetingRes = await Promise.all(
-        meetingIdArray.map(async el => {
-          const meetingInfo = await getMeeting(el);
-          const hostInfo = await getUser(meetingInfo.hostId);
-          return {
-            id: meetingInfo.id,
-            ...meetingInfo.data(),
-            hostInfo: {...hostInfo},
-          };
-        }),
-      );
+      // const meetingIdArray = [
+      //   ...userDetail.createdroomId,
+      //   ...userDetail.joinedroomId,
+      // ];
+      // const meetingRes = await Promise.all(
+      //   meetingIdArray.map(async el => {
+      //     const meetingInfo = await getMeeting(el);
+      //     const hostInfo = await getUser(meetingInfo.hostId);
+      //     return {
+      //       id: meetingInfo.id,
+      //       ...meetingInfo.data(),
+      //       hostInfo: {...hostInfo},
+      //     };
+      //   }),
+      // );
 
-      saveMeeting(meetingRes);
+      // saveMeeting(meetingRes);
       saveInfo({
         id: user.uid,
         email: user.email,
@@ -98,8 +89,8 @@ function App() {
         tokenAmount: userDetail.tokenAmount,
         ethAmount: userDetail.ethAmount,
         onChainTokenAmount: userDetail.onChainTokenAmount,
-        createdroomId: userDetail.createdroomId,
-        joinedroomId: userDetail.joinedroomId,
+        // createdroomId: userDetail.createdroomId,
+        // joinedroomId: userDetail.joinedroomId,
         nftProfile: userDetail.nftProfile.toString(),
         alcoholType: userProperty[0].alcoholType,
         drinkCapa: userProperty[0].drinkCapa,

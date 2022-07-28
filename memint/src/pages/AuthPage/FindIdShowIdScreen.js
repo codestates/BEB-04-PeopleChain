@@ -11,7 +11,8 @@ import {
 import {SafeAreaView} from 'react-native-safe-area-context';
 import BasicButton from '../../components/common/BasicButton';
 import BackButton from '../../components/common/BackButton';
-import memintLogo from '../../assets/icons/memint.png';
+import logo from '../../assets/icons/logo.png';
+import GradientButton from '../../components/common/GradientButton';
 
 const FindIdShowIdScreen = ({navigation}) => {
   const goToSignInPage = () => {
@@ -28,11 +29,21 @@ const FindIdShowIdScreen = ({navigation}) => {
       <SafeAreaView style={styles.fullscreen}>
         <BackButton />
         <View style={styles.fullscreenSub}>
-          <Image source={memintLogo} style={styles.logo} />
+          <Image source={logo} style={styles.logo} />
           <Text style={styles.contentText}>
             가입하신 이메일은 {'\n'} "abcdefu@gmail.com" 입니다.
           </Text>
-          <BasicButton
+          {/* <BasicButton
+            style={styles.button}
+            width={300}
+            height={40}
+            textSize={17}
+            margin={[5, 5, 20, 5]}
+            text="로그인 하러 가기"
+            hasMarginBottom
+            onPress={goToSignInPage}
+          /> */}
+          <GradientButton
             style={styles.button}
             width={300}
             height={40}
@@ -43,7 +54,17 @@ const FindIdShowIdScreen = ({navigation}) => {
             onPress={goToSignInPage}
           />
 
-          <BasicButton
+          {/* <BasicButton
+            style={styles.button}
+            width={300}
+            height={40}
+            textSize={17}
+            margin={[20, 5, 5, 5]}
+            text="비밀번호 변경하러 가기"
+            hasMarginBottom
+            onPress={goToFindPWPage}
+          /> */}
+          <GradientButton
             style={styles.button}
             width={300}
             height={40}
@@ -62,6 +83,7 @@ const FindIdShowIdScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   KeyboardAvoidingView: {
     flex: 1,
+    backgroundColor: 'white',
   },
   fullscreen: {
     flex: 1,
@@ -73,7 +95,7 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
   },
   logo: {
-    width: 160,
+    width: 200,
     height: 160,
     marginTop: 70,
   },

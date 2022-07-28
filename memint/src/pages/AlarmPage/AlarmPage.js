@@ -17,7 +17,7 @@ import WalletButton from '../../components/common/WalletButton';
 
 function AlarmPage({navigation}) {
   const userInfo = useUser();
-  const meetingData = useMeeting();
+  // const meetingData = useMeeting();
   const [chattingConfirmModal, setChattingConfirmModal] = useState(false);
   const [alarms, setAlarms] = useState([]);
   const isFocused = useIsFocused();
@@ -47,37 +47,39 @@ function AlarmPage({navigation}) {
         }),
       );
       //미팅 데이터
-      //   const dataWithMeetingInfo = await Promise.all(
-      //     dataWithSenderInfo.map(async el => {
-      //       const meet = await getMeeting(el.meetingId);
-      //       if (meet.data()) {
-      //         return {
-      //           ...el,
-      //           meetingInfo: {
-      //             ...meet.data(),
-      //             meetDate: handleDateInFormat(meet.data().meetDate),
-      //           },
-      //         };
-      //       } else {
-      //         return {
-      //           ...el,
-      //         };
-      //       }
-      //     }),
-      //   );
-      //   setAlarms(dataWithMeetingInfo);
+      const dataWithMeetingInfo = await Promise.all(
+        dataWithSenderInfo.map(async el => {
+          const meet = await getMeeting(el.meetingId);
+          const host = await getUser(meet.data().hostId);
+          if (meet.data()) {
+            return {
+              ...el,
+              meetingInfo: {
+                id: meet.id,
+                ...meet.data(),
+                hostInfo: {...host},
+              },
+            };
+          } else {
+            return {
+              ...el,
+            };
+          }
+        }),
+      );
+      setAlarms(dataWithMeetingInfo);
 
-      const dataWithMeeting = dataWithSenderInfo.map(el => {
-        const meet = meetingData.filter(meeting => {
-          return meeting.id === el.meetingId;
-        });
-        return {...el, meetingInfo: meet[0]};
-      });
-      setAlarms(dataWithMeeting);
+      // const dataWithMeeting = dataWithSenderInfo.map(el => {
+      //   const meet = meetingData.filter(meeting => {
+      //     return meeting.id === el.meetingId;
+      //   });
+      //   return {...el, meetingInfo: meet[0]};
+      // });
+      // setAlarms(dataWithMeetingInfo);
     } catch (e) {
       console.log(e);
     }
-  }, [userInfo, meetingData]);
+  }, [userInfo]);
   const handleMoveChattingRoom = meetingInfo => {
     //meetingInfo 받아서
     //navigate
@@ -90,42 +92,49 @@ function AlarmPage({navigation}) {
       <View style={styles.header}>
         <Text style={styles.title}>알림</Text>
       </View>
-      <ScrollView>
-        <View>
-          {alarms.map((alarm, idx) => (
-            <AlarmElement
-              key={idx}
-              message={alarm.message}
-              meetingId={alarm.meetingId}
-              createdAt={alarm.createdAt}
-              meetingInfo={alarm.meetingInfo}
-              type={alarm.type}
-              sender={alarm.sender}
-              senderInfo={alarm.senderInfo}
-              chattingConfirmModal={chattingConfirmModal}
-              setChattingConfirmModal={setChattingConfirmModal}
-              handleMoveChattingRoom={handleMoveChattingRoom}
-              onPress={
-                alarm.type === 'proposal'
-                  ? () => {
-                      if (alarm.meetingInfo) {
-                        navigation.navigate('AlarmDetail', {
-                          id: alarm.id,
-                          message: alarm.message,
-                          meetingId: alarm.meetingId,
-                          meetingInfo: alarm.meetingInfo,
-                          sender: alarm.sender,
-                          senderInfo: alarm.senderInfo,
-                          complete: alarm.complete,
-                        });
-                      }
-                    }
-                  : () => setChattingConfirmModal(true)
-              }
-            />
-          ))}
+      {alarms.length === 0 ? (
+        <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
+          <Text style={{color: 'lightgray'}}>알림이 없습니다</Text>
         </View>
-      </ScrollView>
+      ) : (
+        <ScrollView>
+          <View>
+            {alarms.map((alarm, idx) => (
+              <AlarmElement
+                key={idx}
+                message={alarm.message}
+                meetingId={alarm.meetingId}
+                createdAt={alarm.createdAt}
+                meetingInfo={alarm.meetingInfo}
+                type={alarm.type}
+                sender={alarm.sender}
+                senderInfo={alarm.senderInfo}
+                chattingConfirmModal={chattingConfirmModal}
+                setChattingConfirmModal={setChattingConfirmModal}
+                handleMoveChattingRoom={handleMoveChattingRoom}
+                onPress={
+                  alarm.type === 'proposal'
+                    ? () => {
+                        if (alarm.meetingInfo) {
+                          navigation.navigate('AlarmDetail', {
+                            id: alarm.id,
+                            message: alarm.message,
+                            meetingId: alarm.meetingId,
+                            meetingInfo: alarm.meetingInfo,
+                            sender: alarm.sender,
+                            senderInfo: alarm.senderInfo,
+                            complete: alarm.complete,
+                          });
+                        }
+                      }
+                    : () => setChattingConfirmModal(true)
+                }
+              />
+            ))}
+          </View>
+        </ScrollView>
+      )}
+
       <WalletButton />
     </SafeAreaView>
   );

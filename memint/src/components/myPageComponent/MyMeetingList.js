@@ -1,12 +1,15 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {Text, StyleSheet, View, TouchableOpacity} from 'react-native';
 import DoubleModal from '../../components/common/DoubleModal';
 import {useMeeting} from '../../utils/hooks/UseMeeting';
 import {handleDateInFormat} from '../../utils/common/Functions';
-import {updateMeeting} from '../../lib/Meeting';
+import {getMeeting, updateMeeting} from '../../lib/Meeting';
 import useMeetingActions from '../../utils/hooks/UseMeetingActions';
 import EarnModal from '../common/UserInfoModal/EarnModal';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {getUser} from '../../lib/Users';
+import {useIsFocused} from '@react-navigation/native';
+import {useToast} from '../../utils/hooks/useToast';
 
 // function MyMeetingList({List, navigation}) {
 //   return (
@@ -22,41 +25,70 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 // }
 
 function MyMeetingList({navigation, user}) {
-  const meetingData = useMeeting(); //redux crete, join에 있는 모든 미팅 정보들
+  // const meetingData = useMeeting(); //redux crete, join에 있는 모든 미팅 정보들
   const [createdRoom, setCreatedRoom] = useState([]);
 
-  useEffect(() => {
-    setCreatedRoom(
-      user.createdroomId?.map(el => {
-        //내가 가지고 있는 아이디
-        const meetingInfo = meetingData.filter(meeting => {
-          return meeting.id === el;
-        });
-        return meetingInfo[0];
+  const getCreatedRoom = useCallback(async () => {
+    const userData = await getUser(user.id);
+
+    const data = await Promise.all(
+      userData.createdroomId.map(async el => {
+        const res = await getMeeting(el);
+        const host = await getUser(res.data().hostId);
+        return {
+          id: res.id,
+          ...res.data(),
+          hostInfo: host,
+        };
       }),
     );
-  }, [meetingData, user]);
+    setCreatedRoom(data);
+  }, [user]);
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    getCreatedRoom();
+    //   setCreatedRoom(
+    //     user.createdroomId?.map(el => {
+    //       //내가 가지고 있는 아이디
+    //       const meetingInfo = meetingData.filter(meeting => {
+    //         return meeting.id === el;
+    //       });
+    //       return meetingInfo[0];
+    //     }),
+    //   );
+  }, [getCreatedRoom, isFocused]);
   return (
     <>
-      {createdRoom ? (
+      {createdRoom.length !== 0 ? (
         createdRoom.map((el, index) => (
           <MyMeetings item={el} navigation={navigation} key={index} />
         ))
       ) : (
-        <Text>생성한 미팅이 없습니다.</Text>
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            paddingTop: 30,
+          }}>
+          <Text style={{color: 'lightgray'}}>생성한 미팅이 없습니다.</Text>
+        </View>
       )}
     </>
   );
 }
+
 function MyMeetings({item, navigation}) {
   const [editModal, setEditModal] = useState(false);
   const [startModal, setStartModal] = useState(false);
   const [endModal, setEndModal] = useState(false);
   const [earnModalVisible, setEarnModalVisible] = useState(false);
-  const meetings = useMeeting();
-  const {saveMeeting} = useMeetingActions();
+  const {showToast} = useToast();
+  // const meetings = useMeeting();
+  // const {saveMeeting} = useMeetingActions();
   const renderButton = () => {
-    if (item.status === 'fixed') {
+    if (item?.status === 'fixed') {
       return (
         <TouchableOpacity
           style={{
@@ -67,7 +99,7 @@ function MyMeetings({item, navigation}) {
           <Text style={styles.buttonText}>미팅 시작하기</Text>
         </TouchableOpacity>
       );
-    } else if (item.status === 'confirmed') {
+    } else if (item?.status === 'confirmed') {
       return (
         <TouchableOpacity
           style={{
@@ -78,7 +110,7 @@ function MyMeetings({item, navigation}) {
           <Text style={styles.buttonText}>미팅 끝내기</Text>
         </TouchableOpacity>
       );
-    } else if (item.status === 'end') {
+    } else if (item?.status === 'end') {
       return <Text style={styles.editText}>종료된 미팅</Text>;
     }
   };
@@ -87,26 +119,26 @@ function MyMeetings({item, navigation}) {
     //서버에 요청
     updateMeeting(item.id, {status: 'confirmed'});
     //redux
-    const updateData = meetings.map(el => {
-      if (el.id !== item.id) {
-        return el;
-      } else {
-        return {...el, status: 'confirmed'};
-      }
-    });
-    saveMeeting(updateData);
+    // const updateData = meetings.map(el => {
+    //   if (el.id !== item.id) {
+    //     return el;
+    //   } else {
+    //     return {...el, status: 'confirmed'};
+    //   }
+    // });
+    // saveMeeting(updateData);
   };
   const handleMeetingEnd = () => {
     //서버에 요청
     updateMeeting(item.id, {status: 'end'});
-    const updateData = meetings.map(el => {
-      if (el.id !== item.id) {
-        return el;
-      } else {
-        return {...el, status: 'end'};
-      }
-    });
-    saveMeeting(updateData);
+    // const updateData = meetings.map(el => {
+    //   if (el.id !== item.id) {
+    //     return el;
+    //   } else {
+    //     return {...el, status: 'end'};
+    //   }
+    // });
+    // saveMeeting(updateData);
   };
   return (
     <>
@@ -116,7 +148,7 @@ function MyMeetings({item, navigation}) {
           navigation.navigate('ChattingRoom', {data: item});
         }}>
         <View style={styles.titleRow}>
-          <Text style={styles.title}>{item.title}</Text>
+          <Text style={styles.title}>{item?.title}</Text>
         </View>
 
         <View style={styles.tagcontainer}>
@@ -134,7 +166,7 @@ function MyMeetings({item, navigation}) {
           <View style={styles.bar} />
 
           <Text style={styles.details}>
-            {handleDateInFormat(item?.meetDate)}
+            {item ? handleDateInFormat(item.meetDate) : ''}
           </Text>
           <View style={styles.bar} />
 
@@ -206,7 +238,10 @@ function MyMeetings({item, navigation}) {
         <EarnModal
           EarnModalVisible={earnModalVisible}
           setEarnModalVisible={setEarnModalVisible}
-          pFunction={() => handleMeetingStart()}
+          pFunction={() => {
+            handleMeetingStart();
+            showToast('success', '1LCN이 지급되었습니다!');
+          }}
           amount={1}
           txType="미팅 참여"
         />

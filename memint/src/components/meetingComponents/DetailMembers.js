@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
 import {handleBirth} from '../../utils/common/Functions';
+import LinearGradient from 'react-native-linear-gradient';
 
 function DetailMembers({membersInfo, peopleNum, hostId}) {
   const currentPeopleNum = () => {
@@ -12,6 +13,7 @@ function DetailMembers({membersInfo, peopleNum, hostId}) {
     }
   };
   return (
+    // <LinearGradient colors={['#A7BFEB', '#FBC2EA']} style={styles.box}>
     <View style={styles.memberBox}>
       <View style={styles.memberBoxInfo}>
         <Text style={styles.title}>현재 모인 멤버</Text>
@@ -47,6 +49,7 @@ function DetailMembers({membersInfo, peopleNum, hostId}) {
         {membersInfo.peopleNum * 2 > membersInfo.length ? '' : ''}
       </View>
     </View>
+    // </LinearGradient>
   );
 }
 
@@ -54,9 +57,9 @@ const styles = StyleSheet.create({
   memberBox: {
     backgroundColor: 'white',
     paddingVertical: 23,
-    paddingHorizontal: 32,
-    marginVertical: 10,
-    marginHorizontal: 3,
+    paddingHorizontal: 30,
+    marginVertical: 2,
+    marginHorizontal: 2,
     borderRadius: 35,
     borderWidth: 1,
     borderColor: 'black',
@@ -113,16 +116,13 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
   },
-  hostCrown: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    zIndex: 1,
-  },
   userImage: {
     borderRadius: 100,
     width: 40,
     height: 40,
+    marginRight: 3,
+    // borderColor: 'black',
+    // borderWidth:1
   },
 });
 
