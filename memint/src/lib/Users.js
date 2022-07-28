@@ -37,6 +37,26 @@ export async function getUser(id) {
   return doc.data();
 }
 
+export async function getOtherUser(id) {
+  const doc = await usersCollection.doc(id).get();
+  const userDetail = doc.data();
+
+  const userProperty = await getUserProperty(id);
+  // console.log('@@@@');
+  // console.log(userProperty);
+
+  const otherUser = {
+    nickName: userDetail.nickName,
+    birth: userDetail.birth,
+    gender: userDetail.gender,
+    nftProfile: userDetail.nftProfile,
+    alcoholType: userProperty[0].alcoholType,
+    drinkStyle: userProperty[0].drinkStyle,
+    drinkCapa: userProperty[0].drinkCapa,
+  };
+  return otherUser;
+}
+
 export async function getUserProperty(id) {
   const doc = await usersCollection.doc(id).collection('Property').get();
   const property = doc.docs.map(doc => doc.data());

@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
-import {SafeAreaView, ScrollView, View, StyleSheet} from 'react-native';
+import {SafeAreaView, ScrollView, View, StyleSheet, Alert} from 'react-native';
 import BasicButton from '../../components/common/BasicButton';
 import MyMeetingList from '../../components/myPageComponent/MyMeetingList';
 import ParticipatedMeetingList from '../../components/myPageComponent/ParticipatedMeetingList';
 import MyProfile from '../../components/myPageComponent/MyProfle';
 import useUser from '../../utils/hooks/UseUser';
 import WalletButton from '../../components/common/WalletButton';
+import InquireUserProfile from '../../components/common/InquireUserProfile';
 function MyPage({navigation}) {
   const user = useUser();
   // const getimgUrl = async () => {
@@ -125,15 +126,12 @@ function MyPage({navigation}) {
   return (
     <SafeAreaView style={styles.view}>
       <ScrollView>
-        {/* <BasicButton
-          text="test"
+        <InquireUserProfile
           width={100}
-          height={40}
-          textSize={14}
-          backgroundColor={'#007aff'}
+          height={100}
           margin={[10, 3, 3, 3]}
-          onPress={onSubmitSignIn}
-        /> */}
+          userId={user.id}
+        />
         {/* 유저 프로필 */}
         <MyProfile User={user ? user : dummyUser} navigation={navigation} />
         <View style={styles.mymeetings}>

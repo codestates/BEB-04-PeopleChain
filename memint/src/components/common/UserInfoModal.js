@@ -1,9 +1,17 @@
 import React, {useState} from 'react';
-import {View, Modal, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Modal,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 import BasicButton from './BasicButton';
 import SpendingModal from './UserInfoModal/SpendingModal';
 import AskSpendingModal from './UserInfoModal/AskSpendingModal';
 import MySingleModal from '../chattingComponents/MySingleModal';
+import {ActivityIndicator} from 'react-native-paper';
 
 /*
 사용할 컴포넌트에서 state 사용이 필요함.
@@ -19,11 +27,7 @@ import MySingleModal from '../chattingComponents/MySingleModal';
       />
  */
 
-function UserInfoModal({
-  userInfo,
-  userInfoModalVisible,
-  setUserInfoModalVisible,
-}) {
+function UserInfoModal({user, userInfoModalVisible, setUserInfoModalVisible}) {
   const [spendingModalVisible, setSpendingModalVisible] = useState(false);
   const [askSpendingModalVisible, setAskSpendingModalVisible] = useState(false);
   const [isValid, setIsValid] = useState(false);
@@ -37,41 +41,57 @@ function UserInfoModal({
         visible={userInfoModalVisible}>
         <View style={[styles.centeredView, styles.backgroudDim]}>
           <View style={styles.modalView}>
-            <View style={styles.userInfoWrapper}>
-              <View style={{flexDirection: 'row'}}>
-                <TouchableOpacity
-                  onPress={() => {
-                    setAskSpendingModalVisible(true);
-                  }}>
-                  <View style={styles.images} />
-                  <View style={styles.imageLarge}>
-                    <View
-                      style={
-                        isValid === true
-                          ? styles.imageSmall
-                          : {...styles.imageSmall, height: 0, width: 0}
-                      }
-                    />
+            {user ? (
+              <View style={styles.userInfoWrapper}>
+                <View style={{flexDirection: 'row'}}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setAskSpendingModalVisible(true);
+                    }}>
+                    <View style={styles.images} />
+
+                    <View style={styles.imageLarge}>
+                      <Image
+                        style={styles.imageLarge}
+                        source={{uri: user.nftProfile}}
+                      />
+                      <View
+                        style={
+                          isValid === true
+                            ? styles.imageSmall
+                            : {...styles.imageSmall, height: 0, width: 0}
+                        }
+                      />
+                    </View>
+                  </TouchableOpacity>
+                  <View
+                    style={{marginLeft: 13, justifyContent: 'space-around'}}>
+                    <Text>이름 : {user.nickName}</Text>
+                    <Text>나이 : {user.birth}</Text>
+                    <Text>성별 : {user.gender}</Text>
                   </View>
-                </TouchableOpacity>
-                <View style={{marginLeft: 13, justifyContent: 'space-around'}}>
-                  <Text>이름 : {userInfo}</Text>
-                  <Text>나이 : 27세</Text>
-                  <Text>성별 : 여성</Text>
                 </View>
-              </View>
-              <Text style={styles.hilightText}>주량</Text>
-              <View style={styles.tags}>
-                <View style={styles.tag}>
-                  <Text>소주 한 잔</Text>
+                <Text style={styles.hilightText}>주량</Text>
+                <View style={styles.tags}>
+                  <View style={styles.tag}>
+                    <Text>{user.drinkCapa}</Text>
+                  </View>
                 </View>
-              </View>
-              <Text style={styles.hilightText}>선호 주류</Text>
-              <View style={styles.tags}>
-                <View style={styles.tag}>
-                  <Text>#소주</Text>
-                </View>
-                <View style={styles.tag}>
+                <Text style={styles.hilightText}>선호 주류</Text>
+                <View style={styles.tags}>
+                  {user ? (
+                    user.alcoholType.map((ele, index) => {
+                      return (
+                        <View style={styles.tag}>
+                          <Text>#{ele}</Text>
+                        </View>
+                      );
+                    })
+                  ) : (
+                    <ActivityIndicator size="large" color="black" />
+                  )}
+
+                  {/* <View style={styles.tag}>
                   <Text>#양주</Text>
                 </View>
                 <View style={styles.tag}>
@@ -82,11 +102,18 @@ function UserInfoModal({
                 </View>
                 <View style={styles.tag}>
                   <Text>#막걸리</Text>
+                </View> */}
                 </View>
-              </View>
-              <Text style={styles.hilightText}>스타일</Text>
-              <View style={styles.tags}>
-                <View style={styles.tag}>
+                <Text style={styles.hilightText}>스타일</Text>
+                <View style={styles.tags}>
+                  {user.drinkStyle.map((ele, index) => {
+                    return (
+                      <View style={styles.tag} key={index}>
+                        <Text>#{ele}</Text>
+                      </View>
+                    );
+                  })}
+                  {/* <View style={styles.tag}>
                   <Text>#부어라 마셔라!</Text>
                 </View>
                 <View style={styles.tag}>
@@ -94,9 +121,12 @@ function UserInfoModal({
                 </View>
                 <View style={styles.tag}>
                   <Text>#오 필승 코리아!!</Text>
+                </View> */}
                 </View>
               </View>
-            </View>
+            ) : (
+              <ActivityIndicator size="large" color="black" />
+            )}
 
             <View style={styles.buttonRow}>
               <BasicButton
