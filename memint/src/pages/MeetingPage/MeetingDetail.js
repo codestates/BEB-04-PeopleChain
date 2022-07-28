@@ -185,7 +185,8 @@ function MeetingDetail({route}) {
               return (
                 <LinearGradient
                   colors={['#A7BFEB', '#FBC2EA']}
-                  style={styles.tag}>
+                  style={styles.tag}
+                  key={idx}>
                   {/* <View key={idx} style={styles.tag}> */}
                   <Text style={styles.tagText}>{'#' + tag}</Text>
                   {/* </View> */}
