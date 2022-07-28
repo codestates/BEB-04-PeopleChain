@@ -117,13 +117,14 @@ function WalletOffchainHistory({navigation}) {
       <Text style={styles.historyText}>History</Text>
       <ScrollView>
         {offTxLogs ? (
-          offTxLogs.map(el => {
+          offTxLogs.map((log, idx) => {
             return (
               <HistoryButton
-                time={handleDate(el.createdAt)}
-                balanceChange={el.amount}
-                balance={el.balance}
-                content={el.txType}
+                key={idx}
+                time={handleDate(log.createdAt)}
+                balanceChange={user.id === log.from ? -log.amount : log.amount}
+                balance={log.balance}
+                content={log.txType}
               />
             );
           })

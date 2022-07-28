@@ -58,11 +58,11 @@ export function createUserNFT({userId, nftProfile, nftId}) {
     nftIds: firestore.FieldValue.arrayUnion(nftId),
   });
 }
-// export function updateTokenAmount({userId, balance}) {
-//   return usersCollection.doc(userId).update({
-//     tokenAmount: balance,
-//   });
-// }
+export function updateTokenAmount(userId, balance) {
+  return usersCollection.doc(userId).update({
+    tokenAmount: balance,
+  });
+}
 
 //Update cretedroomId, joinedroomId
 //userId, 'createdroomId', meetingId

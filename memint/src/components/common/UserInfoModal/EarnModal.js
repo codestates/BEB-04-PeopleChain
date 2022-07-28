@@ -3,7 +3,7 @@ import {View, Modal, StyleSheet, Text} from 'react-native';
 import BasicButton from '../BasicButton';
 import useUser from '../../../utils/hooks/UseUser';
 import useAuthActions from '../../../utils/hooks/UseAuthActions';
-import {createSpendOffTxLg} from '../../../lib/OffchianTokenLog';
+import {createEarnOffTxLg} from '../../../lib/OffchianTokenLog';
 import {updateTokenAmount} from '../../../lib/Users';
 /*
 사용할 컴포넌트에서 state 사용이 필요함.
@@ -33,7 +33,7 @@ function EarnModal({
     //사용자의 TokenAmount 양 바꿈 (redux 정보 바꿈)
     increaseBy(amount);
     //TokenLog 생성
-    createSpendOffTxLg(user.id, amount, txType, user.tokenAmount + amount); //확인필요!!!(은민)
+    createEarnOffTxLg(user.id, amount, txType, user.tokenAmount); //확인필요!!!(은민)
     //token 변화 firebase에 저장
     setEarnModalVisible(false);
   };

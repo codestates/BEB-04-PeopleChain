@@ -1,10 +1,10 @@
-import React from 'react';
-import {View, Modal, StyleSheet, Text} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Modal, StyleSheet, Text, Alert} from 'react-native';
 import BasicButton from '../BasicButton';
 import useUser from '../../../utils/hooks/UseUser';
 import useAuthActions from '../../../utils/hooks/UseAuthActions';
 import {createSpendOffTxLg} from '../../../lib/OffchianTokenLog';
-import {updateTokenAmount} from '../../../lib/Users';
+import {getUser} from '../../../lib/Users';
 /*
 사용할 컴포넌트에서 state 사용이 필요함.
   const [spendModalVisible, setSpendModalVisible] = useState(false);
@@ -25,15 +25,33 @@ function SpendingModal({
   amount,
   txType,
 }) {
+  const [dbTokenBalance, setdbTokenBalance] = useState('');
   const user = useUser();
   const {decreaseBy} = useAuthActions();
+
+  // DB에 있는 토큰양과 sync가 맞는지 확인
+  useEffect(() => {
+    getBalance(user.id);
+  });
+  const getBalance = async userId => {
+    try {
+      const userForToken = await getUser(userId);
+      setdbTokenBalance(userForToken.tokenAmount);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const transactionMade = () => {
+    // DB에 있는 토큰양과 sync가 맞는지 확인
+    if (dbTokenBalance !== user.tokenAmount) {
+      return Alert.alert('잔액 오류');
+    }
+
     //사용자의 TokenAmount 양 바꿈 (redux 정보 바꿈)
     decreaseBy(amount);
-    //TokenLog 생성
+    //TokenLog 생성 & Token 변화 firebase에 저장
     createSpendOffTxLg(user.id, amount, txType, user.tokenAmount);
-    //token 변화 firebase에 저장
-    // updateTokenAmount(user.id, user.tokenAmount);
     // pFunction;
     setSpendingModalVisible(false);
   };
@@ -58,29 +76,48 @@ function SpendingModal({
                 <Text style={{fontWeight: 'bold'}}>필요 LCN</Text>
                 <Text style={{fontWeight: 'bold'}}>{amount}개</Text>
               </View>
-              <View style={styles.calcText}>
-                <Text style={{fontWeight: 'bold'}}>차감 후 LCN</Text>
-                <Text style={{fontWeight: 'bold'}}>
-                  {user.tokenAmount - amount}개
-                </Text>
-              </View>
+              {
+                user.tokenAmount > amount ? (
+                  <View style={styles.calcText}>
+                    <Text style={{fontWeight: 'bold'}}>차감 후 LCN</Text>
+                    <Text style={{fontWeight: 'bold'}}>
+                      {user.tokenAmount - amount}개
+                    </Text>
+                  </View>
+                ) : null
+                // (
+                //   <View style={styles.warnText}>
+                //     <Text style={{fontWeight: 'bold'}}>LCN이 부족합니다!</Text>
+                //   </View>
+                // )
+              }
             </View>
-            <View style={styles.buttonRow}>
+            {user.tokenAmount > amount ? (
+              <View style={styles.buttonRow}>
+                <BasicButton
+                  text="아니오"
+                  size="small"
+                  variant="disable"
+                  onPress={() => setSpendingModalVisible(false)}
+                />
+                <BasicButton
+                  text="네"
+                  size="small"
+                  onPress={() => {
+                    pFunction();
+                    transactionMade();
+                  }}
+                />
+              </View>
+            ) : (
               <BasicButton
-                text="아니오"
-                size="small"
+                text="돌아가기"
+                width={100}
+                height={40}
                 variant="disable"
                 onPress={() => setSpendingModalVisible(false)}
               />
-              <BasicButton
-                text="네"
-                size="small"
-                onPress={() => {
-                  pFunction();
-                  transactionMade();
-                }}
-              />
-            </View>
+            )}
           </View>
         </View>
       </Modal>
@@ -127,6 +164,10 @@ const styles = StyleSheet.create({
     marginBottom: 7,
     width: '100%',
     justifyContent: 'space-between',
+  },
+  warnText: {
+    flexDirection: 'row',
+    textAlign: 'center',
   },
 });
 export default SpendingModal;
