@@ -24,38 +24,38 @@ import DoubleModal from '../../components/common/DoubleModal';
 
 function AlarmDetail({route}) {
   const userInfo = useUser();
-  const loginUser = userInfo.id;
-  const {id, message, meetingId, meetingInfo, sender, complete, senderInfo} =
-    route.params;
+  const {alarm} = route.params;
   const navigation = useNavigation();
   const {showToast} = useToast();
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleAccept = () => {
     const data = {
-      sender: loginUser, //로그인된 유저,
-      receiver: sender, //(신청 메시지의 sender)
-      meetingId: meetingId,
+      sender: userInfo.id, //로그인된 유저,
+      receiver: alarm.sender, //(신청 메시지의 sender)
+      meetingId: alarm.meetingId,
     };
     createMeetingAccept(data);
     //waiting에서 제거, member에 추가
-    updateWaitingOut(meetingId, sender); //신청 메시지의 sender
-    updateMembersIn(meetingId, sender); //신청 메시지의 sender
-    updateMeetingProposal(id); //신청 알림 완료로 update
-    updateUserMeetingIn(sender, 'joinedroomId', meetingId); //User에 room 추가하기
-    if (meetingInfo.peopleNum * 2 - 1 === meetingInfo.members.length) {
+    updateWaitingOut(alarm.meetingId, alarm.sender); //신청 메시지의 sender
+    updateMembersIn(alarm.meetingId, alarm.sender); //신청 메시지의 sender
+    updateMeetingProposal(alarm.id); //신청 알림 완료로 update
+    updateUserMeetingIn(alarm.sender, 'joinedroomId', alarm.meetingId); //User에 room 추가하기
+    if (
+      alarm.meetingInfo.peopleNum * 2 - 1 ===
+      alarm.meetingInfo.members.length
+    ) {
       //미팅의 상태도 손수 수정해줍니다.(임시로)
-      updateMeeting(meetingId, {status: 'full'});
+      updateMeeting(alarm.meetingId, {status: 'full'});
     }
     showToast('basic', '신청이 수락되었습니다');
     navigation.navigate('AlarmPage');
   };
-
+  console.log(route);
   // const handleDeny = () => {
   //   showToast('basic', '신청이 거절되었습니다');
   //   navigation.pop();
   // };
-  console.log(senderInfo);
 
   return (
     <SafeAreaView style={styles.screen}>
@@ -63,48 +63,54 @@ function AlarmDetail({route}) {
       <View style={styles.container}>
         <View style={styles.profileArea}>
           <Image
-            source={{uri: senderInfo.nftProfile}}
+            source={{uri: alarm.senderInfo.nftProfile}}
             style={styles.userImage}
           />
 
           <View style={styles.userInfo}>
             <View style={styles.userInfoElement}>
               <Text style={styles.key}>닉네임</Text>
-              <Text style={styles.value}>{senderInfo.nickName}</Text>
+              <Text style={styles.value}>{alarm.senderInfo.nickName}</Text>
             </View>
             <View style={styles.userInfoElement}>
               <Text style={styles.key}>나이</Text>
-              <Text style={styles.value}>{handleBirth(senderInfo.birth)}</Text>
+              <Text style={styles.value}>
+                {handleBirth(alarm.senderInfo.birth)}
+              </Text>
             </View>
             <View style={styles.userInfoElement}>
               <Text style={styles.key}>성별</Text>
-              <Text style={styles.value}>{senderInfo.gender}</Text>
+              <Text style={styles.value}>{alarm.senderInfo.gender}</Text>
             </View>
           </View>
         </View>
         <Text style={styles.key}>메시지</Text>
-        <Text style={styles.message}>{message}</Text>
+        <Text style={styles.message}>{alarm.message}</Text>
         <View>
           <Text style={styles.key}>미팅 정보</Text>
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate('MeetingDetail', {data: meetingInfo})
+              navigation.navigate('MeetingDetail', {data: alarm.meetingInfo})
             }>
-            <Text style={styles.meetingTitle}>{meetingInfo.title}</Text>
+            <Text style={styles.meetingTitle}>{alarm.meetingInfo.title}</Text>
             <View style={styles.meetingInfo}>
-              <Text style={styles.meetingElement}>{meetingInfo.region}</Text>
-              <View style={styles.bar} />
               <Text style={styles.meetingElement}>
-                {meetingInfo.peopleNum + ':' + meetingInfo.peopleNum}
+                {alarm.meetingInfo.region}
               </Text>
               <View style={styles.bar} />
               <Text style={styles.meetingElement}>
-                {handleDateInFormat(meetingInfo.meetDate)}
+                {alarm.meetingInfo.peopleNum +
+                  ':' +
+                  alarm.meetingInfo.peopleNum}
+              </Text>
+              <View style={styles.bar} />
+              <Text style={styles.meetingElement}>
+                {handleDateInFormat(alarm.meetingInfo.meetDate)}
               </Text>
             </View>
           </TouchableOpacity>
         </View>
-        {complete ? (
+        {alarm.complete ? (
           <Text style={styles.acceptText}>신청을 수락했습니다</Text>
         ) : (
           <>
@@ -125,7 +131,7 @@ function AlarmDetail({route}) {
                 height={50}
                 textSize={17}
                 margin={[5, 20, 5, 20]}
-                onPress={setModalVisible(true)}
+                onPress={() => setModalVisible(true)}
               />
             </View>
           </>

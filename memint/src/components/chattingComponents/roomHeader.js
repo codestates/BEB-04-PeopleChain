@@ -19,7 +19,7 @@ function RoomHeader({title, roomInfo, setRoomInfo, setRoomInfoExist}) {
         />
         {/* <Text style={styles.buttonText}>목록</Text> */}
       </TouchableOpacity>
-      <Text style={{fontWeight: 'bold', fontSize: 18}}>{title}</Text>
+      {/* <Text style={{fontWeight: 'bold', fontSize: 18}}>{title}</Text> */}
       <TouchableOpacity
         onPress={() => {
           setRoomInfo(!roomInfo);

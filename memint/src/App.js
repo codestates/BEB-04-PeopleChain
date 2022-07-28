@@ -148,7 +148,7 @@ function App() {
   //   console.log('welcome' + user.email);
   // }
   return (
-    <NavigationContainer>
+    <NavigationContainer style={{backgroundColor: 'white'}}>
       <ToastProvider>
         <ChatContextProvider>
           <Stack.Navigator initialRouteName={initialRouteName}>

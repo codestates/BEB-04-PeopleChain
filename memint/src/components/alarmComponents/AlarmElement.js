@@ -1,3 +1,4 @@
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -5,17 +6,23 @@ import {handleBirth, handleDateInFormat} from '../../utils/common/Functions';
 import DoubleModal from '../common/DoubleModal';
 
 function AlarmElement({
-  meetingInfo,
-  createdAt,
-  onPress,
-  type,
-  senderInfo,
+  alarm,
   chattingConfirmModal,
   setChattingConfirmModal,
   handleMoveChattingRoom,
 }) {
+  const navigation = useNavigation();
+  const handleClick = () => {
+    if (alarm.type === 'proposal') {
+      navigation.navigate('AlarmDetail', {
+        alarm,
+      });
+    } else {
+      setChattingConfirmModal(!chattingConfirmModal);
+    }
+  };
   return (
-    <TouchableOpacity style={styles.container} onPress={onPress}>
+    <TouchableOpacity style={styles.container} onPress={handleClick}>
       <DoubleModal
         text="채팅창으로 이동하시겠습니까?"
         //body={<Text>정말로?</Text>}
@@ -23,7 +30,7 @@ function AlarmElement({
         pButtonText="네"
         modalVisible={chattingConfirmModal}
         setModalVisible={setChattingConfirmModal}
-        pFunction={() => handleMoveChattingRoom(meetingInfo)}
+        pFunction={() => handleMoveChattingRoom(alarm.meetingInfo)}
         nFunction={() => {
           setChattingConfirmModal(!chattingConfirmModal);
         }}
@@ -32,29 +39,33 @@ function AlarmElement({
       <View style={styles.content}>
         <View style={styles.messageHead}>
           <Text style={styles.message}>
-            {type === 'proposal'
-              ? `${senderInfo?.nickName}님의 신청이 도착했습니다!`
-              : `${senderInfo?.nickName}님이 신청을 수락했습니다!`}
+            {alarm.type === 'proposal'
+              ? `${alarm.senderInfo?.nickName}님의 신청이 도착했습니다!`
+              : `${alarm.senderInfo?.nickName}님이 신청을 수락했습니다!`}
           </Text>
-          <Text style={styles.createdAt}>{createdAt}</Text>
+          <Text style={styles.createdAt}>{alarm.createdAt}</Text>
         </View>
         <View style={styles.meetingArea}>
-          {meetingInfo ? (
+          {alarm.meetingInfo ? (
             <>
-              <Text style={styles.meetingTitle}>{meetingInfo.title}</Text>
+              <Text style={styles.meetingTitle}>{alarm.meetingInfo.title}</Text>
               <View style={styles.meetingInfo}>
-                <Text style={styles.meetingElement}>{meetingInfo.region}</Text>
-                <View style={styles.bar} />
                 <Text style={styles.meetingElement}>
-                  {meetingInfo.peopleNum + ':' + meetingInfo.peopleNum}
+                  {alarm.meetingInfo.region}
                 </Text>
                 <View style={styles.bar} />
                 <Text style={styles.meetingElement}>
-                  {handleBirth(senderInfo.birth)}
+                  {alarm.meetingInfo.peopleNum +
+                    ':' +
+                    alarm.meetingInfo.peopleNum}
                 </Text>
                 <View style={styles.bar} />
                 <Text style={styles.meetingElement}>
-                  {handleDateInFormat(meetingInfo.meetDate)}
+                  {handleBirth(alarm.senderInfo.birth)}
+                </Text>
+                <View style={styles.bar} />
+                <Text style={styles.meetingElement}>
+                  {handleDateInFormat(alarm.meetingInfo.meetDate)}
                 </Text>
               </View>
             </>

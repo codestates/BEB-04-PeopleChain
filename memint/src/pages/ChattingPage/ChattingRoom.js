@@ -113,7 +113,7 @@ function ChattingRoom({route}) {
   return (
     <KeyboardAvoidingView
       behavior={'padding'}
-      style={{flex: 1, backgroundColor: 'white'}}
+      style={{flex: 1, backgroundColor: 'rgba(0,0,0,0,2)'}}
       // 키보드가 올라온 상태에서 추가적으로 적용할 +값
       // keyboardVerticalOffset={80}
     >

@@ -126,7 +126,7 @@ const SignUpUserInfoScreen = ({navigation, route}) => {
     return (
       <SafeAreaView style={styles.fullscreenSub}>
         <View style={styles.spinnerWrapper}>
-          <ActivityIndicator size={32} color="#6200ee" />
+          <ActivityIndicator size={32} color="#FAC3E9" />
         </View>
       </SafeAreaView>
     );
@@ -299,6 +299,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: 'white',
   },
   text: {
     fontSize: 32,

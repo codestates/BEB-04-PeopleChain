@@ -111,22 +111,42 @@ const SignUpAgreementScreen = ({navigation: {navigate}, route}) => {
       <View style={styles.fullscreenSub}>
         <Text style={styles.textMain}>서비스 약관에 동의해주세요</Text>
         <View style={styles.form}>
-          <CheckBox value={serviceCheck} onChange={serviceBtnEvent} />
+          <CheckBox
+            value={serviceCheck}
+            onChange={serviceBtnEvent}
+            onCheckColor="#B4C0EB"
+            onTintColor="#B4C0EB"
+          />
           <Text style={styles.text}>서비스 약관에 동의</Text>
           <Text style={styles.textSub}>(필수)</Text>
         </View>
         <View style={styles.form}>
-          <CheckBox value={useCheck} onChange={useBtnEvent} />
+          <CheckBox
+            value={useCheck}
+            onChange={useBtnEvent}
+            onCheckColor="#B4C0EB"
+            onTintColor="#B4C0EB"
+          />
           <Text style={styles.text}>개인정보 수집 및 이용동의</Text>
           <Text style={styles.textSub}>(필수)</Text>
         </View>
         <View style={styles.form}>
-          <CheckBox value={ageCheck} onChange={ageBtnEvent} />
+          <CheckBox
+            value={ageCheck}
+            onChange={ageBtnEvent}
+            onCheckColor="#B4C0EB"
+            onTintColor="#B4C0EB"
+          />
           <Text style={styles.text}>만 19세 이상</Text>
           <Text style={styles.textSub}>(필수)</Text>
         </View>
         <View style={styles.form}>
-          <CheckBox value={marketingCheck} onChange={marketingBtnEvent} />
+          <CheckBox
+            value={marketingCheck}
+            onChange={marketingBtnEvent}
+            onCheckColor="#B4C0EB"
+            onTintColor="#B4C0EB"
+          />
           <Text style={styles.text}>혜택 및 이벤트 알림 수신 동의</Text>
           <Text style={styles.textSub}>(선택)</Text>
         </View>
@@ -135,7 +155,12 @@ const SignUpAgreementScreen = ({navigation: {navigate}, route}) => {
           사용 멤버만을 위한 특별한 혜택 정보를 받을 수 없어요.
         </Text>
         <View style={styles.formAllAgree}>
-          <CheckBox value={allCheck} onChange={allBtnEvent} />
+          <CheckBox
+            value={allCheck}
+            onChange={allBtnEvent}
+            onCheckColor="#B4C0EB"
+            onTintColor="#B4C0EB"
+          />
           <Text style={styles.text}>모두 동의합니다</Text>
         </View>
         {/* <BasicButton

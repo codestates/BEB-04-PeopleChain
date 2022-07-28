@@ -177,6 +177,12 @@ function MeetingCreate({route}) {
           <BackButton />
           <Text style={styles.title}>미팅 글쓰기</Text>
         </View>
+        <TouchableOpacity
+          onPress={() => {
+            showToast('coin','dd');
+          }}>
+          <Text>토스트</Text>
+        </TouchableOpacity>
         <TouchableOpacity onPress={handleSubmit}>
           <Text style={submittable ? styles.title : styles.grayButton}>
             완료

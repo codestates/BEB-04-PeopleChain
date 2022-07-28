@@ -86,6 +86,7 @@ function AlarmPage({navigation}) {
     setChattingConfirmModal(!setChattingConfirmModal);
     navigation.navigate('ChattingRoom', {data: meetingInfo});
   };
+  console.log(alarms);
 
   return (
     <SafeAreaView style={styles.view}>
@@ -102,33 +103,10 @@ function AlarmPage({navigation}) {
             {alarms.map((alarm, idx) => (
               <AlarmElement
                 key={idx}
-                message={alarm.message}
-                meetingId={alarm.meetingId}
-                createdAt={alarm.createdAt}
-                meetingInfo={alarm.meetingInfo}
-                type={alarm.type}
-                sender={alarm.sender}
-                senderInfo={alarm.senderInfo}
+                alarm={alarm}
                 chattingConfirmModal={chattingConfirmModal}
                 setChattingConfirmModal={setChattingConfirmModal}
                 handleMoveChattingRoom={handleMoveChattingRoom}
-                onPress={
-                  alarm.type === 'proposal'
-                    ? () => {
-                        if (alarm.meetingInfo) {
-                          navigation.navigate('AlarmDetail', {
-                            id: alarm.id,
-                            message: alarm.message,
-                            meetingId: alarm.meetingId,
-                            meetingInfo: alarm.meetingInfo,
-                            sender: alarm.sender,
-                            senderInfo: alarm.senderInfo,
-                            complete: alarm.complete,
-                          });
-                        }
-                      }
-                    : () => setChattingConfirmModal(true)
-                }
               />
             ))}
           </View>
