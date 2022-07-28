@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Modal,
@@ -32,6 +32,10 @@ function UserInfoModal({user, userInfoModalVisible, setUserInfoModalVisible}) {
   const [askSpendingModalVisible, setAskSpendingModalVisible] = useState(false);
   const [isValid, setIsValid] = useState(false);
   const [mySingleModalVisible, setMySingleModalVisible] = useState(false);
+
+  useEffect(() => {
+    console.log(user);
+  }, []);
 
   return (
     <View style={styles.centeredView}>
@@ -208,7 +212,6 @@ const styles = StyleSheet.create({
     height: 80,
     width: 80,
     borderRadius: 40,
-    backgroundColor: 'orange',
   },
   imageLarge: {
     position: 'absolute',
@@ -216,6 +219,7 @@ const styles = StyleSheet.create({
     width: 80,
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
+    borderRadius: 40,
   },
   imageSmall: {
     height: 30,

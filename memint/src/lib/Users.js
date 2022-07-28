@@ -50,6 +50,7 @@ export async function getOtherUser(id) {
     birth: userDetail.birth,
     gender: userDetail.gender,
     nftProfile: userDetail.nftProfile,
+    picture: userDetail.picture,
     alcoholType: userProperty[0].alcoholType,
     drinkStyle: userProperty[0].drinkStyle,
     drinkCapa: userProperty[0].drinkCapa,

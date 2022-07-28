@@ -16,14 +16,20 @@ import {useIsFocused} from '@react-navigation/native';
 
 function ChattingListPage({navigation}) {
   const [chatLog, setChatLog] = useState('');
-  const userInfo = useUser();
+  const user = useUser();
 
-  // const isFocused = useIsFocused();
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     const getChatLogs = async () => {
       const meetingList = [];
-      console.log(userInfo);
+
+      const rawUserInfo = await firestore()
+        .collection('User')
+        .doc(user.id)
+        .get();
+
+      const userInfo = rawUserInfo.data();
 
       userInfo.createdroomId && meetingList.push(...userInfo.createdroomId);
       userInfo.joinedroomId && meetingList.push(...userInfo.joinedroomId);
@@ -75,10 +81,7 @@ function ChattingListPage({navigation}) {
       // return isFocused;
     };
     getChatLogs();
-  }, [
-    userInfo,
-    // isFocused
-  ]);
+  }, [user, isFocused]);
 
   return (
     <SafeAreaView style={styles.view}>

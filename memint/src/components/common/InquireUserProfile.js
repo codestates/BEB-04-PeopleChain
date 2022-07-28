@@ -43,7 +43,6 @@ function InquireUserProfile({width, height, margin, userId}) {
       console.log(e);
     }
   };
-  console.log(userDetail);
 
   return (
     <>

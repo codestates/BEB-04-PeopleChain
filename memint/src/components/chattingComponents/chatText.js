@@ -12,6 +12,7 @@ import UserInfoModal from '../common/UserInfoModal';
 import firestore from '@react-native-firebase/firestore';
 import useUser from '../../utils/hooks/UseUser';
 import LinearGradient from 'react-native-linear-gradient';
+import InquireUserProfile from '../common/InquireUserProfile';
 
 function ChatText({data, roomInfo, userNickName, userImages}) {
   // const [chats, setChats] = useState(chattings);
@@ -29,14 +30,11 @@ function ChatText({data, roomInfo, userNickName, userImages}) {
   useEffect(() => {
     const getContent = async () => {
       chatRef.orderBy('createdAt').onSnapshot(result => {
-        // 아래 부분을 if문없이 넘겨주면, createdAt을 서버 시간으로 설정하였는데 서버에 올라가기 전에 로컬에 미리 정보를 가져오므로 createdAt이 null이어서 에러가 생기게 된다.
         if (result.docs.length === 0) {
           return;
         } else if (
           result.docChanges()[result.docChanges().length - 1].doc._data
             .createdAt
-          // 아래에서 기본 chat을 살리려고 [...chats, result.docs[result.docs.length-1]]을 setChats로 보내주려 했는데 계속해서 에러가 난다.
-          // 그런데 다시 생각해보니 어차피 윗줄의 코드도 원본을 건드리지 않고 새로운 배열을 만들어서 가져오는 것이기 때문에 같은 개념이다 싶어서 안하기로 했다.
         ) {
           setChattings(result.docs);
         }
@@ -108,9 +106,11 @@ function NotMyChat({
           setUserInfoModalVisible(true);
           setUserInfo(item.sender);
         }}>
-        <Image
-          style={styles.image}
-          source={{uri: userImages[item.data().sender]}}
+        <InquireUserProfile
+          width={60}
+          height={60}
+          margin={[10, 3, 3, 3]}
+          userId={item.data().sender}
         />
       </TouchableOpacity>
       <View style={styles.textWrapper}>
