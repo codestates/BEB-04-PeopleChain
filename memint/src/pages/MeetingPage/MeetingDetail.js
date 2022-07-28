@@ -40,7 +40,7 @@ function MeetingDetail({route}) {
   const renderByUser = () => {
     if (
       data.members.reduce((acc, cur) => {
-        if (cur[loginUser] === 'accepted') {
+        if (cur[loginUser]) {
           return true || acc;
         } else {
           return acc;
@@ -185,6 +185,8 @@ function MeetingDetail({route}) {
               return (
                 <LinearGradient
                   colors={['#A7BFEB', '#FBC2EA']}
+                  start={{x: 0, y: 0}}
+                  end={{x: 1, y: 1}}
                   style={styles.tag}
                   key={idx}>
                   {/* <View key={idx} style={styles.tag}> */}
