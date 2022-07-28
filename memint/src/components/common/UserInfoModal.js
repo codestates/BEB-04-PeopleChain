@@ -82,7 +82,7 @@ function UserInfoModal({user, userInfoModalVisible, setUserInfoModalVisible}) {
                   {user ? (
                     user.alcoholType.map((ele, index) => {
                       return (
-                        <View style={styles.tag}>
+                        <View style={styles.tag} key={index}>
                           <Text>#{ele}</Text>
                         </View>
                       );
