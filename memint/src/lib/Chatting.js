@@ -1,12 +1,11 @@
 import firestore from '@react-native-firebase/firestore';
-import useUser from '../utils/hooks/UseUser';
-const meetingCollection = firestore().collection('Meeting');
 
-const user = useUser();
+const meetingCollection = firestore().collection('Meeting');
 
 // userId를 받아 본인의 status를 fixed로 바꿔주는 함수
 // 통째로 바꿔주는 것 밖에는 답이 없는것인가..
-export const changeJoinerState = async (meetingId, userId, setModalVisible) => {
+export const changeJoinerState = async (meetingId, user, setModalVisible) => {
+  const userId = user.id;
   return await meetingCollection
     .doc(meetingId)
     .get()
@@ -32,11 +31,11 @@ export const changeMeetingState = async meetingId => {
   });
 };
 
-export const isVisible = userId => {
-  if (user.visibleUser) {
-    user.visibleUser.forEach(el => {
-      if (el === userId) return true;
-    });
-  }
-  return false;
-};
+// export const isVisible = userId => {
+//   if (user.visibleUser) {
+//     user.visibleUser.forEach(el => {
+//       if (el === userId) return true;
+//     });
+//   }
+//   return false;
+// };

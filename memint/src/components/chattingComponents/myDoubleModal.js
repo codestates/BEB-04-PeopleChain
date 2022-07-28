@@ -3,7 +3,7 @@ import {View, Modal, StyleSheet} from 'react-native';
 import BasicButton from '../common/BasicButton';
 import {changeJoinerState} from '../../lib/Chatting';
 import {useToast} from '../../utils/hooks/useToast';
-const user = '연습용계정2';
+import useUser from '../../utils/hooks/UseAuth';
 
 /*
 사용할 컴포넌트에서 state 사용이 필요함.
@@ -29,6 +29,7 @@ function MyDoubleModal({
   isHost,
   id,
 }) {
+  const user = useUser();
   const {showToast} = useToast();
   return (
     <View style={styles.centeredView}>
