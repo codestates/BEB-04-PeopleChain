@@ -143,9 +143,11 @@ function AlarmDetail({route}) {
         pButtonText="네"
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
-        pFunction={() => {}}
-        nFunction={() => {
+        pFunction={() => {
           handleAccept();
+          setModalVisible(!modalVisible);
+        }}
+        nFunction={() => {
           setModalVisible(!modalVisible);
         }}
       />
