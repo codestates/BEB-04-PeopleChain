@@ -39,12 +39,11 @@ function ChattingRoom({route}) {
   const [meetingEnd, setMeetingEnd] = useState(false);
   const [spendingModalVisible, setSpendingModalVisible] = useState(false);
   const {showToast} = useToast();
-  const [userNickName, setUserNickName] = useState('');
-  const [userImages, setUserImages] = useState('');
+
   // 추후 추가해야할 data
-  const [userNFTImages, setUserNFTImages] = useState('');
   const [isFixed, setIsFixed] = useState('');
   const userRef = useMemo(() => firestore().collection('User'), []);
+  const [userDetail, setUserDetail] = useState('');
   const user = useUser().id;
 
   // 아래는 params.data로 받아온 members라는, 참여자의 id값을 통해서 각각 참여자의 nickName을 받아와 객체화하는 과정이다. 결과값은 아래와 같다.
@@ -61,40 +60,57 @@ function ChattingRoom({route}) {
     return [];
   }, []);
 
+  const memberId = useMemo(() => {
+    return [];
+  }, []);
+
+  const results = useMemo(() => {
+    return [];
+  }, []);
+
   const users = useMemo(
     () =>
       Promise.all(
         route.params.data.members.map(async el => {
           memberNickName.push(Object.keys(el)[0]);
-
+          memberId.push(Object.keys(el)[0]);
+          // console.log(memberId);
           const result = await userRef.doc(Object.keys(el)[0]).get();
+          results.push(result.data());
           // 이 아래는 {user1Id : user1PictureUri, user2Id, user2PictureUri} 형식의 object를 만들어서 state에 올려주는 과정입니다.
           memberProfile.push(result.data().picture);
-          if (memberProfile.length === memberNickName.length) {
-            setUserImages(
-              memberNickName.reduce((acc, cur, idx) => {
-                return {
-                  ...acc,
-                  [cur]: memberProfile[idx],
-                };
+          // console.log(memberId);
+          // console.log(results);
+
+          if (results.length === memberId.length) {
+            setUserDetail(
+              results.reduce((acc, cur) => {
+                return {...acc, [cur.userId]: cur};
               }, 0),
             );
           }
+
           return result.data().nickName;
         }),
-      )
-        .then(result => {
-          return result.reduce((acc, cur, idx) => {
-            return {...acc, [memberNickName[idx]]: cur};
-          }, 0);
-        })
-        .then(result => {
-          setUserNickName(result);
-        }),
-    [memberNickName, userRef, route.params.data, memberProfile],
+      ).then(result => {
+        console.log(userDetail);
+        return result.reduce((acc, cur, idx) => {
+          return {...acc, [memberNickName[idx]]: cur};
+        }, 0);
+      }),
+
+    [
+      memberNickName,
+      userRef,
+      route.params.data,
+      memberProfile,
+      memberId,
+      results,
+    ],
   );
 
   useEffect(() => {
+    // console.log(route.params.data.members);
     Animated.spring(animation, {
       toValue: roomInfo ? windowWidth / 5 : windowWidth,
       useNativeDriver: true,
@@ -137,8 +153,7 @@ function ChattingRoom({route}) {
         <ChatText
           data={route.params.data}
           roomINfo={roomInfo}
-          userNickName={userNickName}
-          userImages={userImages}
+          userDetail={userDetail}
         />
 
         {roomInfoExist ? (
@@ -149,7 +164,6 @@ function ChattingRoom({route}) {
               setModalVisible={setModalVisible}
               setMeetingEnd={setMeetingEnd}
               isFixed={isFixed}
-              userNickName={userNickName}
             />
           </Animated.View>
         ) : null}

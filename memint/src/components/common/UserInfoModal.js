@@ -33,10 +33,6 @@ function UserInfoModal({user, userInfoModalVisible, setUserInfoModalVisible}) {
   const [isValid, setIsValid] = useState(false);
   const [mySingleModalVisible, setMySingleModalVisible] = useState(false);
 
-  useEffect(() => {
-    console.log(user);
-  }, []);
-
   return (
     <View style={styles.centeredView}>
       <Modal
@@ -94,19 +90,6 @@ function UserInfoModal({user, userInfoModalVisible, setUserInfoModalVisible}) {
                   ) : (
                     <ActivityIndicator size="large" color="black" />
                   )}
-
-                  {/* <View style={styles.tag}>
-                  <Text>#양주</Text>
-                </View>
-                <View style={styles.tag}>
-                  <Text>#맥주</Text>
-                </View>
-                <View style={styles.tag}>
-                  <Text>#와인</Text>
-                </View>
-                <View style={styles.tag}>
-                  <Text>#막걸리</Text>
-                </View> */}
                 </View>
                 <Text style={styles.hilightText}>스타일</Text>
                 <View style={styles.tags}>

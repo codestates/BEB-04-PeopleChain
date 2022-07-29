@@ -1,12 +1,5 @@
 import React, {useEffect, useState, useMemo} from 'react';
-import {
-  Text,
-  StyleSheet,
-  View,
-  FlatList,
-  TouchableOpacity,
-  Image,
-} from 'react-native';
+import {Text, StyleSheet, View, FlatList, TouchableOpacity} from 'react-native';
 import AddChat from './addChat';
 import UserInfoModal from '../common/UserInfoModal';
 import firestore from '@react-native-firebase/firestore';
@@ -14,7 +7,7 @@ import useUser from '../../utils/hooks/UseUser';
 import LinearGradient from 'react-native-linear-gradient';
 import InquireUserProfile from '../common/InquireUserProfile';
 
-function ChatText({data, roomInfo, userNickName, userImages}) {
+function ChatText({data, roomInfo, userDetail}) {
   // const [chats, setChats] = useState(chattings);
   const [userInfoModalVisible, setUserInfoModalVisible] = useState(false);
   const [userInfo, setUserInfo] = useState('');
@@ -57,19 +50,17 @@ function ChatText({data, roomInfo, userNickName, userImages}) {
             justifyContent: 'flex-end',
             flexDirection: 'column-reverse',
           }}
-          // initialScrollIndex={0}
           style={styles.container}
           data={chattings}
           renderItem={({item}) =>
             item.data().sender === user ? (
-              <MyChat item={item} userNickName={userNickName} user={userDesc} />
+              <MyChat item={item} user={userDesc} userDetail={userDetail} />
             ) : (
               <NotMyChat
-                userNickName={userNickName}
                 item={item}
                 setUserInfoModalVisible={setUserInfoModalVisible}
                 setUserInfo={setUserInfo}
-                userImages={userImages}
+                userDetail={userDetail}
               />
             )
           }
@@ -87,13 +78,10 @@ function ChatText({data, roomInfo, userNickName, userImages}) {
   );
 }
 
-function NotMyChat({
-  item,
-  setUserInfoModalVisible,
-  setUserInfo,
-  userNickName,
-  userImages,
-}) {
+function NotMyChat({item, setUserInfoModalVisible, setUserInfo, userDetail}) {
+  useEffect(() => {
+    // console.log(item.data().sender);
+  });
   return (
     <View style={styles.messageWrapper}>
       {/* 클릭할 시 유저 정보를 열겠냐고 물어보는 모달 창 띄우는 값 true로 설정 */}
@@ -115,7 +103,7 @@ function NotMyChat({
       </TouchableOpacity>
       <View style={styles.textWrapper}>
         <Text style={styles.senderName}>
-          {userNickName[item.data().sender]}
+          {userDetail && userDetail[item.data().sender].nickName}
         </Text>
         <View style={styles.messageBody}>
           <Text style={{padding: 3}}>{item.data().text}</Text>
@@ -137,13 +125,13 @@ function NotMyChat({
   );
 }
 
-function MyChat({item, userNickName}) {
+function MyChat({item, userDetail}) {
   return (
     <View style={styles.MymessageWrapper}>
       {/* <Image source={{uri: user.picture}} style={styles.image} /> */}
       <View style={[styles.textWrapper, {alignItems: 'flex-end'}]}>
         <Text style={styles.senderName}>
-          {userNickName[item.data().sender]}
+          {userDetail && userDetail[item.data().sender].nickName}
         </Text>
         <View style={[styles.messageBody, {backgroundColor: 'white'}]}>
           <Text style={{padding: 3}}>{item.data().text}</Text>

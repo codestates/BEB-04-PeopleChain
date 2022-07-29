@@ -27,21 +27,18 @@ function AddChat({chatId}) {
         value={text}
         onChangeText={setText}
       />
-      <TouchableOpacity>
-        <Icon
-          name="send"
-          size={30}
-          color="black"
-          onPress={() => {
-            const obj = {
-              createdAt: firestore.FieldValue.serverTimestamp(),
-              sender: user,
-              text,
-            };
-            sendChat(obj);
-            setText('');
-          }}
-        />
+      <TouchableOpacity
+        activeOpacity={1}
+        onPress={() => {
+          const obj = {
+            createdAt: firestore.FieldValue.serverTimestamp(),
+            sender: user,
+            text,
+          };
+          text && sendChat(obj);
+          setText('');
+        }}>
+        <Icon name="send" size={30} color="black" />
       </TouchableOpacity>
     </View>
   );

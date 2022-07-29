@@ -47,7 +47,7 @@ const Host = ({data, count, meetingInfo, setModalVisible}) => {
   const {showToast} = useToast();
   const navigation = useNavigation();
 
-  console.log(data);
+  // console.log(data);
 
   return (
     <View style={styles.container}>

@@ -3,29 +3,6 @@ import {View, StyleSheet, Text, TouchableOpacity, Image} from 'react-native';
 import {getOtherUser} from '../../lib/Users';
 import UserInfoModal from './UserInfoModal';
 
-/*
-
-  BasicButton 사용법
-
-  props
-  text => 버튼 내용
-  width =>
-  height =>
-  backgroundcolor =>
-  margin => [top, right, bottom, left]
-  //지정안하면 basic으로
-  onPress => 실행 함수
-
-  Ex)
-    <InquireUserProfile  
-    width={100}
-    height={40}
-    margin={[10, 3, 3, 3]}
-    userId={}
-  />
-
-*/
-
 function InquireUserProfile({width, height, margin, userId}) {
   const [userInfoModalVisible, setUserInfoModalVisible] = useState(false);
 
@@ -46,27 +23,9 @@ function InquireUserProfile({width, height, margin, userId}) {
 
   return (
     <>
-      <TouchableOpacity onPress={() => setUserInfoModalVisible(true)}>
-        {/* <View
-        style={[
-          styles.button,
-          {
-            width: width,
-            height: height,
-            backgroundColor: backgroundColor,
-            marginTop: marginTop,
-            marginRight: marginRight,
-            marginBottom: marginBottom,
-            marginLeft: marginLeft,
-            borderRadius: borderRadius,
-          },
-          border ? styles.border : '',
-        ]}>
-        <Text
-          style={[styles.buttonText, {fontSize: textSize, color: textColor}]}>
-          {text}
-        </Text>
-      </View> */}
+      <TouchableOpacity
+        activeOpacity={1}
+        onPress={() => setUserInfoModalVisible(true)}>
         <Image
           style={{
             width: width,
