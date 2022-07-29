@@ -204,12 +204,19 @@ function MeetingMarket({navigation}) {
             <Icon name="arrow-drop-down" size={18} />
           </Pressable>
         </View>
+        {filteredMeetings.length === 0 ? (
+          <View
+            style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
+            <Text style={{color: 'lightgray'}}>알림이 없습니다</Text>
+          </View>
+        ) : (
+          <View style={styles.meetingLists}>
+            {filteredMeetings.map((meeting, idx) => {
+              return <MeetingElement key={idx} item={meeting} />;
+            })}
+          </View>
+        )}
 
-        <View style={styles.meetingLists}>
-          {filteredMeetings.map((meeting, idx) => {
-            return <MeetingElement key={idx} item={meeting} />;
-          })}
-        </View>
         <SingleModal
           text="미팅을 생성하시겠습니까?"
           //body={<Text>정말로?</Text>}

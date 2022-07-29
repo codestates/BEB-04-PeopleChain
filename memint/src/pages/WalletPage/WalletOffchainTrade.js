@@ -23,7 +23,7 @@ const WalletOffchainTrade = ({navigation}) => {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.view}>
       <BackButton />
       <View style={styles.accountWrapper}>
         <Image
@@ -71,6 +71,10 @@ const WalletOffchainTrade = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
+  view: {
+    backgroundColor: 'white',
+    flex: 1,
+  },
   container: {
     flex: 1,
     marginTop: 60,
@@ -88,7 +92,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   icon: {
-    marginTop: 50,
+    marginTop: 30,
     width: 50,
     height: 50,
   },
@@ -96,12 +100,11 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 30,
+    marginTop: 20,
   },
   buttonWrapper: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 30,
   },
   buttonText: {
     color: 'white',
@@ -119,8 +122,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
     fontSize: 20,
-    marginTop: 20,
-    marginBottom: 10,
+    marginTop: 10,
+    marginBottom: 15,
   },
 });
 export default WalletOffchainTrade;

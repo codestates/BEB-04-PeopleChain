@@ -62,7 +62,7 @@ const Host = ({data, count, meetingInfo, setModalVisible}) => {
                 style={
                   // status가 fixed이면
                   data.status === 'full'
-                    ? {...styles.status, backgroundColor: 'gray'} // 아니면 회색 view 렌더링
+                    ? {...styles.status, backgroundColor: 'lightgray'} // 아니면 회색 view 렌더링
                     : styles.status // 검정색 view 렌더링
                 }>
                 <Text style={{color: 'white', fontWeight: '500'}}>확정</Text>
@@ -112,14 +112,14 @@ const Host = ({data, count, meetingInfo, setModalVisible}) => {
                 style={
                   //'나를 제외한 모든 사람이 fixed가 아니면?'
                   count !== 1
-                    ? {...styles.button, backgroundColor: 'gray'}
+                    ? {...styles.button, backgroundColor: 'lightgray'}
                     : // 나를 제외한 모든 사람이 fixed인데 status가 full이면?
                     data.status === 'full'
                     ? styles.button
                     : // 나를 제외한 모든 사람이 fixed이고 status가 fixed이면?
-                      {...styles.button, backgroundColor: 'gray'}
+                      {...styles.button, backgroundColor: 'lightgray'}
                 }>
-                <Text style={{color: 'black', fontWeight: '500'}}>
+                <Text style={{color: 'white', fontWeight: '500'}}>
                   {
                     //'status가 full이면'
                     data.status === 'full' ? '확정하기' : '후기 작성하기'
@@ -151,7 +151,7 @@ const Joiner = ({data, user, setModalVisible, meetingInfo}) => {
                 style={
                   // status가 fixed이면
                   data.status === 'full'
-                    ? {...styles.status, backgroundColor: 'gray'} // 아니면 회색 view 렌더링
+                    ? {...styles.status, backgroundColor: 'lightgray'} // 아니면 회색 view 렌더링
                     : styles.status // 파란색 view 렌더링
                 }>
                 <Text style={{color: 'white'}}>확정</Text>
@@ -178,7 +178,7 @@ const Joiner = ({data, user, setModalVisible, meetingInfo}) => {
                 navigation.navigate('FeedbackChoicePage');
               }}>
               <View style={styles.button}>
-                <Text>후기 작성</Text>
+                <Text style={{color: 'white'}}>후기 작성</Text>
               </View>
             </TouchableOpacity>
           ) : (
@@ -209,7 +209,7 @@ const Joiner = ({data, user, setModalVisible, meetingInfo}) => {
                   data.members.filter(el => {
                     return el[user] === 'fixed';
                   }).length === 1
-                    ? {...styles.button, backgroundColor: 'gray'}
+                    ? {...styles.button, backgroundColor: 'lightgray'}
                     : styles.button
                 }>
                 <Text style={{color: 'white'}}>

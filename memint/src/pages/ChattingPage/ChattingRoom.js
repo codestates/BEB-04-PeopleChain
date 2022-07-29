@@ -18,7 +18,6 @@ import firestore from '@react-native-firebase/firestore';
 import {useToast} from '../../utils/hooks/useToast';
 import {changeMeetingState} from '../../lib/Chatting';
 import useUser from '../../utils/hooks/UseUser';
-import LinearGradient from 'react-native-linear-gradient';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -104,7 +103,7 @@ function ChattingRoom({route}) {
   return (
     <KeyboardAvoidingView
       behavior={'padding'}
-      style={{flex: 1, backgroundColor: 'rgba(0,0,0,0,2)'}}
+      style={{flex: 1, backgroundColor: 'white'}}
       // 키보드가 올라온 상태에서 추가적으로 적용할 +값
       // keyboardVerticalOffset={80}
     >
@@ -191,6 +190,7 @@ function ChattingRoom({route}) {
           pFunction={() => {
             changeMeetingState(route.params.data.id);
             setSpendingModalVisible(false);
+
             showToast('basic', '미팅이 확정되었습니다.');
           }}
         />

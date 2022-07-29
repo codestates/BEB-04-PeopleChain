@@ -86,7 +86,7 @@ function AlarmPage({navigation}) {
     setChattingConfirmModal(!setChattingConfirmModal);
     navigation.navigate('ChattingRoom', {data: meetingInfo});
   };
-  console.log(alarms);
+  // console.log(alarms);
 
   return (
     <SafeAreaView style={styles.view}>

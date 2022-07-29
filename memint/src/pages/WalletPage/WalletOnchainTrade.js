@@ -60,7 +60,7 @@ const WalletOnchainTrade = () => {
     }
   };
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.view}>
       <BackButton />
       <Text style={styles.tradeText}>Trade</Text>
       <View style={styles.buttonContainer}>
@@ -69,26 +69,27 @@ const WalletOnchainTrade = () => {
           setAmount={createChangeAmountHandler('fromAmount')}
           balance={fromEth ? userInfo.ethAmount : userInfo.onChainTokenAmount}
           width={330}
-          height={120}
-          margin={[30, 0, 10, 0]}
+          height={110}
+          margin={[30, 0, 30, 0]}
           text="From"
           content={fromEth ? 'ETH' : 'LCN'}
           //   backgroundColor={'lightblue'}
         />
         <TouchableOpacity onPress={() => setFromEth(!fromEth)}>
-          <Icon name="autorenew" size={70} />
+          <Icon name="autorenew" size={50} />
         </TouchableOpacity>
         <SmallLcnButton
           amount={amount.toAmount}
           width={330}
-          height={90}
-          margin={[10, 0, 0, 0]}
+          height={110}
+          margin={[30, 0, 0, 0]}
           text="To (Estimated)"
           content={fromEth ? 'LCN' : 'ETH'}
         />
         <BasicButton
-          margin={[100, 0, 0, 0]}
+          margin={[80, 0, 0, 0]}
           width={330}
+          height={50}
           text={'교환하기'}
           textSize={18}
           onPress={() => {
@@ -141,6 +142,10 @@ const WalletOnchainTrade = () => {
 };
 
 const styles = StyleSheet.create({
+  view: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
   container: {
     flex: 1,
     marginTop: 60,

@@ -51,7 +51,6 @@ function AlarmDetail({route}) {
     showToast('basic', '신청이 수락되었습니다');
     navigation.navigate('AlarmPage');
   };
-  console.log(route);
   // const handleDeny = () => {
   //   showToast('basic', '신청이 거절되었습니다');
   //   navigation.pop();

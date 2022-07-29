@@ -59,8 +59,8 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     backgroundColor: 'white',
     borderWidth: 1,
-    borderRadius: 5,
-    margin: 1,
+    borderRadius: 10,
+    margin: 3,
   },
   contentWrapper: {
     flexDirection: 'column',

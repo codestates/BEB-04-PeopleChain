@@ -25,6 +25,12 @@ function InviteFriend() {
     const data = await getUserByNickname(searchNickName, loginUser);
     setSearchResult(data);
   };
+  const handleSelect = el => {
+    navigation.navigate('MeetingCreate', {
+      friendId: el.id,
+      friendNickname: el.nickName,
+    });
+  };
 
   return (
     <SafeAreaView style={styles.view}>
@@ -45,20 +51,22 @@ function InviteFriend() {
           />
         </View>
         <View>
-          {searchResult.map((el, idx) => (
-            <TouchableOpacity
-              key={idx}
-              style={styles.userElement}
-              onPress={() => {
-                navigation.navigate('MeetingCreate', {
-                  friendId: el.id,
-                  friendNickname: el.nickName,
-                });
-              }}>
-              <Image source={{uri: el.nftProfile}} style={styles.userImage} />
-              <Text style={styles.username}>{el.nickName}</Text>
-            </TouchableOpacity>
-          ))}
+          <View>
+            {searchResult.map((el, idx) => (
+              <TouchableOpacity
+                key={idx}
+                style={styles.userElement}
+                onPress={() => {
+                  handleSelect(el);
+                }}>
+                <Image
+                  source={{uri: el?.nftProfile}}
+                  style={styles.userImage}
+                />
+                <Text style={styles.username}>{el.nickName}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
         </View>
       </View>
     </SafeAreaView>

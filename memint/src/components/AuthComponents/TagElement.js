@@ -40,7 +40,11 @@ function TagElement({tag, drinkInfo, setDrinkInfo, type}) {
       // style={[styles.tag, colored ? styles.coloredTag : '']}
       onPress={handleClick}>
       {colored ? (
-        <LinearGradient colors={['#A7BFEB', '#FBC2EA']} style={styles.tag}>
+        <LinearGradient
+          colors={['#A7BFEB', '#FBC2EA']}
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 1}}
+          style={styles.tag}>
           <Text style={styles.coloredtext}>{tag}</Text>
         </LinearGradient>
       ) : (
@@ -66,7 +70,7 @@ const styles = StyleSheet.create({
   },
   coloredtext: {
     color: 'white',
-    fontWeight: '500',
+    fontWeight: '700',
   },
 });
 

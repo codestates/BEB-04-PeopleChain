@@ -6,7 +6,6 @@ import {handleDateInFormat} from '../../utils/common/Functions';
 import {getMeeting, updateMeeting} from '../../lib/Meeting';
 import useMeetingActions from '../../utils/hooks/UseMeetingActions';
 import EarnModal from '../common/UserInfoModal/EarnModal';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import {getUser} from '../../lib/Users';
 import {useIsFocused} from '@react-navigation/native';
 import {useToast} from '../../utils/hooks/useToast';
@@ -111,7 +110,7 @@ function MyMeetings({item, navigation}) {
         </TouchableOpacity>
       );
     } else if (item?.status === 'end') {
-      return <Text style={styles.editText}>종료된 미팅</Text>;
+      return <Text style={styles.finishText}>종료된 미팅</Text>;
     }
   };
 
@@ -175,12 +174,11 @@ function MyMeetings({item, navigation}) {
           </Text>
         </View>
 
-        <View style={[styles.container, styles.spaceBetween]}>
+        <View style={styles.spaceBetween}>
           <TouchableOpacity
             style={styles.edit}
             onPress={() => setEditModal(true)}>
             <Text style={styles.editText}>미팅 정보 수정</Text>
-            <Icon name="edit" size={14} />
           </TouchableOpacity>
           {renderButton()}
         </View>
@@ -253,7 +251,7 @@ function MyMeetings({item, navigation}) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    alignItems: 'flex-end',
+    alignItems: 'center',
     marginVertical: 6,
   },
   tagcontainer: {
@@ -272,8 +270,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     marginBottom: 5,
     paddingHorizontal: 27,
-    paddingVertical: 22,
-    height: 140,
+    paddingVertical: 20,
+    height: 130,
     borderColor: 'black',
     borderRadius: 30,
     borderWidth: 1,
@@ -326,20 +324,28 @@ const styles = StyleSheet.create({
     color: '#787878',
   },
   spaceBetween: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    marginVertical: 6,
     justifyContent: 'space-between',
   },
   bar: {
     width: 1,
-    height: 9,
+    height: 8,
     marginHorizontal: 4,
     backgroundColor: 'black',
   },
   editText: {
     fontSize: 12,
     fontWeight: '500',
+    color: '#787878',
+  },
+  finishText: {
+    fontSize: 12,
+    fontWeight: '500',
   },
   edit: {
-    marginTop: 10,
+    marginTop: 6,
     flexDirection: 'row',
     alignItems: 'center',
   },

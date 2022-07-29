@@ -88,13 +88,20 @@ function ChattingListPage({navigation}) {
       <View style={styles.header}>
         <Text style={styles.title}>채팅</Text>
       </View>
-      <FlatList
-        ItemSeparatorComponent={() => <View style={styles.separator} />}
-        data={chatLog}
-        renderItem={({item}) => (
-          <MetaData item={item} navigation={navigation} />
-        )}
-      />
+      {chatLog.length === 0 ? (
+        <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
+          <Text style={{color: 'lightgray'}}>채팅이 없습니다</Text>
+        </View>
+      ) : (
+        <FlatList
+          ItemSeparatorComponent={() => <View style={styles.separator} />}
+          data={chatLog}
+          renderItem={({item}) => (
+            <MetaData item={item} navigation={navigation} />
+          )}
+        />
+      )}
+
       <WalletButton />
     </SafeAreaView>
   );
@@ -142,7 +149,6 @@ function MetaData({item, navigation}) {
       onPress={() => navigation.navigate('ChattingRoom', {data: item})}>
       <View style={styles.container}>
         <Image style={styles.image} source={{uri: item.hostInfo.nftProfile}} />
-
         <View style={styles.chatInfo}>
           <View>
             <Text style={styles.titleText}>{item.title}</Text>

@@ -49,8 +49,8 @@ function Toast() {
   const {type, message} = toastConfig;
 
   const backgroundColor = StyleSheet.create({
-    success: {color: 'blue'},
-    error: {color: 'red'},
+    success: {color: '#609afa'},
+    error: {color: '#f87171'},
     basic: {color: 'black'},
   });
 

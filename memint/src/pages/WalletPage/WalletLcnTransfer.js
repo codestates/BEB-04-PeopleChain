@@ -80,6 +80,7 @@ const WalletLcnTransfer = () => {
             <BasicButton
               margin={[30, 0, 0, 0]}
               width={330}
+              height={50}
               text={'보내기'}
               textSize={18}
               onPress={() => {
@@ -122,6 +123,7 @@ const WalletLcnTransfer = () => {
 const styles = StyleSheet.create({
   KeyboardAvoidingView: {
     flex: 1,
+    backgroundColor: 'white',
   },
   fullscreen: {
     flex: 1,

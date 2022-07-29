@@ -78,7 +78,7 @@ BasicButton.defaultProps = {
   textSize: 14,
   margin: [5, 5, 5, 5],
   onPress: () => {},
-  borderRadius: 13,
+  borderRadius: 30,
   border: true,
 };
 

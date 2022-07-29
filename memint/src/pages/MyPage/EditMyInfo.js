@@ -49,7 +49,7 @@ const EditMyInfo = ({route}) => {
     } catch (e) {
       console.log(e);
     } finally {
-      navigation.reset({routes: [{name: 'SignIn'}]})
+      navigation.reset({routes: [{name: 'SignIn'}]});
       // navigation.navigate('SignIn');
     }
   }, [navigation, logout]);

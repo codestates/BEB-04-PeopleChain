@@ -50,24 +50,25 @@ const WalletOffchainTransfer = ({navigation}) => {
         <SmallLcnButton
           text={'To'}
           width={330}
-          height={90}
-          margin={[30, 0, 10, 0]}
+          height={100}
+          margin={[10, 0, 10, 0]}
           backgroundColor={'lightblue'}
           amount={amount}
         />
-        <Icon name="arrow-upward" size={70} />
+        <Icon name="arrow-upward" size={50} />
         <LargeLcnButton
           balance={userInfo.tokenAmount}
           width={330}
-          height={120}
+          height={100}
           margin={[10, 0, 0, 0]}
           text={'From'}
           amount={amount}
           setAmount={setAmount}
         />
         <BasicButton
-          margin={[30, 0, 0, 0]}
+          margin={[40, 0, 0, 0]}
           width={330}
+          height={45}
           text={'내보내기'}
           textSize={18}
           onPress={() => {

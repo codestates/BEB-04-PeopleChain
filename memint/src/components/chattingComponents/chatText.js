@@ -52,6 +52,8 @@ function ChatText({data, roomInfo, userDetail}) {
     <View style={roomInfo ? {flex: 1, opacity: 0.8} : {flex: 1}}>
       <LinearGradient
         colors={['#A7BFEB', '#FBC2EA']}
+        start={{x: 0, y: 0}}
+        end={{x: 1, y: 1}}
         style={roomInfo ? {flex: 1, opacity: 0.8} : {flex: 1}}>
         <FlatList
           // horizontal={true}
@@ -119,21 +121,23 @@ function NotMyChat({item, userDetail, setUserInfoModalVisible, setUserId}) {
         <Text style={styles.senderName}>
           {userDetail && userDetail[item.data().sender].nickName}
         </Text>
-        <View style={styles.messageBody}>
-          <Text style={{padding: 3}}>{item.data().text}</Text>
+        <View style={{flexDirection: 'row'}}>
+          <View style={styles.messageBody}>
+            <Text style={{padding: 3}}>{item.data().text}</Text>
+          </View>
+          <View style={styles.date}>
+            <Text style={{marginBottom: 7, fontSize: 10, color: 'gray'}}>
+              {item
+                .data()
+                .createdAt.toDate()
+                .toLocaleString()
+                .slice(
+                  6,
+                  item.data().createdAt.toDate().toLocaleString().length - 3,
+                )}
+            </Text>
+          </View>
         </View>
-      </View>
-      <View style={styles.date}>
-        <Text style={{marginBottom: 7, fontSize: 10, color: 'gray'}}>
-          {item
-            .data()
-            .createdAt.toDate()
-            .toLocaleString()
-            .slice(
-              6,
-              item.data().createdAt.toDate().toLocaleString().length - 3,
-            )}
-        </Text>
       </View>
     </View>
   );
@@ -148,18 +152,6 @@ function MyChat({item, userDetail, user}) {
         <View style={[styles.messageBody, {backgroundColor: 'white'}]}>
           <Text style={{padding: 3}}>{item.data().text}</Text>
         </View>
-      </View>
-      <View style={styles.date}>
-        <Text style={{marginBottom: 7, fontSize: 10, color: 'gray'}}>
-          {item
-            .data()
-            .createdAt.toDate()
-            .toLocaleString()
-            .slice(
-              6,
-              item.data().createdAt.toDate().toLocaleString().length - 3,
-            )}
-        </Text>
       </View>
     </View>
   );
@@ -181,6 +173,7 @@ const styles = StyleSheet.create({
     marginLeft: 7,
   },
   textWrapper: {
+    flex: 0,
     justifyContent: 'center',
   },
   senderName: {
@@ -193,8 +186,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 5,
     padding: 3,
-    width: 'auto',
-    height: 'auto',
+  },
+  mymessageBody: {
+    backgroundColor: 'white',
+    borderRadius: 5,
+    padding: 3,
   },
   date: {
     justifyContent: 'flex-end',

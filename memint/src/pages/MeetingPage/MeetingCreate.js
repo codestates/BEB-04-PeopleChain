@@ -7,6 +7,7 @@ import {
   View,
   StyleSheet,
   ScrollView,
+  Pressable,
 } from 'react-native';
 import {TextInput} from 'react-native-paper';
 import BackButton from '../../components/common/BackButton';
@@ -177,17 +178,12 @@ function MeetingCreate({route}) {
           <BackButton />
           <Text style={styles.title}>미팅 글쓰기</Text>
         </View>
-        <TouchableOpacity
-          onPress={() => {
-            showToast('coin', 'dd');
-          }}>
-          <Text>토스트</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handleSubmit}>
+
+        <Pressable onPress={handleSubmit}>
           <Text style={submittable ? styles.title : styles.grayButton}>
             완료
           </Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
       <DoubleModal
         text="미팅 생성 시 LCN이 차감됩니다.    미팅을 생성하시겠습니까?"
@@ -242,7 +238,7 @@ function MeetingCreate({route}) {
           />
         </View>
         <View style={[styles.createElement, styles.flexRow]}>
-          <TouchableOpacity style={styles.selectButton}>
+          <Pressable style={styles.selectButton}>
             <RNPickerSelect
               placeholder={{label: '지역'}}
               onValueChange={value => {
@@ -262,10 +258,10 @@ function MeetingCreate({route}) {
               }}
             />
             <Icon name="arrow-drop-down" size={19} color={'gray'} />
-          </TouchableOpacity>
+          </Pressable>
         </View>
         <View style={[styles.createElement, styles.flexRow]}>
-          <TouchableOpacity style={[styles.selectButton, styles.rightMargin]}>
+          <Pressable style={[styles.selectButton, styles.rightMargin]}>
             <RNPickerSelect
               placeholder={{label: '인원'}}
               onValueChange={value => {
@@ -285,7 +281,7 @@ function MeetingCreate({route}) {
               }}
             />
             <Icon name="arrow-drop-down" size={19} color={'gray'} />
-          </TouchableOpacity>
+          </Pressable>
           <ScrollView style={styles.invitedFriends} horizontal={true}>
             {friendsNames.map((el, idx) => (
               <View key={idx} style={styles.invitedFriend}>
@@ -294,7 +290,7 @@ function MeetingCreate({route}) {
             ))}
           </ScrollView>
 
-          <TouchableOpacity
+          <Pressable
             onPress={() => {
               if (meetingInfo.friends.length + 1 >= meetingInfo.peopleNum) {
                 showToast(
@@ -306,7 +302,7 @@ function MeetingCreate({route}) {
               setInviteModalVisible(true);
             }}>
             <Text style={[styles.text, styles.leftMargin]}>친구 초대하기</Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
         <DoubleModal
           text="친구 초대 시 LCN이 차감됩니다.    초대하시겠습니까?"
@@ -409,9 +405,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-  },
-  createContainer: {
-    backgroundColor: 'white',
   },
   createElement: {
     borderBottomColor: 'lightgray',

@@ -1,7 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
 import {handleBirth} from '../../utils/common/Functions';
-import LinearGradient from 'react-native-linear-gradient';
 
 function DetailMembers({membersInfo, peopleNum, hostId}) {
   const currentPeopleNum = () => {
@@ -86,6 +85,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   memberInfo: {
+    width: 132,
     flexDirection: 'row',
     marginVertical: 10,
     marginHorizontal: 5,

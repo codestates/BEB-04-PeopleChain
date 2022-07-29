@@ -40,7 +40,7 @@ function GradientButton({
 GradientButton.defaultProps = {
   width: 70,
   height: 45,
-  borderRadius: 15,
+  borderRadius: 20,
   margin: [5, 5, 5, 5],
   textColor: 'white',
   text: '버튼',

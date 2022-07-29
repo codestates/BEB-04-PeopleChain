@@ -117,7 +117,6 @@ export async function getUserByNickname(str, loginUser) {
       return {...el.data(), id: el.id};
     }
   });
-  console.log(data);
   return data.filter(el => el !== undefined);
 }
 

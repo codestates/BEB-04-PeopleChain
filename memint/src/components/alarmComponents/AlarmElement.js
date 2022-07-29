@@ -83,11 +83,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     marginBottom: 5,
     paddingHorizontal: 20,
-    paddingVertical: 23,
-    height: 130,
+    paddingVertical: 15,
+    height: 115,
     borderColor: 'black',
     borderRadius: 30,
     borderWidth: 1,
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   icon: {
-    marginRight: 10,
+    marginRight: 13,
   },
   content: {
     flex: 1,
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   meetingElement: {
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: '500',
   },
   meetingTitle: {

@@ -98,11 +98,15 @@ function SpendingModal({
                   text="아니오"
                   size="small"
                   variant="disable"
+                  backgroundColor="white"
+                  textColor="black"
+                  margin={[20, 8, 5, 8]}
                   onPress={() => setSpendingModalVisible(false)}
                 />
                 <BasicButton
                   text="네"
                   size="small"
+                  margin={[20, 8, 5, 8]}
                   onPress={() => {
                     pFunction();
                     transactionMade();

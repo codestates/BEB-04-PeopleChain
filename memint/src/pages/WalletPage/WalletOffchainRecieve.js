@@ -38,24 +38,25 @@ const WalletOffchainRecieve = ({navigation}) => {
         <LargeLcnButton
           balance={userInfo.onChainTokenAmount}
           width={330}
-          height={120}
-          margin={[30, 0, 10, 0]}
+          height={100}
+          margin={[10, 0, 10, 0]}
           text={'From'}
           amount={amount}
           setAmount={setAmount}
           backgroundColor={'lightblue'}
         />
-        <Icon name="arrow-downward" size={70} />
+        <Icon name="arrow-downward" size={50} />
         <SmallLcnButton
           width={330}
-          height={90}
+          height={100}
           margin={[10, 0, 0, 0]}
           text={'To'}
           amount={amount}
         />
         <BasicButton
-          margin={[30, 0, 0, 0]}
+          margin={[40, 0, 0, 0]}
           width={330}
+          height={45}
           text={'가져오기'}
           textSize={18}
           onPress={() => {
