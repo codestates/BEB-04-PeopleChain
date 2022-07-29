@@ -29,6 +29,7 @@ export function createUser({
     joinedroomId: [],
     ethAmount: 0,
     onChainTokenAmount: 0,
+    visibleUser: [],
   });
 }
 
@@ -45,7 +46,7 @@ export async function getOtherUser(id) {
   // console.log('@@@@');
   // console.log(userProperty);
 
-  const otherUser = {
+  const otherUser = userDetail && {
     nickName: userDetail.nickName,
     birth: userDetail.birth,
     gender: userDetail.gender,
@@ -118,4 +119,10 @@ export async function getUserByNickname(str, loginUser) {
   });
   console.log(data);
   return data[0] === undefined ? [] : data;
+}
+
+export async function addVisibleUser(id, value) {
+  return usersCollection
+    .doc(id)
+    .update({visibleUser: firestore.FieldValue.arrayUnion(value)});
 }

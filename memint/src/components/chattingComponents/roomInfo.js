@@ -5,13 +5,7 @@ import firestore from '@react-native-firebase/firestore';
 const crown = require('../../pages/ChattingPage/dummydata/images/crown.png');
 const user = '연습용계정1';
 
-function RoomInfo({
-  chatInfo,
-  meetingEnd,
-  setMeetingEnd,
-  isFixed,
-  userNickName,
-}) {
+function RoomInfo({chatInfo, meetingEnd, setMeetingEnd, isFixed, userDetail}) {
   const [confirmed, setConfirmed] = useState(false);
   const [nickNames, setNickNames] = useState('');
   const [states, setStates] = useState('');
@@ -40,9 +34,15 @@ function RoomInfo({
   useEffect(() => {
     // setMember(Object.values(isFixed));
 
-    const nickNames = Object.values(userNickName);
+    const ids = Object.keys(userDetail);
 
-    setNickNames(nickNames);
+    const arr = [];
+
+    ids.forEach(el => {
+      arr.push(userDetail[el].nickName);
+    });
+
+    setNickNames(arr);
 
     getIsFixed;
     const people = () => {
@@ -57,7 +57,7 @@ function RoomInfo({
       }
     };
     people();
-  }, [isFixed, userNickName, getIsFixed, chatInfo, states]);
+  }, [isFixed, getIsFixed, chatInfo, states]);
 
   return (
     <View style={styles.container}>

@@ -30,12 +30,3 @@ export const changeMeetingState = async meetingId => {
     status: 'fixed',
   });
 };
-
-// export const isVisible = userId => {
-//   if (user.visibleUser) {
-//     user.visibleUser.forEach(el => {
-//       if (el === userId) return true;
-//     });
-//   }
-//   return false;
-// };

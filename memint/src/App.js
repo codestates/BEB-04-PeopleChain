@@ -95,6 +95,7 @@ function App() {
         alcoholType: userProperty[0].alcoholType,
         drinkCapa: userProperty[0].drinkCapa,
         drinkStyle: userProperty[0].drinkStyle,
+        visibleUser: userDetail.visibleUser,
       });
       console.log('userDetail is');
       console.log(userDetail);

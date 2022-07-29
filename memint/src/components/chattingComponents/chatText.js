@@ -1,24 +1,36 @@
 import React, {useEffect, useState, useMemo} from 'react';
-import {Text, StyleSheet, View, FlatList, TouchableOpacity} from 'react-native';
+import {
+  Text,
+  StyleSheet,
+  View,
+  FlatList,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import AddChat from './addChat';
-import UserInfoModal from '../common/UserInfoModal';
 import firestore from '@react-native-firebase/firestore';
 import useUser from '../../utils/hooks/UseUser';
 import LinearGradient from 'react-native-linear-gradient';
-import InquireUserProfile from '../common/InquireUserProfile';
+import UserInfoModal from '../common/UserInfoModal';
 
 function ChatText({data, roomInfo, userDetail}) {
-  // const [chats, setChats] = useState(chattings);
-  const [userInfoModalVisible, setUserInfoModalVisible] = useState(false);
-  const [userInfo, setUserInfo] = useState('');
   const [chattings, setChattings] = useState('');
+  const [userInfoModalVisible, setUserInfoModalVisible] = useState(false);
+  const [userId, setUserId] = useState('');
   const userDesc = useUser();
   const user = userDesc.id;
-
+  const visibleList = userDesc.visibleUser;
   const chatRef = useMemo(
     () => firestore().collection('Meeting').doc(data.id).collection('Messages'),
     [data.id],
   );
+  const checkIsVisible = userId => {
+    if (!visibleList) return false;
+    if (visibleList.indexOf(userId) !== -1) {
+      return true;
+    }
+    return false;
+  };
 
   useEffect(() => {
     const getContent = async () => {
@@ -58,19 +70,18 @@ function ChatText({data, roomInfo, userDetail}) {
             ) : (
               <NotMyChat
                 item={item}
-                setUserInfoModalVisible={setUserInfoModalVisible}
-                setUserInfo={setUserInfo}
                 userDetail={userDetail}
+                setUserId={setUserId}
+                setUserInfoModalVisible={setUserInfoModalVisible}
               />
             )
           }
         />
         <UserInfoModal
-          userInfo={userInfo}
-          nButtonText="아니오"
-          pButtonText="네"
           userInfoModalVisible={userInfoModalVisible}
           setUserInfoModalVisible={setUserInfoModalVisible}
+          userId={userId}
+          visible={checkIsVisible(userId)}
         />
       </LinearGradient>
       <AddChat chatId={data.id} />
@@ -78,29 +89,32 @@ function ChatText({data, roomInfo, userDetail}) {
   );
 }
 
-function NotMyChat({item, setUserInfoModalVisible, setUserInfo, userDetail}) {
-  useEffect(() => {
-    // console.log(item.data().sender);
-  });
+function NotMyChat({item, userDetail, setUserInfoModalVisible, setUserId}) {
   return (
     <View style={styles.messageWrapper}>
       {/* 클릭할 시 유저 정보를 열겠냐고 물어보는 모달 창 띄우는 값 true로 설정 */}
       <TouchableOpacity
         activeOpacity={1}
         onPress={() => {
-          // 1. redux에 저장된 data의 visibleUser list에 해당 유저의 아이디가 있는지 확인한다.
-          // 2. 있다면 사진을 렌더링, 없다면 spendingModal을 띄운다.
-          // 3. 토큰을 차감하고 visibleUser list에 해당 아이디를 추가해준다.
+          setUserId(item.data().sender);
           setUserInfoModalVisible(true);
-          setUserInfo(item.sender);
         }}>
-        <InquireUserProfile
-          width={60}
-          height={60}
-          margin={[10, 3, 3, 3]}
-          userId={item.data().sender}
+        <Image
+          source={
+            userDetail && {
+              uri: userDetail[item.data().sender].nftProfile,
+            }
+          }
+          style={styles.image}
         />
       </TouchableOpacity>
+      {/* <InquireUserProfile
+        width={60}
+        height={60}
+        margin={[10, 3, 3, 3]}
+        userId={item.data().sender}
+      /> */}
+
       <View style={styles.textWrapper}>
         <Text style={styles.senderName}>
           {userDetail && userDetail[item.data().sender].nickName}
@@ -125,14 +139,12 @@ function NotMyChat({item, setUserInfoModalVisible, setUserInfo, userDetail}) {
   );
 }
 
-function MyChat({item, userDetail}) {
+function MyChat({item, userDetail, user}) {
   return (
     <View style={styles.MymessageWrapper}>
       {/* <Image source={{uri: user.picture}} style={styles.image} /> */}
       <View style={[styles.textWrapper, {alignItems: 'flex-end'}]}>
-        <Text style={styles.senderName}>
-          {userDetail && userDetail[item.data().sender].nickName}
-        </Text>
+        <Text style={styles.senderName}>{user.nickName}</Text>
         <View style={[styles.messageBody, {backgroundColor: 'white'}]}>
           <Text style={{padding: 3}}>{item.data().text}</Text>
         </View>

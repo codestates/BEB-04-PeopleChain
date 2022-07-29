@@ -44,6 +44,7 @@ function ChattingRoom({route}) {
   const [isFixed, setIsFixed] = useState('');
   const userRef = useMemo(() => firestore().collection('User'), []);
   const [userDetail, setUserDetail] = useState('');
+  const ex = useUser();
   const user = useUser().id;
 
   // 아래는 params.data로 받아온 members라는, 참여자의 id값을 통해서 각각 참여자의 nickName을 받아와 객체화하는 과정이다. 결과값은 아래와 같다.
@@ -53,12 +54,6 @@ function ChattingRoom({route}) {
 
   // 아래 방법에서 만약 Promise.all의 정보 호출이 순서가 맞지 않을 것이 걱정된다면, map을 돌릴 때 한 요소마다 한 번씩 바로 {el : nickName}의 형식으로
   // memberNickName에 push해주고, 이후 reduce 함수를 사용하여 객체를 한번에 모아주는 방식도 고려해볼 수 있다.
-  const memberNickName = useMemo(() => {
-    return [];
-  }, []);
-  const memberProfile = useMemo(() => {
-    return [];
-  }, []);
 
   const memberId = useMemo(() => {
     return [];
@@ -72,15 +67,10 @@ function ChattingRoom({route}) {
     () =>
       Promise.all(
         route.params.data.members.map(async el => {
-          memberNickName.push(Object.keys(el)[0]);
           memberId.push(Object.keys(el)[0]);
           // console.log(memberId);
           const result = await userRef.doc(Object.keys(el)[0]).get();
           results.push(result.data());
-          // 이 아래는 {user1Id : user1PictureUri, user2Id, user2PictureUri} 형식의 object를 만들어서 state에 올려주는 과정입니다.
-          memberProfile.push(result.data().picture);
-          // console.log(memberId);
-          // console.log(results);
 
           if (results.length === memberId.length) {
             setUserDetail(
@@ -89,24 +79,9 @@ function ChattingRoom({route}) {
               }, 0),
             );
           }
-
-          return result.data().nickName;
+          return;
         }),
-      ).then(result => {
-        console.log(userDetail);
-        return result.reduce((acc, cur, idx) => {
-          return {...acc, [memberNickName[idx]]: cur};
-        }, 0);
-      }),
-
-    [
-      memberNickName,
-      userRef,
-      route.params.data,
-      memberProfile,
-      memberId,
-      results,
-    ],
+      )[(userRef, route.params.data, results)],
   );
 
   useEffect(() => {
@@ -125,7 +100,7 @@ function ChattingRoom({route}) {
     );
     users;
     setIsHost(route.params.data.hostId === user);
-  }, [animation, roomInfo, route.params, userRef, memberNickName, users, user]);
+  }, [animation, roomInfo, route.params, userRef, users, user, ex]);
   return (
     <KeyboardAvoidingView
       behavior={'padding'}
@@ -164,6 +139,7 @@ function ChattingRoom({route}) {
               setModalVisible={setModalVisible}
               setMeetingEnd={setMeetingEnd}
               isFixed={isFixed}
+              userDetail={userDetail}
             />
           </Animated.View>
         ) : null}
