@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     height: 35,
   },
   text: {
-    marginTop: 10,
+    // marginTop: 5,
     width: 150,
     height: 30,
     fontWeight: 'bold',
@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
   leftWrapper: {
     marginLeft: 20,
     flexDirection: 'column',
+    justifyContent: 'space-between',
   },
   rightWrapper: {
     marginRight: 20,
@@ -89,7 +90,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     margin: 5,
   },
-  textFromTo: {fontSize: 18, fontWeight: 'bold'},
+  textFromTo: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginTop: 10,
+    marginBottom: 10,
+  },
   textLcn: {
     marginLeft: 5,
     fontSzie: 20,

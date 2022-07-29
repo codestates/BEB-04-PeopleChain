@@ -16,11 +16,15 @@ import DoubleModal from '../../components/common/DoubleModal';
 import {useToast} from '../../utils/hooks/useToast';
 import lcnIcon from '../../assets/icons/lovechain.png';
 import {transferLCN} from '../../lib/api/wallet';
+import {getUser} from '../../lib/Users';
 import useUser from '../../utils/hooks/UseUser';
+import useAuthActions from '../../utils/hooks/UseAuthActions';
+
 const WalletLcnTransfer = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const {showToast} = useToast();
   const userInfo = useUser();
+  const {updateTokenInfo} = useAuthActions();
   const [form, setForm] = useState({
     address: '',
     amount: '',
@@ -39,7 +43,7 @@ const WalletLcnTransfer = () => {
       toAddress: form.address,
     };
     try {
-      await transferLCN(body);
+      return await transferLCN(body);
     } catch (e) {
       console.log(e);
     }
@@ -92,10 +96,21 @@ const WalletLcnTransfer = () => {
             nFunction={() => {
               setModalVisible(false);
             }}
-            pFunction={async () => {
-              await sendLCN();
+            pFunction={() => {
+              sendLCN().then(result => {
+                if (result.data.message === 'success') {
+                  showToast('success', 'LCN 전송이 완료되었습니다!');
+                  getUser(userInfo.id).then(userDetail => {
+                    updateTokenInfo({
+                      tokenAmount: Number(userDetail.tokenAmount),
+                      ethAmount: userInfo.ethAmount,
+                      onChainTokenAmount: Number(result.data.balance),
+                    });
+                  });
+                }
+              });
+
               setModalVisible(false);
-              showToast('success', '완료되었습니다!');
             }}
           />
         </View>

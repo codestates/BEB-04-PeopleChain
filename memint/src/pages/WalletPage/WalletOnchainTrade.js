@@ -15,12 +15,16 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import DoubleModal from '../../components/common/DoubleModal';
 import {useToast} from '../../utils/hooks/useToast';
 import useUser from '../../utils/hooks/UseUser';
+import {getUser} from '../../lib/Users';
 import {ETHToLCN, LCNToETH} from '../../lib/api/wallet';
+import useAuthActions from '../../utils/hooks/UseAuthActions';
+
 const WalletOnchainTrade = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const {showToast} = useToast();
   const [fromEth, setFromEth] = useState(true);
   const userInfo = useUser();
+  const {updateTokenInfo} = useAuthActions();
   const [amount, setAmount] = useState({
     fromAmount: '0',
     toAmount: '0',
@@ -38,7 +42,7 @@ const WalletOnchainTrade = () => {
       ethAmount: amount.fromAmount,
     };
     try {
-      await ETHToLCN(body);
+      return await ETHToLCN(body);
     } catch (e) {
       console.log(e);
     }
@@ -50,7 +54,7 @@ const WalletOnchainTrade = () => {
       tokenAmount: amount.fromAmount,
     };
     try {
-      await LCNToETH(body);
+      return await LCNToETH(body);
     } catch (e) {
       console.log(e);
     }
@@ -101,10 +105,35 @@ const WalletOnchainTrade = () => {
         nFunction={() => {
           setModalVisible(false);
         }}
-        pFunction={async () => {
-          fromEth ? await transferETHToLCN() : await transferLCNToETH();
+        pFunction={() => {
+          fromEth
+            ? transferETHToLCN().then(result => {
+                console.log(result.data);
+                if (result.data.message === 'success') {
+                  showToast('success', '토큰 교환이 완료되었습니다!');
+                  getUser(userInfo.id).then(userDetail => {
+                    updateTokenInfo({
+                      tokenAmount: Number(userDetail.tokenAmount),
+                      ethAmount: Number(result.data.ETHBalance),
+                      onChainTokenAmount: Number(result.data.LCNBalance),
+                    });
+                  });
+                }
+              })
+            : transferLCNToETH().then(result => {
+                console.log(result.data);
+                if (result.data.message === 'success') {
+                  showToast('success', '토큰 교환이 완료되었습니다!');
+                  getUser(userInfo.id).then(userDetail => {
+                    updateTokenInfo({
+                      tokenAmount: Number(userDetail.tokenAmount),
+                      ethAmount: Number(result.data.ETHBalance),
+                      onChainTokenAmount: Number(result.data.LCNBalance),
+                    });
+                  });
+                }
+              });
           setModalVisible(false);
-          showToast('success', '완료되었습니다!');
         }}
       />
     </SafeAreaView>

@@ -65,7 +65,7 @@ LargeLcnButton.defaultProps = {
 
 const styles = StyleSheet.create({
   icon: {
-    marginLeft: 10,
+    marginLeft: 30,
     width: 35,
     height: 35,
   },

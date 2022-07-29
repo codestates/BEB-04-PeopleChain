@@ -10,21 +10,25 @@ import DoubleModal from '../../components/common/DoubleModal';
 import {useToast} from '../../utils/hooks/useToast';
 import useUser from '../../utils/hooks/UseUser';
 import {toOnChain} from '../../lib/api/wallet';
+import {getUser} from '../../lib/Users';
+import useAuthActions from '../../utils/hooks/UseAuthActions';
 const WalletOffchainTransfer = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [recieveSelected, setRecieveSelected] = useState(false);
   const [transferSelected, setTransferSelected] = useState(true);
   const {showToast} = useToast();
-  const user = useUser();
+  const userInfo = useUser();
   const [amount, setAmount] = useState();
+  const {updateTokenInfo} = useAuthActions();
+
   const sendToOnChain = async () => {
     const body = {
-      id: user.id,
+      id: userInfo.id,
       tokenAmount: Number(amount),
-      currentTokenAmount: Number(user.tokenAmount),
+      currentTokenAmount: Number(userInfo.tokenAmount),
     };
     try {
-      await toOnChain(body);
+      return await toOnChain(body);
     } catch (e) {
       console.log(e);
     }
@@ -46,14 +50,14 @@ const WalletOffchainTransfer = ({navigation}) => {
         <SmallLcnButton
           text={'To'}
           width={330}
-          height={60}
+          height={90}
           margin={[30, 0, 10, 0]}
           backgroundColor={'lightblue'}
           amount={amount}
         />
         <Icon name="arrow-upward" size={70} />
         <LargeLcnButton
-          balance={user.tokenAmount}
+          balance={userInfo.tokenAmount}
           width={330}
           height={120}
           margin={[10, 0, 0, 0]}
@@ -81,10 +85,22 @@ const WalletOffchainTransfer = ({navigation}) => {
         nFunction={() => {
           setModalVisible(false);
         }}
-        pFunction={async () => {
-          await sendToOnChain();
+        pFunction={() => {
+          sendToOnChain().then(result => {
+            if (result.data.message === 'success') {
+              showToast('success', 'LCN을 보냈습니다!');
+              getUser(userInfo.id).then(userDetail => {
+                console.log(userDetail);
+                updateTokenInfo({
+                  tokenAmount: Number(userDetail.tokenAmount),
+                  ethAmount: userInfo.ethAmount,
+                  onChainTokenAmount: Number(result.data.LCNBalance),
+                });
+              });
+            }
+          });
+
           setModalVisible(false);
-          showToast('success', 'LCN을 내보냈습니다!');
         }}
       />
     </View>
@@ -94,7 +110,7 @@ const WalletOffchainTransfer = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     // flex: 1,
-    marginTop: 30,
+    // marginTop: 30,
   },
   accountWrapper: {
     backgroundColor: 'white',

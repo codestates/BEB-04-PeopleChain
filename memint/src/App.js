@@ -35,23 +35,22 @@ import useNftActions from './utils/hooks/UseNftActions';
 import {getNFTs, getProfile, getMemin} from './lib/NFT';
 import {getMeeting} from './lib/Meeting';
 import useMeetingActions from './utils/hooks/UseMeetingActions';
-
+import useUser from './utils/hooks/UseUser';
 const Stack = createNativeStackNavigator();
 const store = createStore(rootReducer);
 
 function App() {
   const userInfo = useAuth();
+  const users = useUser();
   const {authorize, logout, saveInfo} = useAuthActions();
   const {saveNFT, setMemin} = useNftActions();
   const {saveMeeting} = useMeetingActions();
   const [initialRouteName, setInitialRouteName] = useState('SignIn');
-
   const saveUserInfo = async user => {
     try {
       const userDetail = await getUser(user.uid);
 
       const userProperty = await getUserProperty(user.uid);
-
       const res = await getNFTs(user.uid);
       const nfts = res.docs.map(el => {
         return {...el.data()};
@@ -77,6 +76,7 @@ function App() {
 
       // saveMeeting(meetingRes);
       saveInfo({
+        ...users,
         id: user.uid,
         email: user.email,
         nickName: userDetail.nickName,
@@ -96,6 +96,12 @@ function App() {
         drinkCapa: userProperty[0].drinkCapa,
         drinkStyle: userProperty[0].drinkStyle,
       });
+      console.log('userDetail is');
+      console.log(userDetail);
+      console.log('users is');
+      console.log(users);
+      console.log('user is');
+      console.log(user);
     } catch (e) {
       console.log(e);
     }

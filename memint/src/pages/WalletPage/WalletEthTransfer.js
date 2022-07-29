@@ -17,10 +17,14 @@ import {useToast} from '../../utils/hooks/useToast';
 import ethIcon from '../../assets/icons/ethereum.png';
 import {transferETH} from '../../lib/api/wallet';
 import useUser from '../../utils/hooks/UseUser';
+import {getUser} from '../../lib/Users';
+import useAuthActions from '../../utils/hooks/UseAuthActions';
+
 const WalletEthTransfer = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const {showToast} = useToast();
   const userInfo = useUser();
+  const {updateTokenInfo} = useAuthActions();
   const [form, setForm] = useState({
     address: '',
     amount: '',
@@ -39,7 +43,7 @@ const WalletEthTransfer = () => {
       toAddress: form.address,
     };
     try {
-      await transferETH(body);
+      return await transferETH(body);
     } catch (e) {
       console.log(e);
     }
@@ -92,10 +96,24 @@ const WalletEthTransfer = () => {
             nFunction={() => {
               setModalVisible(false);
             }}
-            pFunction={async () => {
-              await sendETH();
+            pFunction={() => {
+              sendETH().then(result => {
+                console.log('result.data is');
+                console.log(result.data);
+                if (result.data.message === 'success') {
+                  showToast('success', 'ETH 전송이 완료되었습니다!');
+                  getUser(userInfo.id).then(userDetail => {
+                    console.log(userDetail);
+                    updateTokenInfo({
+                      tokenAmount: Number(userDetail.tokenAmount),
+                      ethAmount: Number(result.data.balance),
+                      onChainTokenAmount: userInfo.onChainTokenAmount,
+                    });
+                  });
+                }
+              });
+
               setModalVisible(false);
-              showToast('success', '완료되었습니다!');
             }}
           />
         </View>
