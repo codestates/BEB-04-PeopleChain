@@ -118,7 +118,7 @@ export async function getUserByNickname(str, loginUser) {
     }
   });
   console.log(data);
-  return data[0] === undefined ? [] : data;
+  return data.filter(el => el !== undefined);
 }
 
 export async function addVisibleUser(id, value) {
