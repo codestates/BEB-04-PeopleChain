@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 27,
     paddingVertical: 20,
     paddingRight: 50,
-    height: 120,
+    height: 110,
     borderColor: 'black',
     borderRadius: 30,
     borderWidth: 1,
@@ -122,8 +122,8 @@ const styles = StyleSheet.create({
   },
   userImage: {
     borderRadius: 100,
-    width: 70,
-    height: 70,
+    width: 60,
+    height: 60,
     // borderColor: 'black',
     // borderWidth:1
   },

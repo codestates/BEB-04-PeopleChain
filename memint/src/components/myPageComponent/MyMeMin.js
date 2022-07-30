@@ -12,8 +12,8 @@ function MyMeMin({myMeMin}) {
   const [spendingModalVisible, setSpendingModalVisible] = useState(false);
   const {showToast} = useToast();
   const userInfo = useUser();
-  console.log(myMeMin);
-  console.log(userInfo);
+  // console.log(myMeMin);
+  // console.log(userInfo);
 
   return (
     <>
@@ -68,7 +68,7 @@ function MyMeMin({myMeMin}) {
                   NFTId: userInfo.nftIds[0],
                   imgUri: userInfo.nftProfile,
                 }).then(result => {
-                  console.log(result.data);
+                  // console.log(result.data);
                   result.data.message === 'success' &&
                     showToast('success', '민팅이 되었습니다');
                 });

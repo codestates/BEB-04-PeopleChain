@@ -39,7 +39,7 @@ function CompleteModal({
             <Text style={{marginBottom: 10}}>완료되었어요</Text>
             <BasicButton
               text={buttonText}
-              size="large"
+              width={200}
               variant="basic"
               onPress={() => {
                 setCompleteModalVisible(false);

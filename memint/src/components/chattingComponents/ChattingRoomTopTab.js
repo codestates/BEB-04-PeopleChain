@@ -154,7 +154,7 @@ const Joiner = ({data, user, setModalVisible, meetingInfo}) => {
                     ? {...styles.status, backgroundColor: 'lightgray'} // 아니면 회색 view 렌더링
                     : styles.status // 파란색 view 렌더링
                 }>
-                <Text style={{color: 'white'}}>확정</Text>
+                <Text style={{color: 'white', fontWeight: '500'}}>확정</Text>
               </View>
             )}
           </View>
@@ -178,7 +178,9 @@ const Joiner = ({data, user, setModalVisible, meetingInfo}) => {
                 navigation.navigate('FeedbackChoicePage');
               }}>
               <View style={styles.button}>
-                <Text style={{color: 'white'}}>후기 작성</Text>
+                <Text style={{color: 'white', fontWeight: '500'}}>
+                  후기 작성
+                </Text>
               </View>
             </TouchableOpacity>
           ) : (
@@ -207,15 +209,15 @@ const Joiner = ({data, user, setModalVisible, meetingInfo}) => {
                 style={
                   data.members &&
                   data.members.filter(el => {
-                    return el[user] === 'fixed';
+                    return el[user] === 'fixed' || el[user] === 'confirmed';
                   }).length === 1
                     ? {...styles.button, backgroundColor: 'lightgray'}
                     : styles.button
                 }>
-                <Text style={{color: 'white'}}>
+                <Text style={{color: 'white', fontWeight: '500'}}>
                   {data.members &&
                   data.members.filter(el => {
-                    return el[user] === 'fixed';
+                    return el[user] === 'fixed' || el[user] === 'confirmed';
                   }).length === 1
                     ? '후기 작성하기'
                     : '확정하기'}
@@ -248,7 +250,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'black',
-    borderRadius: 5,
+    borderRadius: 10,
   },
   button: {
     width: 90,
@@ -256,7 +258,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 13,
+    borderRadius: 20,
   },
 });
 

@@ -213,6 +213,8 @@ function MeetingCreate({route}) {
             onChangeText={text => {
               setMeetingInfo({...meetingInfo, title: text});
             }}
+            autoComplete={false}
+            autoCorrect={false}
           />
         </View>
         <View>
@@ -223,6 +225,8 @@ function MeetingCreate({route}) {
             onChangeText={text => {
               setMeetingInfo({...meetingInfo, description: text});
             }}
+            autoComplete={false}
+            autoCorrect={false}
           />
         </View>
         <View style={[styles.createElement, styles.flexRow]}>

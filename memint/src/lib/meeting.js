@@ -68,6 +68,23 @@ export const deleteMeeting = meetingId => {
   return meetingCollection.doc(meetingId).delete();
 };
 
+//보상받기
+export const changeJoinerToConfirmed = async (meetingId, userId) => {
+  return await meetingCollection
+    .doc(meetingId)
+    .get()
+    .then(result => {
+      return result.data().members.map(el => {
+        return el[userId] ? {[userId]: 'confirmed'} : el;
+      });
+    })
+    .then(result => {
+      meetingCollection.doc(meetingId).update({
+        members: result,
+      });
+    });
+};
+
 /*
 //filter 조회 (peopleNum, meetDate, region)
 export const getMeetingsFiltered = async (filterField, filterValue) => {

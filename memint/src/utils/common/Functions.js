@@ -28,10 +28,17 @@ export const handleDateInFormat = obj => {
     case 6:
       str = '토';
   }
-  return `${date.slice(5, 7)}월 ${date.slice(9, 11)}일(${str}) ${date.slice(
-    13,
-    -6,
-  )}시`;
+  if (date.length === 22) {
+    return `${date.slice(5, 7)}월 ${date.slice(9, 10)}일(${str}) ${date.slice(
+      12,
+      -6,
+    )}시`;
+  } else {
+    return `${date.slice(5, 7)}월 ${date.slice(9, 11)}일(${str}) ${date.slice(
+      13,
+      -6,
+    )}시`;
+  }
 };
 
 export const handleDateFromNow = obj => {

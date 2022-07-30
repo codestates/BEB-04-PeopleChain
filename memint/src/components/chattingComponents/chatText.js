@@ -121,12 +121,12 @@ function NotMyChat({item, userDetail, setUserInfoModalVisible, setUserId}) {
         <Text style={styles.senderName}>
           {userDetail && userDetail[item.data().sender].nickName}
         </Text>
-        <View style={{flexDirection: 'row'}}>
+        <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
           <View style={styles.messageBody}>
             <Text style={{padding: 3}}>{item.data().text}</Text>
           </View>
           <View style={styles.date}>
-            <Text style={{marginBottom: 7, fontSize: 10, color: 'gray'}}>
+            <Text style={{marginBottom: 5, fontSize: 10, color: 'gray'}}>
               {item
                 .data()
                 .createdAt.toDate()
@@ -184,12 +184,12 @@ const styles = StyleSheet.create({
   },
   messageBody: {
     backgroundColor: 'white',
-    borderRadius: 5,
+    borderRadius: 10,
     padding: 3,
   },
   mymessageBody: {
     backgroundColor: 'white',
-    borderRadius: 5,
+    borderRadius: 10,
     padding: 3,
   },
   date: {

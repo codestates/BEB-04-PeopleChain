@@ -146,9 +146,14 @@ const ChattingScreen = () => {
       <Stack.Screen
         name="FeedbackChoicePage"
         component={FeedbackChoicePage}
+        options={{headerShown: false}}
         // options={{animation: 'none'}}
       />
-      <Stack.Screen name="FeedbackSendPage" component={FeedbackSendPage} />
+      <Stack.Screen
+        name="FeedbackSendPage"
+        component={FeedbackSendPage}
+        options={{headerShown: false}}
+      />
     </Stack.Navigator>
   );
 };

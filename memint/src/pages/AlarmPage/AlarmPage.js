@@ -33,18 +33,19 @@ function AlarmPage({navigation}) {
         return {
           ...el.data(),
           id: el.id,
-          createdAt: handleDateFromNow(el.data().createdAt),
         };
       });
       //sender데이터
       const dataWithSenderInfo = await Promise.all(
-        data.map(async el => {
-          const info = await getUser(el.sender);
-          return {
-            ...el,
-            senderInfo: info,
-          };
-        }),
+        data
+          .sort((a, b) => b.createdAt.seconds - a.createdAt.seconds)
+          .map(async el => {
+            const info = await getUser(el.sender);
+            return {
+              ...el,
+              senderInfo: info,
+            };
+          }),
       );
       //미팅 데이터
       const dataWithMeetingInfo = await Promise.all(
@@ -80,13 +81,6 @@ function AlarmPage({navigation}) {
       console.log(e);
     }
   }, [userInfo]);
-  const handleMoveChattingRoom = meetingInfo => {
-    //meetingInfo 받아서
-    //navigate
-    setChattingConfirmModal(!setChattingConfirmModal);
-    navigation.navigate('ChattingRoom', {data: meetingInfo});
-  };
-  // console.log(alarms);
 
   return (
     <SafeAreaView style={styles.view}>
@@ -101,13 +95,7 @@ function AlarmPage({navigation}) {
         <ScrollView>
           <View>
             {alarms.map((alarm, idx) => (
-              <AlarmElement
-                key={idx}
-                alarm={alarm}
-                chattingConfirmModal={chattingConfirmModal}
-                setChattingConfirmModal={setChattingConfirmModal}
-                handleMoveChattingRoom={handleMoveChattingRoom}
-              />
+              <AlarmElement key={idx} alarm={alarm} />
             ))}
           </View>
         </ScrollView>

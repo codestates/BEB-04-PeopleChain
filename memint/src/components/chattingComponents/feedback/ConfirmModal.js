@@ -35,6 +35,8 @@ function ConfirmModal({confirmModalVisible, setConfirmModalVisible}) {
                 text="아니오"
                 size="small"
                 variant="disable"
+                backgroundColor="white"
+                textColor="black"
                 onPress={() => {
                   setConfirmModalVisible(false);
                 }}

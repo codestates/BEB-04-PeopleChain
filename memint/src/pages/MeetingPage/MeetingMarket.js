@@ -52,13 +52,15 @@ function MeetingMarket({navigation}) {
       });
 
       const dataWithHostInfo = await Promise.all(
-        data.map(async el => {
-          const hostInfo = await getUser(el.hostId);
-          return {
-            ...el,
-            hostInfo: {...hostInfo},
-          };
-        }),
+        data
+          .sort((a, b) => b.createdAt.seconds - a.createdAt.seconds)
+          .map(async el => {
+            const hostInfo = await getUser(el.hostId);
+            return {
+              ...el,
+              hostInfo: {...hostInfo},
+            };
+          }),
       );
       setMeetings(dataWithHostInfo);
       setRegionMeetings(dataWithHostInfo);

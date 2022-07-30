@@ -107,7 +107,7 @@ function App() {
       console.log(e);
     }
   };
-  console.log(userInfo);
+  // console.log(userInfo);
   const [initializing, setInitializing] = useState(true);
   useEffect(() => {
     try {

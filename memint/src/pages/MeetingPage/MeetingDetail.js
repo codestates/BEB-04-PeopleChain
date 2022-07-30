@@ -237,6 +237,8 @@ function MeetingDetail({route}) {
                 style={styles.input}
                 value={textMessage}
                 onChangeText={setTextMessage}
+                autoComplete={false}
+                autoCorrect={false}
               />
             </View>
           }
@@ -331,7 +333,7 @@ const styles = StyleSheet.create({
   tagText: {
     color: 'white',
     fontSize: 12,
-    fontWeight: '500',
+    fontWeight: '600',
   },
   descriptionRow: {
     marginVertical: 20,

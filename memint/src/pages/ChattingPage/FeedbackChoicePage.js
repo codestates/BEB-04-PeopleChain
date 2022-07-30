@@ -6,55 +6,62 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
+  SafeAreaView,
 } from 'react-native';
 import BasicButton from '../../components/common/BasicButton';
 import {useNavigation} from '@react-navigation/native';
 import ConfirmModal from '../../components/chattingComponents/feedback/ConfirmModal';
+import BackButton from '../../components/common/BackButton';
 const person = require('./dummydata/images/person.png');
 
 function FeedbackChoicePage({setChoiceModalVisible, setFeedbackModalVisible}) {
   const [confirmModalVisible, setConfirmModalVisible] = useState(false);
 
   return (
-    <View style={[styles.centeredView, styles.backgroudDim]}>
-      <Text>김개똥님 외 3명과의 미팅은 어떠셨나요?</Text>
-      <View style={styles.modalView}>
-        <Text>후기를 남길 미팅 상대를 선택해 주세요.</Text>
-        <Human
-          name="김개똥"
-          setChoiceModalVisible={setChoiceModalVisible}
-          setFeedbackModalVisible={setFeedbackModalVisible}
-        />
-        <Human
-          name="김영희"
-          setChoiceModalVisible={setChoiceModalVisible}
-          setFeedbackModalVisible={setFeedbackModalVisible}
-        />
-        <Human
-          name="서상훈"
-          color="#007aff"
-          text="선택"
-          setChoiceModalVisible={setChoiceModalVisible}
-          setFeedbackModalVisible={setFeedbackModalVisible}
-        />
-        <Human
-          name="안젤리"
-          setChoiceModalVisible={setChoiceModalVisible}
-          setFeedbackModalVisible={setFeedbackModalVisible}
-        />
-        <BasicButton
-          text="후기 보내기"
-          size="large"
-          onPress={() => {
-            setConfirmModalVisible(true);
-          }}
-        />
-        <ConfirmModal
-          confirmModalVisible={confirmModalVisible}
-          setConfirmModalVisible={setConfirmModalVisible}
-        />
+    <SafeAreaView style={styles.view}>
+      <BackButton />
+      <View style={[styles.centeredView, styles.backgroudDim]}>
+        <Text style={{fontSize: 18, fontWeight: '700', marginBottom: 20}}>
+          김개똥님 외 3명과의 미팅은 어떠셨나요?
+        </Text>
+        <View style={styles.modalView}>
+          <Text>후기를 남길 미팅 상대를 선택해 주세요.</Text>
+          <Human
+            name="김개똥"
+            setChoiceModalVisible={setChoiceModalVisible}
+            setFeedbackModalVisible={setFeedbackModalVisible}
+          />
+          <Human
+            name="김영희"
+            setChoiceModalVisible={setChoiceModalVisible}
+            setFeedbackModalVisible={setFeedbackModalVisible}
+          />
+          <Human
+            name="서상훈"
+            color="#007aff"
+            text="선택"
+            setChoiceModalVisible={setChoiceModalVisible}
+            setFeedbackModalVisible={setFeedbackModalVisible}
+          />
+          <Human
+            name="안젤리"
+            setChoiceModalVisible={setChoiceModalVisible}
+            setFeedbackModalVisible={setFeedbackModalVisible}
+          />
+          <BasicButton
+            text="후기 보내기"
+            size="large"
+            onPress={() => {
+              setConfirmModalVisible(true);
+            }}
+          />
+          <ConfirmModal
+            confirmModalVisible={confirmModalVisible}
+            setConfirmModalVisible={setConfirmModalVisible}
+          />
+        </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -95,9 +102,14 @@ function Human({name, color, text}) {
 }
 
 const styles = StyleSheet.create({
+  view: {
+    backgroundColor: 'white',
+    flex: 1,
+  },
   centeredView: {
     justifyContent: 'center',
     alignItems: 'center',
+    zIndex: -1,
   },
   modalView: {
     margin: 20,
@@ -124,7 +136,7 @@ const styles = StyleSheet.create({
   },
   backgroudDim: {
     flex: 1,
-    backgroundColor: 'lightgray',
+    // backgroundColor: 'lightgray',
   },
   button: {
     height: 40,

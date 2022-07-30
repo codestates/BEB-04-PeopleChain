@@ -107,7 +107,7 @@ function Joiner({nickName, state}) {
         style={
           state === 'accepted'
             ? styles.isConfirmed
-            : {...styles.isConfirmed, backgroundColor: 'blue'}
+            : {...styles.isConfirmed, backgroundColor: '#609afa'}
         }>
         <Text style={{color: 'white'}}>확정</Text>
       </View>

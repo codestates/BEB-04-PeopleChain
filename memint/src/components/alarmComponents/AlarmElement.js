@@ -1,17 +1,17 @@
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {handleBirth, handleDateInFormat} from '../../utils/common/Functions';
+import {
+  handleBirth,
+  handleDateFromNow,
+  handleDateInFormat,
+} from '../../utils/common/Functions';
 import DoubleModal from '../common/DoubleModal';
 
-function AlarmElement({
-  alarm,
-  chattingConfirmModal,
-  setChattingConfirmModal,
-  handleMoveChattingRoom,
-}) {
+function AlarmElement({alarm}) {
   const navigation = useNavigation();
+  const [chattingConfirmModal, setChattingConfirmModal] = useState(false);
   const handleClick = () => {
     if (alarm.type === 'proposal') {
       navigation.navigate('AlarmDetail', {
@@ -30,7 +30,10 @@ function AlarmElement({
         pButtonText="네"
         modalVisible={chattingConfirmModal}
         setModalVisible={setChattingConfirmModal}
-        pFunction={() => handleMoveChattingRoom(alarm.meetingInfo)}
+        pFunction={() => {
+          setChattingConfirmModal(!chattingConfirmModal);
+          navigation.navigate('ChattingRoom', {data: alarm.meetingInfo});
+        }}
         nFunction={() => {
           setChattingConfirmModal(!chattingConfirmModal);
         }}
@@ -43,7 +46,9 @@ function AlarmElement({
               ? `${alarm.senderInfo?.nickName}님의 신청이 도착했습니다!`
               : `${alarm.senderInfo?.nickName}님이 신청을 수락했습니다!`}
           </Text>
-          <Text style={styles.createdAt}>{alarm.createdAt}</Text>
+          <Text style={styles.createdAt}>
+            {handleDateFromNow(alarm.createdAt)}
+          </Text>
         </View>
         <View style={styles.meetingArea}>
           {alarm.meetingInfo ? (

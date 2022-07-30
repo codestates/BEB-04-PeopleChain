@@ -3,12 +3,17 @@ import {Text, StyleSheet, View, TouchableOpacity} from 'react-native';
 import DoubleModal from '../../components/common/DoubleModal';
 import {useMeeting} from '../../utils/hooks/UseMeeting';
 import {handleDateInFormat} from '../../utils/common/Functions';
-import {getMeeting, updateMeeting} from '../../lib/Meeting';
+import {
+  changeJoinerToConfirmed,
+  getMeeting,
+  updateMeeting,
+} from '../../lib/Meeting';
 import useMeetingActions from '../../utils/hooks/UseMeetingActions';
 import EarnModal from '../common/UserInfoModal/EarnModal';
 import {getUser} from '../../lib/Users';
 import {useIsFocused} from '@react-navigation/native';
 import {useToast} from '../../utils/hooks/useToast';
+import useUser from '../../utils/hooks/UseUser';
 
 // function MyMeetingList({List, navigation}) {
 //   return (
@@ -61,9 +66,16 @@ function MyMeetingList({navigation, user}) {
   return (
     <>
       {createdRoom.length !== 0 ? (
-        createdRoom.map((el, index) => (
-          <MyMeetings item={el} navigation={navigation} key={index} />
-        ))
+        createdRoom
+          .sort((a, b) => b.createdAt.seconds - a.createdAt.seconds)
+          .map((el, index) => (
+            <MyMeetings
+              item={el}
+              navigation={navigation}
+              key={index}
+              getCreatedRoom={getCreatedRoom}
+            />
+          ))
       ) : (
         <View
           style={{
@@ -78,7 +90,8 @@ function MyMeetingList({navigation, user}) {
   );
 }
 
-function MyMeetings({item, navigation}) {
+function MyMeetings({item, navigation, getCreatedRoom}) {
+  const user = useUser();
   const [editModal, setEditModal] = useState(false);
   const [startModal, setStartModal] = useState(false);
   const [endModal, setEndModal] = useState(false);
@@ -117,6 +130,8 @@ function MyMeetings({item, navigation}) {
   const handleMeetingStart = () => {
     //서버에 요청
     updateMeeting(item.id, {status: 'confirmed'});
+    changeJoinerToConfirmed(item.id, user.id);
+    getCreatedRoom();
     //redux
     // const updateData = meetings.map(el => {
     //   if (el.id !== item.id) {
@@ -130,6 +145,7 @@ function MyMeetings({item, navigation}) {
   const handleMeetingEnd = () => {
     //서버에 요청
     updateMeeting(item.id, {status: 'end'});
+    getCreatedRoom();
     // const updateData = meetings.map(el => {
     //   if (el.id !== item.id) {
     //     return el;
@@ -146,41 +162,43 @@ function MyMeetings({item, navigation}) {
         onPress={() => {
           navigation.navigate('ChattingRoom', {data: item});
         }}>
-        <View style={styles.titleRow}>
-          <Text style={styles.title}>{item?.title}</Text>
-        </View>
+        <View>
+          <View style={styles.titleRow}>
+            <Text style={styles.title}>{item?.title}</Text>
+          </View>
 
-        <View style={styles.tagcontainer}>
-          {item?.meetingTags.map((type, index) => {
-            return (
-              <View style={styles.tag} key={index}>
-                <Text style={styles.tagFont}># {type}</Text>
-              </View>
-            );
-          })}
-        </View>
+          <View style={styles.tagcontainer}>
+            {item?.meetingTags.map((type, index) => {
+              return (
+                <View style={styles.tag} key={index}>
+                  <Text style={styles.tagFont}># {type}</Text>
+                </View>
+              );
+            })}
+          </View>
 
-        <View style={styles.container}>
-          <Text style={styles.details}>{item?.region}</Text>
-          <View style={styles.bar} />
+          <View style={styles.container}>
+            <Text style={styles.details}>{item?.region}</Text>
+            <View style={styles.bar} />
 
-          <Text style={styles.details}>
-            {item ? handleDateInFormat(item.meetDate) : ''}
-          </Text>
-          <View style={styles.bar} />
+            <Text style={styles.details}>
+              {item ? handleDateInFormat(item.meetDate) : ''}
+            </Text>
+            <View style={styles.bar} />
 
-          <Text style={styles.details}>
-            {item?.peopleNum + ':' + item?.peopleNum}
-          </Text>
-        </View>
+            <Text style={styles.details}>
+              {item?.peopleNum + ':' + item?.peopleNum}
+            </Text>
+          </View>
 
-        <View style={styles.spaceBetween}>
-          <TouchableOpacity
-            style={styles.edit}
-            onPress={() => setEditModal(true)}>
-            <Text style={styles.editText}>미팅 정보 수정</Text>
-          </TouchableOpacity>
-          {renderButton()}
+          <View style={styles.spaceBetween}>
+            <TouchableOpacity
+              style={styles.edit}
+              onPress={() => setEditModal(true)}>
+              <Text style={styles.editText}>미팅 정보 수정</Text>
+            </TouchableOpacity>
+            {renderButton()}
+          </View>
         </View>
 
         <DoubleModal
@@ -267,6 +285,7 @@ const styles = StyleSheet.create({
   //   paddingHorizontal: '10%',
   // },
   meetingCard: {
+    justifyContent: 'center',
     backgroundColor: 'white',
     marginBottom: 5,
     paddingHorizontal: 27,
@@ -276,7 +295,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     borderWidth: 1,
     marginHorizontal: 10,
-    marginVertical: 8,
+    marginVertical: 6,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -325,9 +344,10 @@ const styles = StyleSheet.create({
   },
   spaceBetween: {
     flexDirection: 'row',
-    alignItems: 'flex-end',
-    marginVertical: 6,
+    alignItems: 'center',
+    marginTop: 3,
     justifyContent: 'space-between',
+    height: 23,
   },
   bar: {
     width: 1,
@@ -345,7 +365,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   edit: {
-    marginTop: 6,
+    // marginTop: 6,
     flexDirection: 'row',
     alignItems: 'center',
   },

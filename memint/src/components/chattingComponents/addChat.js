@@ -26,6 +26,7 @@ function AddChat({chatId}) {
         placeholder="메시지를 입력하세요"
         value={text}
         onChangeText={setText}
+        autoComplete={false}
       />
       <TouchableOpacity
         activeOpacity={1}

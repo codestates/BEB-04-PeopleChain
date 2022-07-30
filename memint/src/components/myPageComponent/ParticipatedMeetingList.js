@@ -3,11 +3,17 @@ import React, {useEffect, useState, useCallback} from 'react';
 import {Text, StyleSheet, View, TouchableOpacity} from 'react-native';
 
 import DoubleModal from '../../components/common/DoubleModal';
-import {getMeeting} from '../../lib/Meeting';
+import {
+  changeJoinerToConfirmed,
+  getMeeting,
+  updateMembersOut,
+} from '../../lib/Meeting';
 import {getUser} from '../../lib/Users';
 import {handleDateInFormat} from '../../utils/common/Functions';
 import {useMeeting} from '../../utils/hooks/UseMeeting';
 import {useToast} from '../../utils/hooks/useToast';
+import useUser from '../../utils/hooks/UseUser';
+import EarnModal from '../common/UserInfoModal/EarnModal';
 
 // function ParticipatedMeetingList({List}) {
 //   return (
@@ -53,12 +59,19 @@ function ParticipatedMeetingList({user}) {
     );
     setJoinedRoom(data);
   }, [user]);
+
   return (
     <>
       {joinedRoom.length !== 0 ? (
-        joinedRoom.map((el, index) => (
-          <ParticipatedMeetings item={el} key={index} />
-        ))
+        joinedRoom
+          .sort((a, b) => b.createdAt.seconds - a.createdAt.seconds)
+          .map((el, index) => (
+            <ParticipatedMeetings
+              item={el}
+              key={index}
+              getJoinedRoom={getJoinedRoom}
+            />
+          ))
       ) : (
         <View
           style={{
@@ -73,33 +86,68 @@ function ParticipatedMeetingList({user}) {
   );
 }
 
-function ParticipatedMeetings({item}) {
+function ParticipatedMeetings({item, getJoinedRoom}) {
+  const user = useUser();
   const navigation = useNavigation();
   const [cancelModal, setCancelModal] = useState(false);
+  const [startModalVisible, setStartModalVisible] = useState(false);
+  const [earnModalVisible, setEarnModalVisible] = useState(false);
   const {showToast} = useToast();
+
+  const renderButton = () => {
+    if (
+      item?.status === 'confirmed' &&
+      item.members.filter(el => {
+        return Object.keys(el)[0] === user.id;
+      })[0][user.id] === 'fixed'
+    ) {
+      return (
+        <TouchableOpacity
+          style={{
+            ...styles.button,
+            ...styles.backgroundColorBlue,
+          }}
+          onPress={() => setStartModalVisible(true)}>
+          <Text style={styles.buttonText}>참여 보상받기</Text>
+        </TouchableOpacity>
+      );
+    } else if (item?.status === 'end') {
+      return <Text style={styles.finishText}>종료된 미팅</Text>;
+    }
+  };
+  const handleStart = () => {
+    try {
+      changeJoinerToConfirmed(item.id, user.id);
+      showToast('success', '1LCN이 지급되었습니다!');
+      getJoinedRoom();
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <>
       <TouchableOpacity
         style={styles.meetingCard}
         onPress={() => {
-          console.log(item);
+          // console.log(item);
           navigation.navigate('ChattingRoom', {data: item});
         }}>
-        <View style={styles.titleRow}>
-          <Text style={styles.title}>{item.title}</Text>
-        </View>
+        <View>
+          <View style={styles.titleRow}>
+            <Text style={styles.title}>{item.title}</Text>
+          </View>
 
-        <View style={styles.tagcontainer}>
-          {item.meetingTags.map((tag, index) => {
-            return (
-              <View style={styles.tag} key={index}>
-                <Text style={styles.tagFont}># {tag}</Text>
-              </View>
-            );
-          })}
-        </View>
+          <View style={styles.tagcontainer}>
+            {item.meetingTags.map((tag, index) => {
+              return (
+                <View style={styles.tag} key={index}>
+                  <Text style={styles.tagFont}># {tag}</Text>
+                </View>
+              );
+            })}
+          </View>
 
-        {/* <View style={styles.container}>
+          {/* <View style={styles.container}>
             <Image
               style={styles.hostImage}
               source={{
@@ -108,16 +156,16 @@ function ParticipatedMeetings({item}) {
             />
             <Text style={styles.hostName}>{item.hostId}</Text>
           </View> */}
-        <View style={styles.container}>
-          <Text style={styles.details}>{item.region}</Text>
-          <View style={styles.bar} />
+          <View style={styles.container}>
+            <Text style={styles.details}>{item.region}</Text>
+            <View style={styles.bar} />
 
-          <Text style={styles.details}>
-            {handleDateInFormat(item.meetDate)}
-          </Text>
-          <View style={styles.bar} />
+            <Text style={styles.details}>
+              {handleDateInFormat(item.meetDate)}
+            </Text>
+            <View style={styles.bar} />
 
-          {/* <Text
+            {/* <Text
               style={[
                 styles.details,
                 item.peopleNum === item.hostSide.gathered.length
@@ -135,23 +183,24 @@ function ParticipatedMeetings({item}) {
               ]}>
               {item.joinerSide.gathered.length}({item.joinerSide.sex})
             </Text> */}
-          <Text Text style={styles.details}>
-            {item.peopleNum + ':' + item.peopleNum}
-          </Text>
-        </View>
-        <View
+            <Text Text style={styles.details}>
+              {item.peopleNum + ':' + item.peopleNum}
+            </Text>
+          </View>
+          <View style={styles.spaceBetween}>{renderButton()}</View>
+          {/* <View
           style={{
             ...styles.container,
             ...styles.spaceBetween,
           }}>
-          {/* <View style={{flexDirection: 'row'}}>
+          <View style={{flexDirection: 'row'}}>
             <Text>상태: </Text>
             <Text style={{fontWeight: 'bold', marginRight: 10}}>
               {item.status === 'pending' ? '대기 중' : '참여 완료'}
             </Text>
 
-          </View> */}
-          {/* {item.status === 'pending' ? (
+          </View>
+          {item.status === 'pending' ? (
             <TouchableOpacity
               style={styles.cancelButton}
               onPress={() => setCancelModal(true)}>
@@ -168,8 +217,27 @@ function ParticipatedMeetings({item}) {
               }}>
               <Text style={styles.buttonText}>채팅방 이동하기</Text>
             </TouchableOpacity>
-          )} */}
+          )}
+        </View> */}
         </View>
+        <DoubleModal
+          text="미팅 참여 보상을 받으시겠습니까?"
+          nButtonText="아니오"
+          pButtonText="네"
+          modalVisible={startModalVisible}
+          setModalVisible={setStartModalVisible}
+          pFunction={() => {
+            setStartModalVisible(!startModalVisible);
+            setEarnModalVisible(true);
+          }}
+        />
+        <EarnModal
+          EarnModalVisible={earnModalVisible}
+          setEarnModalVisible={setEarnModalVisible}
+          amount={1}
+          txType="미팅 참여"
+          pFunction={handleStart}
+        />
         <DoubleModal
           text="미팅 참가신청을 취소하시겠어요?"
           nButtonText="네"
@@ -205,16 +273,17 @@ const styles = StyleSheet.create({
   //   paddingHorizontal: '10%',
   // },
   meetingCard: {
+    justifyContent: 'center',
     backgroundColor: 'white',
     marginBottom: 5,
     paddingHorizontal: 27,
     paddingVertical: 22,
-    height: 110,
+    height: 120,
     borderColor: 'black',
     borderRadius: 30,
     borderWidth: 1,
     marginHorizontal: 10,
-    marginVertical: 8,
+    marginVertical: 6,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -253,6 +322,10 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontSize: 10,
   },
+  finishText: {
+    fontSize: 12,
+    fontWeight: '500',
+  },
   tag: {
     alignSelf: 'flex-start',
     marginRight: 5,
@@ -262,7 +335,9 @@ const styles = StyleSheet.create({
     color: '#787878',
   },
   spaceBetween: {
-    justifyContent: 'space-between',
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    justifyContent: 'flex-end',
   },
   bar: {
     width: 1,
