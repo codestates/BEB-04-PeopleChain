@@ -39,7 +39,7 @@ function RoomInfo({chatInfo, meetingEnd, setMeetingEnd, isFixed, userDetail}) {
     const arr = [];
 
     ids.forEach(el => {
-      arr.push(userDetail[el].nickName);
+      arr.push([userDetail[el].nickName, userDetail[el].nftProfile]);
     });
 
     setNickNames(arr);
@@ -50,7 +50,12 @@ function RoomInfo({chatInfo, meetingEnd, setMeetingEnd, isFixed, userDetail}) {
         return setPeople(
           states.slice(1).map((el, idx) => {
             return (
-              <Joiner state={el} nickName={nickNames.slice(1)[idx]} key={idx} />
+              <Joiner
+                state={el}
+                nickName={nickNames.slice(1)[idx][0]}
+                img={nickNames.slice(1)[idx][1]}
+                key={idx}
+              />
             );
           }),
         );
@@ -63,7 +68,11 @@ function RoomInfo({chatInfo, meetingEnd, setMeetingEnd, isFixed, userDetail}) {
     <View style={styles.container}>
       <View style={styles.wrapper}>
         <Text style={styles.hilightText}>미팅 참여자</Text>
-        <Host person={nickNames[0]} confirmed={confirmed} />
+        <Host
+          nickName={nickNames[0][0]}
+          img={nickNames[0][1]}
+          confirmed={confirmed}
+        />
         {people}
       </View>
       <BasicButton
@@ -78,11 +87,11 @@ function RoomInfo({chatInfo, meetingEnd, setMeetingEnd, isFixed, userDetail}) {
   );
 }
 
-function Host({person}) {
+function Host({nickName, img}) {
   return (
     <View style={styles.person}>
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
-        <View style={styles.personImage} />
+        <Image style={styles.personImage} source={{uri: img}} />
         <View style={{position: 'absolute', height: 95}}>
           <Image
             source={crown}
@@ -90,17 +99,17 @@ function Host({person}) {
             resizeMode="contain"
           />
         </View>
-        <Text style={styles.personName}>{person}</Text>
+        <Text style={styles.personName}>{nickName}</Text>
       </View>
     </View>
   );
 }
 
-function Joiner({nickName, state}) {
+function Joiner({nickName, state, img}) {
   return (
     <View style={styles.person}>
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
-        <View style={styles.personImage} />
+        <Image style={styles.personImage} source={{uri: img}} />
         <Text style={styles.personName}>{nickName}</Text>
       </View>
       <View
