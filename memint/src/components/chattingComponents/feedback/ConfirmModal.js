@@ -15,7 +15,11 @@ import {useToast} from '../../../utils/hooks/useToast';
       />
  */
 
-function ConfirmModal({confirmModalVisible, setConfirmModalVisible}) {
+function ConfirmModal({
+  confirmModalVisible,
+  setConfirmModalVisible,
+  setEarnModalVisible,
+}) {
   const {showToast} = useToast();
   const navigation = useNavigation();
   return (
@@ -46,8 +50,7 @@ function ConfirmModal({confirmModalVisible, setConfirmModalVisible}) {
                 size="small"
                 onPress={() => {
                   setConfirmModalVisible(false);
-                  showToast('basic', 'LCN + 1');
-                  navigation.navigate('채팅 목록');
+                  setEarnModalVisible(true);
                 }}
               />
             </View>

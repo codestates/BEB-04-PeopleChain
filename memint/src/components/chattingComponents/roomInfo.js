@@ -41,6 +41,8 @@ function RoomInfo({chatInfo, isFixed, userDetail}) {
     ids.forEach(el => {
       arr.push([userDetail[el].nickName, userDetail[el].nftProfile]);
     });
+    // console.log(userDetail);
+    // console.log(chatInfo);
 
     setNickNames(arr);
 
@@ -52,7 +54,7 @@ function RoomInfo({chatInfo, isFixed, userDetail}) {
             return (
               <Joiner
                 state={el}
-                nickName={nickNames ? nickNames.slice(1)[idx][0] : loveChain}
+                nickName={nickNames ? nickNames.slice(1)[idx][0] : null}
                 img={nickNames ? nickNames.slice(1)[idx][1] : loveChain}
                 key={idx}
               />

@@ -4,24 +4,26 @@ import BasicButton from '../../components/common/BasicButton';
 import {useNavigation} from '@react-navigation/native';
 import CompleteModal from '../../components/chattingComponents/feedback/CompleteModal';
 import BackButton from '../../components/common/BackButton';
+import useUser from '../../utils/hooks/UseUser';
 const good = require('./dummydata/images/good.png');
 const soso = require('./dummydata/images/soso.png');
 const bad = require('./dummydata/images/bad.png');
 const terrible = require('./dummydata/images/terrible.png');
 
-function FeedbackSendPage() {
+function FeedbackSendPage({route}) {
   const [completeModalVisible, setCompleteModalVisible] = useState(false);
+  const owner = useUser();
 
   return (
     <SafeAreaView style={styles.view}>
       <BackButton />
       <View style={[styles.centeredView, styles.backgroudDim]}>
         <Text style={{fontSize: 18, fontWeight: '700', marginBottom: 20}}>
-          김개똥님 외 3명과의 미팅은 어떠셨나요?
+          {owner.nickName}님! 오늘의 미팅은 어떠셨나요?
         </Text>
         <View style={styles.modalView}>
           <View style={{alignItems: 'center', marginBottom: 15}}>
-            <Text>미팅에서 서상훈 님은 어땠나요?</Text>
+            <Text>미팅에서 {route.params.name} 님은 어땠나요?</Text>
           </View>
           <View
             style={{
@@ -97,8 +99,10 @@ function FeedbackSendPage() {
           />
           <CompleteModal
             buttonText="다른 후기 작성하러 가기"
+            name={route.params.name}
             completeModalVisible={completeModalVisible}
             setCompleteModalVisible={setCompleteModalVisible}
+            data={route.params.data}
           />
         </View>
       </View>

@@ -86,7 +86,7 @@ const Host = ({data, count, meetingInfo, setModalVisible}) => {
               onPress={() => {
                 // proposeModal이 왜 렌더링이 안되는지 모르겠다. 파일 변경이 있었던 것 같다.
                 // setProposeModalVisible(true);
-                navigation.navigate('FeedbackChoicePage');
+                navigation.navigate('FeedbackChoicePage', {data: meetingInfo});
               }}>
               <View style={styles.button}>
                 <Text style={{color: 'white', fontWeight: '500'}}>
@@ -175,7 +175,7 @@ const Joiner = ({data, user, setModalVisible, meetingInfo}) => {
               onPress={() => {
                 // proposeModal이 왜 렌더링이 안되는지 모르겠다. 파일 변경이 있었던 것 같다.
                 // setProposeModalVisible(true);
-                navigation.navigate('FeedbackChoicePage');
+                navigation.navigate('FeedbackChoicePage', {data: meetingInfo});
               }}>
               <View style={styles.button}>
                 <Text style={{color: 'white', fontWeight: '500'}}>

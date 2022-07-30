@@ -67,7 +67,9 @@ function UserInfoModal({
                     activeOpacity={1}
                     style={styles.images}
                     onPress={() => {
-                      visible ?? setAskSpendingModalVisible(true);
+                      visible === false
+                        ? setAskSpendingModalVisible(true)
+                        : null;
                     }}>
                     <View style={styles.imageLarge}>
                       <Image

@@ -19,12 +19,11 @@ import {useNavigation} from '@react-navigation/native';
  */
 
 function CompleteModal({
-  text,
-  body,
   buttonText,
   completeModalVisible,
   setCompleteModalVisible,
-  setChoiceModalVisible,
+  data,
+  name,
 }) {
   const navigation = useNavigation();
   return (
@@ -35,7 +34,7 @@ function CompleteModal({
         visible={completeModalVisible}>
         <View style={[styles.centeredView, styles.backgroudDim]}>
           <View style={styles.modalView}>
-            <Text style={{margin: 10}}>서상훈 님에 대한 후기 작성이</Text>
+            <Text style={{margin: 10}}>{name} 님에 대한 후기 작성이</Text>
             <Text style={{marginBottom: 10}}>완료되었어요</Text>
             <BasicButton
               text={buttonText}
@@ -43,7 +42,7 @@ function CompleteModal({
               variant="basic"
               onPress={() => {
                 setCompleteModalVisible(false);
-                navigation.navigate('FeedbackChoicePage');
+                navigation.navigate('FeedbackChoicePage', {data});
               }}
             />
           </View>

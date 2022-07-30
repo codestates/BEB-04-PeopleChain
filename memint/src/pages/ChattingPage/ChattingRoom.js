@@ -67,11 +67,28 @@ function ChattingRoom({route}) {
       Promise.all(
         route.params.data.members.map(async el => {
           memberId.push(Object.keys(el)[0]);
-          // console.log(memberId);
+
           const result = await userRef.doc(Object.keys(el)[0]).get();
+
           results.push(result.data());
 
+          Promise.all(
+            memberId.map(async el => {
+              return (await userRef.doc(el).get()).data();
+            }),
+          ).then(result => {
+            setUserDetail(
+              result.reduce((acc, cur) => {
+                return {...acc, [cur.userId]: cur};
+              }, 0),
+            );
+          });
+
+          // console.log(route.params.data.members);
           if (results.length === memberId.length) {
+            // console.log(memberId);
+            // console.log(results);
+            // console.log(results);
             setUserDetail(
               results.reduce((acc, cur) => {
                 return {...acc, [cur.userId]: cur};
@@ -80,11 +97,11 @@ function ChattingRoom({route}) {
           }
           return;
         }),
-      )[(userRef, route.params.data, results)],
+      ),
+    [],
   );
 
   useEffect(() => {
-    // console.log(route.params.data.members);
     Animated.spring(animation, {
       toValue: roomInfo ? windowWidth / 5 : windowWidth,
       useNativeDriver: true,
@@ -98,6 +115,9 @@ function ChattingRoom({route}) {
       }),
     );
     users;
+
+    // console.log(userDetail);
+
     setIsHost(route.params.data.hostId === user);
   }, [animation, roomInfo, route.params, userRef, users, user, ex]);
   return (
