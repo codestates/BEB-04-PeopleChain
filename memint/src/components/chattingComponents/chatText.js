@@ -149,8 +149,22 @@ function MyChat({item, userDetail, user}) {
       {/* <Image source={{uri: user.picture}} style={styles.image} /> */}
       <View style={[styles.textWrapper, {alignItems: 'flex-end'}]}>
         <Text style={styles.senderName}>{user.nickName}</Text>
-        <View style={[styles.messageBody, {backgroundColor: 'white'}]}>
-          <Text style={{padding: 3}}>{item.data().text}</Text>
+        <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
+          <View style={styles.date}>
+            <Text style={{marginBottom: 5, fontSize: 10, color: 'gray'}}>
+              {item
+                .data()
+                .createdAt.toDate()
+                .toLocaleString()
+                .slice(
+                  6,
+                  item.data().createdAt.toDate().toLocaleString().length - 3,
+                )}
+            </Text>
+          </View>
+          <View style={[styles.messageBody, {backgroundColor: 'white'}]}>
+            <Text style={{padding: 3}}>{item.data().text}</Text>
+          </View>
         </View>
       </View>
     </View>
