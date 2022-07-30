@@ -2,10 +2,10 @@ import React, {useEffect, useState, useMemo} from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
 import BasicButton from '../common/BasicButton';
 import firestore from '@react-native-firebase/firestore';
+import loveChain from '../../assets/icons/lovechain.png';
 const crown = require('../../pages/ChattingPage/dummydata/images/crown.png');
-const user = '연습용계정1';
 
-function RoomInfo({chatInfo, meetingEnd, setMeetingEnd, isFixed, userDetail}) {
+function RoomInfo({chatInfo, isFixed, userDetail}) {
   const [confirmed, setConfirmed] = useState(false);
   const [nickNames, setNickNames] = useState('');
   const [states, setStates] = useState('');
@@ -52,8 +52,8 @@ function RoomInfo({chatInfo, meetingEnd, setMeetingEnd, isFixed, userDetail}) {
             return (
               <Joiner
                 state={el}
-                nickName={nickNames.slice(1)[idx][0]}
-                img={nickNames.slice(1)[idx][1]}
+                nickName={nickNames ? nickNames.slice(1)[idx][0] : loveChain}
+                img={nickNames ? nickNames.slice(1)[idx][1] : loveChain}
                 key={idx}
               />
             );
@@ -69,20 +69,12 @@ function RoomInfo({chatInfo, meetingEnd, setMeetingEnd, isFixed, userDetail}) {
       <View style={styles.wrapper}>
         <Text style={styles.hilightText}>미팅 참여자</Text>
         <Host
-          nickName={nickNames[0][0]}
-          img={nickNames[0][1]}
+          nickName={nickNames && nickNames[0][0]}
+          img={nickNames && nickNames[0][1]}
           confirmed={confirmed}
         />
         {people}
       </View>
-      <BasicButton
-        text="미팅종료"
-        size="large"
-        variant={meetingEnd ? 'disable' : 'basic'}
-        onPress={() => {
-          setMeetingEnd(true);
-        }}
-      />
     </View>
   );
 }
@@ -91,7 +83,10 @@ function Host({nickName, img}) {
   return (
     <View style={styles.person}>
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
-        <Image style={styles.personImage} source={{uri: img}} />
+        <Image
+          style={styles.personImage}
+          source={img ? {uri: img} : loveChain}
+        />
         <View style={{position: 'absolute', height: 95}}>
           <Image
             source={crown}
