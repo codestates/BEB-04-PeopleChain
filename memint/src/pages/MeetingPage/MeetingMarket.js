@@ -23,22 +23,29 @@ import useAuthActions from '../../utils/hooks/UseAuthActions';
 
 function MeetingMarket({navigation}) {
   const [meetings, setMeetings] = useState([]);
-  const [regionMeetings, setRegionMeetings] = useState([]);
   const [filteredMeetings, setFilteredMeetings] = useState([]);
+  const [shownMeetings, setShownMeetings] = useState([]);
   const [confirmModalVisible, setConfirmModalVisible] = useState(false);
-  const [regionSelect, setRegionSelect] = useState(0);
   const [sortSelect, setSortSelect] = useState(undefined);
   const [filterModalVisible, setFilterModalVisible] = useState(false);
   const [filter, setFilter] = useState({
+    region: '서울 전체',
     peopleNum: undefined,
     meetDate: new Date(),
+    meetingTags: undefined,
   });
 
   const isFocused = useIsFocused();
 
   useEffect(() => {
+    setSortSelect(0);
     getMeetingMarket();
   }, [isFocused, getMeetingMarket]);
+
+  useEffect(() => {
+    setFilteredMeetings(handleFilter(meetings));
+    handleSort();
+  }, [handleFilter, meetings, filter, handleSort, sortSelect]);
 
   const getMeetingMarket = useCallback(async () => {
     try {
@@ -63,50 +70,99 @@ function MeetingMarket({navigation}) {
           }),
       );
       setMeetings(dataWithHostInfo);
-      setRegionMeetings(dataWithHostInfo);
-      setFilteredMeetings(dataWithHostInfo);
-    } catch (e) {
-      console.log(e);
+      setFilteredMeetings(handleFilter(dataWithHostInfo));
+      setShownMeetings(handleFilter(dataWithHostInfo));
+      // setRegionMeetings(dataWithHostInfo);
+      // setFilteredMeetings(dataWithHostInfo);
+    } catch (e) {}
+  }, [handleFilter]);
+
+  const handleSort = useCallback(() => {
+    if (sortSelect === undefined || sortSelect === 0) {
+      setShownMeetings(filteredMeetings);
+    } else if (sortSelect === 1) {
+      setShownMeetings(
+        filteredMeetings.sort((a, b) => {
+          const x = a.meetDate.toDate() - new Date();
+          const y = b.meetDate.toDate() - new Date();
+          if (x < y) {
+            return -1;
+          } else {
+            return 1;
+          }
+        }),
+      );
+    } else if (sortSelect === 2) {
+      setShownMeetings(
+        filteredMeetings.sort((a, b) => {
+          const x = a.hostInfo.birth.slice(0, 4);
+          const y = b.hostInfo.birth.slice(0, 4);
+          if (x > y) {
+            return -1;
+          } else {
+            return 1;
+          }
+        }),
+      );
     }
-  }, []);
+  }, [sortSelect, filteredMeetings, filter]);
 
-  const handleFilter = () => {
-    if (filter.peopleNum && filter.meetDate) {
-      setFilteredMeetings(
-        regionMeetings.filter(meeting => {
-          return (
-            meeting.peopleNum === filter.peopleNum &&
-            meeting.meetDate.toDate() >= filter.meetDate
-          );
-        }),
-      );
-    } else if (filter.peopleNum) {
-      setFilteredMeetings(
-        regionMeetings.filter(meeting => {
-          return meeting.peopleNum === filter.peopleNum;
-        }),
-      );
-    } else if (filter.meetDate) {
-      setFilteredMeetings(
-        regionMeetings.filter(meeting => {
-          return meeting.meetDate.toDate() >= filter.meetDate;
-        }),
-      );
-    } else {
-      getMeetingMarket();
-    }
-  };
+  const handleFilter = useCallback(
+    value => {
+      let res = handleRegion(value);
+      res = handlePeopleNum(res);
+      res = handleMeetDate(res);
+      res = handleMeetingTags(res);
+      return res;
+    },
+    [handleRegion, handlePeopleNum, handleMeetDate, handleMeetingTags, filter],
+  );
 
-  const handleRegion = value => {
-    setFilter({peopleNum: undefined, meetDate: new Date()});
-    setRegionMeetings(
-      meetings.filter(meeting => {
-        return meeting.region === value;
-      }),
-    );
-    setFilteredMeetings(regionMeetings);
-  };
+  const handleRegion = useCallback(
+    value => {
+      const region = filter.region;
+      if (region === undefined || region === '서울 전체') {
+        return value;
+      } else {
+        return value.filter(meeting => meeting.region === region);
+      }
+    },
+    [filter.region],
+  );
 
+  const handlePeopleNum = useCallback(
+    value => {
+      const peopleNum = filter.peopleNum;
+      if (peopleNum === undefined || peopleNum === 0) {
+        return value;
+      } else {
+        return value.filter(meeting => meeting.peopleNum === peopleNum);
+      }
+    },
+    [filter.peopleNum],
+  );
+
+  const handleMeetDate = useCallback(
+    value => {
+      const meetDate = filter.meetDate;
+      return value.filter(meeting => meeting.meetDate.toDate() >= meetDate);
+    },
+    [filter.meetDate],
+  );
+
+  const handleMeetingTags = useCallback(
+    value => {
+      const meetingTags = filter.meetingTags;
+      if (meetingTags === undefined || meetingTags === 0) {
+        return value;
+      } else {
+        return value.filter(
+          meeting => meeting.meetingTags.indexOf(meetingTags) !== -1,
+        );
+      }
+    },
+    [filter.meetingTags],
+  );
   const RegionDropDownData = [
     {label: '서울 전체', value: '서울 전체'},
     {label: '강남', value: '강남'},
@@ -126,8 +182,8 @@ function MeetingMarket({navigation}) {
   const SortDropDownData = [
     {label: '정렬', value: 0},
     {label: '시간 가까운 순', value: 1},
-    {label: '위치 가까운 순', value: 2},
-    {label: '나이 젊은 순', value: 3},
+    {label: '나이 젊은 순', value: 2},
+    {label: '위치 가까운 순', value: 3},
   ];
   const FilterPeopleDropDownData = [
     {label: '1:1', value: 1},
@@ -154,11 +210,10 @@ function MeetingMarket({navigation}) {
           <RNPickerSelect
             placeholder={{}}
             onValueChange={value => {
-              setRegionSelect(value);
-              handleRegion(value);
+              setFilter({...filter, region: value});
             }}
             items={RegionDropDownData}
-            value={regionSelect}
+            value={filter.region}
           />
 
           <Icon name="check-circle" size={19} style={styles.checkicon} />
@@ -191,7 +246,7 @@ function MeetingMarket({navigation}) {
               filter={filter}
               filterModalVisible={filterModalVisible}
               setFilterModalVisible={setFilterModalVisible}
-              handleFilter={handleFilter}
+              // handleFilter={()=>{}}
             />
           </Pressable>
           <Pressable style={styles.listfilter}>
@@ -206,14 +261,13 @@ function MeetingMarket({navigation}) {
             <Icon name="arrow-drop-down" size={18} />
           </Pressable>
         </View>
-        {filteredMeetings.length === 0 ? (
-          <View
-            style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
-            <Text style={{color: 'lightgray'}}>알림이 없습니다</Text>
+        {shownMeetings.length === 0 ? (
+          <View style={styles.emptyView}>
+            <Text style={styles.emptyText}>해당하는 미팅이 없습니다</Text>
           </View>
         ) : (
           <View style={styles.meetingLists}>
-            {filteredMeetings.map((meeting, idx) => {
+            {shownMeetings.map((meeting, idx) => {
               return <MeetingElement key={idx} item={meeting} />;
             })}
           </View>
@@ -275,6 +329,15 @@ const styles = StyleSheet.create({
   },
   meetingLists: {
     marginBottom: 40,
+  },
+  emptyView: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+    marginTop: 30,
+  },
+  emptyText: {
+    color: 'lightgray',
   },
 });
 
