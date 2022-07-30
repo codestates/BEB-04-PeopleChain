@@ -1,21 +1,35 @@
 import React from 'react';
-import {View, StyleSheet, Text, TouchableOpacity, Image} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Image,
+  Linking,
+} from 'react-native';
 
-function HistoryButton({onPress, time, balanceChange, balance, content}) {
+function HistoryButton({onPress, time, balanceChange, txHash, content}) {
+  const frontHash = txHash.substr(0, 10);
+  const endHash = txHash.substr(60);
+  //   const parsedTime = time.toDate
   return (
-    <View style={[styles.button]}>
-      <View style={styles.contentWrapper}>
-        <Text style={styles.timeText}>{time}</Text>
-        <Text style={styles.contentText}>{content}</Text>
-      </View>
-      <View style={styles.balanceWrapper}>
-        <View style={styles.balanceChange}>
-          <Text style={styles.balanceChangeText}>{balanceChange} </Text>
-          <Text style={styles.lcnText}> LCN</Text>
+    <TouchableOpacity
+      onPress={() => {
+        Linking.openURL(`https://rinkeby.etherscan.io/tx/${txHash}`);
+      }}>
+      <View style={[styles.button]}>
+        <View style={styles.contentWrapper}>
+          <Text style={styles.timeText}>{time}</Text>
+          <Text style={styles.contentText}>{content}</Text>
         </View>
-        <Text style={styles.balanceText}>잔액 {balance} LCN</Text>
+        <View style={styles.balanceWrapper}>
+          <Text style={styles.txHashText}>txHash</Text>
+          <Text>
+            {frontHash}...{endHash}
+          </Text>
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 
@@ -34,47 +48,39 @@ const styles = StyleSheet.create({
   timeText: {
     fontSize: 12,
     marginBottom: 3,
+    justifyContent: 'flex-end',
+  },
+  txHashText: {
+    marginLeft: '65%',
+    fontSize: 12,
+    color: 'grey',
+    marginBottom: 3,
   },
   contentText: {
     fontSize: 20,
     fontWeight: 'bold',
-  },
-  balanceChangeText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  lcnText: {
-    fontSize: 12,
-  },
-  balanceText: {
-    fontSize: 12,
   },
   button: {
     flexDirection: 'row',
     // paddingHorizontal: 16,
     width: 330,
     height: 60,
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     alignItems: 'center',
     borderColor: 'black',
     backgroundColor: 'white',
     borderWidth: 1,
-    borderRadius: 10,
-    margin: 3,
+    borderRadius: 5,
+    margin: 1,
   },
   contentWrapper: {
     flexDirection: 'column',
-    marginLeft: '2%',
+    marginLeft: '15%',
   },
   balanceWrapper: {
     flexDirection: 'column',
-    marginLeft: '25%',
-    marginRight: '5%',
-  },
-  balanceChange: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
+    marginLeft: '35%',
+    marginRight: '15%',
   },
   text: {
     marginHorizontal: 20,

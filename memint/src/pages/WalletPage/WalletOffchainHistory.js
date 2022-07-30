@@ -87,8 +87,6 @@ function WalletOffchainHistory({navigation}) {
   ];
   const {addLog} = useOffchainActions();
   const user = useUser();
-  // console.log('@@@@@@@@@@@@@@@@@@@@USER@@@@@@@@@@@@@@@@@@@@@');
-  // console.log(user);
 
   useEffect(() => {
     getOffchainLog();
@@ -106,7 +104,6 @@ function WalletOffchainHistory({navigation}) {
   const goToOffchainTrade = () => {
     navigation.navigate('WalletOffchainTrade');
   };
-
   return (
     <View style={styles.view}>
       <Text style={styles.accountText}>Token Account</Text>
@@ -118,6 +115,7 @@ function WalletOffchainHistory({navigation}) {
       <ScrollView>
         {offTxLogs ? (
           offTxLogs.map((log, idx) => {
+            // console.log(log);
             return (
               <HistoryButton
                 key={idx}

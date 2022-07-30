@@ -37,6 +37,7 @@ function LargeLcnButton({
           style={styles.textInput}
           value={amount}
           onChangeText={setAmount}
+          keyboardType="numeric"
         />
       </View>
       <View style={styles.rightWrapper}>

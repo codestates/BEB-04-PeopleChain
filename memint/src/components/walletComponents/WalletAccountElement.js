@@ -6,13 +6,16 @@ import lovechainIcon from '../../assets/icons/lovechain.png';
 function WalletAccountElement({onPress, balance, content}) {
   const imgSrc = content === 'ETH' ? ethIcon : lovechainIcon;
   return (
-    <View style={[styles.button]}>
-      <View style={styles.tokenWrapper}>
-        <Image source={imgSrc} style={styles.icon} />
-        <Text style={styles.contentText}>{content}</Text>
+    <TouchableOpacity onPress={() => onPress(content)}>
+      <View style={[styles.button]}>
+        <View style={styles.tokenWrapper}>
+          <Image source={imgSrc} style={styles.icon} />
+          <Text style={styles.contentText}>{content}</Text>
+        </View>
+
+        <Text style={styles.balanceText}>{balance}</Text>
       </View>
-      <Text style={styles.balanceText}>{balance}</Text>
-    </View>
+    </TouchableOpacity>
   );
 }
 

@@ -19,11 +19,14 @@ import {transferLCN} from '../../lib/api/wallet';
 import {getUser} from '../../lib/Users';
 import useUser from '../../utils/hooks/UseUser';
 import useAuthActions from '../../utils/hooks/UseAuthActions';
+import {getOnchainTokenLog} from '../../lib/OnchainTokenLog';
+import useOnchainActions from '../../utils/hooks/UseOnchainActions';
 
 const WalletLcnTransfer = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const {showToast} = useToast();
   const userInfo = useUser();
+  const {addLcnLog} = useOnchainActions();
   const {updateTokenInfo} = useAuthActions();
   const [form, setForm] = useState({
     address: '',
@@ -73,7 +76,7 @@ const WalletLcnTransfer = () => {
             onChangeText={createChangeTextHandler('amount')}
             placeholder="LCN"
             keyboardType="numeric"
-            returnKeyType={'done'}
+            // returnKeyType={'done'}
             onPress={onSubmit}
           />
           <View style={styles.buttonContainer}>
@@ -106,6 +109,13 @@ const WalletLcnTransfer = () => {
                       tokenAmount: Number(userDetail.tokenAmount),
                       ethAmount: userInfo.ethAmount,
                       onChainTokenAmount: Number(result.data.balance),
+                    });
+                    getOnchainTokenLog(userInfo.id).then(res => {
+                      console.log({res});
+                      const logs = res.docs.map(el => {
+                        return {...el.data()};
+                      });
+                      addLcnLog(logs);
                     });
                   });
                 }

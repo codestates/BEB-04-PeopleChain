@@ -13,23 +13,27 @@ export function createUser({
 }) {
   // return usersCollection.doc(id).get();
   // console.log(usersCollection);
+  const newNickName = nickName ? nickName : '';
+  const newGender = gender ? gender : '';
+  const newBirth = birth ? birth : '';
+  const newPicture = picture ? picture : '';
   return usersCollection.doc(userId).set({
     userId,
-    nickName,
-    gender,
-    birth,
+    nickName: newNickName,
+    gender: newGender,
+    birth: newBirth,
     createdAt: firestore.FieldValue.serverTimestamp(),
-    picture,
+    picture: newPicture,
     nftProfile: null,
     nftIds: [],
     address: null,
     privateKey: null,
     tokenAmount: 0,
-    createdroomId: [],
-    joinedroomId: [],
     ethAmount: 0,
     onChainTokenAmount: 0,
     visibleUser: [],
+    createdroomId: [],
+    joinedroomId: [],
   });
 }
 
@@ -43,8 +47,6 @@ export async function getOtherUser(id) {
   const userDetail = doc.data();
 
   const userProperty = await getUserProperty(id);
-  // console.log('@@@@');
-  // console.log(userProperty);
 
   const otherUser = userDetail && {
     nickName: userDetail.nickName,

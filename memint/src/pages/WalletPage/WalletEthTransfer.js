@@ -19,12 +19,15 @@ import {transferETH} from '../../lib/api/wallet';
 import useUser from '../../utils/hooks/UseUser';
 import {getUser} from '../../lib/Users';
 import useAuthActions from '../../utils/hooks/UseAuthActions';
+import {getOnchainEthLog} from '../../lib/OnchainEthLog';
+import useOnchainActions from '../../utils/hooks/UseOnchainActions';
 
 const WalletEthTransfer = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const {showToast} = useToast();
   const userInfo = useUser();
   const {updateTokenInfo} = useAuthActions();
+  const {addEthLog} = useOnchainActions();
   const [form, setForm] = useState({
     address: '',
     amount: '',
@@ -73,7 +76,7 @@ const WalletEthTransfer = () => {
             onChangeText={createChangeTextHandler('amount')}
             placeholder="ETH"
             keyboardType="numeric"
-            returnKeyType={'done'}
+            // returnKeyType={'done'}
             onPress={onSubmit}
           />
           <View style={styles.buttonContainer}>
@@ -104,12 +107,19 @@ const WalletEthTransfer = () => {
                 if (result.data.message === 'success') {
                   showToast('success', 'ETH 전송이 완료되었습니다!');
                   getUser(userInfo.id).then(userDetail => {
-                    console.log(userDetail);
+                    // console.log(userDetail);
                     updateTokenInfo({
                       tokenAmount: Number(userDetail.tokenAmount),
                       ethAmount: Number(result.data.balance),
                       onChainTokenAmount: userInfo.onChainTokenAmount,
                     });
+                  });
+                  getOnchainEthLog(userInfo.id).then(res => {
+                    console.log({res});
+                    const logs = res.docs.map(el => {
+                      return {...el.data()};
+                    });
+                    addEthLog(logs);
                   });
                 }
               });

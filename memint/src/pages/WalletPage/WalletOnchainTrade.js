@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
+  Animated,
 } from 'react-native';
 import BackButton from '../../components/common/BackButton';
 import LargeLcnButton from '../../components/walletComponents/LargeLcnButton';
@@ -18,17 +19,22 @@ import useUser from '../../utils/hooks/UseUser';
 import {getUser} from '../../lib/Users';
 import {ETHToLCN, LCNToETH} from '../../lib/api/wallet';
 import useAuthActions from '../../utils/hooks/UseAuthActions';
+import {getOnchainEthLog} from '../../lib/OnchainEthLog';
+import {getOnchainTokenLog} from '../../lib/OnchainTokenLog';
+import useOnchainActions from '../../utils/hooks/UseOnchainActions';
 
 const WalletOnchainTrade = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const {showToast} = useToast();
   const [fromEth, setFromEth] = useState(true);
   const userInfo = useUser();
+  const {addEthLog, addLcnLog} = useOnchainActions();
   const {updateTokenInfo} = useAuthActions();
   const [amount, setAmount] = useState({
-    fromAmount: '0',
-    toAmount: '0',
+    fromAmount: '',
+    toAmount: '',
   });
+  // const animiation = useRef(new Animated.Value(1)).current;
   const createChangeAmountHandler = name => value => {
     setAmount({
       ...amount,
@@ -118,6 +124,20 @@ const WalletOnchainTrade = () => {
                       ethAmount: Number(result.data.ETHBalance),
                       onChainTokenAmount: Number(result.data.LCNBalance),
                     });
+                    getOnchainEthLog(userInfo.id).then(res => {
+                      console.log({res});
+                      const logs = res.docs.map(el => {
+                        return {...el.data()};
+                      });
+                      addEthLog(logs);
+                    });
+                    getOnchainTokenLog(userInfo.id).then(res => {
+                      console.log({res});
+                      const logs = res.docs.map(el => {
+                        return {...el.data()};
+                      });
+                      addLcnLog(logs);
+                    });
                   });
                 }
               })
@@ -130,6 +150,20 @@ const WalletOnchainTrade = () => {
                       tokenAmount: Number(userDetail.tokenAmount),
                       ethAmount: Number(result.data.ETHBalance),
                       onChainTokenAmount: Number(result.data.LCNBalance),
+                    });
+                    getOnchainEthLog(userInfo.id).then(res => {
+                      console.log({res});
+                      const logs = res.docs.map(el => {
+                        return {...el.data()};
+                      });
+                      addEthLog(logs);
+                    });
+                    getOnchainTokenLog(userInfo.id).then(res => {
+                      console.log({res});
+                      const logs = res.docs.map(el => {
+                        return {...el.data()};
+                      });
+                      addLcnLog(logs);
                     });
                   });
                 }

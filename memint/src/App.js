@@ -36,21 +36,53 @@ import {getNFTs, getProfile, getMemin} from './lib/NFT';
 import {getMeeting} from './lib/Meeting';
 import useMeetingActions from './utils/hooks/UseMeetingActions';
 import useUser from './utils/hooks/UseUser';
+import {getOnchainEthLog} from './lib/OnchainEthLog';
+import {getOnchainTokenLog} from './lib/OnchainTokenLog';
+import useOnchainActions from './utils/hooks/UseOnchainActions';
+
 const Stack = createNativeStackNavigator();
 const store = createStore(rootReducer);
 
 function App() {
   const userInfo = useAuth();
-  const users = useUser();
+  const userState = useUser();
   const {authorize, logout, saveInfo} = useAuthActions();
   const {saveNFT, setMemin} = useNftActions();
   const {saveMeeting} = useMeetingActions();
   const [initialRouteName, setInitialRouteName] = useState('SignIn');
+  const {addEthLog, addLcnLog} = useOnchainActions();
   const saveUserInfo = async user => {
     try {
-      const userDetail = await getUser(user.uid);
+      let userDetail = await getUser(user.uid);
+      let userProperty = await getUserProperty(user.uid);
+      getOnchainEthLog(user.uid).then(res => {
+        const logs = res.docs.map(el => {
+          return {...el.data()};
+        });
+        addEthLog(logs);
+      });
+      getOnchainTokenLog(user.uid).then(res => {
+        const logs = res.docs.map(el => {
+          return {...el.data()};
+        });
+        addLcnLog(logs);
+      });
+      // add code to remove undefined TypeError in SignUp Page
+      userDetail = userDetail === undefined ? {nftProfile: ''} : userDetail;
+      userProperty =
+        userProperty.length === 0
+          ? [
+              {
+                alcoholQuantity: [],
+                alcoholType: [],
+                alcoholStype: [],
+                nftImage: '',
+                profileImage: '',
+              },
+            ]
+          : userProperty;
+      /////////////////////////////////////////////////
 
-      const userProperty = await getUserProperty(user.uid);
       const res = await getNFTs(user.uid);
       const nfts = res.docs.map(el => {
         return {...el.data()};
@@ -75,8 +107,9 @@ function App() {
       // );
 
       // saveMeeting(meetingRes);
+
       saveInfo({
-        ...users,
+        ...userState,
         id: user.uid,
         email: user.email,
         nickName: userDetail.nickName,
@@ -97,12 +130,6 @@ function App() {
         drinkStyle: userProperty[0].drinkStyle,
         visibleUser: userDetail.visibleUser,
       });
-      console.log('userDetail is');
-      console.log(userDetail);
-      console.log('users is');
-      console.log(users);
-      console.log('user is');
-      console.log(user);
     } catch (e) {
       console.log(e);
     }
@@ -146,7 +173,7 @@ function App() {
   if (initializing) {
     return null;
   }
-  console.log('@@UseEffect Re-rendering@@@@');
+  console.log('@@Re-rendering@@@@');
   console.log('currentUser is');
   console.log(userInfo);
   // if (!user) {

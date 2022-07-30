@@ -19,7 +19,7 @@ auth.route("/register").post(async (req, res) => {
 
 		res.status(200).send(account);
 	} catch (error) {
-		res.status(404).send(error);
+		res.status(400).send(error);
 	}
 });
 

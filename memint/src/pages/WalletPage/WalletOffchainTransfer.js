@@ -12,12 +12,19 @@ import useUser from '../../utils/hooks/UseUser';
 import {toOnChain} from '../../lib/api/wallet';
 import {getUser} from '../../lib/Users';
 import useAuthActions from '../../utils/hooks/UseAuthActions';
+import {getOnchainTokenLog} from '../../lib/OnchainTokenLog';
+import {getOffchainTokenLog} from '../../lib/OffchianTokenLog';
+import useOnchainActions from '../../utils/hooks/UseOnchainActions';
+import useOffchainActions from '../../utils/hooks/UseOffchainActions';
+import {createSpendOffTxLg} from '../../lib/OffchianTokenLog';
 const WalletOffchainTransfer = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [recieveSelected, setRecieveSelected] = useState(false);
   const [transferSelected, setTransferSelected] = useState(true);
   const {showToast} = useToast();
   const userInfo = useUser();
+  const {addLcnLog} = useOnchainActions();
+  const {addLog} = useOffchainActions();
   const [amount, setAmount] = useState();
   const {updateTokenInfo} = useAuthActions();
 
@@ -96,6 +103,27 @@ const WalletOffchainTransfer = ({navigation}) => {
                   tokenAmount: Number(userDetail.tokenAmount),
                   ethAmount: userInfo.ethAmount,
                   onChainTokenAmount: Number(result.data.LCNBalance),
+                });
+                // createSpendOffTxLg(
+                //   userInfo.id,
+                //   amount,
+                //   '온체인 지갑 전송',
+                //   userDetail.tokenAmount,
+                // ).then(
+                //   getOffchainTokenLog(userInfo.id).then(res => {
+                //     // console.log({res});
+                //     const logs = res.docs.map(el => {
+                //       return {...el.data()};
+                //     });
+                //     addLog(logs);
+                //   }),
+                // );
+                getOnchainTokenLog(userInfo.id).then(res => {
+                  console.log({res});
+                  const logs = res.docs.map(el => {
+                    return {...el.data()};
+                  });
+                  addLcnLog(logs);
                 });
               });
             }
