@@ -58,7 +58,7 @@ const SignInScreen = ({navigation, route}) => {
       const userDetail = await getUser(user.uid);
       const userProperty = await getUserProperty(user.uid);
 
-      console.log({userDetail});
+      console.log(userDetail);
       const res = await getNFTs(user.uid);
       const nfts = res.docs.map(el => {
         return {...el.data()};
@@ -76,6 +76,7 @@ const SignInScreen = ({navigation, route}) => {
         birth: userDetail.birth,
         nftIds: userDetail.nftIds,
         picture: userDetail.picture,
+        address: userDetail.address,
         tokenAmount: userDetail.tokenAmount,
         ethAmount: userDetail.ethAmount,
         onChainTokenAmount: userDetail.onChainTokenAmount,
@@ -83,6 +84,7 @@ const SignInScreen = ({navigation, route}) => {
         alcoholType: userProperty[0].alcoholType,
         drinkCapa: userProperty[0].drinkCapa,
         drinkStyle: userProperty[0].drinkStyle,
+        visibleUser: userDetail.visibleUser,
       }),
         navigation.navigate('Main');
     } catch (e) {

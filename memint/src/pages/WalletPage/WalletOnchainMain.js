@@ -23,6 +23,9 @@ const WalletOnchainMain = ({navigation}) => {
   const [currentTab, setCurrentTab] = useState('account');
   const {showToast} = useToast();
   const userInfo = useUser();
+  // const slicedAddress = userInfo.address
+  //   ? `${userInfo.address.substr(0, 15)}....${userInfo.address.substr(30)}`
+  //   : null;
   const slicedAddress = `${userInfo.address.substr(
     0,
     15,
