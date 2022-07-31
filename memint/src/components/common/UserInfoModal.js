@@ -23,6 +23,7 @@ import useAuthActions from '../../utils/hooks/UseAuthActions';
   const [userInfoModalVisible, setUserInfoModalVisible] = useState(false);
 
       <UserInfoModal
+      userId= 
         userInfoModalVisible={userInfoModalVisible}
         setUserInfoModalVisible={setUserInfoModalVisible}
         pFunction={() => {}}

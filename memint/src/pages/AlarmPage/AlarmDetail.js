@@ -17,10 +17,11 @@ import {
   updateWaitingOut,
 } from '../../lib/Meeting';
 import {useToast} from '../../utils/hooks/useToast';
-import useUser from '../../utils/hooks/UseAuth';
+import useUser from '../../utils/hooks/UseUser';
 import {updateUserMeetingIn} from '../../lib/Users';
 import {handleBirth, handleDateInFormat} from '../../utils/common/Functions';
 import DoubleModal from '../../components/common/DoubleModal';
+import UserInfoModal from '../../components/common/UserInfoModal';
 
 function AlarmDetail({route}) {
   const userInfo = useUser();
@@ -28,7 +29,20 @@ function AlarmDetail({route}) {
   const navigation = useNavigation();
   const {showToast} = useToast();
   const [modalVisible, setModalVisible] = useState(false);
+  const [userInfoModalVisible, setUserInfoModalVisible] = useState(false);
+  const visibleList = userInfo.visibleUser;
 
+  const [userId, setUserId] = useState('');
+
+  const checkIsVisible = userId => {
+    // console.log({userInfo})
+    // console.log(visibleList)
+    if (!visibleList) return false;
+    if (visibleList.indexOf(userId) !== -1) {
+      return true;
+    }
+    return false;
+  };
   const handleAccept = () => {
     const data = {
       sender: userInfo.id, //로그인된 유저,
@@ -61,9 +75,24 @@ function AlarmDetail({route}) {
       <BackButton />
       <View style={styles.container}>
         <View style={styles.profileArea}>
-          <Image
-            source={{uri: alarm.senderInfo.nftProfile}}
-            style={styles.userImage}
+          <TouchableOpacity
+            onPress={() => {
+              setUserId(alarm.sender);
+
+              setUserInfoModalVisible(true);
+            }}>
+            <Image
+              source={{uri: alarm.senderInfo.nftProfile}}
+              style={styles.userImage}
+            />
+          </TouchableOpacity>
+
+          <UserInfoModal
+            userId={userId}
+            userInfoModalVisible={userInfoModalVisible}
+            visible={checkIsVisible(alarm.sender)}
+            setUserInfoModalVisible={setUserInfoModalVisible}
+            pFunction={() => {}}
           />
 
           <View style={styles.userInfo}>
