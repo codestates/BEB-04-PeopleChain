@@ -19,15 +19,15 @@ function MyProfile({User, navigation}) {
 
   return (
     <>
-      <View style={{alignItems: 'flex-end'}}>
-        <Icon
-          name="edit"
-          size={30}
-          style={styles.edit}
-          onPress={() => navigation.navigate('EditMyInfo')}
-        />
-      </View>
       <View>
+        <View style={{position: 'absolute', top: 0, right: 0, zIndex: 2}}>
+          <Icon
+            name="edit"
+            size={30}
+            style={styles.edit}
+            onPress={() => navigation.navigate('EditMyInfo')}
+          />
+        </View>
         <Image
           style={{width: window.width, height: 300}}
           source={{
@@ -100,8 +100,8 @@ function MyProfile({User, navigation}) {
 
 const styles = StyleSheet.create({
   edit: {
-    marginTop: 20,
     marginRight: 10,
+    marginTop: 5,
   },
   container: {
     flexDirection: 'row',

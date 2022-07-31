@@ -38,6 +38,7 @@ function WalletEthHistory({navigation}) {
 const styles = StyleSheet.create({
   view: {
     alignItems: 'center',
+    height: 300,
     // backgroundColor: 'red',
   },
   container: {
