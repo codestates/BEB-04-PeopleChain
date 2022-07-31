@@ -131,6 +131,7 @@ function UserInfoModal({
                       user.alcoholType.map((ele, index) => {
                         return (
                           <LinearGradient
+                            key={index}
                             colors={['#A7BFEB', '#FBC2EA']}
                             start={{x: 0, y: 0}}
                             end={{x: 1, y: 1}}
@@ -148,6 +149,7 @@ function UserInfoModal({
                     {user.drinkStyle.map((ele, index) => {
                       return (
                         <LinearGradient
+                          key={index}
                           colors={['#A7BFEB', '#FBC2EA']}
                           start={{x: 0, y: 0}}
                           end={{x: 1, y: 1}}
