@@ -138,7 +138,7 @@ const SignInScreen = ({navigation, route}) => {
               <Text> 비밀번호 찾기</Text>
             </TouchableOpacity>
           </View>
-          <View style={styles.oauthbutton}>
+          {/* <View style={styles.oauthbutton}>
             <OauthButton
               style={styles.oauthbutton}
               size="wide"
@@ -154,7 +154,7 @@ const SignInScreen = ({navigation, route}) => {
               backgroundColor="#666666"
               vendor="apple"
             />
-          </View>
+          </View> */}
         </View>
       </SafeAreaView>
     </KeyboardAvoidingView>
@@ -176,6 +176,7 @@ const styles = StyleSheet.create({
     width: 290,
     height: 200,
     marginTop: 70,
+    marginBottom: 20,
   },
   text: {
     fontSize: 32,
@@ -186,6 +187,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     marginTop: 52,
+    marginBottom: 60,
   },
   textAsk: {
     fontSize: 18,
@@ -198,7 +200,7 @@ const styles = StyleSheet.create({
     color: 'grey',
   },
   form: {
-    marginTop: 30,
+    marginTop: 50,
     width: '100%',
     paddingHorizontal: 16,
   },
