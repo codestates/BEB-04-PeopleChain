@@ -8,19 +8,19 @@ const { getFirestore } = require("firebase-admin/firestore");
 const app = require("../app");
 // 회원가입 시 user의 db에 address, privateKey를 추가해주는 함수
 auth.route("/register").post(async (req, res) => {
-	try {
-		// const { id } = req.body.id;
-		const account = await web3.eth.accounts.create();
-		console.log(account);
-		await app.db.collection("User").doc(req.body.id).update({
-			address: account.address,
-			privateKey: account.privateKey,
-		});
+  try {
+    // const { id } = req.body.id;
+    const account = await web3.eth.accounts.create();
+    console.log(account);
+    await app.db.collection("User").doc(req.body.id).update({
+      address: account.address,
+      privateKey: account.privateKey,
+    });
 
-		res.status(200).send(account);
-	} catch (error) {
-		res.status(400).send(error);
-	}
+    res.status(200).send(account);
+  } catch (error) {
+    res.status(400).send(error);
+  }
 });
 
 module.exports = auth;

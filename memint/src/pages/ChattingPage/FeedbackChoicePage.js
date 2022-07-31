@@ -68,13 +68,13 @@ function FeedbackChoicePage({route}) {
           <EarnModal
             EarnModalVisible={earnModalVisible}
             setEarnModalVisible={setEarnModalVisible}
+            txType="후기 작성"
             pFunction={() => {
               setEarnModalVisible(false);
               showToast('basic', 'LCN + 1');
               navigation.navigate('채팅 목록');
             }}
             amount={1}
-            txType="프로필조회"
           />
         </View>
       </View>
