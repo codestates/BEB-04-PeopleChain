@@ -25,6 +25,7 @@ function ChatText({data, roomInfo, userDetail}) {
     [data.id],
   );
   const checkIsVisible = userId => {
+    // console.log(visibleList)
     if (!visibleList) return false;
     if (visibleList.indexOf(userId) !== -1) {
       return true;
