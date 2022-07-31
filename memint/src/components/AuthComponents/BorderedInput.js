@@ -9,6 +9,8 @@ const BorderedInput = ({hasMarginBottom, size, ...rest}, ref) => {
       style={[styles.input, hasMarginBottom && styles.margin, sizeStyle]}
       ref={ref}
       {...rest}
+      autoComplete={false}
+      autoCorrect={false}
     />
   );
 };

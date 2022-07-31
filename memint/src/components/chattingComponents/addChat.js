@@ -27,6 +27,7 @@ function AddChat({chatId}) {
         value={text}
         onChangeText={setText}
         autoComplete={false}
+        autoCorrect={false}
       />
       <TouchableOpacity
         activeOpacity={1}
