@@ -1,8 +1,15 @@
-import React from 'react';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import {handleBirth} from '../../utils/common/Functions';
+import useUser from '../../utils/hooks/UseUser';
+import UserInfoModal from '../common/UserInfoModal';
 
 function DetailMembers({membersInfo, peopleNum, hostId}) {
+  const userInfo = useUser();
+  const visibleList = userInfo.visibleUser;
+  const [userInfoModalVisible, setUserInfoModalVisible] = useState(false);
+  const [userId, setUserId] = useState('');
+
   const currentPeopleNum = () => {
     //2 ->2:2 현재 1:0
     if (membersInfo.length > peopleNum) {
@@ -11,6 +18,15 @@ function DetailMembers({membersInfo, peopleNum, hostId}) {
       return membersInfo.length + ':' + 0;
     }
   };
+  const checkIsVisible = userId => {
+    // console.log(visibleList)
+    if (!visibleList) return false;
+    if (visibleList.indexOf(userId) !== -1) {
+      return true;
+    }
+    return false;
+  };
+
   return (
     // <LinearGradient colors={['#A7BFEB', '#FBC2EA']} style={styles.box}>
     <View style={styles.memberBox}>
@@ -25,10 +41,16 @@ function DetailMembers({membersInfo, peopleNum, hostId}) {
         {membersInfo.map((member, idx) => (
           <View key={idx} style={styles.memberInfo}>
             <View style={styles.memberInfoProfile}>
-              <Image
-                source={{uri: member.nftProfile}}
-                style={styles.userImage}
-              />
+              <TouchableOpacity
+                onPress={() => {
+                  setUserId(member.id);
+                  setUserInfoModalVisible(true);
+                }}>
+                <Image
+                  source={{uri: member.nftProfile}}
+                  style={styles.userImage}
+                />
+              </TouchableOpacity>
             </View>
             <View>
               <Text style={styles.memberInfoNickName}>{member.nickName}</Text>
@@ -47,6 +69,13 @@ function DetailMembers({membersInfo, peopleNum, hostId}) {
         ))}
         {membersInfo.peopleNum * 2 > membersInfo.length ? '' : ''}
       </View>
+      <UserInfoModal
+        userId={userId}
+        userInfoModalVisible={userInfoModalVisible}
+        setUserInfoModalVisible={setUserInfoModalVisible}
+        pFunction={() => {}}
+        visible={checkIsVisible(userId)}
+      />
     </View>
     // </LinearGradient>
   );

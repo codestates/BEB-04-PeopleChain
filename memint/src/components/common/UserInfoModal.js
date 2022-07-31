@@ -17,6 +17,8 @@ import {getOtherUser} from '../../lib/Users';
 import {addVisibleUser} from '../../lib/Users';
 import useUser from '../../utils/hooks/UseUser';
 import useAuthActions from '../../utils/hooks/UseAuthActions';
+import {handleBirth} from '../../utils/common/Functions';
+import LinearGradient from 'react-native-linear-gradient';
 
 /*
 사용할 컴포넌트에서 state 사용이 필요함.
@@ -27,6 +29,7 @@ import useAuthActions from '../../utils/hooks/UseAuthActions';
         userInfoModalVisible={userInfoModalVisible}
         setUserInfoModalVisible={setUserInfoModalVisible}
         pFunction={() => {}}
+        visible=
       />
  */
 
@@ -94,41 +97,66 @@ function UserInfoModal({
                     </View>
                   </TouchableOpacity>
                   <View
-                    style={{marginLeft: 13, justifyContent: 'space-around'}}>
-                    <Text>이름 : {user.nickName}</Text>
-                    <Text>나이 : {user.birth}</Text>
-                    <Text>성별 : {user.gender}</Text>
+                    style={{marginLeft: 20, justifyContent: 'space-around'}}>
+                    <View style={styles.userinfo}>
+                      <Text style={styles.userinfoKey}>닉네임</Text>
+                      <Text style={styles.userinfoValue}>{user.nickName}</Text>
+                    </View>
+                    <View style={styles.userinfo}>
+                      <Text style={styles.userinfoKey}>나이</Text>
+                      <Text style={styles.userinfoValue}>
+                        {handleBirth(user.birth)}
+                      </Text>
+                    </View>
+                    <View style={styles.userinfo}>
+                      <Text style={styles.userinfoKey}>성별</Text>
+                      <Text style={styles.userinfoValue}>{user.gender}</Text>
+                    </View>
                   </View>
                 </View>
-                <Text style={styles.hilightText}>주량</Text>
-                <View style={styles.tags}>
-                  <View style={styles.tag}>
-                    <Text>{user.drinkCapa}</Text>
+                <View style={styles.usertag}>
+                  <Text style={styles.hilightText}>주량</Text>
+                  <View style={styles.tags}>
+                    <LinearGradient
+                      colors={['#A7BFEB', '#FBC2EA']}
+                      start={{x: 0, y: 0}}
+                      end={{x: 1, y: 1}}
+                      style={styles.tag}>
+                      <Text style={styles.tagText}>{user.drinkCapa}</Text>
+                    </LinearGradient>
                   </View>
-                </View>
-                <Text style={styles.hilightText}>선호 주류</Text>
-                <View style={styles.tags}>
-                  {user ? (
-                    user.alcoholType.map((ele, index) => {
+                  <Text style={styles.hilightText}>선호 주류</Text>
+                  <View style={styles.tags}>
+                    {user ? (
+                      user.alcoholType.map((ele, index) => {
+                        return (
+                          <LinearGradient
+                            colors={['#A7BFEB', '#FBC2EA']}
+                            start={{x: 0, y: 0}}
+                            end={{x: 1, y: 1}}
+                            style={styles.tag}>
+                            <Text style={styles.tagText}># {ele}</Text>
+                          </LinearGradient>
+                        );
+                      })
+                    ) : (
+                      <ActivityIndicator size="large" color="black" />
+                    )}
+                  </View>
+                  <Text style={styles.hilightText}>스타일</Text>
+                  <View style={styles.tags}>
+                    {user.drinkStyle.map((ele, index) => {
                       return (
-                        <View style={styles.tag} key={index}>
-                          <Text>#{ele}</Text>
-                        </View>
+                        <LinearGradient
+                          colors={['#A7BFEB', '#FBC2EA']}
+                          start={{x: 0, y: 0}}
+                          end={{x: 1, y: 1}}
+                          style={styles.tag}>
+                          <Text style={styles.tagText}># {ele}</Text>
+                        </LinearGradient>
                       );
-                    })
-                  ) : (
-                    <ActivityIndicator size="large" color="black" />
-                  )}
-                </View>
-                <Text style={styles.hilightText}>스타일</Text>
-                <View style={styles.tags}>
-                  {user.drinkStyle.map((ele, index) => {
-                    return (
-                      <View style={styles.tag} key={index}>
-                        <Text>#{ele}</Text>
-                      </View>
-                    );
-                  })}
+                    })}
+                  </View>
                 </View>
                 {bigPicture && (
                   <View
@@ -240,6 +268,9 @@ const styles = StyleSheet.create({
   userInfoWrapper: {
     height: '100%',
     width: '100%',
+    flexDirection: 'column',
+    alignContent: 'center',
+    justifyContent: 'center',
   },
   modalText: {
     fontWeight: 'bold',
@@ -253,7 +284,7 @@ const styles = StyleSheet.create({
   buttonRow: {
     justifyContent: 'space-around',
     flexDirection: 'row',
-    paddingTop: 70,
+    paddingTop: 45,
   },
   images: {
     height: 80,
@@ -274,7 +305,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   hilightText: {
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: 'bold',
     marginTop: 25,
   },
@@ -284,10 +315,25 @@ const styles = StyleSheet.create({
   },
   tag: {
     backgroundColor: 'lightgray',
-    padding: 3,
+    paddingVertical: 5,
+    paddingHorizontal: 8,
     borderRadius: 5,
     marginTop: 7,
     marginRight: 10,
+  },
+  userinfo: {
+    flexDirection: 'row',
+  },
+  userinfoKey: {
+    color: '#787878',
+    width: 55,
+  },
+  usertag: {
+    marginTop: 20,
+  },
+  tagText: {
+    color: 'white',
+    fontWeight: '500',
   },
 });
 export default UserInfoModal;

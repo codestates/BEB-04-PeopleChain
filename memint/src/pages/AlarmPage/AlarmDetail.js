@@ -218,8 +218,8 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     width: 80,
     height: 80,
-    borderColor: 'black',
-    borderWidth: 1,
+    // borderColor: 'black',
+    // borderWidth: 1,
   },
   buttonArea: {
     flexDirection: 'row',
