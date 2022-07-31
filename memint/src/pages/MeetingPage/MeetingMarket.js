@@ -204,7 +204,7 @@ function MeetingMarket({navigation}) {
   }, [navigation, logout]);
   return (
     <SafeAreaView style={styles.container}>
-      <Button title="로그아웃 하기" color="red" onPress={handleSignOut} />
+      {/* <Button title="로그아웃 하기" color="red" onPress={handleSignOut} /> */}
       <ScrollView>
         <Pressable style={styles.areaEnd}>
           <RNPickerSelect

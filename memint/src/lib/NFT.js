@@ -4,7 +4,7 @@ import storage from '@react-native-firebase/storage';
 export const NFTCollection = firestore().collection('NFT');
 
 export async function getImgUrl() {
-  const randNum1 = Math.floor(Math.random() * 3);
+  const randNum1 = Math.floor(Math.random() * 3 + 3);
   const randNum2 = Math.floor(Math.random() * 10);
   try {
     const imgUrl = await storage()

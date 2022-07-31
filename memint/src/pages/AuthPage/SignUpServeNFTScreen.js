@@ -2,17 +2,20 @@ import React, {useState, useEffect} from 'react';
 import {Alert, StyleSheet, Text, View, Image} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import BackButton from '../../components/common/BackButton';
-import BasicButton from '../../components/common/BasicButton';
+
+import * as Progress from 'react-native-progress';
 
 import {createNFT, getImgUrl} from '../../lib/NFT';
 import useNftActions from '../../utils/hooks/UseNftActions';
-import {useNftProfile} from '../../utils/hooks/UseNft';
+
 import {ActivityIndicator} from 'react-native-paper';
 import {createUserNFT} from '../../lib/Users';
 import GradientButton from '../../components/common/GradientButton';
+let interval = undefined;
 
 const SignUpServeNFTScreen = ({navigation: {navigate}, route}) => {
-  const [loading, setLoading] = useState();
+  const [running, setRunning] = useState(true);
+  const [progress, setProgress] = useState(0);
   const {setNftProfile} = useNftActions();
   const [profileImg, setProfileImg] = useState('');
 
@@ -30,6 +33,23 @@ const SignUpServeNFTScreen = ({navigation: {navigate}, route}) => {
     getNFT();
   }, []);
 
+  useEffect(() => {
+    if (running) {
+      interval = setInterval(() => {
+        setProgress(prev => prev + 1);
+      }, 20);
+    } else {
+      clearInterval(interval);
+    }
+  }, [running]);
+
+  useEffect(() => {
+    if (progress === 100) {
+      setRunning(false);
+      clearInterval(interval);
+    }
+  }, [progress]);
+
   const {nickName, uid} = route.params;
   //   console.log(nickName);
   //   console.log(uid);
@@ -45,7 +65,6 @@ const SignUpServeNFTScreen = ({navigation: {navigate}, route}) => {
       Alert.alert('실패');
       console.log(e);
     } finally {
-      setLoading(false);
       navigate('SignUpAgreement');
     }
   };
@@ -54,14 +73,50 @@ const SignUpServeNFTScreen = ({navigation: {navigate}, route}) => {
     <SafeAreaView style={styles.fullscreen}>
       <BackButton />
       <View style={styles.fullscreenSub}>
-        <Text style={styles.textMain}>
-          {nickName}님만을 위한 프로필 이미지 입니다.
-        </Text>
+        {progress === 100 ? (
+          <>
+            <Text style={styles.textMain}>
+              {nickName}님만을 위한 프로필 입니다.
+            </Text>
+            <Image style={styles.nftImg} source={{uri: profileImg}} />
+            <Text style={styles.textSub}>귀엽네요</Text>
+            <GradientButton
+              style={styles.button}
+              width={300}
+              height={40}
+              textSize={17}
+              margin={[50, 5, 5, 5]}
+              text="다음 단계"
+              onPress={onSubmit}
+            />
+          </>
+        ) : (
+          <>
+            <Text style={styles.textMain}>
+              {nickName}님만을 위한 프로필 이미지를 만들고 있습니다.
+            </Text>
+            <Progress.Pie
+              size={100}
+              hidesWhenStopped={true}
+              progress={progress / 100}
+              color={'#A7BFEB'}
+              borderWidth={2}
+            />
+            <Text style={styles.textSub}>두근두근..</Text>
+          </>
+        )}
+
+        {/* <Progress.Pie
+          size={30}
+          hidesWhenStopped={true}
+          progress={progress / 100}
+        />
+
         {profileImg ? (
           <Image style={styles.nftImg} source={{uri: profileImg}} />
         ) : (
           <ActivityIndicator sixe="large" color="black" />
-        )}
+        )} */}
 
         {/* <BasicButton
           style={styles.button}
@@ -73,15 +128,6 @@ const SignUpServeNFTScreen = ({navigation: {navigate}, route}) => {
           hasMarginBottom
           onPress={onSubmit}
         /> */}
-        <GradientButton
-          style={styles.button}
-          width={300}
-          height={40}
-          textSize={17}
-          margin={[50, 5, 5, 5]}
-          text="다음 단계"
-          onPress={onSubmit}
-        />
       </View>
     </SafeAreaView>
   );
@@ -91,6 +137,7 @@ const styles = StyleSheet.create({
   nftImg: {
     width: 300,
     height: 300,
+    borderRadius: 1000,
   },
   KeyboardAvoidingView: {
     flex: 1,
@@ -144,9 +191,9 @@ const styles = StyleSheet.create({
   },
   textSub: {
     paddingHorizontal: 6,
-    fontSize: 14,
-    // fontWeight: 'bold',
-    // margin: 10,
+    fontSize: 18,
+    fontWeight: 'bold',
+    margin: 10,
     // alignItems: 'center',
     // justifyContent: 'center',
   },
