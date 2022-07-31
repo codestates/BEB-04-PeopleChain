@@ -38,7 +38,7 @@ function AlarmPage({navigation}) {
       //sender데이터
       const dataWithSenderInfo = await Promise.all(
         data
-          .sort((a, b) => b.createdAt.seconds - a.createdAt.seconds)
+          .sort((a, b) => b.createdAt.toDate() - a.createdAt.toDate())
           .map(async el => {
             const info = await getUser(el.sender);
             return {

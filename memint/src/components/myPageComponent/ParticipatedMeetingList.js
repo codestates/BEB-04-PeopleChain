@@ -64,7 +64,7 @@ function ParticipatedMeetingList({user}) {
     <>
       {joinedRoom.length !== 0 ? (
         joinedRoom
-          .sort((a, b) => b.createdAt.seconds - a.createdAt.seconds)
+          .sort((a, b) => b.createdAt.toDate() - a.createdAt.toDate())
           .map((el, index) => (
             <ParticipatedMeetings
               item={el}
@@ -157,15 +157,16 @@ function ParticipatedMeetings({item, getJoinedRoom}) {
             <Text style={styles.hostName}>{item.hostId}</Text>
           </View> */}
           <View style={styles.container}>
-            <Text style={styles.details}>{item.region}</Text>
-            <View style={styles.bar} />
+            <View style={styles.meetingInfo}>
+              <Text style={styles.details}>{item.region}</Text>
+              <View style={styles.bar} />
 
-            <Text style={styles.details}>
-              {handleDateInFormat(item.meetDate)}
-            </Text>
-            <View style={styles.bar} />
+              <Text style={styles.details}>
+                {handleDateInFormat(item.meetDate)}
+              </Text>
+              <View style={styles.bar} />
 
-            {/* <Text
+              {/* <Text
               style={[
                 styles.details,
                 item.peopleNum === item.hostSide.gathered.length
@@ -183,11 +184,12 @@ function ParticipatedMeetings({item, getJoinedRoom}) {
               ]}>
               {item.joinerSide.gathered.length}({item.joinerSide.sex})
             </Text> */}
-            <Text Text style={styles.details}>
-              {item.peopleNum + ':' + item.peopleNum}
-            </Text>
+              <Text Text style={styles.details}>
+                {item.peopleNum + ':' + item.peopleNum}
+              </Text>
+            </View>
+            <View style={styles.spaceBetween}>{renderButton()}</View>
           </View>
-          <View style={styles.spaceBetween}>{renderButton()}</View>
           {/* <View
           style={{
             ...styles.container,
@@ -257,6 +259,10 @@ function ParticipatedMeetings({item, getJoinedRoom}) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  meetingInfo: {
+    flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 6,
   },
@@ -278,7 +284,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     paddingHorizontal: 27,
     paddingVertical: 22,
-    height: 120,
+    height: 110,
     borderColor: 'black',
     borderRadius: 30,
     borderWidth: 1,

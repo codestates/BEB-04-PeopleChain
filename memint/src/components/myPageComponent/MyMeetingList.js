@@ -67,7 +67,7 @@ function MyMeetingList({navigation, user}) {
     <>
       {createdRoom.length !== 0 ? (
         createdRoom
-          .sort((a, b) => b.createdAt.seconds - a.createdAt.seconds)
+          .sort((a, b) => b.createdAt.toDate() - a.createdAt.toDate())
           .map((el, index) => (
             <MyMeetings
               item={el}

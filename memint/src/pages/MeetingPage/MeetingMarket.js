@@ -60,7 +60,7 @@ function MeetingMarket({navigation}) {
 
       const dataWithHostInfo = await Promise.all(
         data
-          .sort((a, b) => b.createdAt.seconds - a.createdAt.seconds)
+          .sort((a, b) => b.createdAt.toDate() - a.createdAt.toDate())
           .map(async el => {
             const hostInfo = await getUser(el.hostId);
             return {
