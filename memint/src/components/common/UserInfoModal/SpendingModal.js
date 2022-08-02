@@ -44,9 +44,9 @@ function SpendingModal({
 
   const transactionMade = () => {
     // DB에 있는 토큰양과 sync가 맞는지 확인
-    if (dbTokenBalance !== user.tokenAmount) {
-      return Alert.alert('잔액 오류');
-    }
+    // if (dbTokenBalance !== user.tokenAmount) {
+    //   return Alert.alert('잔액 오류');
+    // }
 
     //사용자의 TokenAmount 양 바꿈 (redux 정보 바꿈)
     decreaseBy(amount);

@@ -20,7 +20,7 @@ export function createUser({userId, nickName, gender, birth, picture}) {
     nftIds: [],
     address: null,
     privateKey: null,
-    tokenAmount: 0,
+    tokenAmount: 10,
     ethAmount: 0,
     onChainTokenAmount: 0,
     visibleUser: [],
