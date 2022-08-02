@@ -6,14 +6,26 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import MeetingCreate from './MeetingPage/MeetingCreate';
 import MeetingDetail from './MeetingPage/MeetingDetail';
 import MeetingMarket from './MeetingPage/MeetingMarket';
+import InviteFriend from './MeetingPage/InviteFriend';
 import AlarmPage from './AlarmPage/AlarmPage';
-import ChattingPage from './ChattingPage/ChattingPage';
+import FeedbackChoicePage from './ChattingPage/FeedbackChoicePage';
+import FeedbackSendPage from './ChattingPage/FeedbackSendPage';
+
+import EditMeetingInfo from './MyPage/EditMeetingInfo';
+import EditMyInfo from './MyPage/EditMyInfo';
+import WalletMain from './WalletPage/WalletMain';
 import MyPage from './MyPage/MyPage';
+import ChattingListPage from '../components/chattingComponents/chattingListPage';
+import ChattingRoom from './ChattingPage/ChattingRoom';
+import AlarmDetail from './AlarmPage/AlarmDetail';
+import WalletOffchainMain from './WalletPage/WalletOffchainMain';
+import WalletOffchainRecieve from './WalletPage/WalletOffchainRecieve';
+import WalletOnchainMain from './WalletPage/WalletOnchainMain';
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-function Main({navigation}) {
+function Main() {
   return (
     <>
       <Tab.Navigator
@@ -32,6 +44,7 @@ function Main({navigation}) {
             tabBarIcon: ({color}) => (
               <Icon name="home" color={color} size={24} />
             ),
+            tabBarColor: 'black',
           }}
         />
         <Tab.Screen
@@ -42,6 +55,7 @@ function Main({navigation}) {
             tabBarIcon: ({color}) => (
               <Icon name="notifications" color={color} size={24} />
             ),
+            tabBarColor: 'black',
           }}
         />
         <Tab.Screen
@@ -52,6 +66,7 @@ function Main({navigation}) {
             tabBarIcon: ({color}) => (
               <Icon name="message" color={color} size={24} />
             ),
+            tabBarColor: 'black',
           }}
         />
         <Tab.Screen
@@ -62,20 +77,32 @@ function Main({navigation}) {
             tabBarIcon: ({color}) => (
               <Icon name="person" color={color} size={24} />
             ),
+            tabBarColor: 'black',
           }}
         />
       </Tab.Navigator>
-      <View style={styles.walletButton}>
-        <Button title="wallet" onPress={() => navigation.navigate('Wallet')} />
-      </View>
     </>
   );
 }
 
 const MyPageScreen = () => {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="MyPage" component={MyPage} />
+    <Stack.Navigator initialRouteName="MyPage">
+      <Stack.Screen
+        name="MyPage"
+        component={MyPage}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="EditMeetingInfo"
+        component={EditMeetingInfo}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="EditMyInfo"
+        component={EditMyInfo}
+        options={{headerShown: false}}
+      />
     </Stack.Navigator>
   );
 };
@@ -83,9 +110,26 @@ const MyPageScreen = () => {
 const MeetingScreen = () => {
   return (
     <Stack.Navigator initialRouteName="MeetingMarket">
-      <Stack.Screen name="MeetingMarket" component={MeetingMarket} />
-      <Stack.Screen name="MeetingDetail" component={MeetingDetail} />
-      <Stack.Screen name="MeetingCreate" component={MeetingCreate} />
+      <Stack.Screen
+        name="MeetingMarket"
+        component={MeetingMarket}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="MeetingDetail"
+        component={MeetingDetail}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="MeetingCreate"
+        component={MeetingCreate}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="InviteFriend"
+        component={InviteFriend}
+        options={{headerShown: false}}
+      />
     </Stack.Navigator>
   );
 };
@@ -93,7 +137,23 @@ const MeetingScreen = () => {
 const ChattingScreen = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="ChattingPage" component={ChattingPage} />
+      <Stack.Screen
+        name="채팅 목록"
+        component={ChattingListPage}
+        options={{headerShown: false}}
+      />
+
+      <Stack.Screen
+        name="FeedbackChoicePage"
+        component={FeedbackChoicePage}
+        options={{headerShown: false}}
+        // options={{animation: 'none'}}
+      />
+      <Stack.Screen
+        name="FeedbackSendPage"
+        component={FeedbackSendPage}
+        options={{headerShown: false}}
+      />
     </Stack.Navigator>
   );
 };
@@ -101,21 +161,18 @@ const ChattingScreen = () => {
 const AlarmScreen = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="AlarmPage" component={AlarmPage} />
+      <Stack.Screen
+        name="AlarmPage"
+        component={AlarmPage}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="AlarmDetail"
+        component={AlarmDetail}
+        options={{headerShown: false}}
+      />
     </Stack.Navigator>
   );
 };
-
-const styles = StyleSheet.create({
-  walletButton: {
-    position: 'absolute',
-    width: 80,
-    height: 40,
-    right: 20,
-    bottom: 100,
-    backgroundColor: 'black',
-    borderRadius: 5,
-  },
-});
 
 export default Main;
