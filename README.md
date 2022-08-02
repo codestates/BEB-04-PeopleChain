@@ -2,8 +2,6 @@
 
 ## 1. 팀 소개
 
----
-
 - 팀 명: PEOPLE CHAIN
 - 프로젝트 명: MEMINT
 - 팀원: 임혜정, 이종석, 김성현, 조은민
@@ -12,7 +10,6 @@
 
 ## 2. 프로젝트 소개
 
----
 
 <img src="memint/src/assets/docs/logo.png">
 
@@ -108,7 +105,7 @@ MEMINT는 **Date 2 Earn** 서비스 입니다.
 
 ## 3. 팀 소개
 
----
+
 
 <img src="memint/src/assets/docs/hyejeong.png" width="200" height="200" />
 
